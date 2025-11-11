@@ -77,6 +77,17 @@
         "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-tcga/src",
         "TCGA_DRY_RUN": "true"
       }
+    },
+    "multiomics": {
+      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+      "args": ["-m", "mcp_multiomics"],
+      "cwd": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics",
+      "env": {
+        "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/src",
+        "MULTIOMICS_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/multiomics",
+        "MULTIOMICS_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache/multiomics",
+        "MULTIOMICS_DRY_RUN": "true"
+      }
     }
   }
 }

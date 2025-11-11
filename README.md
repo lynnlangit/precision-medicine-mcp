@@ -13,7 +13,7 @@ AI-Orchestrated Spatial Transcriptomics Bioinformatics Pipeline using Model Cont
 
 **Why this matters for bioinformaticians:**
 - ✅ **No more bash scripts from hell** - Replace complex pipeline code with conversational analysis requests
-- ✅ **Instant access to 31 genomics tools** - From FASTQ QC to TCGA comparisons, all via natural language
+- ✅ **Instant access to 36 genomics tools** - From FASTQ QC to multi-omics meta-analysis, all via natural language
 - ✅ **Reproducible by default** - Every analysis is logged, versioned, and repeatable
 - ✅ **Modular & extensible** - Add new tools as MCP servers without rewriting your pipeline
 - ✅ **Tested with real workflows** - [18 complete example prompts](docs/MCP_POC_Example_Prompts.md) from QC to publication-ready analysis
@@ -34,15 +34,15 @@ This single prompt orchestrates **6 different tools across 4 MCP servers**, gene
 
 ## Overview
 
-This project demonstrates the power of **Model Context Protocol (MCP)** in orchestrating complex bioinformatics workflows for spatial transcriptomics. Using Claude Desktop as the AI orchestrator, the system coordinates **8 specialized MCP servers** with **31 tools** to process spatial genomics data through a 5-stage pipeline.
+This project demonstrates the power of **Model Context Protocol (MCP)** in orchestrating complex bioinformatics workflows for spatial transcriptomics and multi-omics analysis. Using Claude Desktop as the AI orchestrator, the system coordinates **9 specialized MCP servers** with **36 tools** to process spatial genomics data through a 5-stage pipeline.
 
 ### Key Features
 
 - 🤖 **AI-Driven Orchestration** - Claude coordinates multi-server workflows
-- 🧬 **Modular Architecture** - 8 specialized servers, each with single responsibility
+- 🧬 **Modular Architecture** - 9 specialized servers, each with single responsibility
 - 🔒 **Production-Ready** - Comprehensive testing, logging, and security
 - 🚀 **Scalable Design** - Containerized, cloud-ready deployment
-- 📊 **Industry Tools** - FGbio, TCGA, Hugging Face, Seqera Platform integration
+- 📊 **Industry Tools** - FGbio, TCGA, Hugging Face, Seqera Platform, multi-omics integration
 
 ## Architecture
 
@@ -68,8 +68,9 @@ This project demonstrates the power of **Model Context Protocol (MCP)** in orche
 | **mcp-huggingFace** | 3 | ✅ Phase 3 | ML models for genomics (DNABERT, Geneformer, scGPT) |
 | **mcp-deepcell** | 2 | ✅ Phase 3 | Deep learning cell segmentation and phenotyping |
 | **mcp-mockEpic** | 3 | ✅ Phase 3 | Mock Epic EHR integration with synthetic patient data |
-| **mcp-tcga** | 5 | ✅ Complete | TCGA cancer genomics data integration |
-| **TOTAL** | **31** | ✅ | **All servers operational** |
+| **mcp-tcga** | 5 | ✅ Phase 3 | TCGA cancer genomics data integration |
+| **mcp-multiomics** | 5 | ✅ Phase 3 | Multi-omics PDX data integration & Stouffer's meta-analysis |
+| **TOTAL** | **36** | ✅ | **All servers operational** |
 
 ## Quick Start
 
@@ -87,13 +88,13 @@ This project demonstrates the power of **Model Context Protocol (MCP)** in orche
 git clone https://github.com/your-org/spatial-mcp.git
 cd spatial-mcp
 
-# Install all 8 MCP servers (one command!)
+# Install all 9 MCP servers (one command!)
 cd manual_testing
 ./install_dependencies.sh
 
 # Verify all servers are working
 ./verify_servers.sh
-# Expected: "Servers working: 8/8"
+# Expected: "Servers working: 9/9"
 ```
 
 For detailed testing instructions, see [Manual Testing Guide](manual_testing/README.md).
@@ -128,7 +129,7 @@ Or use the template and customize for your installation path:
 
 **Important:** Use the full path to the venv Python executable, not just `python`.
 
-For complete configuration with all 8 servers, see [`configs/claude_desktop_config.json`](configs/claude_desktop_config.json).
+For complete configuration with all 9 servers, see [`configs/claude_desktop_config.json`](configs/claude_desktop_config.json).
 
 Restart Claude Desktop and verify:
 
@@ -171,8 +172,9 @@ What MCP servers are available?
 - [x] mcp-deepcell for cell segmentation (2 tools, 1 resource)
 - [x] mcp-mockEpic with synthetic clinical data (3 tools, 1 resource)
 - [x] mcp-tcga with TCGA cancer genomics data (5 tools, 2 resources)
+- [x] mcp-multiomics for multi-omics PDX analysis (5 tools, 2 resources)
 - [x] Enhanced mcp-spatialtools with advanced analysis (+4 tools)
-- [x] Complete POC with all 8 servers integrated
+- [x] Complete POC with all 9 servers integrated
 - [x] Full demonstration workflow capability
 - [x] All 18 example prompts fully supported
 
@@ -234,7 +236,9 @@ I need to process spatial transcriptomics data:
 - **Bioinformatics Tools:** FGbio, STAR, samtools, bedtools
 - **ML Frameworks:** Hugging Face Transformers, PyTorch
 - **Workflow Engine:** Nextflow (via Seqera Platform)
-- **Testing:** pytest, pytest-asyncio, pytest-cov
+- **Statistical Methods:** Stouffer's meta-analysis, HAllA association testing, scipy/statsmodels
+- **Multi-Omics:** pandas, numpy, scikit-learn for data integration and analysis
+- **Testing:** pytest, pytest-asyncio, pytest-cov (84% avg coverage)
 - **Deployment:** Docker, Kubernetes (future)
 
 ## Contributing

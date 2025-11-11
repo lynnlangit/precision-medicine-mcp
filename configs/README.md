@@ -10,10 +10,10 @@ This folder contains configuration files for connecting Claude Desktop to the Sp
 
 **Status:** ✅ **Ready to use** - Pre-configured for this system
 
-**Purpose:** Production-ready configuration with full absolute paths to all 8 MCP servers.
+**Purpose:** Production-ready configuration with full absolute paths to all 9 MCP servers.
 
 **Contains:**
-- All 8 MCP servers (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga)
+- All 9 MCP servers (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga, multiomics)
 - Full absolute paths to Python 3.11 virtual environments
 - All required environment variables
 - DRY_RUN mode enabled for safe testing
@@ -24,7 +24,7 @@ This folder contains configuration files for connecting Claude Desktop to the Sp
 cp claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
 
 # Restart Claude Desktop
-# All 8 servers should now be available
+# All 9 servers should now be available
 ```
 
 ---
