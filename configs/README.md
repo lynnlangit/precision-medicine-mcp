@@ -96,6 +96,7 @@ Each server requires specific environment variables:
 | **deepcell** | `DEEPCELL_DRY_RUN` | Mock execution mode |
 | **mockepic** | `EPIC_DRY_RUN` | Mock execution mode |
 | **tcga** | `TCGA_DRY_RUN` | Mock execution mode |
+| **multiomics** | `MULTIOMICS_DATA_DIR`<br>`MULTIOMICS_CACHE_DIR`<br>`MULTIOMICS_DRY_RUN` | Multi-omics data directory<br>Cache location<br>Mock execution mode |
 
 ### DRY_RUN Mode
 
@@ -142,13 +143,13 @@ Expected output: Should show the config JSON
 
 ### Verify All Server Paths Exist
 ```bash
-for server in fgbio spatialtools openimagedata seqera huggingface deepcell mockepic tcga; do
+for server in fgbio spatialtools openimagedata seqera huggingface deepcell mockepic tcga multiomics; do
   echo "Checking mcp-$server..."
   ls /Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-$server/venv/bin/python
 done
 ```
 
-Expected: All 8 Python executables should be found
+Expected: All 9 Python executables should be found
 
 ### Verify in Claude Desktop
 
@@ -158,7 +159,7 @@ After installing the config and restarting Claude Desktop:
 What MCP servers are available?
 ```
 
-Expected response: List of all 8 servers with their tools
+Expected response: List of all 9 servers with their tools
 
 ---
 
@@ -259,9 +260,10 @@ cp ~/Desktop/claude_desktop_config_backup.json ~/Library/Application\ Support/Cl
 | mcp-deepcell | 2 | ✅ Configured |
 | mcp-mockepic | 3 | ✅ Configured |
 | mcp-tcga | 5 | ✅ Configured |
-| **TOTAL** | **31** | **✅ All Ready** |
+| mcp-multiomics | 5 | ✅ Configured |
+| **TOTAL** | **36** | **✅ All Ready** |
 
 ---
 
-**Last Updated:** October 25, 2025
-**Status:** ✅ Ready for Claude Desktop
+**Last Updated:** November 11, 2025
+**Status:** ✅ Ready for Claude Desktop - All 9 servers configured
