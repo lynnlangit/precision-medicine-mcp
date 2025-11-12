@@ -9,7 +9,7 @@ AI-Orchestrated Spatial Transcriptomics Bioinformatics Pipeline using Model Cont
 
 ## What's In It For You?
 
-**Are you tired of writing glue code to connect bioinformatics tools?** This POC demonstrates a fundamentally different approach to spatial transcriptomics analysis: instead of manually chaining together FASTQ validators, aligners, expression quantifiers, and statistical tools through brittle shell scripts, you **describe your analysis goals in natural language** and let Claude orchestrate the entire pipeline (example screenshot shown below).
+**Are you tired of writing glue code to connect bioinformatics tools?** This POC demonstrates a fundamentally different approach to spatial transcriptomics analysis: instead of manually chaining together FASTQ validators, aligners, expression quantifiers, and statistical tools through brittle shell scripts, you **describe your analysis goals in natural language** and let Claude orchestrate the entire pipeline.
 
 **Why this matters for bioinformaticians:**
 - ✅ **No more bash scripts from hell** - Replace complex pipeline code with conversational analysis requests
@@ -32,232 +32,188 @@ Claude, I have 10x Visium spatial transcriptomics data. Please:
 
 This single prompt orchestrates **6 different tools across 4 MCP servers**, generates statistical results, biological interpretations, and TCGA comparisons—all without writing a single line of pipeline code.
 
+---
+
 ## Overview
 
-This project demonstrates the power of **Model Context Protocol (MCP)** in orchestrating complex bioinformatics workflows for spatial transcriptomics and multi-omics analysis. Using Claude Desktop as the AI orchestrator, the system coordinates **9 specialized MCP servers** with **36 tools** to process spatial genomics data through a 5-stage pipeline.
+This project demonstrates the power of **Model Context Protocol (MCP)** in orchestrating complex bioinformatics workflows for spatial transcriptomics and multi-omics analysis. Using Claude Desktop as the AI orchestrator, the system coordinates **9 specialized MCP servers** with **36 tools** to process spatial genomics data through a complete analysis pipeline.
 
 ### Key Features
 
-- 🤖 **AI-Driven Orchestration** - Claude coordinates multi-server workflows
+- 🤖 **AI-Driven Orchestration** - Claude coordinates multi-server workflows via natural language
 - 🧬 **Modular Architecture** - 9 specialized servers, each with single responsibility
-- 🔒 **Production-Ready** - Comprehensive testing, logging, and security
+- 🔒 **Production-Ready** - Comprehensive testing (58 tests, 100% pass rate, 80%+ coverage)
 - 🚀 **Scalable Design** - Containerized, cloud-ready deployment
 - 📊 **Industry Tools** - FGbio, TCGA, Hugging Face, Seqera Platform, multi-omics integration
 
-## Architecture
+### Architecture
 
 ![Spatial MCP Architecture](https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/spatial-mcp-arch.png)
 
-### Pipeline Flow
-
-```
-┌─────────────┐    ┌──────────────┐    ┌───────────┐    ┌────────────────┐    ┌──────────┐
-│ 1. Ingest   │───▶│ 2. Segment   │───▶│ 3. Align  │───▶│ 4. Quantify    │───▶│ 5. Analyze│
-│   & QC      │    │   Spatial    │    │   Reads   │    │   Expression   │    │  Results  │
-└─────────────┘    └──────────────┘    └───────────┘    └────────────────┘    └──────────┘
-```
+**Pipeline Flow:** Ingest & QC → Segment Spatial → Align Reads → Quantify Expression → Analyze Results
 
 ### MCP Servers
 
-| Server | Tools | Status | Purpose |
-|--------|-------|--------|---------|
-| **mcp-FGbio** | 4 | ✅ Phase 1 | Genomic reference data & FASTQ processing |
-| **mcp-spatialtools** | 8 | ✅ Enhanced | Core spatial processing + advanced analysis |
-| **mcp-openImageData** | 3 | ✅ Phase 2 | Histology image processing & spatial registration |
-| **mcp-seqera** | 3 | ✅ Phase 3 | Nextflow workflow orchestration via Seqera Platform |
-| **mcp-huggingFace** | 3 | ✅ Phase 3 | ML models for genomics (DNABERT, Geneformer, scGPT) |
-| **mcp-deepcell** | 2 | ✅ Phase 3 | Deep learning cell segmentation and phenotyping |
-| **mcp-mockEpic** | 3 | ✅ Phase 3 | Mock Epic EHR integration with synthetic patient data |
-| **mcp-tcga** | 5 | ✅ Phase 3 | TCGA cancer genomics data integration |
-| **mcp-multiomics** | 5 | ✅ Phase 3 | Multi-omics PDX data integration & Stouffer's meta-analysis |
-| **TOTAL** | **36** | ✅ | **All servers operational** |
+| Server | Tools | Purpose |
+|--------|-------|---------|
+| **mcp-fgbio** | 4 | Genomic reference data & FASTQ processing |
+| **mcp-spatialtools** | 8 | Core spatial processing + advanced analysis |
+| **mcp-openimagedata** | 3 | Histology image processing & spatial registration |
+| **mcp-seqera** | 3 | Nextflow workflow orchestration via Seqera Platform |
+| **mcp-huggingface** | 3 | ML models for genomics (DNABERT, Geneformer, scGPT) |
+| **mcp-deepcell** | 2 | Deep learning cell segmentation and phenotyping |
+| **mcp-mockepic** | 3 | Mock Epic EHR integration with synthetic patient data |
+| **mcp-tcga** | 5 | TCGA cancer genomics data integration |
+| **mcp-multiomics** | 5 | Multi-omics PDX data integration & Stouffer's meta-analysis |
+| **TOTAL** | **36** | **All servers operational** ✅ |
+
+---
 
 ## Quick Start
 
-### Prerequisites
-
-- Python 3.11+
-- Claude Desktop (standalone app, not VSCode extension)
-- 16GB+ RAM
-- 50GB free disk space
-
-### Installation
+### Installation (5 minutes)
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/your-org/spatial-mcp.git
 cd spatial-mcp
 
-# Install all 9 MCP servers (one command!)
+# Install all 9 MCP servers
 cd manual_testing
 ./install_dependencies.sh
 
-# Verify all servers are working
+# Verify installation
 ./verify_servers.sh
-# Expected: "Servers working: 9/9"
+# Expected: "Servers working: 9/9, Total tools: 36"
 ```
 
-For detailed testing instructions, see [Manual Testing Guide](manual_testing/README.md).
+**Prerequisites:** Python 3.11+, Claude Desktop, 16GB+ RAM, 50GB disk space
 
 ### Configure Claude Desktop
 
-Copy the production config to Claude Desktop:
-
 ```bash
+# Copy configuration file
 cp configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
+
+# Restart Claude Desktop
 ```
 
-Or use the template and customize for your installation path:
+### Verify Setup
 
-```json
-{
-  "mcpServers": {
-    "fgbio": {
-      "command": "/absolute/path/to/spatial-mcp/servers/mcp-fgbio/venv/bin/python",
-      "args": ["-m", "mcp_fgbio"],
-      "cwd": "/absolute/path/to/spatial-mcp/servers/mcp-fgbio",
-      "env": {
-        "PYTHONPATH": "/absolute/path/to/spatial-mcp/servers/mcp-fgbio/src",
-        "FGBIO_REFERENCE_DATA_DIR": "/absolute/path/to/spatial-mcp/data/reference",
-        "FGBIO_CACHE_DIR": "/absolute/path/to/spatial-mcp/data/cache",
-        "FGBIO_DRY_RUN": "true"
-      }
-    }
-  }
-}
-```
-
-**Important:** Use the full path to the venv Python executable, not just `python`.
-
-For complete configuration with all 9 servers, see [`configs/claude_desktop_config.json`](configs/claude_desktop_config.json).
-
-Restart Claude Desktop and verify:
-
+In Claude Desktop:
 ```
 What MCP servers are available?
 ```
 
+Expected: 9 servers listed with 36 total tools
+
+---
+
 ## Documentation
 
-- 🧪 **[Manual Testing Guide](manual_testing/README.md)** - Scripts and guides for testing all servers
-- 📋 **[Example Prompts](docs/MCP_POC_Example_Prompts.md)** - 18 test prompts from QC to analysis
-- 📖 **[Setup Guide](docs/setup_guide.md)** - Complete installation and configuration
+### Getting Started
+- 🚀 **[Manual Testing Guide](manual_testing/README.md)** - Installation, verification, and testing
+- 📖 **[Setup Guide](docs/setup_guide.md)** - Detailed installation and configuration
+- ⚙️ **[Configuration Guide](configs/README.md)** - Claude Desktop setup and environment variables
+
+### Using the System
+- 📋 **[Example Prompts](docs/MCP_POC_Example_Prompts.md)** - 18 ready-to-use test prompts
+- 🧬 **[Multi-Omics Guide](docs/multiomics/README.md)** - PDX analysis and Stouffer's meta-analysis
+- 🎯 **[Test Results](manual_testing/TEST_RESULTS_ALL_SERVERS.md)** - Complete test suite results
+
+### Technical Documentation
 - 🏗️ **[Architecture Document](architecture/Spatial_MCP_POC_Architecture.md)** - Full technical architecture
-- 🎨 **[Visual Diagram](architecture/Spatial_MCP_Architecture_Diagram.html)** - One-page architecture overview
-- 🔧 **[Server Documentation](servers/mcp-fgbio/README.md)** - Individual server READMEs
-- 🧬 **[Multi-Omics Documentation](docs/multiomics/README.md)** - mcp-multiomics server implementation, testing, and troubleshooting
+- 🎨 **[Architecture Diagram](architecture/Spatial_MCP_Architecture_Diagram.html)** - Visual overview
+- 🔧 **[Server READMEs](servers/)** - Individual server documentation
 
-## Project Status
-
-### ✅ Phase 1: Foundation (Complete)
-
-- [x] Project structure and shared utilities
-- [x] mcp-FGbio server with 4 tools and 3 resources
-- [x] Comprehensive unit tests (>80% coverage)
-- [x] Integration test framework
-- [x] Claude Desktop configuration
-- [x] Documentation and README files
-
-### ✅ Phase 2: Core Processing (Complete)
-
-- [x] mcp-spatialtools server with 4 processing tools
-- [x] mcp-openImageData server with 3 image tools
-- [x] End-to-end pipeline orchestration capability
-- [x] Quality control → Segmentation → Alignment workflow
-- [x] Updated Claude Desktop config for all 3 servers
-
-### ✅ Phase 3: Advanced Analysis (Complete)
-
-- [x] mcp-seqera with Nextflow workflow orchestration (3 tools, 1 resource)
-- [x] mcp-huggingFace with ML genomics models (3 tools, 2 resources)
-- [x] mcp-deepcell for cell segmentation (2 tools, 1 resource)
-- [x] mcp-mockEpic with synthetic clinical data (3 tools, 1 resource)
-- [x] mcp-tcga with TCGA cancer genomics data (5 tools, 2 resources)
-- [x] mcp-multiomics for multi-omics PDX analysis (5 tools, 2 resources)
-- [x] Enhanced mcp-spatialtools with advanced analysis (+4 tools)
-- [x] Complete POC with all 9 servers integrated
-- [x] Full demonstration workflow capability
-- [x] All 18 example prompts fully supported
-
-## Development
-
-### Running Tests
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=src --cov-report=html
-
-# Run integration tests
-pytest tests/integration/ -v
-```
-
-### Code Quality
-
-```bash
-# Format code
-black src/ tests/
-
-# Lint code
-ruff check src/ tests/
-
-# Type checking
-mypy src/
-```
+---
 
 ## Example Usage
 
-Once configured with Claude Desktop, you can use natural language to orchestrate bioinformatics workflows:
+### Simple Queries
 
-**Example 1: Fetch Reference Genome**
+**Fetch reference genome:**
 ```
-Claude, please download the hg38 reference genome and tell me about its characteristics.
-```
-
-**Example 2: Validate FASTQ Data**
-```
-I have a FASTQ file at /data/sample.fastq.gz. Can you validate it and check if the quality is good enough for analysis?
+Claude, download the hg38 reference genome and tell me about its characteristics.
 ```
 
-**Example 3: Complete Workflow**
+**Validate FASTQ data:**
 ```
-I need to process spatial transcriptomics data:
-1. Fetch the hg38 reference
-2. Validate my FASTQ files at /data/sample_R1.fastq.gz and /data/sample_R2.fastq.gz
-3. Extract the 12bp UMIs from read 1
-4. Look up the genomic coordinates for TP53 gene
+I have a FASTQ file at /data/sample.fastq.gz. Validate it and check quality.
 ```
+
+### Complete Workflows
+
+**Multi-omics treatment resistance analysis:**
+```
+I'm analyzing PDX treatment resistance with RNA, Protein, and Phospho data.
+For genes TP53, MYC, KRAS:
+- RNA p-values: [0.001, 0.002, 0.05], log2FC: [2.5, 1.8, 1.2]
+- Protein p-values: [0.005, 0.01, 0.03], log2FC: [2.0, 1.6, 1.1]
+
+Combine using Stouffer's method with directionality and FDR correction.
+```
+
+**Spatial transcriptomics pipeline:**
+```
+Process 10x Visium data:
+1. Fetch hg38 reference
+2. Validate FASTQ files
+3. Extract UMIs
+4. Align reads
+5. Quantify expression
+6. Compare to TCGA cohorts
+```
+
+See [18 complete example prompts](docs/MCP_POC_Example_Prompts.md) for more workflows.
+
+---
+
+## Project Status
+
+**Current:** ✅ **Production Ready - All 9 Servers Operational**
+
+- ✅ Phase 1: Foundation (mcp-fgbio, testing framework)
+- ✅ Phase 2: Core Processing (mcp-spatialtools, mcp-openimagedata)
+- ✅ Phase 3: Advanced Analysis (6 additional servers: seqera, huggingface, deepcell, mockepic, tcga, multiomics)
+
+**Test Results:** 58 tests, 100% pass rate, 80.5% average coverage
+
+**Next:** Optional Phase 4 enhancements (HAllA implementation, advanced visualizations, CI/CD pipeline)
+
+---
 
 ## Technology Stack
 
-- **MCP Framework:** FastMCP (Python)
-- **AI Orchestrator:** Claude Desktop
-- **Bioinformatics Tools:** FGbio, STAR, samtools, bedtools
-- **ML Frameworks:** Hugging Face Transformers, PyTorch
-- **Workflow Engine:** Nextflow (via Seqera Platform)
-- **Statistical Methods:** Stouffer's meta-analysis, HAllA association testing, scipy/statsmodels
-- **Multi-Omics:** pandas, numpy, scikit-learn for data integration and analysis
-- **Testing:** pytest, pytest-asyncio, pytest-cov (84% avg coverage)
-- **Deployment:** Docker, Kubernetes (future)
+- **MCP Framework:** FastMCP (Python), Claude Desktop
+- **Bioinformatics:** FGbio, STAR, samtools, bedtools
+- **Machine Learning:** Hugging Face Transformers, PyTorch, DeepCell
+- **Workflows:** Nextflow via Seqera Platform
+- **Statistics:** Stouffer's meta-analysis, scipy, statsmodels
+- **Multi-Omics:** pandas, numpy, scikit-learn
+- **Testing:** pytest (58 tests, 100% pass rate)
+
+---
 
 ## Contributing
 
-We welcome contributions! Please see our development guidelines:
+Contributions welcome! Please:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes with tests
-4. Ensure tests pass (`pytest`)
-5. Format code (`black`, `ruff`)
-6. Commit changes (`git commit -m 'Add amazing feature'`)
-7. Push to branch (`git push origin feature/amazing-feature`)
-8. Open a Pull Request
+2. Create a feature branch
+3. Add tests for new functionality
+4. Ensure all tests pass (`pytest`)
+5. Submit a pull request
+
+See [Manual Testing Guide](manual_testing/README.md) for development setup.
+
+---
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+Apache License 2.0 - see [LICENSE](LICENSE) file for details.
+
+---
 
 ## Acknowledgments
 
@@ -267,17 +223,16 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 - **TCGA** - The Cancer Genome Atlas program
 - **Seqera Platform** - Nextflow workflow orchestration
 
-## References
+---
+
+## Resources
 
 - [MCP Specification](https://modelcontextprotocol.io/specification/2025-06-18)
 - [FastMCP Documentation](https://github.com/modelcontextprotocol/python-sdk)
 - [BioinfoMCP Paper](https://arxiv.org/html/2510.02139v1)
 - [Spatial Transcriptomics Review](https://academic.oup.com/nar/article/53/12/gkaf536/8174767)
 
-## Contact
-
-- **Issues:** [GitHub Issues](https://github.com/your-org/spatial-mcp/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/your-org/spatial-mcp/discussions)
+**Issues & Discussions:** [GitHub Issues](https://github.com/your-org/spatial-mcp/issues) | [GitHub Discussions](https://github.com/your-org/spatial-mcp/discussions)
 
 ---
 

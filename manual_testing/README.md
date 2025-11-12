@@ -8,7 +8,7 @@ This folder contains scripts and documentation for manually testing the Spatial 
 
 | File | Purpose | Usage |
 |------|---------|-------|
-| `install_dependencies.sh` | Install all dependencies for 8 MCP servers | `./install_dependencies.sh` |
+| `install_dependencies.sh` | Install all dependencies for 9 MCP servers | `./install_dependencies.sh` |
 | `verify_servers.sh` | Verify all servers can be imported | `./verify_servers.sh` |
 | `setup_and_test_servers.sh` | Combined setup and verification | `./setup_and_test_servers.sh --install` |
 | `test_all_servers.py` | Python-based server verification | `python3 test_all_servers.py` |
@@ -21,6 +21,7 @@ This folder contains scripts and documentation for manually testing the Spatial 
 | `TESTING_SUMMARY.md` | Quick reference summary |
 | `TESTING_STATUS.md` | Complete testing status and verification checklist |
 | `CLAUDE_DESKTOP_TEST_PROMPTS.md` | **8 ready-to-paste test prompts with absolute paths for Claude Desktop** |
+| `TEST_RESULTS_ALL_SERVERS.md` | **Complete test results for all 9 servers (58 tests, 100% pass rate)** |
 
 ---
 
@@ -36,7 +37,7 @@ cd manual_testing
 This will:
 - Create Python 3.11 virtual environments for each server
 - Install FastMCP and all dependencies
-- Set up 8 servers in development mode
+- Set up 9 servers in development mode
 
 **Time:** ~5-10 minutes
 
@@ -48,8 +49,8 @@ This will:
 
 Expected output:
 ```
-Servers working: 8/8
-Total tools: 31
+Servers working: 9/9
+Total tools: 36
 🎉 All MCP servers are operational!
 ```
 
@@ -138,7 +139,8 @@ pip install -e ".[dev]"
 | mcp-deepcell | 2 | ✅ |
 | mcp-mockepic | 3 | ✅ |
 | mcp-tcga | 5 | ✅ |
-| **TOTAL** | **31** | **✅** |
+| mcp-multiomics | 5 | ✅ |
+| **TOTAL** | **36** | **✅** |
 
 ---
 
