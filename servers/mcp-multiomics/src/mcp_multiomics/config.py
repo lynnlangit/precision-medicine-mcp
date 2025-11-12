@@ -1,9 +1,10 @@
 """Configuration settings for mcp-multiomics server."""
 
+import os
 from pathlib import Path
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,6 +25,7 @@ class MultiOmicsConfig(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        env_prefix="MULTIOMICS_",
     )
 
     # Data directories
@@ -93,11 +95,20 @@ class MultiOmicsConfig(BaseSettings):
         ge=60,
     )
 
-    def __init__(self, **kwargs):
-        """Initialize config and create directories if needed."""
-        super().__init__(**kwargs)
+    @model_validator(mode='after')
+    def parse_boolean_env_vars(self):
+        """Fix boolean parsing from environment variables.
 
-        # Create directories if in real mode
+        Pydantic V2 Settings parses string 'false' as boolean True,
+        so we need to explicitly check environment variable values.
+        """
+        env_val = os.getenv('MULTIOMICS_DRY_RUN')
+        if env_val is not None:
+            self.dry_run = env_val.lower() not in ('false', '0', 'no', 'off', '')
+        return self
+
+    def ensure_directories(self):
+        """Create directories if in real mode. Call this before file operations."""
         if not self.dry_run:
             self.data_dir.mkdir(parents=True, exist_ok=True)
             self.cache_dir.mkdir(parents=True, exist_ok=True)

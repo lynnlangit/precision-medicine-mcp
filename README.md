@@ -145,6 +145,7 @@ What MCP servers are available?
 - 🏗️ **[Architecture Document](architecture/Spatial_MCP_POC_Architecture.md)** - Full technical architecture
 - 🎨 **[Visual Diagram](architecture/Spatial_MCP_Architecture_Diagram.html)** - One-page architecture overview
 - 🔧 **[Server Documentation](servers/mcp-fgbio/README.md)** - Individual server READMEs
+- 🧬 **[Multi-Omics Documentation](docs/multiomics/README.md)** - mcp-multiomics server implementation, testing, and troubleshooting
 
 ## Project Status
 

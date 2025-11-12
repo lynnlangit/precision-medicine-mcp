@@ -86,7 +86,7 @@
         "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/src",
         "MULTIOMICS_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/multiomics",
         "MULTIOMICS_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache/multiomics",
-        "MULTIOMICS_DRY_RUN": "true"
+        "MULTIOMICS_DRY_RUN": "false"
       }
     }
   }
