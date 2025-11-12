@@ -6,26 +6,26 @@ This directory contains documentation for the **mcp-multiomics** server (Phase 3
 
 ## Documents in This Directory
 
-### Quick Start
-
-| File | Description |
-|------|-------------|
-| **README.md** | This file - Quick reference and navigation |
-| **MULTIOMICS_INTEGRATION_SUMMARY.md** | Integration summary with deployment guide |
-
-### Detailed Documentation
+### Active Documentation
 
 | File | Description | Lines |
 |------|-------------|-------|
+| **README.md** | This file - Quick reference and navigation | 241 |
 | **DETAILED_GUIDE.md** | Comprehensive server guide (tools, testing, config, examples) | 584 |
-| **Implementation_Plan_mcp_multiomics.md** | Original design document and implementation plan | 930 |
-| **PYDANTIC_BOOLEAN_FIX.md** | Technical fix for Pydantic V2 boolean parsing issue | 280 |
+| **MULTIOMICS_INTEGRATION_SUMMARY.md** | Original integration summary (see README for current info) | 217 |
 
-### Internal
+### Archived Documentation
 
 | File | Description |
 |------|-------------|
-| **.cleanup_summary.md** | Documentation reorganization notes |
+| **archive/Implementation_Plan_mcp_multiomics.md** | Pre-implementation design document |
+
+### Related Files
+
+| File | Location | Description |
+|------|----------|-------------|
+| **TROUBLESHOOTING.md** | `/servers/mcp-multiomics/` | Technical fixes (Pydantic boolean parsing, etc.) |
+| **README.md** | `/servers/mcp-multiomics/` | Server-specific documentation |
 
 ---
 
@@ -229,9 +229,9 @@ Which genes are significantly dysregulated across all modalities?
 ## Quick Links
 
 📖 **[DETAILED_GUIDE.md](DETAILED_GUIDE.md)** - Complete 584-line technical reference
-📋 **[Integration Summary](MULTIOMICS_INTEGRATION_SUMMARY.md)** - Deployment guide
-🔧 **[Pydantic Fix](PYDANTIC_BOOLEAN_FIX.md)** - Troubleshooting boolean parsing
-📐 **[Implementation Plan](Implementation_Plan_mcp_multiomics.md)** - Original design
+🔧 **[Troubleshooting](../../servers/mcp-multiomics/TROUBLESHOOTING.md)** - Technical fixes and debugging
+📋 **[Integration Summary](MULTIOMICS_INTEGRATION_SUMMARY.md)** - Original integration summary (archived)
+📐 **[Implementation Plan](archive/Implementation_Plan_mcp_multiomics.md)** - Original design document (archived)
 
 ---
 
