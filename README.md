@@ -17,12 +17,12 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 - ✅ Reproducible by default - logged, versioned, repeatable
 - ✅ Modular architecture - add tools without rewriting pipelines
 
-**Example:** *Single prompt → 6 tools across 4 servers → Complete analysis (no pipeline code)*  
+**Example of a custom MCP server in action (using Claude Desktop) shown below:** 
 <img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800>
 
 ---
 
-## What MCP Servers are Here?
+## Which MCP Servers are Here?
 
 **9 MCP Servers | 36 Tools | 58 Tests (100% Pass) | 80%+ Coverage**
 
@@ -75,7 +75,13 @@ Combine using Stouffer's method with directionality and FDR correction.
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
-[View all 18 example prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
+[View 18 example prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
+
+**End-to-end Patient View (Ovarian Cancer example):**
+```
+Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers
+```
+[See full example of full patient workflow →](https://github.com/lynnlangit/spatial-mcp/tree/main/manual_testing/PatientOne-OvarianCancer)
 
 ---
 
