@@ -1,8 +1,10 @@
 # Quick Test Reference Card
 
-## Problem: Context Limit Hit
+## Problem: Context Limit + File Access
 
-The full end-to-end test is too large for Claude Desktop. Use these smaller tests instead.
+The full end-to-end test is too large for Claude Desktop, and Claude Desktop's MCP servers run in containerized environments that can't access arbitrary file paths.
+
+**✅ Solution:** Use the FIXED test prompts that use MCP-accessible data locations.
 
 ---
 
@@ -10,13 +12,15 @@ The full end-to-end test is too large for Claude Desktop. Use these smaller test
 
 | Test | File | Servers | Time | Context |
 |------|------|---------|------|---------|
-| **1. Clinical & Genomic** | `TEST_1_CLINICAL_GENOMIC.txt` | mockepic, fgbio, tcga | 5-10 min | Low ⭐ |
-| **2. Multi-Omics** | `TEST_2_MULTIOMICS.txt` | multiomics | 5-10 min | Medium ⭐⭐ |
-| **3. Spatial** | `TEST_3_SPATIAL.txt` | spatialtools | 5-10 min | Medium ⭐⭐ |
-| **4. Imaging** | `TEST_4_IMAGING.txt` | openimagedata, deepcell | 5-10 min | Medium-High ⭐⭐⭐ |
-| **5. Integration** | `TEST_5_INTEGRATION.txt` | none (synthesis) | 5 min | Low ⭐ |
+| **1. Clinical & Genomic** | `TEST_1_CLINICAL_GENOMIC_FIXED.txt` | mockepic, fgbio, tcga | 5-10 min | Low ⭐ |
+| **2. Multi-Omics** | `TEST_2_MULTIOMICS_FIXED.txt` | multiomics | 5-10 min | Medium ⭐⭐ |
+| **3. Spatial** | `TEST_3_SPATIAL_FIXED.txt` | spatialtools | 5-10 min | Medium ⭐⭐ |
+| **4. Imaging** | `TEST_4_IMAGING_FIXED.txt` | openimagedata, deepcell | 5-10 min | Medium-High ⭐⭐⭐ |
+| **5. Integration** | `TEST_5_INTEGRATION_FIXED.txt` | none (synthesis) | 5 min | Low ⭐ |
 
 **Total Time:** 25-45 minutes (all 5 tests)
+
+**Note:** The FIXED versions use relative paths (`patient-data/PAT001-OVC-2025/`) that MCP servers can access.
 
 ---
 
@@ -24,18 +28,25 @@ The full end-to-end test is too large for Claude Desktop. Use these smaller test
 
 ### Step 1: Run Test 1
 ```bash
-cat TEST_1_CLINICAL_GENOMIC.txt
+cat TEST_1_CLINICAL_GENOMIC_FIXED.txt
 ```
 Copy → Paste into Claude Desktop → Verify results
 
 ### Step 2: Run Test 2
 ```bash
-cat TEST_2_MULTIOMICS.txt
+cat TEST_2_MULTIOMICS_FIXED.txt
 ```
 Copy → Paste into NEW conversation → Verify results
 
 ### Step 3: Continue with Tests 3, 4, 5
+```bash
+cat TEST_3_SPATIAL_FIXED.txt
+cat TEST_4_IMAGING_FIXED.txt
+cat TEST_5_INTEGRATION_FIXED.txt
+```
 Use a new conversation for each test
+
+**Note:** Test 5 (Integration) should be run AFTER completing Tests 1-4, as it synthesizes all findings.
 
 ---
 
@@ -130,6 +141,8 @@ PatientOne-OvarianCancer/Synthetic_sample_data/
 
 ---
 
-**Start Here:** `TEST_1_CLINICAL_GENOMIC.txt`
+**Start Here:** `TEST_1_CLINICAL_GENOMIC_FIXED.txt`
 
-**Read Full Guide:** `TESTING_STRATEGY.md`
+**Read Full Guides:**
+- `TESTING_STRATEGY.md` - Detailed testing strategy
+- `CLAUDE_DESKTOP_FILE_ACCESS_GUIDE.md` - Why FIXED versions are needed

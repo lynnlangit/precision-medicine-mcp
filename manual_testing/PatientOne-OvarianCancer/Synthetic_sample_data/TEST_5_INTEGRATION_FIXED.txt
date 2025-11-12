@@ -1,0 +1,182 @@
+TEST 5: Integrated Analysis & Clinical Recommendations
+=======================================================
+
+Patient ID: PAT001-OVC-2025
+
+⚠️ NOTE: Run this test AFTER completing Tests 1-4
+
+This test synthesizes findings from all previous tests - NO new data loading required.
+
+## Integration & Clinical Recommendations
+
+Based on the findings from Tests 1-4, please synthesize a comprehensive clinical report.
+
+### Reference Results from Previous Tests:
+
+**TEST 1 - Clinical & Genomic:**
+- Patient: Sarah Anderson, 58yo, BRCA1 germline mutation
+- CA-125 trajectory: 1456 → 22 → 389 → 289 U/mL (platinum resistance)
+- Somatic mutations: TP53 R175H, PIK3CA E545K, PTEN LOH
+- TCGA subtype: C1/C2 (poor prognosis with Stage IV + resistance)
+
+**TEST 2 - Multi-Omics:**
+- PI3K/AKT pathway: ACTIVATED across RNA/Protein/Phospho
+- Key genes dysregulated: PIK3CA, AKT1, MTOR (up); PTEN (down)
+- Drug resistance: ABCB1 upregulated (MDR1 efflux pump)
+- Anti-apoptotic: BCL2L1 upregulated
+
+**TEST 3 - Spatial Transcriptomics:**
+- 900 spots across 6 regions
+- Resistance markers: Concentrated in tumor regions (heterogeneous)
+- Immune cells: EXCLUDED from tumor (located in stroma_immune region)
+- Tumor microenvironment: Immunologically "COLD"
+
+**TEST 4 - Imaging:**
+- High proliferation (Ki67 ~45-55%)
+- Low CD8+ infiltration (~5-15 cells/mm²)
+- TP53-mutant cells are highly proliferative
+- Immune exclusion phenotype confirmed
+
+---
+
+## Analysis Questions:
+
+### 1. PRIMARY RESISTANCE MECHANISMS (Rank by Evidence Strength)
+
+Based on ALL modalities (genomics, multi-omics, spatial, imaging), identify the 2-3 main mechanisms driving platinum resistance in this patient.
+
+For each mechanism, provide:
+- **Mechanism name**
+- **Supporting evidence** (which tests/modalities show this?)
+- **Strength of evidence** (High/Medium/Low)
+- **Therapeutic implications**
+
+Expected top mechanisms:
+1. PI3K/AKT/mTOR pathway activation
+2. Drug efflux (ABCB1/MDR1)
+3. Anti-apoptotic signaling (BCL2L1)
+4. TP53 loss of function
+
+### 2. MULTI-MODAL CONSISTENCY
+
+Which molecular alterations appear consistently across multiple data types?
+
+Create a cross-reference table:
+
+| Feature | Genomics | Multi-Omics | Spatial | Imaging | Consistent? |
+|---------|----------|-------------|---------|---------|-------------|
+| TP53 mutation/loss | TP53 R175H | ? | ? | TP53+ cells | Yes/No |
+| PI3K/AKT activation | PIK3CA E545K | PIK3CA/AKT1 up | ? | ? | Yes/No |
+| High proliferation | ? | ? | MKI67 high | Ki67 high | Yes/No |
+| Immune exclusion | ? | ? | CD8 in stroma | CD8 at periphery | Yes/No |
+
+### 3. THERAPEUTIC RECOMMENDATIONS
+
+Based on the integrated data, provide:
+
+**A. Targeted Therapy Recommendations (Top 3):**
+
+For each recommendation:
+- **Drug/class**
+- **Molecular target**
+- **Supporting evidence** (from which tests?)
+- **Expected efficacy** (High/Medium/Low)
+- **FDA approval status** for HGSOC
+
+Expected recommendations should include:
+- PI3K/AKT/mTOR inhibitors (e.g., alpelisib + olaparib)
+- MDR1 inhibitors or chemotherapy modifications
+- BCL2L1 inhibitors (if available)
+- PARP inhibitors (BRCA1 mutation)
+
+**B. Immunotherapy Consideration:**
+
+- Should checkpoint inhibitors be considered? (Yes/No)
+- Why or why not? (Cite spatial and imaging evidence)
+- Expected response rate based on immune phenotype
+- Could combination with other agents overcome exclusion?
+
+**C. Clinical Trial Opportunities:**
+
+For BRCA1-mutant, platinum-resistant, Stage IV HGSOC with:
+- PI3K/AKT pathway activation
+- Immune exclusion phenotype
+- High proliferation
+
+Suggest trial types:
+- PARP + PI3K/AKT inhibitor combinations
+- Novel immunotherapy combinations
+- BRCA-targeted therapies
+
+### 4. BIOMARKERS FOR MONITORING
+
+**A. Molecular Biomarkers:**
+- Which genes/proteins should be tracked for treatment response?
+- How often should they be monitored?
+- What change indicates resistance?
+
+**B. Imaging Biomarkers:**
+- Which imaging features predict resistance?
+- Can spatial transcriptomics track treatment response?
+- Should Ki67 or immune infiltration be monitored?
+
+**C. Clinical Biomarkers:**
+- CA-125 trends (what trajectory indicates response vs resistance?)
+- RECIST criteria
+- Circulating tumor DNA
+
+---
+
+## Output Format:
+
+Please provide a **concise 1-2 page clinical report** with:
+
+### Executive Summary (3-4 sentences)
+Brief overview of patient case and key findings
+
+### Section 1: Resistance Mechanisms
+**Ranked by evidence strength:**
+1. [Mechanism] - Evidence: [tests], Strength: [High/Medium/Low]
+2. [Mechanism] - Evidence: [tests], Strength: [High/Medium/Low]
+3. [Mechanism] - Evidence: [tests], Strength: [High/Medium/Low]
+
+### Section 2: Multi-Modal Consistency
+Table showing which findings are consistent across modalities
+
+### Section 3: Treatment Recommendations
+**A. Targeted Therapies (Ranked by expected efficacy):**
+1. [Drug/class] - Target: [gene/pathway], Evidence: [tests]
+2. [Drug/class] - Target: [gene/pathway], Evidence: [tests]
+3. [Drug/class] - Target: [gene/pathway], Evidence: [tests]
+
+**B. Immunotherapy:**
+- Recommendation: Yes/No
+- Rationale: [cite immune exclusion evidence]
+- Combination strategies: [if applicable]
+
+**C. Clinical Trials:**
+- Trial type 1: [description]
+- Trial type 2: [description]
+
+### Section 4: Monitoring Strategy
+**Molecular:** [genes/proteins to track]
+**Imaging:** [features to monitor]
+**Clinical:** [CA-125, RECIST, ctDNA]
+
+### Section 5: Prognosis
+Based on TCGA data and integrated findings, expected outcomes with:
+- Standard platinum re-challenge: [expected response]
+- Recommended targeted therapies: [expected response]
+- Novel immunotherapy: [expected response]
+
+---
+
+## Validation Checkpoints:
+
+✅ Synthesized: Findings from all 4 previous tests
+✅ Resistance mechanisms: Identified and ranked by evidence
+✅ Multi-modal consistency: Confirmed across genomics/multi-omics/spatial/imaging
+✅ Targeted therapies: Prioritized based on molecular evidence
+✅ Immunotherapy: Recommendation based on immune phenotype (COLD)
+✅ Monitoring strategy: Molecular, imaging, and clinical biomarkers defined
+✅ Prognosis: Realistic expectations based on TCGA cohort data

@@ -1,0 +1,16 @@
+sample_id,treatment_response,treatment,timepoint,batch,mouse_id
+PDX_R001,Resistant,Carboplatin,Day28,Batch1,M001
+PDX_R002,Resistant,Carboplatin,Day28,Batch1,M002
+PDX_R003,Resistant,Carboplatin,Day28,Batch2,M003
+PDX_R004,Resistant,Carboplatin,Day28,Batch2,M004
+PDX_R005,Resistant,Carboplatin,Day28,Batch3,M005
+PDX_R006,Resistant,Carboplatin,Day28,Batch3,M006
+PDX_R007,Resistant,Carboplatin,Day28,Batch4,M007
+PDX_S001,Sensitive,Carboplatin,Day28,Batch1,M008
+PDX_S002,Sensitive,Carboplatin,Day28,Batch1,M009
+PDX_S003,Sensitive,Carboplatin,Day28,Batch2,M010
+PDX_S004,Sensitive,Carboplatin,Day28,Batch2,M011
+PDX_S005,Sensitive,Carboplatin,Day28,Batch3,M012
+PDX_S006,Sensitive,Carboplatin,Day28,Batch3,M013
+PDX_S007,Sensitive,Carboplatin,Day28,Batch4,M014
+PDX_S008,Sensitive,Carboplatin,Day28,Batch4,M015

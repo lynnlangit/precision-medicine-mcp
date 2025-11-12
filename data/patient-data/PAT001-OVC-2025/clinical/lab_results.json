@@ -1,0 +1,228 @@
+{
+  "patientId": "PAT001-OVC-2025",
+  "labResults": [
+    {
+      "category": "Tumor Markers",
+      "tests": [
+        {
+          "testName": "CA-125",
+          "unit": "U/mL",
+          "referenceRange": "< 35 U/mL",
+          "results": [
+            {
+              "date": "2024-01-15",
+              "value": 1456,
+              "flag": "H",
+              "note": "At initial diagnosis"
+            },
+            {
+              "date": "2024-02-20",
+              "value": 985,
+              "flag": "H",
+              "note": "Post-surgery, pre-chemotherapy"
+            },
+            {
+              "date": "2024-03-15",
+              "value": 245,
+              "flag": "H",
+              "note": "After cycle 1 chemotherapy"
+            },
+            {
+              "date": "2024-04-15",
+              "value": 89,
+              "flag": "H",
+              "note": "After cycle 2"
+            },
+            {
+              "date": "2024-05-15",
+              "value": 42,
+              "flag": "H",
+              "note": "After cycle 3"
+            },
+            {
+              "date": "2024-06-15",
+              "value": 28,
+              "flag": "Normal",
+              "note": "After cycle 4 - normalized!"
+            },
+            {
+              "date": "2024-07-15",
+              "value": 24,
+              "flag": "Normal",
+              "note": "After cycle 5"
+            },
+            {
+              "date": "2024-08-15",
+              "value": 22,
+              "flag": "Normal",
+              "note": "After cycle 6 (final cycle)"
+            },
+            {
+              "date": "2024-09-15",
+              "value": 35,
+              "flag": "Borderline",
+              "note": "On olaparib maintenance"
+            },
+            {
+              "date": "2024-10-01",
+              "value": 145,
+              "flag": "H",
+              "note": "Rising - concerning for progression"
+            },
+            {
+              "date": "2024-10-15",
+              "value": 389,
+              "flag": "H",
+              "note": "Rapid rise - progression confirmed"
+            },
+            {
+              "date": "2024-11-01",
+              "value": 445,
+              "flag": "H",
+              "note": "Peak before 2nd line therapy"
+            },
+            {
+              "date": "2024-11-20",
+              "value": 398,
+              "flag": "H",
+              "note": "After 1 cycle pegylated liposomal doxorubicin"
+            },
+            {
+              "date": "2024-12-18",
+              "value": 352,
+              "flag": "H",
+              "note": "Slow decline - stable disease"
+            },
+            {
+              "date": "2025-01-15",
+              "value": 289,
+              "flag": "H",
+              "note": "Continued slow decline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Complete Blood Count (CBC)",
+      "tests": [
+        {
+          "testName": "Hemoglobin",
+          "unit": "g/dL",
+          "referenceRange": "12.0-16.0",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 10.8,
+            "flag": "L",
+            "note": "Mild anemia from chemotherapy"
+          }
+        },
+        {
+          "testName": "White Blood Cells",
+          "unit": "K/uL",
+          "referenceRange": "4.0-11.0",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 5.2,
+            "flag": "Normal"
+          }
+        },
+        {
+          "testName": "Neutrophils",
+          "unit": "K/uL",
+          "referenceRange": "2.0-7.0",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 3.1,
+            "flag": "Normal"
+          }
+        },
+        {
+          "testName": "Platelets",
+          "unit": "K/uL",
+          "referenceRange": "150-400",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 198,
+            "flag": "Normal"
+          }
+        }
+      ]
+    },
+    {
+      "category": "Comprehensive Metabolic Panel",
+      "tests": [
+        {
+          "testName": "Creatinine",
+          "unit": "mg/dL",
+          "referenceRange": "0.6-1.2",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 0.9,
+            "flag": "Normal"
+          }
+        },
+        {
+          "testName": "eGFR",
+          "unit": "mL/min/1.73m²",
+          "referenceRange": "> 60",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 78,
+            "flag": "Normal"
+          }
+        },
+        {
+          "testName": "ALT",
+          "unit": "U/L",
+          "referenceRange": "7-56",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 32,
+            "flag": "Normal"
+          }
+        },
+        {
+          "testName": "AST",
+          "unit": "U/L",
+          "referenceRange": "10-40",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 28,
+            "flag": "Normal"
+          }
+        },
+        {
+          "testName": "Albumin",
+          "unit": "g/dL",
+          "referenceRange": "3.5-5.5",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 3.8,
+            "flag": "Normal"
+          }
+        }
+      ]
+    },
+    {
+      "category": "Coagulation",
+      "tests": [
+        {
+          "testName": "INR",
+          "unit": "ratio",
+          "referenceRange": "0.9-1.1",
+          "latestResult": {
+            "date": "2025-01-15",
+            "value": 1.0,
+            "flag": "Normal"
+          }
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "ca125Trend": "Elevated at diagnosis (1456), normalized with first-line therapy (22), rapid rise indicating platinum-resistant progression (389), slow decline on second-line therapy (289)",
+    "overallStatus": "Stable disease on current therapy, but CA-125 remains significantly elevated",
+    "clinicalSignificance": "CA-125 trajectory demonstrates platinum resistance. Current slow decline suggests modest response to pegylated liposomal doxorubicin."
+  }
+}

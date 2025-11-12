@@ -1,0 +1,102 @@
+TEST 2: Multi-Omics Resistance Analysis
+========================================
+
+Patient ID: PAT001-OVC-2025
+
+⚠️ IMPORTANT: Data has been copied to MCP-accessible location. Use multiomics server tools to read files.
+
+## Multi-Omics PDX Analysis (use mcp-multiomics)
+
+For patient PAT001-OVC-2025, analyze platinum resistance in PDX models:
+
+### Data Files Location:
+Files are in: `patient-data/PAT001-OVC-2025/multiomics/`
+- sample_metadata.csv
+- pdx_rna_seq.csv
+- pdx_proteomics.csv
+- pdx_phosphoproteomics.csv
+
+### Analysis Steps:
+
+1. **Load sample metadata:**
+   - How many samples total? (Expect: 15)
+   - How many resistant vs sensitive? (Expect: 7 resistant, 8 sensitive)
+
+2. **Focus on KEY RESISTANCE GENES ONLY** (to reduce context):
+   - **PI3K/AKT pathway:** PIK3CA, AKT1, MTOR, PTEN
+   - **Drug resistance:** ABCB1 (MDR1)
+   - **Anti-apoptotic:** BCL2L1
+
+   Extract data for these 6 genes from:
+   - RNA-seq data
+   - Proteomics data
+   - Phosphoproteomics data
+
+3. **Run Stouffer's meta-analysis:**
+   For each of the 6 genes:
+   - Compare resistant vs sensitive samples
+   - Use directionality from effect sizes
+   - Combine p-values across RNA/Protein/Phospho modalities
+   - Apply FDR correction (α = 0.05)
+
+4. **Pathway analysis:**
+   - Which genes are significantly dysregulated across ALL three modalities?
+   - Is the PI3K/AKT pathway activated in resistant samples?
+
+## Expected Results:
+
+**Sample Counts:**
+- Total: 15 PDX samples
+- Resistant: 7 samples (PDX_R001-R007)
+- Sensitive: 8 samples (PDX_S001-S008)
+
+**Gene Expression Patterns:**
+- PIK3CA: Upregulated in resistant (across RNA/Protein/Phospho)
+- AKT1: Upregulated in resistant (across all modalities)
+- ABCB1: Upregulated in resistant (drug efflux pump)
+- BCL2L1: Upregulated in resistant (anti-apoptotic)
+- PTEN: Downregulated in resistant (tumor suppressor loss)
+
+**Stouffer's Results:**
+- Expected: High Z-scores (Z > 3) for top genes
+- Expected: Low p-values (p < 0.001) before FDR
+- Expected: FDR-adjusted p < 0.05 for top genes
+
+**Pathway Activation:**
+- PI3K/AKT/mTOR pathway: **ACTIVATED** in resistant samples
+- Evidence: PIK3CA, AKT1, MTOR upregulated; PTEN downregulated
+
+## Output Format:
+
+Please provide:
+
+1. **Sample Summary:**
+   - Total samples: 15
+   - Resistant: 7, Sensitive: 8
+   - Confirm data loaded from all 3 modalities
+
+2. **Gene-Level Results:**
+   For each of the 6 genes:
+   - Expression in resistant vs sensitive (RNA/Protein/Phospho)
+   - Stouffer's combined Z-score
+   - Combined p-value
+   - FDR-adjusted p-value
+   - Direction (up/down in resistant)
+
+3. **Significant Findings:**
+   - Which genes pass FDR < 0.05?
+   - Which genes are consistent across all 3 modalities?
+
+4. **Pathway Interpretation:**
+   - Is PI3K/AKT pathway activated? (Yes/No)
+   - Clinical significance for platinum resistance
+   - Potential therapeutic targets
+
+## Validation Checkpoints:
+
+✅ Data loaded: 15 samples from 3 modalities
+✅ Resistant genes: PIK3CA, AKT1, ABCB1, BCL2L1 upregulated
+✅ Tumor suppressor: PTEN downregulated
+✅ Stouffer's Z-scores: >3 for top genes
+✅ FDR correction: Applied (α=0.05)
+✅ Pathway: PI3K/AKT activated

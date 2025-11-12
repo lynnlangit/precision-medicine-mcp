@@ -1,0 +1,102 @@
+TEST 3: Spatial Transcriptomics Analysis
+=========================================
+
+Patient ID: PAT001-OVC-2025
+
+⚠️ IMPORTANT: Data has been copied to MCP-accessible location. Use spatialtools server to read files.
+
+## Spatial Analysis (use mcp-spatialtools)
+
+For patient PAT001-OVC-2025, analyze spatial gene expression patterns:
+
+### Data Files Location:
+Files are in: `patient-data/PAT001-OVC-2025/spatial/`
+- visium_spatial_coordinates.csv
+- visium_gene_expression.csv
+- visium_region_annotations.csv
+
+### Analysis Steps:
+
+1. **Load spatial data:**
+   - How many spatial spots? (Expect: 900)
+   - What spatial regions are identified? (Expect: 6 regions)
+   - How many spots per region?
+
+2. **Focus on KEY GENES ONLY** (8 genes to reduce context):
+   - **Proliferation:** MKI67, PCNA
+   - **Resistance:** PIK3CA, AKT1, ABCB1
+   - **Immune:** CD3D, CD8A, CD68
+
+3. **Gene expression by region:**
+   - Which regions have high proliferation (MKI67, PCNA)?
+   - Where are resistance markers (PIK3CA, AKT1, ABCB1) expressed?
+   - Where are immune cells (CD3D, CD8A, CD68) located?
+
+4. **Spatial patterns:**
+   - Is there spatial heterogeneity in resistance markers?
+   - Are immune cells excluded from tumor regions?
+   - Tumor-stroma interface patterns?
+
+## Expected Results:
+
+**Spatial Structure:**
+- Total spots: 900
+- Regions: 6
+  1. tumor_core (~69 spots)
+  2. tumor_proliferative (~124 spots)
+  3. tumor_interface (~112 spots)
+  4. stroma_immune (~212 spots)
+  5. stroma (~180 spots)
+  6. necrotic_hypoxic (~203 spots)
+
+**Expression Patterns:**
+
+| Gene | High Expression Region | Pattern |
+|------|----------------------|---------|
+| MKI67 | tumor_proliferative | High proliferation |
+| PCNA | tumor_proliferative | High proliferation |
+| PIK3CA | tumor_core, tumor_proliferative | Resistance mechanism |
+| AKT1 | tumor regions | PI3K/AKT pathway |
+| ABCB1 | tumor regions | Drug efflux |
+| CD3D | stroma_immune | T cells |
+| CD8A | stroma_immune | Cytotoxic T cells |
+| CD68 | stroma_immune | Macrophages |
+
+**Spatial Findings:**
+- Proliferation: Highest in tumor_proliferative region
+- Resistance markers: Concentrated in tumor regions (heterogeneous)
+- Immune cells: Primarily in stroma_immune region (EXCLUDED from tumor)
+- Tumor microenvironment: Immunologically "cold" (immune exclusion)
+
+## Output Format:
+
+Please provide:
+
+1. **Spatial Structure:**
+   - Total spots: 900
+   - Region breakdown with spot counts
+   - Visual description of tissue layout
+
+2. **Gene Expression Heatmap:**
+   - 8 genes × 6 regions
+   - Which genes are high/low in each region?
+
+3. **Key Spatial Findings:**
+   - Where is proliferation highest?
+   - Resistance marker distribution pattern
+   - Immune cell localization
+
+4. **Clinical Interpretation:**
+   - Is there spatial heterogeneity in resistance markers? (Yes)
+   - Are immune cells excluded from tumor? (Yes)
+   - Tumor microenvironment classification: Cold vs Hot? (Cold)
+   - Implications for immunotherapy? (Limited efficacy expected)
+
+## Validation Checkpoints:
+
+✅ Loaded: 900 spots across 6 regions
+✅ Proliferation: High in tumor_proliferative region
+✅ Resistance markers: Present in tumor regions
+✅ Immune cells: Localized to stroma_immune region
+✅ Immune exclusion: Confirmed (immune cells away from tumor)
+✅ Heterogeneity: Spatial variation in resistance markers

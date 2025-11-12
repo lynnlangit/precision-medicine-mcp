@@ -1,0 +1,119 @@
+TEST 4: Histology and Imaging Analysis
+=======================================
+
+Patient ID: PAT001-OVC-2025
+
+⚠️ IMPORTANT: Data has been copied to MCP-accessible location. Use openimagedata and deepcell servers to read images.
+
+## Imaging Analysis (use mcp-openimagedata and mcp-deepcell)
+
+For patient PAT001-OVC-2025, analyze histology and immunofluorescence images:
+
+### Data Files Location:
+Files are in: `patient-data/PAT001-OVC-2025/imaging/`
+- PAT001_tumor_HE_20x.tiff
+- PAT001_tumor_IF_CD8.tiff
+- PAT001_tumor_IF_KI67.tiff
+- PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff
+
+### Analysis Steps:
+
+1. **H&E Histology (use openimagedata):**
+   Load PAT001_tumor_HE_20x.tiff
+   - Describe tissue architecture (glandular patterns, cell density)
+   - Are there necrotic regions visible? (Expect: Yes)
+   - Estimate tumor cellularity percentage (Expect: ~70-80%)
+   - Overall tissue morphology consistent with HGSOC?
+
+2. **CD8 T Cell Infiltration (use openimagedata):**
+   Load PAT001_tumor_IF_CD8.tiff
+   - Quantify CD8+ T cells (cells/mm²)
+   - Spatial distribution: Periphery vs infiltrating?
+   - Expected: LOW infiltration, primarily at periphery (immune exclusion)
+
+3. **Ki67 Proliferation (use openimagedata):**
+   Load PAT001_tumor_IF_KI67.tiff
+   - Calculate Ki67 proliferation index (% positive cells)
+   - Is proliferation uniform or heterogeneous across tissue?
+   - Expected: HIGH proliferation (~40-60%), heterogeneous
+
+4. **Multiplex Immunofluorescence (use deepcell):**
+   Load PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff
+   - This is a 3-channel image:
+     * Channel 1 (Red): TP53 (mutant p53 accumulation)
+     * Channel 2 (Green): KI67 (proliferation marker)
+     * Channel 3 (Blue): DAPI (nuclear stain)
+   - Segment cells using deepcell
+   - Identify cell phenotypes:
+     * TP53+ cells (% of total)
+     * KI67+ cells (% of total)
+     * TP53+/KI67+ double-positive cells (% of total)
+   - Are TP53-mutant cells also highly proliferative?
+
+## Expected Results:
+
+**H&E Morphology:**
+- Cellularity: 70-80% tumor cells
+- Architecture: High-grade serous features (solid and glandular patterns)
+- Necrosis: Present in ~15-20% of tissue
+- Nuclear atypia: Marked (high-grade)
+
+**CD8 T Cell Infiltration:**
+- Density: LOW (~5-15 cells/mm²)
+- Distribution: Predominantly at tumor periphery (stromal interface)
+- Infiltration: MINIMAL intratumoral CD8+ cells
+- Interpretation: **Immune exclusion phenotype**
+
+**Ki67 Proliferation Index:**
+- Ki67 index: HIGH (~45-55% positive cells)
+- Distribution: Heterogeneous (higher in tumor_proliferative regions)
+- Pattern: Consistent with aggressive HGSOC
+
+**Multiplex IF Cell Segmentation:**
+- Total cells segmented: ~500-800 cells
+- TP53+ cells: ~65-75% (mutant p53 accumulation)
+- KI67+ cells: ~45-55% (high proliferation)
+- TP53+/KI67+ double-positive: ~40-50%
+- Interpretation: TP53-mutant cells are highly proliferative
+
+## Output Format:
+
+Please provide:
+
+1. **H&E Summary:**
+   - Estimated cellularity: XX%
+   - Necrotic regions: Present/Absent (XX% of tissue)
+   - Tissue architecture description
+   - Consistent with HGSOC diagnosis? (Yes/No)
+
+2. **CD8 T Cell Analysis:**
+   - CD8+ cell density: XX cells/mm²
+   - Spatial pattern: Periphery vs Infiltrating
+   - Immune phenotype: Hot/Warm/Cold?
+
+3. **Ki67 Proliferation:**
+   - Ki67 index: XX% positive
+   - Distribution pattern: Uniform vs Heterogeneous
+   - Proliferation level: High/Medium/Low
+
+4. **Multiplex IF Results:**
+   - Total cells segmented: XXX
+   - TP53+: XX%
+   - KI67+: XX%
+   - TP53+/KI67+: XX%
+   - Correlation: Are TP53+ cells proliferating? (Yes/No)
+
+5. **Overall Imaging Interpretation:**
+   - Is this a highly proliferative tumor? (Yes)
+   - Is there immune exclusion? (Yes)
+   - Does imaging support molecular findings? (Yes)
+   - Implications for immunotherapy? (Limited efficacy expected)
+
+## Validation Checkpoints:
+
+✅ Loaded: 4 imaging files (H&E, CD8, Ki67, multiplex IF)
+✅ H&E: High cellularity (~70-80%), necrosis present
+✅ CD8: Low infiltration (~5-15 cells/mm²), immune exclusion
+✅ Ki67: High proliferation index (~45-55%)
+✅ Multiplex: TP53+ cells are highly proliferative (KI67+)
+✅ Overall: Aggressive, immune-excluded tumor phenotype
