@@ -142,15 +142,6 @@ Full multiomics AND spatial integrated analysis of patient data using all custom
 
 ---
 
-## Documentation
-
-**Getting Started:** [Installation](manual_testing/README.md) • [Setup](docs/spatial/setup_guide.md) • [Configuration](configs/README.md)
-
-**Usage:** [18 Example Prompts](docs/spatial/MCP_POC_Example_Prompts.md) • [Multi-Omics Guide](docs/multiomics/README.md) • [Patient Testing Scenario](manual_testing/PatientOne-OvarianCancer/)
-
-**Technical:** [Architecture](architecture/Spatial_MCP_POC_Architecture.md) • [Test Results](manual_testing/Solution-Testing/TEST_RESULTS_ALL_SERVERS.md) • [Server Docs](servers/)
-
----
 
 **Last Updated:** November 12, 2025
 **Built with ❤️ for the bioinformatics community**
