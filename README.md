@@ -26,8 +26,6 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 
 **9 MCP Servers | 36 Tools | 58 Tests (100% Pass) | 80%+ Coverage**
 
-![Architecture](https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/spatial-mcp-arch.png)
-
 | Server | Tools | Purpose |
 |--------|-------|---------|
 | mcp-fgbio | 4 | Reference data & FASTQ processing |
