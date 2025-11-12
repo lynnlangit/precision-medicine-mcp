@@ -9,7 +9,8 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 
 ## What's In It For You?
 
-**Stop writing glue code.** Describe your analysis goals in natural language and let Claude orchestrate bioinformatics workflows across 9 specialized MCP servers using up to 36 associated tools.
+**Stop writing glue code.**   
+Describe your analysis goals in natural language and let Claude orchestrate bioinformatics workflows across 9 specialized MCP servers using up to 36 associated tools.
 
 **Key Benefits:**
 - ✅ Replace bash scripts with conversational requests
@@ -23,8 +24,6 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 ---
 
 ## Which MCP Servers are Here?
-
-**9 MCP Servers | 36 Tools | 58 Tests (100% Pass) | 80%+ Coverage**
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
@@ -42,13 +41,15 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 
 ## Quick Start
 
+IMPORTANT: In this POC all MCP servers are running locally and are expected to use a local Claude Desktop as their client.  
+
 ```bash
 # Install (5 min)
 git clone https://github.com/your-org/spatial-mcp.git
 cd spatial-mcp/manual_testing
 ./install_dependencies.sh
 
-# Configure Claude Desktop
+# Configure Claude Desktop to use the custom MCP Servers
 cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
 
 # Verify (restart Claude Desktop first)
@@ -59,7 +60,7 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 
 ---
 
-## Example Workflows
+## Example Workflow Prompts
 
 **Multi-omics analysis:**
 ```
@@ -85,9 +86,7 @@ Full multiomics AND spatial integrated analysis of patient data using all custom
 
 ---
 
-## License & Resources
-
-**License:** Apache 2.0 ([LICENSE](LICENSE))
+## Resources
 
 **References:**
 - [MCP Specification](https://modelcontextprotocol.io/specification/2025-06-18)
