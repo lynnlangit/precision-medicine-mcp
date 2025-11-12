@@ -17,25 +17,12 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 - ✅ Reproducible by default - logged, versioned, repeatable
 - ✅ Modular architecture - add tools without rewriting pipelines
 
-**Example:** [18 ready-to-use prompts](docs/spatial/MCP_POC_Example_Prompts.md)
-
-```
-Claude, I have 10x Visium spatial transcriptomics data. Please:
-1. Validate FASTQ files
-2. Extract UMIs and spatial barcodes
-3. Filter spots with <200 genes
-4. Run differential expression
-5. Perform pathway enrichment
-6. Compare to TCGA cohorts
-```
-
+**Example:** *Single prompt → 6 tools across 4 servers → Complete analysis (no pipeline code)*  
 <img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800>
-
-*Single prompt → 6 tools across 4 servers → Complete analysis (no pipeline code)*
 
 ---
 
-## Overview
+## What MCP Servers are Here?
 
 **9 MCP Servers | 36 Tools | 58 Tests (100% Pass) | 80%+ Coverage**
 
@@ -90,27 +77,7 @@ Combine using Stouffer's method with directionality and FDR correction.
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
-[View all 18 prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
-
----
-
-## Status
-
-✅ **Production Ready** | 58 tests passing | 80.5% coverage
-
-- Phase 1: Foundation (mcp-fgbio)  
-- Phase 2: Core Processing (mcp-spatialtools, mcp-openimagedata)  
-- Phase 3: Advanced Analysis (6 servers: seqera, huggingface, deepcell, mockepic, tcga, multiomics)  
-
----
-
-## Technology
-
-**Core:** FastMCP, Claude Desktop, Python 3.11+
-**Bioinformatics:** FGbio, STAR, samtools, bedtools
-**ML:** Hugging Face, PyTorch, DeepCell
-**Workflows:** Nextflow (Seqera Platform)
-**Statistics:** Stouffer's meta-analysis, scipy, statsmodels
+[View all 18 example prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
 
 ---
 
