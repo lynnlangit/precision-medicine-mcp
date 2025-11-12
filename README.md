@@ -9,7 +9,7 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 
 ## What's In It For You?
 
-**Stop writing glue code.** Describe your analysis goals in natural language and let Claude orchestrate bioinformatics pipelines across 9 specialized MCP servers with 36 tools.
+**Stop writing glue code.** Describe your analysis goals in natural language and let Claude orchestrate bioinformatics workflows across 9 specialized MCP servers using up to 36 associated tools.
 
 **Key Benefits:**
 - ✅ Replace bash scripts with conversational requests
