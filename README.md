@@ -18,7 +18,7 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 - ✅ Modular architecture - add tools without rewriting pipelines
 
 **Example of a custom MCP server in action (using Claude Desktop) shown below:** 
-<img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800>
+<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
 
 ---
 
