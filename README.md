@@ -76,16 +76,6 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 
 ---
 
-## Documentation
-
-**Getting Started:** [Installation](manual_testing/README.md) • [Setup](docs/spatial/setup_guide.md) • [Configuration](configs/README.md)
-
-**Usage:** [18 Example Prompts](docs/spatial/MCP_POC_Example_Prompts.md) • [Multi-Omics Guide](docs/multiomics/README.md) • [Test Results](manual_testing/TEST_RESULTS_ALL_SERVERS.md)
-
-**Technical:** [Architecture](architecture/Spatial_MCP_POC_Architecture.md) • [Diagram](architecture/Spatial_MCP_Architecture_Diagram.html) • [Server Docs](servers/)
-
----
-
 ## Example Workflows
 
 **Multi-omics analysis:**
