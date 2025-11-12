@@ -25,17 +25,61 @@ Describe your analysis goals in natural language and let Claude orchestrate bioi
 
 ## Which MCP Servers are Here?
 
-| Server | Tools | Purpose |
-|--------|-------|---------|
-| mcp-fgbio | 4 | Reference data & FASTQ processing |
-| mcp-spatialtools | 8 | Spatial processing & analysis |
-| mcp-openimagedata | 3 | Image processing & registration |
-| mcp-seqera | 3 | Nextflow orchestration |
-| mcp-huggingface | 3 | ML genomics models |
-| mcp-deepcell | 2 | Cell segmentation |
-| mcp-mockepic | 3 | EHR integration |
-| mcp-tcga | 5 | TCGA data integration |
-| mcp-multiomics | 5 | Multi-omics meta-analysis |
+### 1. **FGbio** - FASTQ & Genomic Data Processing (4 tools)
+- `fetch_reference_genome` - Download reference genome sequences
+- `validate_fastq` - Quality validation of FASTQ files
+- `extract_umis` - UMI extraction and processing
+- `query_gene_annotations` - Retrieve gene annotation data
+
+### 2. **SpatialTools** - Spatial Transcriptomics Analysis (8 tools)
+- `filter_quality` - QC filtering of spatial barcodes
+- `split_by_region` - Segment data by spatial regions
+- `align_spatial_data` - Align reads to reference genome using STAR
+- `merge_tiles` - Combine multiple spatial tiles
+- `calculate_spatial_autocorrelation` - Calculate spatial gene expression patterns
+- `perform_differential_expression` - Differential expression analysis
+- `perform_batch_correction` - Batch correction across samples
+- `perform_pathway_enrichment` - Pathway enrichment analysis
+
+### 3. **OpenImageData** - Histology Image Processing (3 tools)
+- `fetch_histology_image` - Retrieve tissue histology images
+- `register_image_to_spatial` - Align histology images with spatial coordinates
+- `extract_image_features` - Extract computer vision features from histology
+
+### 4. **Seqera** - Nextflow Workflow Management (3 tools)
+- `launch_nextflow_pipeline` - Execute Nextflow workflows via Seqera Platform
+- `monitor_workflow_status` - Track pipeline execution status
+- `list_available_pipelines` - Query nf-core and custom pipelines
+
+### 5. **HuggingFace** - Genomic Language Models (3 tools)
+- `load_genomic_model` - Load pre-trained genomic language models
+- `predict_cell_type` - Cell type classification using foundation models
+- `embed_sequences` - Generate embeddings for DNA/RNA sequences
+
+### 6. **DeepCell** - Cell Segmentation & Analysis (2 tools)
+- `segment_cells` - Deep learning-based cell segmentation
+- `classify_cell_states` - Cell state/phenotype classification
+
+### 7. **MockEpic** - Clinical Data (Mock EHR) (3 tools)
+- `query_patient_records` - Retrieve patient demographics and clinical data
+- `link_spatial_to_clinical` - Connect spatial data to clinical outcomes
+- `search_diagnoses` - Query ICD-10 diagnosis codes
+
+### 8. **TCGA** - The Cancer Genome Atlas (5 tools)
+- `query_tcga_cohorts` - Search TCGA datasets by cancer type
+- `fetch_expression_data` - Download gene expression data
+- `compare_to_cohort` - Compare sample expression to TCGA cohort
+- `get_survival_data` - Retrieve survival data correlated with expression
+- `get_mutation_data` - Retrieve mutation frequencies from cohort
+
+### 9. **MultiOmics** - Multi-Omics Integration (5 tools)
+- `integrate_omics_data` - Integrate RNA, protein, and phosphorylation data
+- `run_halla_analysis` - HAllA hierarchical all-against-all association testing
+- `calculate_stouffer_meta` - Combine p-values across omics modalities
+- `create_multiomics_heatmap` - Create integrated heatmap visualization
+- `run_multiomics_pca` - PCA on integrated multi-omics data
+
+**Total: 9 servers, 36 tools**
 
 ---
 
@@ -98,4 +142,15 @@ Full multiomics AND spatial integrated analysis of patient data using all custom
 
 ---
 
+## Documentation
+
+**Getting Started:** [Installation](manual_testing/README.md) • [Setup](docs/spatial/setup_guide.md) • [Configuration](configs/README.md)
+
+**Usage:** [18 Example Prompts](docs/spatial/MCP_POC_Example_Prompts.md) • [Multi-Omics Guide](docs/multiomics/README.md) • [Patient Testing Scenario](manual_testing/PatientOne-OvarianCancer/)
+
+**Technical:** [Architecture](architecture/Spatial_MCP_POC_Architecture.md) • [Test Results](manual_testing/Solution-Testing/TEST_RESULTS_ALL_SERVERS.md) • [Server Docs](servers/)
+
+---
+
+**Last Updated:** November 12, 2025
 **Built with ❤️ for the bioinformatics community**

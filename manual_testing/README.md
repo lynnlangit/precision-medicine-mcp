@@ -21,7 +21,15 @@ This folder contains scripts and documentation for manually testing the Spatial 
 | `TESTING_SUMMARY.md` | Quick reference summary |
 | `TESTING_STATUS.md` | Complete testing status and verification checklist |
 | `CLAUDE_DESKTOP_TEST_PROMPTS.md` | **8 ready-to-paste test prompts with absolute paths for Claude Desktop** |
-| `TEST_RESULTS_ALL_SERVERS.md` | **Complete test results for all 9 servers (58 tests, 100% pass rate)** |
+
+### Testing Directories
+
+| Directory | Purpose |
+|-----------|---------|
+| `Solution-Testing/` | Test results and verification documentation |
+| `PatientOne-OvarianCancer/` | **Comprehensive end-to-end patient scenario with synthetic data** |
+
+**See:** `PatientOne-OvarianCancer/Synthetic_sample_data/` for complete test suite
 
 ---
 
@@ -144,13 +152,41 @@ pip install -e ".[dev]"
 
 ---
 
+## 🧪 End-to-End Patient Testing
+
+### PatientOne-OvarianCancer Scenario
+
+A complete synthetic patient dataset for testing all 9 MCP servers:
+
+**Patient:** PAT001-OVC-2025 (Sarah Anderson, 58yo, Stage IV HGSOC)
+**Data:** 17 synthetic files (clinical, genomic, multi-omics, spatial, imaging)
+**Servers Tested:** All 9 (mockepic, fgbio, tcga, multiomics, spatialtools, openimagedata, deepcell, seqera, huggingface)
+
+**Location:** `PatientOne-OvarianCancer/Synthetic_sample_data/`
+
+**Test Approach:**
+- 5 focused tests (avoid context limits)
+- Each test runs independently
+- Total time: 25-45 minutes
+
+**Quick Start:**
+```bash
+cd PatientOne-OvarianCancer/Synthetic_sample_data/
+cat QUICK_TEST_REFERENCE.md  # Fast overview
+cat TEST_1_CLINICAL_GENOMIC.txt  # Copy and paste into Claude Desktop
+```
+
+**See:** `TESTING_STRATEGY.md` for complete testing guide
+
+---
+
 ## 🎯 Next Steps After Installation
 
 1. ✅ Run installation scripts (this folder)
 2. ✅ Verify all servers working
 3. 📋 Configure Claude Desktop (`../configs/`)
-4. 📋 Test with example prompts (`../docs/MCP_POC_Example_Prompts.md`)
-5. 📋 Test with synthetic data (`../synthetic_data/`)
+4. 📋 Test with example prompts (`../docs/spatial/MCP_POC_Example_Prompts.md`)
+5. 📋 **Test end-to-end patient scenario** (`PatientOne-OvarianCancer/`)
 
 ---
 
@@ -163,5 +199,6 @@ pip install -e ".[dev]"
 
 ---
 
-**Last Updated:** October 25, 2025
+**Last Updated:** November 12, 2025
 **Status:** ✅ Ready for Testing
+**New:** PatientOne-OvarianCancer end-to-end testing scenario with 17 synthetic data files
