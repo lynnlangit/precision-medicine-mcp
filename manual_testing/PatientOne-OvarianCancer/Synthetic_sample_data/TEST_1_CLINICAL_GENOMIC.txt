@@ -1,0 +1,35 @@
+TEST 1: Clinical Data and Genomic Analysis
+===========================================
+
+⚠️ IMPORTANT: Use EXISTING files in:
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+
+Patient ID: PAT001-OVC-2025
+
+## PART 1: Clinical Data (mcp-mockepic)
+
+1. READ THE EXISTING FILE: clinical/patient_demographics.json
+   - What is the patient's name, age, and family history?
+   - What genetic mutations are noted?
+
+2. READ THE EXISTING FILE: clinical/lab_results.json
+   - Show the CA-125 trend over time
+   - What does the trend indicate about platinum resistance?
+
+## PART 2: Genomic Analysis (mcp-fgbio, mcp-tcga)
+
+3. READ THE EXISTING FILE: genomics/somatic_variants.vcf
+   - What are the key mutations? (Look for TP53, PIK3CA, PTEN)
+   - What copy number alterations are present?
+
+4. Compare to TCGA-OV cohort (mcp-tcga):
+   - What molecular subtype does this match?
+   - What is the prognosis for BRCA1-mutant, TP53-mutant Stage IV HGSOC?
+   - What pathways are commonly activated in similar cases?
+
+## Output:
+Please provide a summary of:
+1. Patient demographics and genetic risk
+2. CA-125 trajectory showing resistance
+3. Key somatic mutations found
+4. TCGA comparison and pathway activation

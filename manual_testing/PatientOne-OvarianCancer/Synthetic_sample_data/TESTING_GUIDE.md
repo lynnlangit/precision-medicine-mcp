@@ -1,6 +1,28 @@
 # Patient One - Testing Guide
 
-**Quick Start:** Use this synthetic dataset to test all 9 MCP servers end-to-end
+**Quick Start:** Use this synthetic dataset to test all 9 MCP servers
+
+⚠️ **IMPORTANT:** The comprehensive end-to-end test may hit Claude Desktop's context limit. Use the **5 smaller focused tests** instead (see below).
+
+---
+
+## Testing Approaches
+
+### Option 1: Focused Tests (Recommended) ✅
+**Use these 5 smaller tests to avoid context limits:**
+- `TEST_1_CLINICAL_GENOMIC.txt` - Clinical data + genomics (3 servers)
+- `TEST_2_MULTIOMICS.txt` - Multi-omics analysis (1 server)
+- `TEST_3_SPATIAL.txt` - Spatial transcriptomics (1 server)
+- `TEST_4_IMAGING.txt` - Histology and imaging (2 servers)
+- `TEST_5_INTEGRATION.txt` - Synthesis and recommendations
+
+**See:** `TESTING_STRATEGY.md` for detailed instructions
+**Quick Ref:** `QUICK_TEST_REFERENCE.md` for fast lookup
+
+### Option 2: Comprehensive Test ⚠️
+**May hit context limit - use with caution:**
+- `COPY_PASTE_PROMPT.txt` - All-in-one test (all 9 servers)
+- `END_TO_END_TEST_PROMPT.md` - Full documentation
 
 ---
 

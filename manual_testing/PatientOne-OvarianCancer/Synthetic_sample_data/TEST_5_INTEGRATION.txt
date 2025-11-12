@@ -1,0 +1,37 @@
+TEST 5: Integrated Analysis & Recommendations
+==============================================
+
+⚠️ NOTE: Run this test AFTER completing Tests 1-4
+
+Patient ID: PAT001-OVC-2025
+
+## Integration & Recommendations
+
+Based on the findings from Tests 1-4, please synthesize:
+
+1. **PRIMARY RESISTANCE MECHANISMS:**
+   From all modalities (genomics, multi-omics, spatial, imaging), what are the 2-3 main mechanisms driving platinum resistance?
+
+2. **CONSISTENT FINDINGS:**
+   Which molecular alterations appear across multiple data types?
+   - Genomics (VCF): TP53 R175H, PIK3CA E545K
+   - Multi-omics: Which genes dysregulated in all 3 modalities?
+   - Spatial: Where are resistance markers expressed?
+   - Imaging: Does proliferation/immune landscape support the molecular findings?
+
+3. **THERAPEUTIC RECOMMENDATIONS:**
+   Based on the integrated data:
+   - Top 3 targeted therapy recommendations with rationale
+   - Should immunotherapy be considered? Why or why not?
+   - Clinical trial opportunities for BRCA-mutant, platinum-resistant HGSOC
+
+4. **BIOMARKERS FOR MONITORING:**
+   - Which molecular features should be tracked for treatment response?
+   - Which spatial or imaging features predict resistance?
+
+## Output Format:
+Please provide a concise 1-2 page report with:
+- Executive summary (3-4 sentences)
+- Resistance mechanisms (ranked by evidence strength)
+- Treatment recommendations (ranked by expected efficacy)
+- Monitoring strategy

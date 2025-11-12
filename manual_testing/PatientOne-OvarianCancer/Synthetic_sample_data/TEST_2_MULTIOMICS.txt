@@ -1,0 +1,38 @@
+TEST 2: Multi-Omics Resistance Analysis
+========================================
+
+⚠️ IMPORTANT: Use EXISTING files in:
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+
+Patient ID: PAT001-OVC-2025
+
+## Multi-Omics Analysis (mcp-multiomics)
+
+1. READ THE EXISTING FILE: multiomics/sample_metadata.csv
+   - How many resistant vs sensitive samples are there?
+
+2. For KEY RESISTANCE GENES ONLY (to keep context small):
+   - PI3K/AKT pathway: AKT1, PIK3CA, MTOR, PTEN
+   - Drug resistance: ABCB1
+   - Anti-apoptotic: BCL2L1
+
+3. READ these genes from the EXISTING FILES:
+   - multiomics/pdx_rna_seq.csv (just the genes listed above)
+   - multiomics/pdx_proteomics.csv (just the genes listed above)
+   - multiomics/pdx_phosphoproteomics.csv (just the genes listed above)
+
+4. Run Stouffer's meta-analysis (mcp-multiomics):
+   - Compare resistant vs sensitive samples for these 6 genes
+   - Use directionality from effect sizes
+   - Apply FDR correction (α = 0.05)
+   - Which genes are significantly dysregulated across all three modalities?
+
+## Output:
+Please provide:
+1. Sample counts (7 resistant, 8 sensitive)
+2. For each of the 6 genes:
+   - Expression pattern in RNA/Protein/Phospho
+   - Stouffer's combined Z-score
+   - FDR-adjusted p-value
+   - Interpretation
+3. Which pathway (PI3K/AKT) is activated in resistant samples?

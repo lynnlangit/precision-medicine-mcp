@@ -1,0 +1,34 @@
+TEST 3: Spatial Transcriptomics Analysis
+=========================================
+
+⚠️ IMPORTANT: Use EXISTING files in:
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+
+Patient ID: PAT001-OVC-2025
+
+## Spatial Analysis (mcp-spatialtools)
+
+1. READ THE EXISTING FILE: spatial/visium_region_annotations.csv
+   - How many spatial spots are there?
+   - What are the different spatial regions identified?
+   - How many spots in each region?
+
+2. READ THE EXISTING FILE: spatial/visium_gene_expression.csv
+   - Focus on these KEY GENES only:
+     * Proliferation: MKI67, PCNA
+     * Resistance: PIK3CA, AKT1, ABCB1
+     * Immune: CD3D, CD8A, CD68
+   - What is the expression pattern of these genes across the 6 regions?
+
+3. Spatial heterogeneity analysis:
+   - Where are resistance markers (PIK3CA, AKT1, ABCB1) most highly expressed?
+   - Where are immune cells (CD3D, CD8A, CD68) located?
+   - Is there immune exclusion from tumor regions?
+
+## Output:
+Please provide:
+1. Region summary (6 regions, spot counts)
+2. Expression heatmap showing the 8 genes across 6 regions
+3. Key findings about resistance marker distribution
+4. Key findings about immune cell localization
+5. Interpretation: Is the tumor immunologically "cold" or "hot"?

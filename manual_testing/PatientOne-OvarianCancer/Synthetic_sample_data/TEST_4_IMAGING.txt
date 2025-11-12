@@ -1,0 +1,36 @@
+TEST 4: Histology and Imaging Analysis
+=======================================
+
+⚠️ IMPORTANT: Use EXISTING files in:
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+
+Patient ID: PAT001-OVC-2025
+
+## Imaging Analysis (mcp-openimagedata, mcp-deepcell)
+
+1. READ THE EXISTING IMAGE: imaging/PAT001_tumor_HE_20x.tiff
+   - Describe the tissue architecture
+   - Are there necrotic regions?
+   - Estimate tumor cellularity
+
+2. READ THE EXISTING IMAGE: imaging/PAT001_tumor_IF_CD8.tiff
+   - Quantify CD8+ T cell infiltration
+   - Are CD8+ cells at the tumor periphery or infiltrating?
+
+3. READ THE EXISTING IMAGE: imaging/PAT001_tumor_IF_KI67.tiff
+   - What is the Ki67 proliferation index?
+   - Is proliferation uniform or heterogeneous?
+
+4. READ THE EXISTING IMAGE: imaging/PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff
+   - This is a 3-channel image (TP53=red, KI67=green, DAPI=blue)
+   - Segment cells and identify phenotypes
+   - What percentage of cells are TP53+? KI67+?
+   - Are TP53+ cells also proliferating (KI67+)?
+
+## Output:
+Please provide:
+1. H&E summary (cellularity, necrosis, architecture)
+2. CD8 quantification (cells/mm², spatial distribution)
+3. Ki67 index (% positive cells)
+4. Multiplex IF analysis (cell counts by phenotype)
+5. Overall interpretation: Is this a highly proliferative, immune-excluded tumor?
