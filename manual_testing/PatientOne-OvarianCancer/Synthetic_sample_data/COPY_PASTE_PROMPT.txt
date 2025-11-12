@@ -1,0 +1,124 @@
+I need your help with a comprehensive precision oncology analysis for a 58-year-old female patient with Stage IV high-grade serous ovarian carcinoma who has developed platinum resistance.
+
+⚠️ IMPORTANT: All patient data files ALREADY EXIST in this directory. Please USE THE EXISTING FILES - do NOT generate new synthetic data. Read the actual files from:
+
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+
+Patient ID: PAT001-OVC-2025 (this patient data is already created and saved in the above directory)
+
+Key Clinical Features:
+- Diagnosis: Stage IV HGSOC (High-Grade Serous Ovarian Cancer)
+- BRCA1 germline mutation (pathogenic)
+- TP53 R175H somatic mutation (hotspot)
+- HRD positive (score: 42)
+- Treatment status: Platinum-resistant progression
+
+## Analysis Request - Please Complete All Steps:
+
+### PART 1: Clinical Data Review (use mcp-mockepic to read existing files)
+
+1. Retrieve patient demographics and clinical history:
+   - READ THE EXISTING FILE: clinical/patient_demographics.json
+   - This file already exists with complete patient data
+   - Summarize key demographics, family history, and genetic risk factors
+
+2. Analyze lab results and disease progression:
+   - READ THE EXISTING FILE: clinical/lab_results.json
+   - This file already contains CA-125 measurements over time
+   - Analyze the trend from the data: initial diagnosis (~1456 U/mL), response to therapy (normalized to ~22 U/mL), progression/resistance (~389 U/mL), and current status (~289 U/mL)
+   - Interpret the trend in context of platinum resistance
+
+### PART 2: Genomic Analysis (use mcp-fgbio and mcp-tcga)
+
+3. Parse somatic variants:
+   - READ THE EXISTING FILE: genomics/somatic_variants.vcf
+   - This VCF file already contains mutations for TP53 R175H, PIK3CA E545K, PTEN LOH
+   - Parse the file and identify these key mutations
+   - Note copy number alterations already annotated in the VCF (MYC, CCNE1, AKT2 amplifications)
+
+4. Compare to TCGA-OV cohort (use mcp-tcga):
+   - What TCGA molecular subtype does this patient match?
+   - What is the expected survival for BRCA1-mutant, TP53-mutant, Stage IV HGSOC?
+   - Are there other platinum-resistant cases with similar molecular profiles?
+   - What pathways are commonly activated in similar cases?
+
+### PART 3: Multi-Omics PDX Resistance Analysis (use mcp-multiomics)
+
+5. Integrate multi-omics data from PDX models:
+   - READ THE EXISTING FILES from multiomics/ directory:
+     * sample_metadata.csv (ALREADY EXISTS: 15 samples, 7 resistant, 8 sensitive)
+     * pdx_rna_seq.csv (ALREADY EXISTS: 1000 genes × 15 samples)
+     * pdx_proteomics.csv (ALREADY EXISTS: 500 proteins × 15 samples)
+     * pdx_phosphoproteomics.csv (ALREADY EXISTS: 300 sites × 15 samples)
+   - These files contain real expression data - read and integrate them
+
+6. Run Stouffer's meta-analysis (use mcp-multiomics calculate_stouffer_meta tool):
+   - Focus on resistance pathway genes already present in the data:
+     * PI3K/AKT pathway: PIK3CA, AKT1, AKT2, MTOR, PTEN
+     * Drug resistance: ABCB1 (MDR1), ABCC1 (MRP1)
+     * Anti-apoptotic: BCL2L1, MCL1
+     * DNA repair: BRCA1, BRCA2, RAD51
+   - Use directionality from effect sizes in the existing data
+   - Apply FDR correction (α = 0.05)
+   - Which genes are significantly dysregulated across ALL three modalities?
+   - What pathways are activated in resistant vs. sensitive PDX models?
+
+### PART 4: Spatial Tumor Analysis (use mcp-spatialtools, mcp-openimagedata, mcp-deepcell)
+
+7. Analyze spatial transcriptomics data (use mcp-spatialtools):
+   - READ THE EXISTING FILES from spatial/ directory:
+     * visium_spatial_coordinates.csv (ALREADY EXISTS: 900 spots with x,y coordinates)
+     * visium_gene_expression.csv (ALREADY EXISTS: 31 genes × 900 spots)
+     * visium_region_annotations.csv (ALREADY EXISTS: 6 spatial regions annotated)
+   - These files contain spatial gene expression data - read and analyze them
+   - Identify spatial regions: tumor core, tumor-stroma interface, immune-infiltrated areas
+   - Which resistance markers (PIK3CA, AKT1, ABCB1) show spatial heterogeneity in the existing data?
+   - Where are immune cells (CD3, CD8, CD68) located relative to tumor in the existing data?
+
+8. Process histology images (use mcp-openimagedata):
+   - READ THE EXISTING IMAGE: imaging/PAT001_tumor_HE_20x.tiff
+   - This H&E image already exists - analyze the tissue architecture
+   - READ THE EXISTING IMAGES: imaging/PAT001_tumor_IF_DAPI.tiff, IF_CD8.tiff, IF_KI67.tiff
+   - These immunofluorescence images already exist - analyze them
+   - Quantify tumor cellularity, CD8+ T cell infiltration, Ki67 proliferation index from the existing images
+
+9. Cell segmentation and phenotyping (use mcp-deepcell if available):
+   - READ THE EXISTING IMAGE: imaging/PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff
+   - This 3-channel multiplex IF image already exists - segment cells from it
+   - Identify cell types and phenotypes
+   - Calculate cell density in different tumor regions
+
+### PART 5: Integrated Analysis & Recommendations
+
+10. Synthesize findings across all modalities:
+    What are the PRIMARY resistance mechanisms based on genomics, multi-omics, spatial patterns, and imaging?
+
+11. Therapeutic recommendations:
+    Based on the integrated analysis, recommend targeted therapies, combination strategies, clinical trials, and immunotherapy considerations.
+
+12. Biomarker identification:
+    Which molecular and spatial features should be monitored for treatment response?
+
+## Output Format
+
+Please provide:
+
+1. Executive Summary (patient status, key findings, primary resistance mechanisms)
+2. Detailed Analysis by Modality (clinical, genomic, multi-omics, spatial, imaging)
+3. Integrated Pathway Analysis (pathways consistently activated across all data types)
+4. Clinical Recommendations (ranked treatment options with rationale)
+5. Technical Summary (which MCP servers were used, data quality metrics, confirmation that existing files were read)
+
+## REMINDER: Use Existing Data Files
+
+All data files (JSON, CSV, VCF, TIFF) ALREADY EXIST in:
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+
+Do NOT generate new data. Read and analyze the existing files. There are 17 data files ready for analysis:
+- 2 clinical JSON files
+- 1 genomics VCF file
+- 4 multi-omics CSV files
+- 3 spatial CSV files
+- 7 imaging TIFF files
+
+Please proceed with reading and analyzing these EXISTING files.
