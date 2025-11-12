@@ -81,7 +81,7 @@ Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align →
 ```
 Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers
 ```
-[See full example of full patient workflow prompt →](https://github.com/lynnlangit/spatial-mcp/blob/main/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/COPY_PASTE_PROMPT.txt)
+[See full example of full patient workflow prompt →](https://github.com/lynnlangit/spatial-mcp/blob/main/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/END_TO_END_TEST_PROMPT.md)
 
 ---
 
