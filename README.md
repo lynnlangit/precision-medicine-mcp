@@ -110,9 +110,9 @@ Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align →
 
 ✅ **Production Ready** | 58 tests passing | 80.5% coverage
 
-- Phase 1: Foundation (mcp-fgbio)
-- Phase 2: Core Processing (mcp-spatialtools, mcp-openimagedata)
-- Phase 3: Advanced Analysis (6 servers: seqera, huggingface, deepcell, mockepic, tcga, multiomics)
+- Phase 1: Foundation (mcp-fgbio)  
+- Phase 2: Core Processing (mcp-spatialtools, mcp-openimagedata)  
+- Phase 3: Advanced Analysis (6 servers: seqera, huggingface, deepcell, mockepic, tcga, multiomics)  
 
 ---
 
@@ -123,12 +123,6 @@ Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align →
 **ML:** Hugging Face, PyTorch, DeepCell
 **Workflows:** Nextflow (Seqera Platform)
 **Statistics:** Stouffer's meta-analysis, scipy, statsmodels
-
----
-
-## Contributing
-
-Fork → Create branch → Add tests → Submit PR ([Development guide](manual_testing/README.md))
 
 ---
 
@@ -143,8 +137,6 @@ Fork → Create branch → Add tests → Submit PR ([Development guide](manual_t
 - [Spatial Transcriptomics Review](https://academic.oup.com/nar/article/53/12/gkaf536/8174767)
 
 **Acknowledgments:** Model Context Protocol (Anthropic), BioinfoMCP, FGbio, TCGA, Seqera Platform
-
-**Community:** [Issues](https://github.com/your-org/spatial-mcp/issues) • [Discussions](https://github.com/your-org/spatial-mcp/discussions)
 
 ---
 
