@@ -16,7 +16,7 @@ AI-Orchestrated Spatial Transcriptomics Bioinformatics Pipeline using Model Cont
 - ✅ **Instant access to 36 genomics tools** - From FASTQ QC to multi-omics meta-analysis, all via natural language
 - ✅ **Reproducible by default** - Every analysis is logged, versioned, and repeatable
 - ✅ **Modular & extensible** - Add new tools as MCP servers without rewriting your pipeline
-- ✅ **Tested with real workflows** - [18 complete example prompts](docs/MCP_POC_Example_Prompts.md) from QC to publication-ready analysis
+- ✅ **Tested with real workflows** - [18 complete example prompts](docs/spatial/MCP_POC_Example_Prompts.md) from QC to publication-ready analysis
 
 **Try it yourself:**
 ```
@@ -113,11 +113,11 @@ Expected: 9 servers listed with 36 total tools
 
 ### Getting Started
 - 🚀 **[Manual Testing Guide](manual_testing/README.md)** - Installation, verification, and testing
-- 📖 **[Setup Guide](docs/setup_guide.md)** - Detailed installation and configuration
+- 📖 **[Setup Guide](docs/spatial/setup_guide.md)** - Detailed installation and configuration
 - ⚙️ **[Configuration Guide](configs/README.md)** - Claude Desktop setup and environment variables
 
 ### Using the System
-- 📋 **[Example Prompts](docs/MCP_POC_Example_Prompts.md)** - 18 ready-to-use test prompts
+- 📋 **[Example Prompts](docs/spatial/MCP_POC_Example_Prompts.md)** - 18 ready-to-use test prompts
 - 🧬 **[Multi-Omics Guide](docs/multiomics/README.md)** - PDX analysis and Stouffer's meta-analysis
 - 🎯 **[Test Results](manual_testing/TEST_RESULTS_ALL_SERVERS.md)** - Complete test suite results
 
@@ -165,7 +165,7 @@ Process 10x Visium data:
 6. Compare to TCGA cohorts
 ```
 
-See [18 complete example prompts](docs/MCP_POC_Example_Prompts.md) for more workflows.
+See [18 complete example prompts](docs/spatial/MCP_POC_Example_Prompts.md) for more workflows.
 
 ---
 
