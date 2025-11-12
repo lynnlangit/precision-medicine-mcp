@@ -1,4 +1,4 @@
-# Spatial MCP Demonstration POC
+# Spatial + Multiomics MCP(s) Demonstration POC
 
 AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflows using Model Context Protocol
 
