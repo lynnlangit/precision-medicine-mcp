@@ -41,8 +41,6 @@ Claude, I have 10x Visium spatial transcriptomics data. Please:
 
 ![Architecture](https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/spatial-mcp-arch.png)
 
-**Pipeline:** Ingest & QC → Segment → Align → Quantify → Analyze
-
 | Server | Tools | Purpose |
 |--------|-------|---------|
 | mcp-fgbio | 4 | Reference data & FASTQ processing |
