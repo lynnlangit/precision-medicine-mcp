@@ -16,10 +16,7 @@ Describe your analysis goals in natural language and let Claude orchestrate bioi
 - ✅ Replace bash (or workflow) scripts with **conversational requests**
 - ✅ Instant access to FASTQ QC, alignment, quantification, multi-omics meta-analysis
 - ✅ Reproducible by default - logged, versioned, repeatable
-- ✅ Modular architecture - add tools **without** rewriting pipelines
-
-**Example of a custom MCP server in action (using Claude Desktop) shown below:** 
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
+- ✅ Modular architecture - add tools **without** rewriting pipelines  
 
 ---
 
@@ -105,6 +102,9 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 ---
 
 ## Example Spatial-Multiomics Prompts
+
+**Example of a custom MCP server (mcpFGBio) in action (using Claude Desktop) shown below:** 
+<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
 
 **Multiomics Analysis:**
 ```
