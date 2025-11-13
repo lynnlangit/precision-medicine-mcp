@@ -82,19 +82,19 @@ data/patient-data/PAT001-OVC-2025/
     └── PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff
 ```
 
-### Step 2: Created FIXED Test Prompts ✅
+### Step 2: Created Test Prompts ✅
 
 **Created 5 new test prompt files that use MCP-accessible paths:**
 
 | File | Purpose | Changes |
 |------|---------|---------|
-| `TEST_1_CLINICAL_GENOMIC_FIXED.txt` | Clinical + genomic analysis | Uses relative path `patient-data/PAT001-OVC-2025/clinical/` |
-| `TEST_2_MULTIOMICS_FIXED.txt` | Multi-omics resistance analysis | Uses relative path `patient-data/PAT001-OVC-2025/multiomics/` |
-| `TEST_3_SPATIAL_FIXED.txt` | Spatial transcriptomics | Uses relative path `patient-data/PAT001-OVC-2025/spatial/` |
-| `TEST_4_IMAGING_FIXED.txt` | Histology and imaging | Uses relative path `patient-data/PAT001-OVC-2025/imaging/` |
-| `TEST_5_INTEGRATION_FIXED.txt` | Integrated analysis | Synthesis only (no file loading) |
+| `TEST_1_CLINICAL_GENOMIC.txt` | Clinical + genomic analysis | Uses relative path `patient-data/PAT001-OVC-2025/clinical/` |
+| `TEST_2_MULTIOMICS.txt` | Multi-omics resistance analysis | Uses relative path `patient-data/PAT001-OVC-2025/multiomics/` |
+| `TEST_3_SPATIAL.txt` | Spatial transcriptomics | Uses relative path `patient-data/PAT001-OVC-2025/spatial/` |
+| `TEST_4_IMAGING.txt` | Histology and imaging | Uses relative path `patient-data/PAT001-OVC-2025/imaging/` |
+| `TEST_5_INTEGRATION.txt` | Integrated analysis | Synthesis only (no file loading) |
 
-**Key changes in FIXED versions:**
+**Key changes in these versions:**
 - ❌ Removed: Absolute paths like `/Users/.../manual_testing/PatientOne-OvarianCancer/...`
 - ✅ Added: Relative paths like `patient-data/PAT001-OVC-2025/clinical/`
 - ✅ Added: Instructions to use MCP server tools explicitly
@@ -126,16 +126,16 @@ data/patient-data/PAT001-OVC-2025/
 
 ### For Claude Desktop Users:
 
-**Option 1: Use FIXED Test Prompts (Recommended)**
+**Option 1: Use Test Prompts (Recommended)**
 ```bash
 cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
 
 # Copy and paste each test into Claude Desktop
-cat TEST_1_CLINICAL_GENOMIC_FIXED.txt
-cat TEST_2_MULTIOMICS_FIXED.txt
-cat TEST_3_SPATIAL_FIXED.txt
-cat TEST_4_IMAGING_FIXED.txt
-cat TEST_5_INTEGRATION_FIXED.txt
+cat TEST_1_CLINICAL_GENOMIC.txt
+cat TEST_2_MULTIOMICS.txt
+cat TEST_3_SPATIAL.txt
+cat TEST_4_IMAGING.txt
+cat TEST_5_INTEGRATION.txt
 ```
 
 **Option 2: Let Claude Desktop Find Files**
@@ -187,11 +187,11 @@ Result: Claude Desktop uses MCP tools to read existing file
 ## Files Created/Modified
 
 ### New Files:
-1. `TEST_1_CLINICAL_GENOMIC_FIXED.txt` - 79 lines
-2. `TEST_2_MULTIOMICS_FIXED.txt` - 103 lines
-3. `TEST_3_SPATIAL_FIXED.txt` - 103 lines
-4. `TEST_4_IMAGING_FIXED.txt` - 100 lines
-5. `TEST_5_INTEGRATION_FIXED.txt` - 155 lines
+1. `TEST_1_CLINICAL_GENOMIC.txt` - 79 lines
+2. `TEST_2_MULTIOMICS.txt` - 103 lines
+3. `TEST_3_SPATIAL.txt` - 103 lines
+4. `TEST_4_IMAGING.txt` - 100 lines
+5. `TEST_5_INTEGRATION.txt` - 155 lines
 6. `CLAUDE_DESKTOP_FILE_ACCESS_GUIDE.md` - 252 lines
 7. `CLAUDE_DESKTOP_FIX_SUMMARY.md` (this file)
 
@@ -221,7 +221,7 @@ Result: Claude Desktop uses MCP tools to read existing file
 
 1. **Test in Claude Desktop:**
    - Open Claude Desktop
-   - Copy TEST_1_CLINICAL_GENOMIC_FIXED.txt
+   - Copy TEST_1_CLINICAL_GENOMIC.txt
    - Paste into new conversation
    - Verify it reads existing files (not generates new data)
 
@@ -231,7 +231,7 @@ Result: Claude Desktop uses MCP tools to read existing file
    - Document any issues
 
 3. **Update documentation if needed:**
-   - If tests reveal issues, update FIXED prompts
+   - If tests reveal issues, update prompts
    - Add troubleshooting tips to guide
 
 ---
@@ -245,7 +245,7 @@ Result: Claude Desktop uses MCP tools to read existing file
 
 ✅ **Ready for Testing:**
 - All files in place (`/data/patient-data/PAT001-OVC-2025/`)
-- All FIXED prompts ready to use
+- All test prompts ready to use
 - Guides available for troubleshooting
 
 ✅ **User Action Required:**

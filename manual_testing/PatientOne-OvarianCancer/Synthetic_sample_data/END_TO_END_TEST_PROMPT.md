@@ -20,11 +20,11 @@ The original comprehensive end-to-end test hit **context limits** in Claude Desk
 
 | Test | File | Purpose | Time |
 |------|------|---------|------|
-| **1** | `TEST_1_CLINICAL_GENOMIC_FIXED.txt` | Clinical data + genomic analysis | 5-10 min |
-| **2** | `TEST_2_MULTIOMICS_FIXED.txt` | Multi-omics resistance analysis | 5-10 min |
-| **3** | `TEST_3_SPATIAL_FIXED.txt` | Spatial transcriptomics | 5-10 min |
-| **4** | `TEST_4_IMAGING_FIXED.txt` | Histology and imaging | 5-10 min |
-| **5** | `TEST_5_INTEGRATION_FIXED.txt` | Integrated clinical report | 5 min |
+| **1** | `TEST_1_CLINICAL_GENOMIC.txt` | Clinical data + genomic analysis | 5-10 min |
+| **2** | `TEST_2_MULTIOMICS.txt` | Multi-omics resistance analysis | 5-10 min |
+| **3** | `TEST_3_SPATIAL.txt` | Spatial transcriptomics | 5-10 min |
+| **4** | `TEST_4_IMAGING.txt` | Histology and imaging | 5-10 min |
+| **5** | `TEST_5_INTEGRATION.txt` | Integrated clinical report | 5 min |
 
 **Total time:** 25-45 minutes (run separately in Claude Desktop)
 
@@ -62,17 +62,17 @@ cat QUICK_TEST_REFERENCE.md
 
 ### Step 2: Run Test 1
 ```bash
-cat TEST_1_CLINICAL_GENOMIC_FIXED.txt
+cat TEST_1_CLINICAL_GENOMIC.txt
 ```
 Copy the output → Paste into Claude Desktop
 
 ### Step 3: Run Tests 2-5
 Use a **new conversation** for each test:
 ```bash
-cat TEST_2_MULTIOMICS_FIXED.txt
-cat TEST_3_SPATIAL_FIXED.txt
-cat TEST_4_IMAGING_FIXED.txt
-cat TEST_5_INTEGRATION_FIXED.txt
+cat TEST_2_MULTIOMICS.txt
+cat TEST_3_SPATIAL.txt
+cat TEST_4_IMAGING.txt
+cat TEST_5_INTEGRATION.txt
 ```
 
 ---
@@ -192,7 +192,7 @@ Claude Desktop will use the appropriate MCP server tools to access the data.
 ✅ **Tests Ready:** 5 FIXED test prompts available
 ✅ **Documentation:** Complete guides for testing and troubleshooting
 
-**Start with:** `TEST_1_CLINICAL_GENOMIC_FIXED.txt`
+**Start with:** `TEST_1_CLINICAL_GENOMIC.txt`
 
 **Need help?** See `QUICK_TEST_REFERENCE.md` or `CLAUDE_DESKTOP_FILE_ACCESS_GUIDE.md`
 

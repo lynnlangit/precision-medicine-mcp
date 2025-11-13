@@ -62,16 +62,16 @@ Claude Desktop CAN access files through MCP server tools. Here's how:
 
 ## Updated Test Prompts
 
-**✅ All 5 fixed test prompts are now available:**
-- `TEST_1_CLINICAL_GENOMIC_FIXED.txt`
-- `TEST_2_MULTIOMICS_FIXED.txt`
-- `TEST_3_SPATIAL_FIXED.txt`
-- `TEST_4_IMAGING_FIXED.txt`
-- `TEST_5_INTEGRATION_FIXED.txt`
+**✅ All 5 test prompts are now available:**
+- `TEST_1_CLINICAL_GENOMIC.txt`
+- `TEST_2_MULTIOMICS.txt`
+- `TEST_3_SPATIAL.txt`
+- `TEST_4_IMAGING.txt`
+- `TEST_5_INTEGRATION.txt`
 
-### Option 1: Use the Fixed Test Prompts (Recommended)
+### Option 1: Use the Test Prompts (Recommended)
 
-Copy and paste the content from any of the FIXED test files into Claude Desktop. These prompts:
+Copy and paste the content from any of the test files into Claude Desktop. These prompts:
 - Use relative paths that MCP servers can access
 - Explicitly instruct to use MCP server tools
 - Provide expected results for validation
@@ -79,7 +79,7 @@ Copy and paste the content from any of the FIXED test files into Claude Desktop.
 
 Example:
 ```bash
-cat TEST_1_CLINICAL_GENOMIC_FIXED.txt
+cat TEST_1_CLINICAL_GENOMIC.txt
 # Copy the output and paste into Claude Desktop
 ```
 
@@ -280,7 +280,7 @@ Expected response: Claude Desktop should list all 17 files across the 5 subdirec
 ✅ **Access Method:** Use MCP server tools (mockepic, fgbio, multiomics, spatialtools, openimagedata)
 ✅ **Path Format:** Relative to `/data/`, like `patient-data/PAT001-OVC-2025/clinical/`
 
-**Use:** All 5 fixed test prompts (`TEST_1_CLINICAL_GENOMIC_FIXED.txt` through `TEST_5_INTEGRATION_FIXED.txt`)
+**Use:** All 5 test prompts (`TEST_1_CLINICAL_GENOMIC.txt` through `TEST_5_INTEGRATION.txt`)
 
 ---
 

@@ -13,12 +13,12 @@
 
 | File Removed | Reason | Replaced By |
 |-------------|--------|-------------|
-| `TEST_1_CLINICAL_GENOMIC.txt` | Used absolute paths, hit context limits | `TEST_1_CLINICAL_GENOMIC_FIXED.txt` |
-| `TEST_2_MULTIOMICS.txt` | Used absolute paths, hit context limits | `TEST_2_MULTIOMICS_FIXED.txt` |
-| `TEST_3_SPATIAL.txt` | Used absolute paths, hit context limits | `TEST_3_SPATIAL_FIXED.txt` |
-| `TEST_4_IMAGING.txt` | Used absolute paths, hit context limits | `TEST_4_IMAGING_FIXED.txt` |
-| `TEST_5_INTEGRATION.txt` | Used absolute paths | `TEST_5_INTEGRATION_FIXED.txt` |
-| `COPY_PASTE_PROMPT.txt` | Comprehensive test that hit context limits | Split into 5 FIXED tests |
+| `TEST_1_CLINICAL_GENOMIC.txt` (v1) | Used absolute paths, hit context limits | `TEST_1_CLINICAL_GENOMIC.txt` (v2) |
+| `TEST_2_MULTIOMICS.txt` (v1) | Used absolute paths, hit context limits | `TEST_2_MULTIOMICS.txt` (v2) |
+| `TEST_3_SPATIAL.txt` (v1) | Used absolute paths, hit context limits | `TEST_3_SPATIAL.txt` (v2) |
+| `TEST_4_IMAGING.txt` (v1) | Used absolute paths, hit context limits | `TEST_4_IMAGING.txt` (v2) |
+| `TEST_5_INTEGRATION.txt` (v1) | Used absolute paths | `TEST_5_INTEGRATION.txt` (v2) |
+| `COPY_PASTE_PROMPT.txt` | Comprehensive test that hit context limits | Split into 5 focused tests |
 | `PROMPT_UPDATE_NOTES.md` | Historical notes, no longer relevant | Consolidated into guides |
 
 **Total removed:** 7 files
@@ -43,13 +43,13 @@
 
 ## Current File Structure
 
-### Test Prompts (5 files - FIXED versions only)
+### Test Prompts (5 files)
 ```
-TEST_1_CLINICAL_GENOMIC_FIXED.txt    (2,716 bytes)
-TEST_2_MULTIOMICS_FIXED.txt          (3,142 bytes)
-TEST_3_SPATIAL_FIXED.txt             (3,333 bytes)
-TEST_4_IMAGING_FIXED.txt             (4,202 bytes)
-TEST_5_INTEGRATION_FIXED.txt         (6,121 bytes)
+TEST_1_CLINICAL_GENOMIC.txt          (2,716 bytes)
+TEST_2_MULTIOMICS.txt                (3,142 bytes)
+TEST_3_SPATIAL.txt                   (3,333 bytes)
+TEST_4_IMAGING.txt                   (4,202 bytes)
+TEST_5_INTEGRATION.txt               (6,121 bytes)
 ```
 
 ### Documentation (7 files)
@@ -112,8 +112,8 @@ imaging/
 ## Benefits of Cleanup
 
 ### ✅ Clarity
-- Only one version of each test (the FIXED version that works)
-- Clear file naming: all test files end with `_FIXED.txt`
+- Only one version of each test (v2 that works with MCP servers)
+- Clear file naming: all test files use simple names
 
 ### ✅ Simplicity
 - Removed 7 obsolete files
@@ -122,10 +122,10 @@ imaging/
 ### ✅ Better Documentation
 - `END_TO_END_TEST_PROMPT.md` now explains the whole approach
 - Points users to correct files
-- Explains why FIXED versions are needed
+- Explains MCP-accessible paths
 
 ### ✅ Consistency
-- All test files use same naming convention
+- All test files use simple, consistent naming
 - All use MCP-accessible relative paths
 - All include expected results and verification checkpoints
 
@@ -135,14 +135,14 @@ imaging/
 
 If you had bookmarks or scripts referencing old files:
 
-| Old File | New File |
+| Old File (v1) | Current File (v2) |
 |----------|----------|
-| `TEST_1_CLINICAL_GENOMIC.txt` | `TEST_1_CLINICAL_GENOMIC_FIXED.txt` |
-| `TEST_2_MULTIOMICS.txt` | `TEST_2_MULTIOMICS_FIXED.txt` |
-| `TEST_3_SPATIAL.txt` | `TEST_3_SPATIAL_FIXED.txt` |
-| `TEST_4_IMAGING.txt` | `TEST_4_IMAGING_FIXED.txt` |
-| `TEST_5_INTEGRATION.txt` | `TEST_5_INTEGRATION_FIXED.txt` |
-| `COPY_PASTE_PROMPT.txt` | Use all 5 FIXED tests separately |
+| `TEST_1_CLINICAL_GENOMIC.txt` (absolute paths) | `TEST_1_CLINICAL_GENOMIC.txt` (relative paths) |
+| `TEST_2_MULTIOMICS.txt` (absolute paths) | `TEST_2_MULTIOMICS.txt` (relative paths) |
+| `TEST_3_SPATIAL.txt` (absolute paths) | `TEST_3_SPATIAL.txt` (relative paths) |
+| `TEST_4_IMAGING.txt` (absolute paths) | `TEST_4_IMAGING.txt` (relative paths) |
+| `TEST_5_INTEGRATION.txt` (absolute paths) | `TEST_5_INTEGRATION.txt` (relative paths) |
+| `COPY_PASTE_PROMPT.txt` | Use all 5 focused tests separately |
 | `PROMPT_UPDATE_NOTES.md` | See `CLAUDE_DESKTOP_FILE_ACCESS_GUIDE.md` |
 
 ---
@@ -168,11 +168,8 @@ If you had bookmarks or scripts referencing old files:
 
 ### Check Cleanup Completed:
 ```bash
-# Should show 0 files (all removed)
-ls -1 TEST_*[^D].txt 2>/dev/null | wc -l
-
-# Should show 5 files (FIXED versions only)
-ls -1 TEST_*_FIXED.txt | wc -l
+# Should show 5 files (current test versions)
+ls -1 TEST_*.txt | wc -l
 
 # Should NOT exist
 ls COPY_PASTE_PROMPT.txt PROMPT_UPDATE_NOTES.md 2>/dev/null
@@ -191,13 +188,28 @@ find /Users/.../data/patient-data/PAT001-OVC-2025 -type f | wc -l
 
 ## Summary
 
-✅ **Removed:** 7 obsolete files
+✅ **Removed:** 7 obsolete files (original v1 tests + deprecated files)
 ✅ **Updated:** 1 navigation file (END_TO_END_TEST_PROMPT.md)
 ✅ **Preserved:** All patient data (17 files)
-✅ **Maintained:** 5 working FIXED test prompts
+✅ **Maintained:** 5 working test prompts (v2 with MCP-accessible paths)
 ✅ **Enhanced:** Documentation clarity
 
 **Result:** Clean, focused directory with only working test files and comprehensive documentation.
+
+---
+
+## Update: File Renaming
+
+**Date:** November 12, 2025 (later)
+
+The "_FIXED" suffix has been removed from all test filenames for simplicity:
+- `TEST_1_CLINICAL_GENOMIC_FIXED.txt` → `TEST_1_CLINICAL_GENOMIC.txt`
+- `TEST_2_MULTIOMICS_FIXED.txt` → `TEST_2_MULTIOMICS.txt`
+- `TEST_3_SPATIAL_FIXED.txt` → `TEST_3_SPATIAL.txt`
+- `TEST_4_IMAGING_FIXED.txt` → `TEST_4_IMAGING.txt`
+- `TEST_5_INTEGRATION_FIXED.txt` → `TEST_5_INTEGRATION.txt`
+
+All documentation files have been updated to reflect the new names.
 
 ---
 
