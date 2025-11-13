@@ -13,13 +13,10 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 Describe your analysis goals in natural language and let Claude orchestrate bioinformatics workflows across 9 specialized MCP servers using up to 36 associated tools.
 
 **Key Benefits:**
-- ✅ Replace bash scripts with conversational requests
+- ✅ Replace bash (or workflow) scripts with **conversational requests**
 - ✅ Instant access to FASTQ QC, alignment, quantification, multi-omics meta-analysis
 - ✅ Reproducible by default - logged, versioned, repeatable
-- ✅ Modular architecture - add tools without rewriting pipelines
-
-**Example of a custom MCP server in action (using Claude Desktop) shown below:** 
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
+- ✅ Modular architecture - add tools **without** rewriting pipelines  
 
 ---
 
@@ -85,7 +82,7 @@ Describe your analysis goals in natural language and let Claude orchestrate bioi
 
 ## Quick Start
 
-IMPORTANT: In this POC all MCP servers are running locally and are expected to use a local Claude Desktop as their client.  
+IMPORTANT: In this POC all MCP servers are running locally and are expected to use your local Claude Desktop as their client.  
 
 ```bash
 # Install (5 min)
@@ -104,9 +101,12 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 
 ---
 
-## Example Workflow Prompts
+## Example Spatial-Multiomics Client and Prompts
 
-**Multi-omics analysis:**
+**Example of a custom MCP server (mcpFGBio) in action (using Claude Desktop) shown below:** 
+<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
+
+**Multiomics Analysis Prompt:**
 ```
 Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, KRAS:
 - RNA p-values: [0.001, 0.002, 0.05], log2FC: [2.5, 1.8, 1.2]
@@ -115,16 +115,16 @@ Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, 
 Combine using Stouffer's method with directionality and FDR correction.
 ```
 
-**Spatial pipeline:**
+**Spatial Analysis Prompt:**
 ```
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
 [View 18 example prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
 
-**End-to-end Patient View (Ovarian Cancer example):**
+**End-to-end Patient Spatial-Multiomics Analysis (Ovarian Cancer example) Prompt:**
 ```
-Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers
+Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers and associated tools  
 ```
 [See full example of full patient workflow prompt →](https://github.com/lynnlangit/spatial-mcp/blob/main/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/END_TO_END_TEST_PROMPT.md)
 

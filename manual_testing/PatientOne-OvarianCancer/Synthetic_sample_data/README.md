@@ -1,10 +1,10 @@
 # Patient One - Stage IV Ovarian Cancer Synthetic Dataset
 
-**Purpose:** Comprehensive synthetic dataset for end-to-end testing of all 9 MCP servers
+**Purpose:** Comprehensive synthetic dataset for end-to-end testing of all 9 MCP servers  
 
-**Patient ID:** PAT001-OVC-2025
-**Diagnosis:** Stage IV High-Grade Serous Ovarian Carcinoma (HGSOC)
-**Status:** Treatment-resistant, PDX model generated
+**Patient ID:** PAT001-OVC-2025  
+**Diagnosis:** Stage IV High-Grade Serous Ovarian Carcinoma (HGSOC)  
+**Status:** Treatment-resistant, PDX model generated  
 
 ---
 
@@ -127,15 +127,15 @@
 
 ## Expected Results
 
-**TCGA Comparison:** Clusters with C1 (immunoreactive), BRCA-mutant cohort
-**Multi-Omics:** AKT1, PIK3CA, ABCB1 highly significant (FDR<0.001)
-**Spatial:** Tumor core vs invasive front, immune exclusion phenotype
-**Treatment Predictions:** High sensitivity to PI3K/AKT inhibitors
+**TCGA Comparison:** Clusters with C1 (immunoreactive), BRCA-mutant cohort  
+**Multi-Omics:** AKT1, PIK3CA, ABCB1 highly significant (FDR<0.001)  
+**Spatial:** Tumor core vs invasive front, immune exclusion phenotype  
+**Treatment Predictions:** High sensitivity to PI3K/AKT inhibitors  
 
 ---
 
-**Total Size:** ~155 MB
-**Format:** JSON (clinical), VCF (variants), H5/CSV (omics), TIFF (images)
-**Status:** ✅ Ready for end-to-end testing
+**Total Size:** ~155 MB  
+**Format:** JSON (clinical), VCF (variants), H5/CSV (omics), TIFF (images)  
+**Status:** ✅ Ready for end-to-end testing   
 
 **Created:** November 11, 2025
