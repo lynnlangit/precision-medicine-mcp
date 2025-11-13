@@ -193,10 +193,10 @@ cat TEST_1_CLINICAL_GENOMIC.txt  # Copy and paste into Claude Desktop
 ## 📚 Related Documentation
 
 - `../docs/spatial/MCP_POC_Example_Prompts.md` - 18 test prompts
-- `../synthetic_data/README.md` - Synthetic test data
 - `../architecture/spatial/README.md` - Spatial MCP architecture
 - `../architecture/patient-one/README.md` - Patient-one scenario architecture
 - `../README.md` - Main project README
+- `PatientOne-OvarianCancer/implementation/` - End-to-end test data (17 files)
 
 ---
 
