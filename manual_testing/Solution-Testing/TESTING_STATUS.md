@@ -26,7 +26,7 @@ The Spatial MCP POC is **fully configured and ready for manual testing**. All 8 
 - ✅ Ready to copy to `~/Library/Application Support/Claude/claude_desktop_config.json`
 
 ### 3. Test Resources Created
-- ✅ `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` - 8 test prompts with absolute paths
+- ✅ `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` - 8 test prompts with absolute paths
 - ✅ `manual_testing/PRE_FLIGHT_CHECKLIST.md` - Complete verification checklist
 - ✅ `manual_testing/README.md` - Updated with all testing resources
 - ✅ All synthetic test data files verified present
@@ -54,7 +54,7 @@ spatial-mcp/
 │   ├── README.md                          [UPDATED]
 │   ├── MANUAL_TESTING_GUIDE.md
 │   ├── TESTING_SUMMARY.md
-│   ├── CLAUDE_DESKTOP_TEST_PROMPTS.md    [NEW - CRITICAL FOR TESTING]
+│   ├── PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)    [NEW - CRITICAL FOR TESTING]
 │   ├── PRE_FLIGHT_CHECKLIST.md           [NEW]
 │   ├── install_dependencies.sh
 │   ├── verify_servers.sh
@@ -108,7 +108,7 @@ What MCP servers are available?
 **Expected:** All 8 servers listed (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga)
 
 ### Step 4: Run First Test
-Open `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` and copy-paste **Test Prompt #1** into Claude Desktop.
+Open `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` and copy-paste **Test Prompt #1** into Claude Desktop.
 
 ---
 
@@ -118,14 +118,14 @@ All prompts use **absolute paths** and are ready to paste into Claude Desktop:
 
 | # | Test | Server(s) | File |
 |---|------|-----------|------|
-| 1 | Validate FASTQ Files | mcp-fgbio | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 2 | Extract UMIs | mcp-fgbio | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 3 | Spatial Autocorrelation | mcp-spatialtools | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 4 | TCGA Comparison | mcp-tcga | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 5 | Differential Expression | mcp-spatialtools | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 6 | Pathway Enrichment | mcp-spatialtools | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 7 | Cell Type Prediction | mcp-huggingface | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
-| 8 | End-to-End Workflow | Multi-server | `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` |
+| 1 | Validate FASTQ Files | mcp-fgbio | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 2 | Extract UMIs | mcp-fgbio | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 3 | Spatial Autocorrelation | mcp-spatialtools | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 4 | TCGA Comparison | mcp-tcga | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 5 | Differential Expression | mcp-spatialtools | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 6 | Pathway Enrichment | mcp-spatialtools | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 7 | Cell Type Prediction | mcp-huggingface | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
+| 8 | End-to-End Workflow | Multi-server | `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` |
 
 ---
 
@@ -194,7 +194,7 @@ cat ../configs/claude_desktop_config.json | grep -c \"command\"
 1. Copy `configs/claude_desktop_config.json` to Claude Desktop config location
 2. Restart Claude Desktop
 3. Verify all 8 servers appear in Claude Desktop
-4. Open `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md`
+4. Open `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)`
 5. Copy-paste **Test Prompt #1** into Claude Desktop
 6. Verify FASTQ validation works
 
@@ -209,7 +209,7 @@ cat ../configs/claude_desktop_config.json | grep -c \"command\"
 
 - **Main README:** `README.md` - Updated with bioinformatician value proposition
 - **Testing Guide:** `manual_testing/MANUAL_TESTING_GUIDE.md`
-- **Test Prompts:** `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` ⭐
+- **Test Prompts:** `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` ⭐
 - **Pre-flight Check:** `manual_testing/PRE_FLIGHT_CHECKLIST.md`
 - **Architecture:** `architecture/Spatial_MCP_POC_Architecture.md`
 - **Config File:** `configs/claude_desktop_config.json` ⭐
@@ -233,7 +233,7 @@ Should show paths like:
 
 ### Issue: Test prompt returns "File not found"
 
-**Solution:** Use absolute paths from `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md`, not relative paths.
+**Solution:** Use absolute paths from `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)`, not relative paths.
 
 ### Issue: Server verification fails
 

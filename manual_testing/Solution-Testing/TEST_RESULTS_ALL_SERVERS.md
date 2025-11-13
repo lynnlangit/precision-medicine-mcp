@@ -475,7 +475,7 @@ What MCP servers are available?
 
 ### Test Prompts
 
-See: `manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md` for 18 complete test prompts covering all servers.
+See: `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` for 18 complete test prompts covering all servers.
 
 ---
 

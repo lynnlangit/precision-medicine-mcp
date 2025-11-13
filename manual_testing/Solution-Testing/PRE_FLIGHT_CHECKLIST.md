@@ -58,7 +58,7 @@
 
 ## ✅ Test Prompts Ready
 
-**File:** `CLAUDE_DESKTOP_TEST_PROMPTS.md`
+**File:** `PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)`
 
 ### Available Test Prompts (with absolute paths)
 1. ✅ **Test Prompt #1:** Validate FASTQ Files (mcp-fgbio)
@@ -92,7 +92,7 @@ What MCP servers are available?
 **Expected response:** Should list all 8 servers (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga)
 
 ### Step 4: Run First Test
-Open `CLAUDE_DESKTOP_TEST_PROMPTS.md` and copy **Test Prompt #1** into Claude Desktop.
+Open `PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` and copy **Test Prompt #1** into Claude Desktop.
 
 **Expected result:**
 - Total reads: 10,000 per file
@@ -165,7 +165,7 @@ cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | grep -c "
 
 - **Installation:** `README.md`
 - **Testing Guide:** `MANUAL_TESTING_GUIDE.md`
-- **Test Prompts:** `CLAUDE_DESKTOP_TEST_PROMPTS.md`
+- **Test Prompts:** `PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)`
 - **Quick Reference:** `TESTING_SUMMARY.md`
 - **Architecture:** `../architecture/Spatial_MCP_POC_Architecture.md`
 - **Main README:** `../README.md`

@@ -184,8 +184,8 @@ Expected response: List of all 9 servers with their tools
    ```
 
 5. **Run first test**:
-   - Open `../manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md`
-   - Copy Test Prompt #1 into Claude Desktop
+   - Open `../manual_testing/PatientOne-OvarianCancer/implementation/TEST_1_CLINICAL_GENOMIC.txt`
+   - Copy and paste test into Claude Desktop
 
 ---
 
@@ -241,9 +241,9 @@ cp ~/Desktop/claude_desktop_config_backup.json ~/Library/Application\ Support/Cl
 ## 📚 Related Documentation
 
 - **Installation Guide:** `../manual_testing/README.md`
-- **Test Prompts:** `../manual_testing/CLAUDE_DESKTOP_TEST_PROMPTS.md`
-- **Pre-flight Checklist:** `../manual_testing/PRE_FLIGHT_CHECKLIST.md`
-- **Testing Status:** `../manual_testing/TESTING_STATUS.md`
+- **Test Prompts:** `../manual_testing/PatientOne-OvarianCancer/implementation/` (TEST_1 through TEST_5)
+- **Pre-flight Checklist:** `../manual_testing/Solution-Testing/PRE_FLIGHT_CHECKLIST.md`
+- **Testing Status:** `../manual_testing/Solution-Testing/TESTING_STATUS.md`
 - **Main README:** `../README.md`
 
 ---

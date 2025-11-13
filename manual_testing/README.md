@@ -20,7 +20,7 @@ This folder contains scripts and documentation for manually testing the Spatial 
 | `MANUAL_TESTING_GUIDE.md` | **Comprehensive step-by-step testing guide** |
 | `TESTING_SUMMARY.md` | Quick reference summary |
 | `TESTING_STATUS.md` | Complete testing status and verification checklist |
-| `CLAUDE_DESKTOP_TEST_PROMPTS.md` | **8 ready-to-paste test prompts with absolute paths for Claude Desktop** |
+| `PatientOne-OvarianCancer/implementation/ (see TEST_1-TEST_5.txt files)` | **8 ready-to-paste test prompts with absolute paths for Claude Desktop** |
 
 ### Testing Directories
 
@@ -86,7 +86,7 @@ For complete testing instructions, see:
 **To test MCP workflows:**
 - ✅ Use Claude Desktop (standalone app)
 - ✅ Configure with `../configs/claude_desktop_config.json`
-- ✅ Test with prompts from `CLAUDE_DESKTOP_TEST_PROMPTS.md`
+- ✅ Test with prompts from `PatientOne-OvarianCancer/implementation/ (see TEST_1-TEST_5.txt files)`
 
 ### Python Version Requirement
 
