@@ -4,256 +4,199 @@
 
 **Patient ID:** PAT001-OVC-2025
 
-**Data Location:** `/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/`
+---
+
+## ⚠️ IMPORTANT: Use the FIXED Test Prompts
+
+The original comprehensive end-to-end test hit **context limits** in Claude Desktop and had **file access issues** due to containerization.
+
+**✅ Solution:** Use the 5 focused FIXED test prompts instead.
 
 ---
 
-## ⚠️ CRITICAL: Use Existing Data Files
+## Recommended Testing Approach
 
-**All 17 data files ALREADY EXIST** in the directory above. When testing:
-- ✅ **DO:** Read and analyze the existing files
-- ❌ **DON'T:** Generate new synthetic data
-- ❌ **DON'T:** Create new patient data
-- ✅ **DO:** Use the pre-generated files in clinical/, genomics/, multiomics/, spatial/, and imaging/ directories
+### Use These Test Files:
 
-The prompt has been updated to explicitly instruct Claude Desktop to use existing files.
+| Test | File | Purpose | Time |
+|------|------|---------|------|
+| **1** | `TEST_1_CLINICAL_GENOMIC_FIXED.txt` | Clinical data + genomic analysis | 5-10 min |
+| **2** | `TEST_2_MULTIOMICS_FIXED.txt` | Multi-omics resistance analysis | 5-10 min |
+| **3** | `TEST_3_SPATIAL_FIXED.txt` | Spatial transcriptomics | 5-10 min |
+| **4** | `TEST_4_IMAGING_FIXED.txt` | Histology and imaging | 5-10 min |
+| **5** | `TEST_5_INTEGRATION_FIXED.txt` | Integrated clinical report | 5 min |
+
+**Total time:** 25-45 minutes (run separately in Claude Desktop)
 
 ---
 
-## Complete Test Prompt
+## Why FIXED Tests?
 
-Copy and paste this entire prompt into Claude Desktop:
+### Problem 1: Context Limits ❌
+The comprehensive test tried to load all data at once:
+- 1000 genes from RNA-seq
+- 31 genes from spatial transcriptomics
+- 7 imaging files
+- Result: **Conversation size limit exceeded**
 
+### Problem 2: File Access ❌
+Claude Desktop's MCP servers run in containerized environments and cannot access arbitrary file paths like:
 ```
-I need your help with a comprehensive precision oncology analysis for a 58-year-old female patient with Stage IV high-grade serous ovarian carcinoma who has developed platinum resistance.
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/...
+```
 
-⚠️ IMPORTANT: All patient data files ALREADY EXIST in this directory. Please USE THE EXISTING FILES - do NOT generate new synthetic data. Read the actual files from:
+### Solution: FIXED Tests ✅
+- **Focused scope:** Each test analyzes 3-8 key features (not hundreds)
+- **MCP-accessible paths:** Uses relative paths like `patient-data/PAT001-OVC-2025/`
+- **Data copied:** All 17 files copied to `/data/patient-data/PAT001-OVC-2025/`
+- **Explicit instructions:** Each test instructs Claude Desktop to use MCP server tools
 
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+---
 
-## Patient Background
+## Quick Start
 
-Patient ID: PAT001-OVC-2025 (this patient data is already created and saved in the above directory)
+### Step 1: Read Quick Reference
+```bash
+cat QUICK_TEST_REFERENCE.md
+```
 
-Key Clinical Features:
-- Diagnosis: Stage IV HGSOC (High-Grade Serous Ovarian Cancer)
-- BRCA1 germline mutation (pathogenic)
-- TP53 R175H somatic mutation (hotspot)
-- HRD positive (score: 42)
-- Treatment status: Platinum-resistant progression
+### Step 2: Run Test 1
+```bash
+cat TEST_1_CLINICAL_GENOMIC_FIXED.txt
+```
+Copy the output → Paste into Claude Desktop
 
-## Analysis Request - Please Complete All Steps:
-
-### PART 1: Clinical Data Review (mcp-mockepic)
-
-1. **Retrieve patient demographics and clinical history:**
-   - Load patient_demographics.json from the clinical/ directory
-   - Summarize key demographics, family history, and genetic risk factors
-
-2. **Analyze lab results and disease progression:**
-   - Load lab_results.json from the clinical/ directory
-   - Create a CA-125 trend visualization showing:
-     * Initial diagnosis (should show ~1456 U/mL)
-     * Response to first-line therapy (normalized to ~22 U/mL)
-     * Progression/resistance (rising to ~389 U/mL)
-     * Current status on second-line therapy (~289 U/mL)
-   - Interpret the trend in context of platinum resistance
-
-### PART 2: Genomic Analysis (mcp-fgbio, mcp-tcga)
-
-3. **Parse somatic variants:**
-   - Load somatic_variants.vcf from the genomics/ directory
-   - Identify key mutations: TP53, PIK3CA, PTEN
-   - Note copy number alterations (MYC, CCNE1, AKT2 amplifications)
-
-4. **Compare to TCGA-OV cohort (mcp-tcga):**
-   - What TCGA molecular subtype does this patient match? (C1 immunoreactive vs C2 differentiated vs C4 mesenchymal)
-   - What is the expected survival for BRCA1-mutant, TP53-mutant, Stage IV HGSOC?
-   - Are there other platinum-resistant cases with similar molecular profiles in TCGA?
-   - What pathways are commonly activated in similar cases?
-
-### PART 3: Multi-Omics PDX Resistance Analysis (mcp-multiomics)
-
-5. **Integrate multi-omics data from PDX models:**
-   - Load data from multiomics/ directory:
-     * sample_metadata.csv (15 samples: 7 resistant, 8 sensitive)
-     * pdx_rna_seq.csv (1000 genes × 15 samples)
-     * pdx_proteomics.csv (500 proteins × 15 samples)
-     * pdx_phosphoproteomics.csv (300 sites × 15 samples)
-
-6. **Run Stouffer's meta-analysis:**
-   - Focus on resistance pathway genes:
-     * PI3K/AKT pathway: PIK3CA, AKT1, AKT2, MTOR, PTEN
-     * Drug resistance: ABCB1 (MDR1), ABCC1 (MRP1)
-     * Anti-apoptotic: BCL2L1, MCL1
-     * DNA repair: BRCA1, BRCA2, RAD51
-   - Use directionality from effect sizes
-   - Apply FDR correction (α = 0.05)
-   - Which genes are significantly dysregulated across ALL three modalities?
-   - What pathways are activated in resistant vs. sensitive PDX models?
-
-### PART 4: Spatial Tumor Analysis (mcp-spatialtools, mcp-openimagedata, mcp-deepcell)
-
-7. **Analyze spatial transcriptomics data:**
-   - Load spatial data from spatial/ directory:
-     * visium_spatial_coordinates.csv (900 spots)
-     * visium_gene_expression.csv (31 genes × 900 spots)
-     * visium_region_annotations.csv (6 spatial regions)
-   - Identify spatial regions: tumor core, tumor-stroma interface, immune-infiltrated areas
-   - Which resistance markers (PIK3CA, AKT1, ABCB1) show spatial heterogeneity?
-   - Where are immune cells (CD3, CD8, CD68) located relative to tumor?
-
-8. **Process histology images:**
-   - Load H&E image: imaging/PAT001_tumor_HE_20x.tiff
-   - Analyze tissue architecture and identify necrotic regions
-   - Load immunofluorescence images: IF_DAPI.tiff, IF_CD8.tiff, IF_KI67.tiff
-   - Quantify:
-     * Tumor cellularity
-     * CD8+ T cell infiltration
-     * Ki67 proliferation index
-     * Spatial distribution patterns
-
-9. **Cell segmentation and phenotyping (if possible with mcp-deepcell):**
-   - Segment cells from multiplex IF image: PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff
-   - Identify cell types and phenotypes
-   - Calculate cell density in different tumor regions
-
-### PART 5: Integrated Analysis & Recommendations
-
-10. **Synthesize findings across all modalities:**
-    - What are the PRIMARY resistance mechanisms based on:
-      * Genomics (TP53, PIK3CA mutations)
-      * Multi-omics (activated pathways across RNA/Protein/Phospho)
-      * Spatial patterns (heterogeneity, immune exclusion)
-      * Imaging (proliferation, immune infiltration)
-
-11. **Therapeutic recommendations:**
-    Based on the integrated analysis, recommend:
-    - Targeted therapies (PI3K/AKT/mTOR inhibitors?)
-    - Combination strategies
-    - Clinical trials for BRCA-mutant platinum-resistant HGSOC
-    - Immunotherapy considerations based on immune landscape
-
-12. **Biomarker identification:**
-    - Which molecular features could be monitored for treatment response?
-    - Are there spatial biomarkers predictive of therapy resistance?
-    - What should be tracked in serial biopsies?
-
-## Output Format
-
-Please provide:
-
-1. **Executive Summary** (1-2 paragraphs)
-   - Patient status, key findings, primary resistance mechanisms
-
-2. **Detailed Analysis by Modality**
-   - Clinical trajectory and CA-125 trends
-   - Genomic alterations and TCGA comparison
-   - Multi-omics resistance signatures
-   - Spatial tumor heterogeneity
-   - Imaging and cellular phenotypes
-
-3. **Integrated Pathway Analysis**
-   - Which pathways are consistently activated across all data types?
-   - Confidence level for each finding (genomics + proteomics + spatial = high confidence)
-
-4. **Clinical Recommendations**
-   - Ranked list of treatment options with rationale
-   - Clinical trial opportunities
-   - Monitoring strategy
-
-5. **Technical Summary**
-   - Which MCP servers were used for each analysis step
-   - Data quality metrics
-   - Any limitations or caveats
-
-## Expected MCP Server Usage
-
-This analysis should invoke:
-- ✅ mcp-mockepic (clinical data retrieval)
-- ✅ mcp-fgbio (VCF parsing, gene annotations)
-- ✅ mcp-tcga (TCGA-OV cohort comparison)
-- ✅ mcp-multiomics (Stouffer's meta-analysis, multi-omics integration)
-- ✅ mcp-spatialtools (spatial transcriptomics analysis)
-- ✅ mcp-openimagedata (histology image processing)
-- ✅ mcp-deepcell (cell segmentation, if available)
-- ✅ mcp-huggingface (optional: ML model predictions)
-- ✅ mcp-seqera (optional: workflow orchestration)
-
-Please proceed with the analysis and let me know if you need any clarification on the data files or analysis requirements.
+### Step 3: Run Tests 2-5
+Use a **new conversation** for each test:
+```bash
+cat TEST_2_MULTIOMICS_FIXED.txt
+cat TEST_3_SPATIAL_FIXED.txt
+cat TEST_4_IMAGING_FIXED.txt
+cat TEST_5_INTEGRATION_FIXED.txt
 ```
 
 ---
 
-## Expected Outcomes
+## What Gets Tested?
 
-### Clinical Data Analysis
-- Patient demographics parsed from FHIR-inspired JSON
-- CA-125 trend: 1456 → 22 → 389 → 289 U/mL
-- Clear platinum resistance pattern identified
+### TEST 1: Clinical & Genomic ✅
+**Servers:** mcp-mockepic, mcp-fgbio, mcp-tcga
+- Patient demographics (Sarah Anderson, 58yo, BRCA1 mutation)
+- CA-125 tumor marker trends (1456→22→389→289 U/mL)
+- Somatic mutations (TP53 R175H, PIK3CA E545K, PTEN LOH)
+- TCGA cohort comparison
 
-### Genomic Analysis
-- TP53 R175H hotspot mutation identified
-- PIK3CA E545K activating mutation noted
-- PTEN loss of heterozygosity detected
-- Copy number alterations: MYC, CCNE1, AKT2 amplifications
+### TEST 2: Multi-Omics ✅
+**Servers:** mcp-multiomics
+- 15 PDX samples (7 resistant, 8 sensitive)
+- 6 key genes across RNA/Protein/Phospho modalities
+- Stouffer's meta-analysis with directionality
+- PI3K/AKT pathway activation analysis
 
-### TCGA Comparison
-- Likely C1 (immunoreactive) or C2 (differentiated) subtype
-- BRCA-mutant cohort comparison
-- Poor prognosis with platinum resistance
-- PI3K/AKT pathway commonly activated
-
-### Multi-Omics Analysis
-- Top resistance genes: AKT1, PIK3CA, ABCB1, BCL2L1
-- Stouffer's Z-scores highly significant (Z > 3, p < 0.001)
-- Directionality preserved (upregulated in resistant)
-- FDR < 0.05 for pathway genes
-
-### Spatial Analysis
-- 6 distinct regions identified
-- Tumor core: high proliferation (MKI67, TOP2A)
-- Tumor-stroma interface: EMT markers (VIM, SNAI1)
-- Immune regions: CD3+, CD8+ T cells
+### TEST 3: Spatial Transcriptomics ✅
+**Servers:** mcp-spatialtools
+- 900 spatial spots across 6 tissue regions
+- 8 key genes (proliferation, resistance, immune markers)
 - Spatial heterogeneity in resistance markers
+- Immune cell exclusion patterns
 
-### Imaging Analysis
-- H&E: necrotic regions, tumor architecture
-- IF: CD8+ infiltration (quantified)
-- Ki67: proliferation index ~60-70%
-- Multiplex: cell phenotypes and spatial relationships
+### TEST 4: Imaging ✅
+**Servers:** mcp-openimagedata, mcp-deepcell
+- H&E histology (tissue architecture, necrosis, cellularity)
+- CD8 T cell infiltration quantification
+- Ki67 proliferation index
+- Multiplex IF cell segmentation (TP53/Ki67/DAPI)
 
-### Treatment Recommendations
-- PI3K inhibitors (alpelisib + fulvestrant)
-- AKT inhibitors (capivasertib + paclitaxel)
-- mTOR inhibitors (everolimus)
-- Clinical trials for BRCA-mutant resistant HGSOC
-- Monitor CA-125, consider serial biopsies
-
----
-
-## Testing Tips
-
-1. **Run in stages** if needed:
-   - First: Clinical + Genomic (Parts 1-2)
-   - Then: Multi-omics (Part 3)
-   - Finally: Spatial + Imaging (Part 4)
-   - Synthesis: Integration (Part 5)
-
-2. **Monitor server usage:**
-   - Check Claude Desktop logs to see which servers are invoked
-   - Verify all 9 servers are accessible
-
-3. **Validate results:**
-   - Compare findings to TESTING_GUIDE.md expected results
-   - Check if resistance mechanisms match synthetic data generation
-
-4. **Performance:**
-   - Full analysis may take 5-10 minutes
-   - Multi-omics Stouffer's analysis is most computationally intensive
+### TEST 5: Integration ✅
+**Servers:** None (synthesis only)
+- Resistance mechanisms ranked by evidence strength
+- Multi-modal consistency analysis
+- Top 3 therapeutic recommendations
+- Immunotherapy assessment
+- Clinical monitoring strategy
 
 ---
 
-**Created:** November 12, 2025
-**Test Status:** ✅ Ready for execution
-**Expected Duration:** 5-10 minutes for complete analysis
+## Documentation
+
+### For Quick Testing:
+- **`QUICK_TEST_REFERENCE.md`** - One-page quick start guide
+
+### For Detailed Testing:
+- **`TESTING_STRATEGY.md`** - Comprehensive testing strategy
+
+### For Troubleshooting:
+- **`CLAUDE_DESKTOP_FILE_ACCESS_GUIDE.md`** - File access issue explanation
+- **`CLAUDE_DESKTOP_FIX_SUMMARY.md`** - Complete solution summary
+
+---
+
+## Verification Checkpoints
+
+After running all 5 tests, you should have confirmed:
+
+**Clinical & Genomic:**
+- ✅ Patient: Sarah Anderson, 58yo
+- ✅ BRCA1 germline mutation identified
+- ✅ CA-125 resistance pattern (1456→22→389→289)
+- ✅ TP53 R175H, PIK3CA E545K, PTEN LOH mutations found
+
+**Multi-Omics:**
+- ✅ 15 PDX samples analyzed (7R, 8S)
+- ✅ PI3K/AKT pathway activated
+- ✅ Stouffer's Z-scores >3 for top genes
+- ✅ FDR-adjusted p-values <0.05
+
+**Spatial:**
+- ✅ 900 spots across 6 regions loaded
+- ✅ Resistance markers concentrated in tumor regions
+- ✅ Immune cells excluded from tumor
+- ✅ Tumor microenvironment: COLD
+
+**Imaging:**
+- ✅ High cellularity (~70-80%)
+- ✅ Low CD8+ infiltration (~5-15 cells/mm²)
+- ✅ High Ki67 proliferation (~45-55%)
+- ✅ TP53+ cells are highly proliferative
+
+**Integration:**
+- ✅ Top 3 resistance mechanisms identified
+- ✅ Therapeutic recommendations provided
+- ✅ Immunotherapy assessment (limited efficacy expected)
+- ✅ Monitoring strategy defined
+
+---
+
+## Alternative: Natural Language Prompts
+
+If you prefer not to use the prepared test files, you can also use natural language prompts in Claude Desktop:
+
+```
+For patient PAT001-OVC-2025:
+1. Retrieve patient demographics and CA-125 trends
+2. Parse somatic variants (TP53, PIK3CA, PTEN)
+3. Analyze multi-omics PDX resistance data
+4. Examine spatial gene expression patterns
+5. Quantify immune infiltration from imaging
+
+Files are in: patient-data/PAT001-OVC-2025/
+```
+
+Claude Desktop will use the appropriate MCP server tools to access the data.
+
+---
+
+## Summary
+
+✅ **Data Ready:** 17 files in `/data/patient-data/PAT001-OVC-2025/`
+✅ **Tests Ready:** 5 FIXED test prompts available
+✅ **Documentation:** Complete guides for testing and troubleshooting
+
+**Start with:** `TEST_1_CLINICAL_GENOMIC_FIXED.txt`
+
+**Need help?** See `QUICK_TEST_REFERENCE.md` or `CLAUDE_DESKTOP_FILE_ACCESS_GUIDE.md`
+
+---
+
+**Last Updated:** November 12, 2025
+**Status:** Ready for Claude Desktop testing
