@@ -101,12 +101,12 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 
 ---
 
-## Example Spatial-Multiomics Prompts
+## Example Spatial-Multiomics Client and Prompts
 
 **Example of a custom MCP server (mcpFGBio) in action (using Claude Desktop) shown below:** 
 <kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
 
-**Multiomics Analysis:**
+**Multiomics Analysis Prompt:**
 ```
 Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, KRAS:
 - RNA p-values: [0.001, 0.002, 0.05], log2FC: [2.5, 1.8, 1.2]
@@ -115,14 +115,14 @@ Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, 
 Combine using Stouffer's method with directionality and FDR correction.
 ```
 
-**Spatial Analysis:**
+**Spatial Analysis Prompt:**
 ```
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
 [View 18 example prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
 
-**End-to-end Patient Spatial-Multiomics Analysis (Ovarian Cancer example):**
+**End-to-end Patient Spatial-Multiomics Analysis (Ovarian Cancer example) Prompt:**
 ```
 Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers and associated tools  
 ```
