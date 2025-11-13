@@ -192,9 +192,10 @@ cat TEST_1_CLINICAL_GENOMIC.txt  # Copy and paste into Claude Desktop
 
 ## 📚 Related Documentation
 
-- `../docs/MCP_POC_Example_Prompts.md` - 18 test prompts
+- `../docs/spatial/MCP_POC_Example_Prompts.md` - 18 test prompts
 - `../synthetic_data/README.md` - Synthetic test data
-- `../architecture/Spatial_MCP_POC_Architecture.md` - Full architecture
+- `../architecture/spatial/README.md` - Spatial MCP architecture
+- `../architecture/patient-one/README.md` - Patient-one scenario architecture
 - `../README.md` - Main project README
 
 ---
