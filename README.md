@@ -104,9 +104,9 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 
 ---
 
-## Example Workflow Prompts
+## Example Spatial-Multiomics Prompts
 
-**Multi-omics analysis:**
+**Multiomics Analysis:**
 ```
 Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, KRAS:
 - RNA p-values: [0.001, 0.002, 0.05], log2FC: [2.5, 1.8, 1.2]
@@ -115,16 +115,16 @@ Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, 
 Combine using Stouffer's method with directionality and FDR correction.
 ```
 
-**Spatial pipeline:**
+**Spatial Analysis:**
 ```
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
 [View 18 example prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
 
-**End-to-end Patient View (Ovarian Cancer example):**
+**End-to-end Patient Spatial-Multiomics Analysis (Ovarian Cancer example):**
 ```
-Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers
+Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers and associated tools  
 ```
 [See full example of full patient workflow prompt →](https://github.com/lynnlangit/spatial-mcp/blob/main/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/END_TO_END_TEST_PROMPT.md)
 
