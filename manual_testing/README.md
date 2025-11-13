@@ -29,7 +29,7 @@ This folder contains scripts and documentation for manually testing the Spatial 
 | `Solution-Testing/` | Test results and verification documentation |
 | `PatientOne-OvarianCancer/` | **Comprehensive end-to-end patient scenario with synthetic data** |
 
-**See:** `PatientOne-OvarianCancer/Synthetic_sample_data/` for complete test suite
+**See:** `PatientOne-OvarianCancer/implementation/` for complete test suite
 
 ---
 
@@ -162,7 +162,7 @@ A complete synthetic patient dataset for testing all 9 MCP servers:
 **Data:** 17 synthetic files (clinical, genomic, multi-omics, spatial, imaging)
 **Servers Tested:** All 9 (mockepic, fgbio, tcga, multiomics, spatialtools, openimagedata, deepcell, seqera, huggingface)
 
-**Location:** `PatientOne-OvarianCancer/Synthetic_sample_data/`
+**Location:** `PatientOne-OvarianCancer/implementation/`
 
 **Test Approach:**
 - 5 focused tests (avoid context limits)
@@ -171,7 +171,7 @@ A complete synthetic patient dataset for testing all 9 MCP servers:
 
 **Quick Start:**
 ```bash
-cd PatientOne-OvarianCancer/Synthetic_sample_data/
+cd PatientOne-OvarianCancer/implementation/
 cat QUICK_TEST_REFERENCE.md  # Fast overview
 cat TEST_1_CLINICAL_GENOMIC.txt  # Copy and paste into Claude Desktop
 ```

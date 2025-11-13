@@ -285,7 +285,7 @@ TEST_2_RESULTS.md
 ## Files Summary
 
 ```
-Synthetic_sample_data/
+implementation/
 ├── COPY_PASTE_PROMPT.txt          ⚠️ May hit context limit
 ├── END_TO_END_TEST_PROMPT.md      ⚠️ May hit context limit
 │

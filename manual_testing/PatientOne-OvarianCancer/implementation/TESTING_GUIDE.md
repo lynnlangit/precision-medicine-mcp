@@ -69,7 +69,7 @@ For patient PAT001-OVC-2025, please:
 2. Show CA-125 lab results trend
 3. Summarize treatment history
 
-Data location: /manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/clinical/
+Data location: /manual_testing/PatientOne-OvarianCancer/implementation/clinical/
 ```
 
 **Expected:** Demographics, CA-125 trend from 1456→22→389→289, platinum-resistant progression
@@ -78,7 +78,7 @@ Data location: /manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/cl
 ```
 Analyze platinum resistance in PDX samples:
 
-Data: /manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/multiomics/
+Data: /manual_testing/PatientOne-OvarianCancer/implementation/multiomics/
 Metadata: sample_metadata.csv (7 resistant, 8 sensitive)
 
 Key resistance genes to analyze:
@@ -127,7 +127,7 @@ Comprehensive analysis for patient PAT001-OVC-2025:
 4. Identify activated pathways
 5. Recommend targeted therapies
 
-Data directory: /manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+Data directory: /manual_testing/PatientOne-OvarianCancer/implementation/
 
 Expected outcome:
 - Identify PI3K/AKT/mTOR pathway as key resistance mechanism
@@ -190,25 +190,23 @@ Expected outcome:
 
 ## File Locations
 
+**Note:** Patient data files have been moved to MCP-accessible location:
 ```
-PatientOne-OvarianCancer/Synthetic_sample_data/
-├── README.md                                    ✅ Patient case summary
-├── TESTING_GUIDE.md                             ✅ This file
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/
 ├── clinical/
 │   ├── patient_demographics.json                ✅ Demographics, family history
 │   └── lab_results.json                         ✅ CA-125 trends, CBC, metabolic panel
+├── genomics/
+│   └── somatic_variants.vcf                     ✅ TP53, PIK3CA, PTEN mutations
 ├── multiomics/
 │   ├── sample_metadata.csv                      ✅ 15 PDX samples
 │   ├── pdx_rna_seq.csv                          ✅ 1000 genes × 15 samples
 │   ├── pdx_proteomics.csv                       ✅ 500 proteins × 15 samples
 │   └── pdx_phosphoproteomics.csv                ✅ 300 sites × 15 samples
-├── genomics/
-│   └── somatic_variants.vcf                     ✅ TP53, PIK3CA, PTEN mutations
 ├── spatial/
 │   ├── visium_spatial_coordinates.csv           ✅ 900 spot coordinates
 │   ├── visium_gene_expression.csv               ✅ 31 genes × 900 spots
-│   ├── visium_region_annotations.csv            ✅ Region annotations
-│   └── generate_spatial_data.py                 Script used to generate data
+│   └── visium_region_annotations.csv            ✅ Region annotations
 └── imaging/
     ├── PAT001_tumor_HE_20x.tiff                 ✅ H&E histology
     ├── PAT001_tumor_IF_DAPI.tiff                ✅ DAPI nuclear stain
@@ -216,9 +214,10 @@ PatientOne-OvarianCancer/Synthetic_sample_data/
     ├── PAT001_tumor_IF_CD8.tiff                 ✅ Cytotoxic T cell marker
     ├── PAT001_tumor_IF_KI67.tiff                ✅ Proliferation marker
     ├── PAT001_tumor_IF_PanCK.tiff               ✅ Epithelial marker
-    ├── PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff  ✅ 3-channel multiplex
-    └── generate_image_placeholders.py           Script used to generate images
+    └── PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff  ✅ 3-channel multiplex
 ```
+
+**This directory (implementation/) contains:** Test prompts and documentation only.
 
 ---
 

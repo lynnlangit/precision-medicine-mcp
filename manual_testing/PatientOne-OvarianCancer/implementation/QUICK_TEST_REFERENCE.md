@@ -136,7 +136,7 @@ Split into 3 conversations:
 All test files in:
 ```
 /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/
-PatientOne-OvarianCancer/Synthetic_sample_data/
+PatientOne-OvarianCancer/implementation/
 ```
 
 ---

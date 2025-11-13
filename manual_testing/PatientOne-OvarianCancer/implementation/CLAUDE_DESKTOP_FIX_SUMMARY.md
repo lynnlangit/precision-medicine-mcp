@@ -10,7 +10,7 @@
 
 Claude Desktop's MCP servers run in containerized/isolated environments and cannot access files at arbitrary paths like:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/implementation/
 ```
 
 When test prompts referenced these paths, Claude Desktop generated new synthetic data instead of using the existing files.
@@ -42,11 +42,11 @@ Files outside these directories are **not accessible** to MCP servers.
 mkdir -p /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/{clinical,genomics,multiomics,spatial,imaging}
 
 # Copied files:
-cp -r .../Synthetic_sample_data/clinical/* .../data/patient-data/PAT001-OVC-2025/clinical/
-cp -r .../Synthetic_sample_data/genomics/* .../data/patient-data/PAT001-OVC-2025/genomics/
-cp -r .../Synthetic_sample_data/multiomics/* .../data/patient-data/PAT001-OVC-2025/multiomics/
-cp -r .../Synthetic_sample_data/spatial/* .../data/patient-data/PAT001-OVC-2025/spatial/
-cp -r .../Synthetic_sample_data/imaging/* .../data/patient-data/PAT001-OVC-2025/imaging/
+cp -r .../implementation/clinical/* .../data/patient-data/PAT001-OVC-2025/clinical/
+cp -r .../implementation/genomics/* .../data/patient-data/PAT001-OVC-2025/genomics/
+cp -r .../implementation/multiomics/* .../data/patient-data/PAT001-OVC-2025/multiomics/
+cp -r .../implementation/spatial/* .../data/patient-data/PAT001-OVC-2025/spatial/
+cp -r .../implementation/imaging/* .../data/patient-data/PAT001-OVC-2025/imaging/
 ```
 
 **Verification:**
@@ -128,7 +128,7 @@ data/patient-data/PAT001-OVC-2025/
 
 **Option 1: Use Test Prompts (Recommended)**
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/
+cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/implementation/
 
 # Copy and paste each test into Claude Desktop
 cat TEST_1_CLINICAL_GENOMIC.txt
@@ -172,7 +172,7 @@ Files are in: patient-data/PAT001-OVC-2025/clinical/
 
 ### ❌ Before (Didn't Work):
 ```
-Prompt: "Read /Users/.../manual_testing/PatientOne-OvarianCancer/Synthetic_sample_data/clinical/patient_demographics.json"
+Prompt: "Read /Users/.../manual_testing/PatientOne-OvarianCancer/implementation/clinical/patient_demographics.json"
 Result: Claude Desktop generates new synthetic data (can't see file)
 ```
 
