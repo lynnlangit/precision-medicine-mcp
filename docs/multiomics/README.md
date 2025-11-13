@@ -200,7 +200,7 @@ Which genes are significantly dysregulated across all modalities?
 
 ### Server Documentation
 - **[Server README](../../servers/mcp-multiomics/README.md)** - Server-specific documentation
-- **[Test Results](../../manual_testing/TEST_RESULTS_ALL_SERVERS.md)** - All server test results
+- **[Test Results](../../manual_testing/Solution-Testing/TEST_RESULTS_ALL_SERVERS.md)** - All server test results
 
 ### Project Documentation
 - **[Main README](../../README.md)** - Project overview
@@ -208,7 +208,7 @@ Which genes are significantly dysregulated across all modalities?
 - **[Configuration](../../configs/README.md)** - Claude Desktop setup
 
 ### Technical Resources
-- **[Architecture](../../architecture/Spatial_MCP_POC_Architecture.md)** - Full system architecture
+- **[Architecture](../../architecture/spatial/README.md)** - Spatial MCP architecture
 - **[Manual Testing](../../manual_testing/README.md)** - Testing and verification
 
 ---
