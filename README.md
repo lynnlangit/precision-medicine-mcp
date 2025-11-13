@@ -13,10 +13,10 @@ AI-Orchestrated Spatial Transcriptomics (and Multiomics) Bioinformatics Workflow
 Describe your analysis goals in natural language and let Claude orchestrate bioinformatics workflows across 9 specialized MCP servers using up to 36 associated tools.
 
 **Key Benefits:**
-- ✅ Replace bash scripts with conversational requests
+- ✅ Replace bash (or workflow) scripts with **conversational requests**
 - ✅ Instant access to FASTQ QC, alignment, quantification, multi-omics meta-analysis
 - ✅ Reproducible by default - logged, versioned, repeatable
-- ✅ Modular architecture - add tools without rewriting pipelines
+- ✅ Modular architecture - add tools **without** rewriting pipelines
 
 **Example of a custom MCP server in action (using Claude Desktop) shown below:** 
 <kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
@@ -85,7 +85,7 @@ Describe your analysis goals in natural language and let Claude orchestrate bioi
 
 ## Quick Start
 
-IMPORTANT: In this POC all MCP servers are running locally and are expected to use a local Claude Desktop as their client.  
+IMPORTANT: In this POC all MCP servers are running locally and are expected to use your local Claude Desktop as their client.  
 
 ```bash
 # Install (5 min)
