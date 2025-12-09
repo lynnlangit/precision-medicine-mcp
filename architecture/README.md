@@ -22,8 +22,10 @@ See each subfolder for architectures. See also main Repo README.md for list of t
          │  mcp-multiomics      │        │  mcp-mockepic        │
          │  ─────────────────   │        │  ───────────────     │
          │  • Data Integration  │        │  • Patient Data      │
-         │  • HAllA Analysis    │        │  • Clinical Metadata │
+         │  • HAllA Analysis    |
+         │  • P-to-Z (signed)   |           • Clinical Metadata │
          │  • Stouffer's Meta   │        └──────────────────────┘
+         │  • FDR Correction    │
          │  • Visualizations    │
          └──────────┬───────────┘
                     │
@@ -42,14 +44,14 @@ See each subfolder for architectures. See also main Repo README.md for list of t
             │  (per modality)│
             └───────┬────────┘
                     │
+              P-to-Z
          ┌──────────▼──────────┐
-         │  Stouffer's Method  │
+         │  Stouffer's Method...  │
          │  (meta-analysis)    │
          │  • p-value combine  │
-         │  • Directionality   │
-         │  • FDR correction   │
          └──────────┬──────────┘
                     │
+             FDR Correction
          ┌──────────▼──────────┐
          │   Visualization     │
          │  • Heatmaps         │
