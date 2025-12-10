@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Test Results - Understanding Your Treatment Plan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        
+        .patient-info {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #2980b9;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        
+        .key-point {
+            background: #ecf0f1;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .positive {
+            border-left-color: #27ae60;
+            background: #e8f8f5;
+        }
+        
+        .caution {
+            border-left-color: #f39c12;
+            background: #fef5e7;
+        }
+        
+        .important {
+            border-left-color: #e74c3c;
+            background: #fdedec;
+        }
+        
+        .treatment-box {
+            border: 2px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .treatment-option {
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .timeline-item .date {
+            font-weight: bold;
+            color: #2980b9;
+        }
+        
+        .faq {
+            background: #ecf0f1;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        
+        .faq-question {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .icon {
+            display: inline-block;
+            width: 20px;
+            margin-right: 5px;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        ul li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .summary-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        
+        .summary-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Your Comprehensive Test Results</h1>
+        <div class="patient-info">Sarah Anderson | Patient ID: PAT001-OVC-2025</div>
+        <div class="patient-info">Report Date: December 2024</div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Summary of Your Diagnosis</h2>
+        
+        <div class="key-point">
+            <strong>Your Diagnosis:</strong> High-grade serous ovarian carcinoma (HGSOC), Stage IV<br>
+            <strong>What this means:</strong> This is a type of ovarian cancer that has spread beyond the ovaries. While this is serious, we have identified several specific characteristics of your cancer that help us choose the most effective treatments.
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="summary-value">BRCA1+</div>
+                <div class="summary-label">Genetic mutation found</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-value">Multiple</div>
+                <div class="summary-label">Treatment options available</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-value">75%</div>
+                <div class="summary-label">Tumor cells in sample</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-value">Targeted</div>
+                <div class="summary-label">Therapy approach</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔬 What We Found in Your Tests</h2>
+        
+        <h3>The Good News</h3>
+        <div class="key-point positive">
+            <ul>
+                <li>You have a BRCA1 gene mutation, which means certain targeted treatments (PARP inhibitors) are likely to work well for you</li>
+                <li>We've identified specific "targets" in your cancer cells that we can attack with medications</li>
+                <li>Your initial response to treatment was excellent (your CA-125 tumor marker dropped from 1456 to 22)</li>
+                <li>Multiple treatment options are available beyond standard chemotherapy</li>
+            </ul>
+        </div>
+
+        <h3>What We Need to Address</h3>
+        <div class="key-point caution">
+            <ul style="list-style: none;">
+                <li style="padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #f39c12;">⚠</span>
+                    <strong>Platinum Resistance:</strong> Your cancer has become resistant to platinum-based chemotherapy (carboplatin/cisplatin)
+                </li>
+                <li style="padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #f39c12;">⚠</span>
+                    <strong>PIK3CA Pathway:</strong> A cellular pathway that helps cancer cells grow is overactive
+                </li>
+                <li style="padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #f39c12;">⚠</span>
+                    <strong>Drug Pump:</strong> Cancer cells have developed a way to pump out some chemotherapy drugs (MDR1/ABCB1)
+                </li>
+                <li style="padding-left: 25px; position: relative;">
+                    <span style="position: absolute; left: 0; color: #f39c12;">⚠</span>
+                    <strong>Immune System:</strong> Your immune cells are having trouble getting into the tumor to fight it
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>💊 Your Treatment Options</h2>
+        
+        <div class="treatment-box">
+            <h3>Recommended First-Line Treatment</h3>
+            <div class="treatment-option">
+                <strong>PARP Inhibitor + PI3K Inhibitor Combination</strong><br>
+                <em>Medications:</em> Olaparib (Lynparza) + Alpelisib<br>
+                <em>Why this combination:</em> Targets both your BRCA1 mutation and the overactive PIK3CA pathway<br>
+                <em>Expected response rate:</em> 40-45% of patients respond well<br>
+                <em>How it's given:</em> Oral pills taken daily
+            </div>
+        </div>
+
+        <div class="treatment-box">
+            <h3>Alternative Options</h3>
+            <div class="treatment-option">
+                <strong>Option 2: mTOR Inhibitor + Chemotherapy</strong><br>
+                <em>Medications:</em> Everolimus + Paclitaxel<br>
+                <em>Expected response rate:</em> 30-35%<br>
+                <em>How it's given:</em> Combination of pills and IV infusion
+            </div>
+            
+            <div class="treatment-option">
+                <strong>Option 3: MDR1 Inhibitor + Platinum Rechallenge</strong><br>
+                <em>Medications:</em> Elacridar + Carboplatin<br>
+                <em>Purpose:</em> Overcome drug resistance and retry platinum<br>
+                <em>Expected response rate:</em> 20-25%
+            </div>
+        </div>
+
+        <div class="key-point important">
+            <strong>About Immunotherapy:</strong> Based on your tumor's characteristics, immunotherapy alone is unlikely to be effective. However, we may consider it in combination with other treatments to improve your immune system's ability to fight the cancer.
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📅 Your Treatment Timeline</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="date">Weeks 1-2</div>
+                <div>Start Treatment</div>
+                <div>Begin daily medications</div>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Week 4</div>
+                <div>First Check-in</div>
+                <div>Blood tests & side effect review</div>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Week 8-12</div>
+                <div>First Scan</div>
+                <div>CT scan to check response</div>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Every 2-3 months</div>
+                <div>Regular Monitoring</div>
+                <div>Scans & blood tests</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Monitoring Your Progress</h2>
+        
+        <h3>How We'll Track Your Response</h3>
+        <ul>
+            <li><strong>CA-125 Blood Test:</strong> Monthly checks of your tumor marker (currently 289, goal is <35)</li>
+            <li><strong>CT Scans:</strong> Every 2-3 months to measure tumor size</li>
+            <li><strong>Symptom Tracking:</strong> Regular discussions about how you're feeling</li>
+            <li><strong>Genetic Testing:</strong> Periodic blood tests to check for new mutations</li>
+        </ul>
+
+        <h3>Signs Treatment is Working</h3>
+        <div class="key-point positive">
+            <ul>
+                <li>CA-125 levels decreasing</li>
+                <li>Tumor shrinkage on scans</li>
+                <li>Improved energy and symptoms</li>
+                <li>Stable or improving blood counts</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>❓ Frequently Asked Questions</h2>
+        
+        <div class="faq">
+            <div class="faq-question">Why did my cancer become resistant to platinum chemotherapy?</div>
+            <div>Cancer cells can develop ways to survive treatment over time. Your tests show specific changes (like the drug pump ABCB1) that help cancer cells remove the chemotherapy. This is why we're switching to different medications that work in new ways.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">What does having a BRCA1 mutation mean for my treatment?</div>
+            <div>Having a BRCA1 mutation actually opens up additional treatment options for you. PARP inhibitors are medications specifically designed to work well in patients with BRCA mutations. This mutation also means we should discuss genetic testing for your family members.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">What is the expected outcome with these new treatments?</div>
+            <div>With the recommended combination therapy, we expect to see tumor shrinkage or stabilization in about 40-45% of patients. The goal is to control the cancer, maintain your quality of life, and extend the time before the cancer progresses. Average progression-free survival is 6-8 months, but many patients do better.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">Will I have side effects?</div>
+            <div>All cancer treatments have potential side effects, but they vary from person to person. Common side effects of PARP inhibitors include fatigue, nausea, and low blood counts. We'll monitor you closely and have many ways to manage side effects to keep you comfortable.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">Are there clinical trials I should consider?</div>
+            <div>Yes! There are several promising clinical trials for patients with BRCA1 mutations and platinum-resistant ovarian cancer. These include new combination therapies and novel immunotherapy approaches. We can discuss specific trials that you may qualify for.</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📱 Your Healthcare Team</h2>
+        
+        <div class="key-point">
+            <strong>Your Oncology Team is here to support you:</strong><br><br>
+            • <strong>Medical Oncologist:</strong> Manages your cancer treatment<br>
+            • <strong>Oncology Nurse:</strong> Helps with day-to-day care and questions<br>
+            • <strong>Pharmacist:</strong> Reviews medications and manages side effects<br>
+            • <strong>Social Worker:</strong> Assists with practical and emotional support<br>
+            • <strong>Genetic Counselor:</strong> Discusses family implications of BRCA1<br><br>
+            
+            <strong>Questions to ask at your next appointment:</strong><br>
+            • How will we know if the treatment is working?<br>
+            • What side effects should I watch for?<br>
+            • Should my family members get genetic testing?<br>
+            • What lifestyle changes would be helpful?<br>
+            • Are there support groups available?
+        </div>
+    </div>
+
+    <div class="section" style="background: #e8f8f5;">
+        <h2>💚 Important Reminders</h2>
+        
+        <div class="key-point positive">
+            <ul>
+                <li>You have multiple treatment options beyond standard chemotherapy</li>
+                <li>Your BRCA1 mutation makes you eligible for targeted therapies</li>
+                <li>We will adjust treatments based on your response and side effects</li>
+                <li>Clinical trials offer access to cutting-edge treatments</li>
+                <li>Your healthcare team is here to support you every step of the way</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center; margin-top: 30px; color: #2c3e50;">
+            <strong>Remember: This is a journey we're taking together. You're not alone.</strong><br>
+            Please bring this summary to your appointments and don't hesitate to ask questions.
+        </p>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0; color: #7f8c8d; font-size: 14px;">
+        This document is a simplified summary of complex medical information.<br>
+        Please discuss all treatment decisions with your oncology team.<br>
+        Generated: December 2024 | Patient ID: PAT001-OVC-2025
+    </div>
+</body>
+</html>
