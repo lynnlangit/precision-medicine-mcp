@@ -2,6 +2,7 @@
 
 Provides tools for:
 - Multi-omics data integration (RNA, Protein, Phosphorylation)
+- Data quality validation and preprocessing
 - HAllA association testing
 - Stouffer's meta-analysis for p-value combination
 - Multi-omics visualizations
@@ -15,6 +16,11 @@ from fastmcp import FastMCP
 from .config import config
 from .tools.integration import integrate_omics_data_impl
 from .tools.stouffer import calculate_stouffer_meta_impl
+from .tools.preprocessing import (
+    validate_multiomics_data_impl,
+    preprocess_multiomics_data_impl,
+    visualize_data_quality_impl,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -112,6 +118,305 @@ def integrate_omics_data(
         metadata_path=metadata_path,
         normalize=normalize,
         filter_missing=filter_missing,
+    )
+
+
+@mcp.tool()
+def validate_multiomics_data(
+    rna_path: str,
+    protein_path: Optional[str] = None,
+    phospho_path: Optional[str] = None,
+    metadata_path: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Validate multi-omics data quality and consistency before integration.
+
+    Performs comprehensive quality checks including sample name consistency,
+    missing value patterns, batch effect detection, and outlier identification.
+    Critical first step recommended by bioinformaticians before any analysis.
+
+    Args:
+        rna_path: Path to RNA expression data (CSV or TSV, genes x samples)
+        protein_path: Path to protein abundance data (optional)
+        phospho_path: Path to phosphorylation data (optional)
+        metadata_path: Path to sample metadata (optional, must include 'Sample' and 'Batch' columns)
+
+    Returns:
+        Dictionary with:
+        - validation_status: Overall pass/fail/warning status
+        - sample_overlap: Sample name consistency across modalities
+        - missing_patterns: Missing value analysis per modality
+        - batch_effects: Batch effect detection results
+        - outliers: Outlier samples identified
+        - warnings: List of validation warnings
+        - recommendations: Suggested preprocessing steps
+
+    Example:
+        ```
+        result = validate_multiomics_data(
+            rna_path="/data/rna.csv",
+            protein_path="/data/protein.csv",
+            phospho_path="/data/phospho.csv",
+            metadata_path="/data/metadata.csv"
+        )
+        # Returns validation report with batch effect warnings for proteomics
+        ```
+    """
+    logger.info(f"validate_multiomics_data called with rna_path={rna_path}")
+
+    if config.dry_run:
+        # Mock response for testing
+        return {
+            "validation_status": "warning",
+            "sample_overlap": {
+                "rna_samples": 15,
+                "protein_samples": 15 if protein_path else 0,
+                "phospho_samples": 15 if phospho_path else 0,
+                "common_samples": 15,
+                "sample_name_issues": [
+                    "Protein samples use '_' separator, RNA uses '-' separator"
+                ],
+            },
+            "missing_patterns": {
+                "rna": {"total_features": 20000, "features_with_missing": 500, "max_missing_fraction": 0.2},
+                "protein": {"total_features": 7000, "features_with_missing": 2000, "max_missing_fraction": 0.4} if protein_path else None,
+                "phospho": {"total_features": 5000, "features_with_missing": 1500, "max_missing_fraction": 0.35} if phospho_path else None,
+            },
+            "batch_effects": {
+                "detected": True if metadata_path else False,
+                "pc1_batch_correlation": 0.82 if metadata_path else None,
+                "significance": "CRITICAL - PC1 strongly correlates with batch" if metadata_path else None,
+                "batches_found": 2 if metadata_path else None,
+            },
+            "outliers": {
+                "rna_outliers": ["Sample_07"],
+                "protein_outliers": ["Sample_07", "Sample_12"] if protein_path else [],
+                "method": "MAD (Median Absolute Deviation) > 3.0",
+            },
+            "warnings": [
+                "CRITICAL: Batch effects detected in protein data (PC1 correlation: 0.82)",
+                "WARNING: Sample naming inconsistency between modalities",
+                "WARNING: High missing value fraction in protein data (40%)",
+                "INFO: 2 outlier samples detected",
+            ],
+            "recommendations": [
+                "1. Harmonize sample names before integration",
+                "2. Apply batch correction to protein data (critical)",
+                "3. Use KNN imputation for missing values",
+                "4. Consider removing outlier samples: Sample_07, Sample_12",
+            ],
+            "status": "success (DRY_RUN mode)",
+        }
+
+    # Real implementation
+    return validate_multiomics_data_impl(
+        rna_path=rna_path,
+        protein_path=protein_path,
+        phospho_path=phospho_path,
+        metadata_path=metadata_path,
+    )
+
+
+@mcp.tool()
+def preprocess_multiomics_data(
+    rna_path: str,
+    protein_path: Optional[str] = None,
+    phospho_path: Optional[str] = None,
+    metadata_path: Optional[str] = None,
+    normalize_method: str = "quantile",
+    batch_correction: bool = True,
+    imputation_method: str = "knn",
+    outlier_threshold: float = 3.0,
+    output_dir: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Preprocess multi-omics data with normalization, batch correction, and imputation.
+
+    Comprehensive preprocessing pipeline addressing real-world proteomics challenges
+    including batch effects, missing values, and sample name harmonization. Based on
+    bioinformatician feedback from clinical PDX studies.
+
+    Args:
+        rna_path: Path to RNA expression data (CSV or TSV)
+        protein_path: Path to protein abundance data (optional)
+        phospho_path: Path to phosphorylation data (optional)
+        metadata_path: Path to sample metadata with 'Batch' column (required for batch correction)
+        normalize_method: Normalization method - "quantile", "median", "tmm", or "zscore" (default: quantile)
+        batch_correction: Apply batch correction (ComBat method, default: True)
+        imputation_method: Missing value imputation - "knn", "minimum", or "median" (default: knn)
+        outlier_threshold: MAD threshold for outlier detection (default: 3.0)
+        output_dir: Directory to save preprocessed data files
+
+    Returns:
+        Dictionary with:
+        - preprocessed_paths: Paths to preprocessed data files per modality
+        - preprocessing_report: Summary of transformations applied
+        - qc_metrics: Before/after quality metrics
+        - batch_correction_results: PCA variance explained by batch (before/after)
+        - imputation_stats: Number of values imputed per modality
+        - outliers_removed: List of outlier samples removed
+
+    Example:
+        ```
+        result = preprocess_multiomics_data(
+            rna_path="/data/rna.csv",
+            protein_path="/data/protein.csv",
+            metadata_path="/data/metadata.csv",
+            normalize_method="quantile",
+            batch_correction=True,
+            imputation_method="knn",
+            output_dir="/data/preprocessed"
+        )
+        # Returns preprocessed files with batch effects removed
+        ```
+    """
+    logger.info(f"preprocess_multiomics_data called: normalize={normalize_method}, batch_correction={batch_correction}")
+
+    if config.dry_run:
+        # Mock response for testing
+        return {
+            "preprocessed_paths": {
+                "rna": f"{output_dir}/rna_preprocessed.csv" if output_dir else "/data/preprocessed/rna_preprocessed.csv",
+                "protein": f"{output_dir}/protein_preprocessed.csv" if output_dir and protein_path else None,
+                "phospho": f"{output_dir}/phospho_preprocessed.csv" if output_dir and phospho_path else None,
+            },
+            "preprocessing_report": {
+                "steps_applied": [
+                    "1. Sample name harmonization",
+                    f"2. Missing value imputation ({imputation_method})",
+                    "3. Batch correction (ComBat)" if batch_correction else "3. Batch correction (skipped)",
+                    "4. Outlier removal (2 samples)",
+                    f"5. Normalization ({normalize_method})",
+                ],
+                "total_runtime_seconds": 45.2,
+            },
+            "qc_metrics": {
+                "before": {
+                    "samples": 15,
+                    "rna_features": 20000,
+                    "protein_features": 7000 if protein_path else 0,
+                    "missing_values": {"rna": 500, "protein": 2000},
+                },
+                "after": {
+                    "samples": 13,  # 2 outliers removed
+                    "rna_features": 20000,
+                    "protein_features": 7000 if protein_path else 0,
+                    "missing_values": {"rna": 0, "protein": 0},
+                },
+            },
+            "batch_correction_results": {
+                "pc1_batch_correlation_before": 0.82,
+                "pc1_batch_correlation_after": 0.12,
+                "improvement": "Batch effect successfully removed (0.82 → 0.12)",
+                "method": "ComBat",
+            } if batch_correction else None,
+            "imputation_stats": {
+                "rna_values_imputed": 500,
+                "protein_values_imputed": 2000 if protein_path else 0,
+                "phospho_values_imputed": 1500 if phospho_path else 0,
+                "method": imputation_method,
+            },
+            "outliers_removed": ["Sample_07", "Sample_12"],
+            "status": "success (DRY_RUN mode)",
+        }
+
+    # Real implementation
+    return preprocess_multiomics_data_impl(
+        rna_path=rna_path,
+        protein_path=protein_path,
+        phospho_path=phospho_path,
+        metadata_path=metadata_path,
+        normalize_method=normalize_method,
+        batch_correction=batch_correction,
+        imputation_method=imputation_method,
+        outlier_threshold=outlier_threshold,
+        output_dir=output_dir,
+    )
+
+
+@mcp.tool()
+def visualize_data_quality(
+    data_paths: Dict[str, str],
+    metadata_path: Optional[str] = None,
+    output_dir: Optional[str] = None,
+    compare_before_after: bool = False,
+    before_data_paths: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    """Generate quality control visualizations for multi-omics data.
+
+    Creates comprehensive QC plots including PCA, correlation heatmaps, and
+    missing value patterns. Essential for verifying preprocessing effectiveness,
+    especially batch correction results.
+
+    Args:
+        data_paths: Dict of modality -> file path (e.g., {"rna": "/data/rna.csv", "protein": "/data/protein.csv"})
+        metadata_path: Path to sample metadata (for coloring by batch, phenotype)
+        output_dir: Directory to save visualization files (default: current directory)
+        compare_before_after: Generate before/after comparison plots (default: False)
+        before_data_paths: Dict of modality -> file path for before preprocessing (required if compare_before_after=True)
+
+    Returns:
+        Dictionary with:
+        - plot_paths: Paths to generated visualization files
+        - qc_summary: Quality metrics summary
+        - batch_effect_assessment: PC1 correlation with batch variable
+        - recommendations: Interpretation and next steps
+
+    Example:
+        ```
+        result = visualize_data_quality(
+            data_paths={
+                "rna": "/data/rna_preprocessed.csv",
+                "protein": "/data/protein_preprocessed.csv"
+            },
+            metadata_path="/data/metadata.csv",
+            output_dir="/plots",
+            compare_before_after=True,
+            before_data_paths={
+                "rna": "/data/rna_raw.csv",
+                "protein": "/data/protein_raw.csv"
+            }
+        )
+        # Generates PCA plots showing batch effect removal (0.82 → 0.12)
+        ```
+    """
+    logger.info(f"visualize_data_quality called with {len(data_paths)} modalities")
+
+    if config.dry_run:
+        # Mock response for testing
+        return {
+            "plot_paths": {
+                "pca_plot": f"{output_dir}/pca_analysis.png" if output_dir else "/plots/pca_analysis.png",
+                "correlation_heatmap": f"{output_dir}/sample_correlation.png" if output_dir else "/plots/sample_correlation.png",
+                "missing_values": f"{output_dir}/missing_values.png" if output_dir else "/plots/missing_values.png",
+                "before_after_comparison": f"{output_dir}/before_after_pca.png" if compare_before_after else None,
+            },
+            "qc_summary": {
+                "total_samples": 13,
+                "modalities_analyzed": list(data_paths.keys()),
+                "pca_variance_pc1": 0.42,
+                "pca_variance_pc2": 0.23,
+                "sample_clustering": "Clear separation by treatment response",
+            },
+            "batch_effect_assessment": {
+                "pc1_batch_correlation": 0.12,
+                "status": "PASS - Batch effects minimal (r < 0.3)",
+                "interpretation": "Batch correction successful. PC1 now reflects biological variation, not technical batch.",
+            } if metadata_path else None,
+            "recommendations": [
+                "✓ Batch effects successfully removed (PC1 correlation: 0.12)",
+                "✓ Sample clustering shows clear biological grouping",
+                "→ Data is ready for downstream analysis (HAllA, Stouffer's)",
+                "→ Proceed with integrate_omics_data tool",
+            ],
+            "status": "success (DRY_RUN mode)",
+        }
+
+    # Real implementation
+    return visualize_data_quality_impl(
+        data_paths=data_paths,
+        metadata_path=metadata_path,
+        output_dir=output_dir,
+        compare_before_after=compare_before_after,
+        before_data_paths=before_data_paths,
     )
 
 
