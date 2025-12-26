@@ -21,6 +21,7 @@ from .tools.preprocessing import (
     preprocess_multiomics_data_impl,
     visualize_data_quality_impl,
 )
+from .tools.halla import run_halla_analysis_impl
 
 # Configure logging
 logging.basicConfig(
@@ -427,25 +428,35 @@ def run_halla_analysis(
     modality2: str,
     fdr_threshold: float = 0.05,
     method: str = "spearman",
+    chunk_size: int = 1000,
+    use_r_halla: bool = False,
 ) -> Dict[str, Any]:
     """Run HAllA hierarchical all-against-all association testing.
 
     Tests associations between features from two omics modalities using
-    hierarchical clustering and statistical testing.
+    hierarchical clustering and statistical testing. Implements chunking
+    strategy for large datasets based on bioinformatician feedback.
+
+    **IMPORTANT**: Returns NOMINAL p-values (not FDR-corrected).
+    Apply FDR correction AFTER Stouffer's meta-analysis, not before.
 
     Args:
         data_path: Path to integrated multi-omics data (from integrate_omics_data)
         modality1: First modality ("rna", "protein", or "phospho")
         modality2: Second modality ("rna", "protein", or "phospho")
-        fdr_threshold: FDR cutoff for significant associations (default: 0.05)
+        fdr_threshold: FDR threshold for reference only (p-values returned are NOMINAL)
         method: Correlation method - "spearman", "pearson", or "mi" (mutual information)
+        chunk_size: Features per chunk (default: 1000, ~5 min/chunk vs days for full dataset)
+        use_r_halla: Use R-based HAllA if available (default: False, use Python alternative)
 
     Returns:
         Dictionary with:
-        - associations: List of significant feature pairs
+        - associations: List of feature pairs with NOMINAL p-values
+        - chunks_processed: Chunking strategy information
         - clusters: Hierarchical cluster assignments
-        - statistics: p-values, q-values, effect sizes
-        - plot_data: Data for association heatmap
+        - statistics: Summary statistics
+        - nominal_p_values: Flag indicating p-values are NOMINAL
+        - recommendation: "Apply FDR after Stouffer's"
 
     Example:
         ```
@@ -453,13 +464,17 @@ def run_halla_analysis(
             data_path="/workspace/cache/integrated_data.pkl",
             modality1="rna",
             modality2="protein",
-            fdr_threshold=0.05,
+            chunk_size=1000,
             method="spearman"
         )
-        # Returns 47 significant RNA-Protein associations
+        # Returns associations with NOMINAL p-values for Stouffer's meta-analysis
+        # Full dataset: 20K RNA × 7K protein = 140M tests (would take days)
+        # Chunked: 1000 features/chunk = ~5 min/chunk
         ```
     """
     logger.info(f"run_halla_analysis called: {modality1} vs {modality2}")
+    logger.info(f"Chunk size: {chunk_size} features (~5 min/chunk)")
+    logger.info(f"IMPORTANT: Returns NOMINAL p-values for Stouffer's meta-analysis")
 
     if config.dry_run:
         # Mock response
@@ -469,11 +484,16 @@ def run_halla_analysis(
                     "feature1": f"{modality1}_gene_{i}",
                     "feature2": f"{modality2}_protein_{i}",
                     "correlation": 0.75 + (i * 0.01),
-                    "p_value": 0.001 / (i + 1),
-                    "q_value": 0.01 / (i + 1),
+                    "p_value_nominal": 0.001 / (i + 1),  # Explicitly labeled as NOMINAL
+                    "chunk_id": i // chunk_size,
                 }
                 for i in range(1, 48)
             ],
+            "chunks_processed": {
+                "total_chunks": 3,
+                "chunk_size": chunk_size,
+                "strategy": "1000 features per chunk = ~5 min each (not days)",
+            },
             "clusters": {
                 "modality1_clusters": 5,
                 "modality2_clusters": 4,
@@ -481,19 +501,25 @@ def run_halla_analysis(
             },
             "statistics": {
                 "method": method,
-                "fdr_threshold": fdr_threshold,
-                "significant_pairs": 47,
-                "total_tests": 500000,
+                "total_associations_tested": 500000,
+                "significant_associations": 47,
+                "p_value_type": "NOMINAL (FDR should be applied AFTER Stouffer's)",
             },
-            "plot_data": {
-                "heatmap_ready": True,
-                "dendrogram_ready": True,
-            },
+            "nominal_p_values": True,
+            "recommendation": "Apply FDR correction after Stouffer's meta-analysis, not before",
             "status": "success (DRY_RUN mode)",
         }
 
-    # TODO: Implement R interface with rpy2
-    raise NotImplementedError("HAllA analysis not yet implemented")
+    # Real implementation
+    return run_halla_analysis_impl(
+        data_path=data_path,
+        modality1=modality1,
+        modality2=modality2,
+        fdr_threshold=fdr_threshold,
+        method=method,
+        chunk_size=chunk_size,
+        use_r_halla=use_r_halla,
+    )
 
 
 @mcp.tool()
