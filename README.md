@@ -12,7 +12,7 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 **Transform clinical decision-making with AI-orchestrated bioinformatics**
 - Analyze complete patient profiles—from genomics to spatial transcriptomics—using natural language
 - Demonstrate end-to-end precision medicine workflows for Stage IV Ovarian Cancer across 9 specialized MCP servers and 40 tools
-- Named 'Patient-One' in memory of a dear friend who passed away in 2025 of this deadly disease
+- Named 'Patient-One' in memory of a dear friend who passed away in 2025 due to HGSOC
 
 ---
 
