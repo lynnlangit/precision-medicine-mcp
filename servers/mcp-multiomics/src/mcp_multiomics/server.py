@@ -22,6 +22,7 @@ from .tools.preprocessing import (
     visualize_data_quality_impl,
 )
 from .tools.halla import run_halla_analysis_impl
+from .tools.upstream_regulators import predict_upstream_regulators_impl
 
 # Configure logging
 logging.basicConfig(
@@ -771,6 +772,170 @@ def run_multiomics_pca(
 
     # TODO: Implement PCA analysis
     raise NotImplementedError("PCA analysis not yet implemented")
+
+
+@mcp.tool()
+def predict_upstream_regulators(
+    differential_genes: Dict[str, Dict[str, float]],
+    regulator_types: Optional[List[str]] = None,
+    fdr_threshold: float = 0.05,
+    activation_zscore_threshold: float = 2.0,
+) -> Dict[str, Any]:
+    """Predict upstream regulators from differential expression data.
+
+    Identifies kinases, transcription factors, and drugs that may regulate
+    observed expression changes. Provides similar insights to IPA's Upstream
+    Regulator Analysis using enrichment-based methods.
+
+    **Key Insights** (per bioinformatician feedback):
+    - **Kinases**: Identifies activated/inhibited protein kinases regulating phosphorylation
+    - **Transcription Factors**: Finds TFs driving gene expression changes
+    - **Drug Responses**: Predicts compounds that could modulate observed pathways
+
+    Method:
+    1. Enrichment test (Fisher's exact) - are regulator targets enriched in DEGs?
+    2. Activation Z-score - based on target expression direction
+    3. FDR correction across all regulators
+    4. Rank by significance and activation strength
+
+    Args:
+        differential_genes: Dict of gene -> {"log2fc": float, "p_value": float}
+                           Should be significantly differential genes (e.g., from Stouffer's)
+        regulator_types: List of ["kinase", "transcription_factor", "drug"]
+                        (default: all types)
+        fdr_threshold: FDR threshold for significant regulators (default: 0.05)
+        activation_zscore_threshold: |Z-score| threshold for activation/inhibition
+                                     (default: 2.0, ~p < 0.05)
+
+    Returns:
+        Dictionary with:
+        - kinases: List of predicted kinases with activation state
+        - transcription_factors: List of predicted TFs with activation state
+        - drugs: List of predicted drug responses
+        - statistics: Summary statistics (counts, methods)
+        - method: Enrichment method details
+        - recommendation: Top therapeutic recommendation
+
+    Example:
+        ```
+        # After Stouffer's meta-analysis identified significant genes
+        result = predict_upstream_regulators(
+            differential_genes={
+                "AKT1": {"log2fc": 2.5, "p_value": 0.0001},
+                "MTOR": {"log2fc": 1.8, "p_value": 0.001},
+                "TP53": {"log2fc": -2.1, "p_value": 0.0005},
+                "MYC": {"log2fc": 2.3, "p_value": 0.0002},
+                # ... more significant genes
+            },
+            regulator_types=["kinase", "transcription_factor", "drug"]
+        )
+        # Returns:
+        # - Kinases: AKT1 (Activated, Z=3.2), MTOR (Activated, Z=2.8)
+        # - TFs: TP53 (Inhibited, Z=-3.5), MYC (Activated, Z=3.1)
+        # - Drugs: Alpelisib (PI3K inhibitor, targets activated pathway)
+        ```
+    """
+    logger.info(f"predict_upstream_regulators called with {len(differential_genes)} genes")
+
+    if config.dry_run:
+        # Mock response
+        return {
+            "kinases": [
+                {
+                    "name": "AKT1",
+                    "activation_state": "Activated",
+                    "z_score": 3.2,
+                    "p_value": 0.0001,
+                    "q_value": 0.001,
+                    "targets_in_dataset": 5,
+                    "targets_consistent": 4,
+                },
+                {
+                    "name": "MTOR",
+                    "activation_state": "Activated",
+                    "z_score": 2.8,
+                    "p_value": 0.0005,
+                    "q_value": 0.003,
+                    "targets_in_dataset": 4,
+                    "targets_consistent": 3,
+                },
+                {
+                    "name": "GSK3B",
+                    "activation_state": "Inhibited",
+                    "z_score": -2.5,
+                    "p_value": 0.001,
+                    "q_value": 0.005,
+                    "targets_in_dataset": 4,
+                    "targets_consistent": 3,
+                },
+            ],
+            "transcription_factors": [
+                {
+                    "name": "TP53",
+                    "activation_state": "Inhibited",
+                    "z_score": -3.5,
+                    "p_value": 0.00005,
+                    "q_value": 0.0005,
+                    "targets_in_dataset": 6,
+                    "targets_consistent": 5,
+                },
+                {
+                    "name": "MYC",
+                    "activation_state": "Activated",
+                    "z_score": 3.1,
+                    "p_value": 0.0002,
+                    "q_value": 0.002,
+                    "targets_in_dataset": 5,
+                    "targets_consistent": 4,
+                },
+            ],
+            "drugs": [
+                {
+                    "name": "Alpelisib",
+                    "prediction": "Inhibits pathway",
+                    "z_score": -2.9,
+                    "p_value": 0.0003,
+                    "q_value": 0.002,
+                    "targets_in_dataset": 4,
+                    "mechanism": "PI3K inhibitor",
+                },
+                {
+                    "name": "Everolimus",
+                    "prediction": "Inhibits pathway",
+                    "z_score": -2.6,
+                    "p_value": 0.0008,
+                    "q_value": 0.004,
+                    "targets_in_dataset": 3,
+                    "mechanism": "mTOR inhibitor",
+                },
+            ],
+            "statistics": {
+                "total_genes_analyzed": len(differential_genes),
+                "kinases_tested": 10,
+                "tfs_tested": 10,
+                "drugs_tested": 8,
+                "significant_kinases": 3,
+                "significant_tfs": 2,
+                "significant_drugs": 2,
+                "method": "Fisher's exact test + activation Z-score",
+                "fdr_method": "Benjamini-Hochberg",
+            },
+            "method": {
+                "enrichment_test": "Fisher's exact test (one-sided)",
+                "activation_score": "Z-score based on target expression direction",
+                "interpretation": "Positive Z-score = Activated, Negative = Inhibited",
+            },
+            "recommendation": "Focus on Alpelisib (PI3K inhibitor) - targets activated AKT/mTOR pathway",
+            "status": "success (DRY_RUN mode)",
+        }
+
+    # Real implementation
+    return predict_upstream_regulators_impl(
+        differential_genes=differential_genes,
+        regulator_types=regulator_types,
+        fdr_threshold=fdr_threshold,
+        activation_zscore_threshold=activation_zscore_threshold,
+    )
 
 
 # ============================================================================
