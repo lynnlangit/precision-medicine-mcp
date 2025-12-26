@@ -9,9 +9,9 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 
 ## Statement of Purpose
 
-**Transform clinical decision-making with AI-orchestrated bioinformatics**  
-- Analyze complete patient profiles—from genomics to spatial transcriptomics—using natural language   
-- Demonstate using an end-to-end precision medicine workflows for Stage IV Ovarian Cancer across 9 specialized MCP servers and 36 tools
+**Transform clinical decision-making with AI-orchestrated bioinformatics**
+- Analyze complete patient profiles—from genomics to spatial transcriptomics—using natural language
+- Demonstrate end-to-end precision medicine workflows for Stage IV Ovarian Cancer across 9 specialized MCP servers and 40 tools
 - Named 'Patient-One' in memory of a dear friend who passed away in 2025 of this deadly disease
 
 ---
@@ -129,10 +129,14 @@ Query patient PAT001 clinical records → extract genomic variants from VCF → 
 
 ### Multiomics & Clinical Tools
 
-**9. MultiOmics - Multi-Omics Integration (5 tools)**
+**9. MultiOmics - Multi-Omics Integration (9 tools)**
+- `validate_multiomics_data` - Quality validation before analysis (batch effects, missing values)
+- `preprocess_multiomics_data` - Batch correction, imputation, normalization
+- `visualize_data_quality` - QC plots (PCA, correlation, before/after comparison)
 - `integrate_omics_data` - Integrate RNA, protein, and phosphorylation data
 - `run_halla_analysis` - HAllA hierarchical all-against-all association testing
 - `calculate_stouffer_meta` - Combine p-values across omics modalities
+- `predict_upstream_regulators` - Identify kinases, TFs, and drug targets
 - `create_multiomics_heatmap` - Create integrated heatmap visualization
 - `run_multiomics_pca` - PCA on integrated multi-omics data
 
@@ -148,7 +152,7 @@ Query patient PAT001 clinical records → extract genomic variants from VCF → 
 - `link_spatial_to_clinical` - Connect spatial data to clinical outcomes
 - `search_diagnoses` - Query ICD-10 diagnosis codes
 
-**Total: 9 servers, 36 tools**
+**Total: 9 servers, 40 tools**
 
 ---
 
@@ -158,8 +162,8 @@ IMPORTANT: In this POC all MCP servers are running locally and are expected to u
 
 ```bash
 # Install (5 min)
-git clone https://github.com/lynnlangit/precision-medicine-mcp.git
-cd precision-medicine-mcp/manual_testing
+git clone https://github.com/lynnlangit/spatial-mcp.git
+cd spatial-mcp/manual_testing
 ./install_dependencies.sh
 
 # Configure Claude Desktop to use the custom MCP Servers

@@ -52,7 +52,7 @@ How do we integrate:
 - Available therapeutic options
 
 **Traditional Approach:** Weeks of custom scripts, multiple software tools, manual data wrangling, siloed analysis
-**PatientOne with MCP:** Conversational requests that orchestrate 36 tools across 9 servers automatically
+**PatientOne with MCP:** Conversational requests that orchestrate 40 tools across 9 servers automatically
 
 ---
 
@@ -220,7 +220,7 @@ All synthetic patient data located in: `/data/patient-data/PAT001-OVC-2025/`
 
 ### For Developers (`patient-one-outputs/for-developer/`)
 - **MCP_Report_PAT001.pdf:** Technical validation report showing all MCP server calls, data flows, and integration points
-- **MCP_Servers_Reference_Guide.pdf:** Complete documentation of 9 servers and 36 tools used
+- **MCP_Servers_Reference_Guide.pdf:** Complete documentation of 9 servers and 40 tools used
 - **Full_Test_Prompt.pdf:** End-to-end prompt that reproduces entire analysis
 
 ### For Care Teams (`patient-one-outputs/for-care-team/`)
