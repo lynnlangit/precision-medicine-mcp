@@ -21,7 +21,10 @@ def setup_test_env(tmp_path, monkeypatch):
 
     monkeypatch.setattr(config, "cache_dir", cache_dir)
     monkeypatch.setattr(config, "data_dir", data_dir)
-    monkeypatch.setattr(config, "dry_run", False)
+    # Set dry_run based on environment variable (default to True for tests)
+    dry_run_env = os.getenv('MULTIOMICS_DRY_RUN', 'true')
+    dry_run_value = dry_run_env.lower() not in ('false', '0', 'no', 'off', '')
+    monkeypatch.setattr(config, "dry_run", dry_run_value)
 
     yield {
         "cache_dir": cache_dir,
