@@ -20,6 +20,8 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 
 **Comprehensive Precision Medicine Workflow for Stage IV Ovarian Cancer**
 
+<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
+
 PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a complete patient profile:
 
 **Patient Profile (Synthetic):**
@@ -43,8 +45,6 @@ PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a c
 **Try PatientOne:** [Quick Start Guide →](manual_testing/PatientOne-OvarianCancer/README.md)  
 **Architecture Details:** [PatientOne Documentation →](architecture/patient-one/README.md)  
 **Outputs Generated:** [For developers, care teams, and patients →](architecture/patient-one/patient-one-outputs/)  
-
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
 
 ---
 
