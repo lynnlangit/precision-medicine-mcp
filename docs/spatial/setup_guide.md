@@ -1,6 +1,8 @@
-# Spatial MCP POC - Setup Guide
+# Spatial Transcriptomics Setup Guide - Precision Medicine MCP
 
-Complete setup guide for the Spatial Transcriptomics MCP demonstration.
+Complete setup guide for the Spatial Transcriptomics component of the Precision Medicine MCP suite.
+
+**Part of the Precision Medicine MCP suite.** This guide covers spatial transcriptomics setup. For the complete precision medicine workflow including genomics, multiomics, and imaging, see [PatientOne Quick Start](../../manual_testing/PatientOne-OvarianCancer/README.md).
 
 ## Table of Contents
 
@@ -40,8 +42,8 @@ git --version
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/spatial-mcp.git
-cd spatial-mcp
+git clone https://github.com/lynnlangit/precision-medicine-mcp.git
+cd precision-medicine-mcp
 ```
 
 ### 2. Run Setup Script
@@ -83,16 +85,18 @@ Launch Claude Desktop. It will automatically connect to the configured MCP serve
 The setup script creates the following structure:
 
 ```
-spatial-mcp/
+precision-medicine-mcp/
 ├── data/
 │   ├── reference/          # Reference genomes (will be populated)
+│   ├── patient-data/       # PatientOne synthetic data
 │   ├── test_data/          # Small test datasets
 │   └── cache/              # Temporary files and caches
 ├── servers/
 │   ├── mcp-fgbio/          # Genomic reference data server
-│   ├── mcp-tcga/           # TCGA data server (future)
-│   ├── mcp-spatialtools/   # Spatial processing server (future)
-│   └── ... (other servers)
+│   ├── mcp-tcga/           # TCGA data server
+│   ├── mcp-spatialtools/   # Spatial processing server
+│   ├── mcp-multiomics/     # Multi-omics integration server
+│   └── ... (6 more servers - 9 total)
 └── configs/
     └── claude_desktop_config.json
 ```

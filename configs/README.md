@@ -1,6 +1,6 @@
 # Claude Desktop Configuration Files
 
-This folder contains configuration files for connecting Claude Desktop to the Spatial MCP servers.
+This folder contains configuration files for connecting Claude Desktop to the Precision Medicine MCP servers.
 
 ---
 

@@ -9,9 +9,14 @@ description = "MCP server for TCGA cancer genomics data integration"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    {name = "Spatial MCP Team", email = "team@spatial-mcp.org"}
+    {name = "Precision Medicine MCP Team", email = "team@precision-medicine-mcp.org"}
 ]
 license = {text = "Apache-2.0"}
+
+[project.urls]
+Homepage = "https://github.com/lynnlangit/precision-medicine-mcp"
+Issues = "https://github.com/lynnlangit/precision-medicine-mcp/issues"
+Documentation = "https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs"
 keywords = ["mcp", "tcga", "cancer genomics", "bioinformatics"]
 classifiers = [
     "Development Status :: 4 - Beta",

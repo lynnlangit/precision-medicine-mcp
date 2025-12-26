@@ -360,4 +360,4 @@ See the main repository LICENSE file.
 
 ---
 
-**Built for the Spatial MCP POC - Phase 3**
+**Built for the Precision Medicine MCP suite** (key component of the [PatientOne](../../architecture/patient-one/README.md) precision medicine workflow)

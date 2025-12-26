@@ -368,7 +368,7 @@ See the main repository LICENSE file.
 
 ## Related Servers
 
-Part of the Spatial MCP POC demonstration:
+Part of the Precision Medicine MCP suite (demonstrated in [PatientOne](../../architecture/patient-one/README.md) workflow):
 
 - **mcp-tcga** - TCGA cancer genomics data
 - **mcp-spatialtools** - Spatial transcriptomics processing

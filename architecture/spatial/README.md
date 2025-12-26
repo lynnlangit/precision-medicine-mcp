@@ -1,14 +1,16 @@
-# Spatial MCP Demonstration POC - Architecture Document
+# Spatial Transcriptomics Component - Precision Medicine MCP
 
-**Version:** 1.0  
-**Date:** October 24, 2025  
-**Status:** Draft for Review
+**Version:** 1.0
+**Date:** October 24, 2025
+**Status:** Production Component
 
 ---
 
 ## Executive Summary
 
-This document outlines the architecture for a Proof of Concept (POC) that demonstrates the use of Model Context Protocol (MCP) servers in a spatial transcriptomics bioinformatics workflow. The system will process spatial protein expression data through multiple stages, leveraging AI-driven orchestration via MCP to coordinate specialized bioinformatics tools.
+This document outlines the architecture for the **Spatial Transcriptomics** component of the Precision Medicine MCP servers. This workflow processes spatial protein expression data through multiple stages, leveraging AI-driven orchestration via MCP to coordinate specialized bioinformatics tools.
+
+**This workflow is one component of comprehensive precision medicine analysis.** See [PatientOne](../patient-one/README.md) for the integrated example that combines spatial transcriptomics with genomic, multiomics, clinical, and imaging data.
 
 ### Key Objectives
 - Demonstrate MCP's capability to orchestrate complex bioinformatics workflows

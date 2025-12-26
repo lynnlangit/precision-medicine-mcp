@@ -1,12 +1,14 @@
 # mcp-multiomics Documentation
 
-This directory contains all documentation related to the **mcp-multiomics** server, the 9th MCP server in the Spatial MCP project.
+This directory contains all documentation related to the **mcp-multiomics** server, the 9th MCP server in the Precision Medicine MCP suite.
 
 ---
 
 ## Overview
 
 **mcp-multiomics** is a Model Context Protocol (MCP) server for multi-omics Patient-Derived Xenograft (PDX) data analysis. It provides tools for integrating and analyzing RNA, Protein, and Phosphorylation data using statistical meta-analysis methods.
+
+**Part of the Precision Medicine MCP suite:** This server is a key component of comprehensive precision medicine workflows, demonstrated in the [PatientOne](../../architecture/patient-one/README.md) example where it identifies treatment resistance mechanisms in Stage IV Ovarian Cancer.
 
 ### Key Features
 

@@ -7,11 +7,16 @@ name = "mcp-multiomics"
 version = "0.1.0"
 description = "MCP server for multi-omics PDX data analysis with HAllA and Stouffer's meta-analysis"
 authors = [
-    {name = "Spatial MCP Team"}
+    {name = "Precision Medicine MCP Team"}
 ]
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "Apache-2.0"}
+
+[project.urls]
+Homepage = "https://github.com/lynnlangit/precision-medicine-mcp"
+Issues = "https://github.com/lynnlangit/precision-medicine-mcp/issues"
+Documentation = "https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs"
 
 dependencies = [
     "fastmcp>=0.1.0",

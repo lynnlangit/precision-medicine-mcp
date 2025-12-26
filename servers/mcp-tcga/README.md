@@ -268,4 +268,4 @@ pytest -v -k "test_query_cohorts"
 
 ---
 
-**Built for the Spatial MCP POC**
+**Built for the Precision Medicine MCP suite** (demonstrated in [PatientOne](../../architecture/patient-one/README.md) workflow)
