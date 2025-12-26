@@ -74,7 +74,7 @@ Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, 
 Combine using Stouffer's method with directionality and FDR correction.
 ```
 
-[Multiomics Architecture →](architecture/multiomics/README.md) | [Detailed Guide →](docs/multiomics/README.md)
+[Multiomics Architecture →](architecture/multiomics/README.md) | [Detailed Guide →](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/architecture/multiomics/multiomics-docs)
 
 ### 3. Clinical-Genomic Analysis
 Link patient EHR data with genomic variants, compare to TCGA cohorts, identify molecular subtypes
