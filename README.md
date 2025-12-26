@@ -60,7 +60,7 @@ Process 10x Visium spatial RNA-seq: tissue segmentation → alignment → quanti
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
-[Spatial Architecture →](architecture/spatial/README.md) | [18 Example Prompts →](docs/spatial/MCP_POC_Example_Prompts.md)
+[Spatial Architecture →](architecture/spatial/README.md) | [18 Example Prompts →](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/spatial/spatial-docs/MCP_POC_Example_Prompts.md)
 
 ### 2. Multiomics Integration
 Integrate RNA, protein, and phosphorylation data using HAllA association testing and Stouffer's meta-analysis
