@@ -531,29 +531,47 @@ def calculate_stouffer_meta(
 ) -> Dict[str, Any]:
     """Combine p-values across omics modalities using Stouffer's Z-score method.
 
-    Performs meta-analysis by converting p-values to Z-scores, combining them,
-    and computing meta p-values. Optionally incorporates effect size directionality.
+    **CRITICAL WORKFLOW** (per bioinformatician feedback):
+    This tool implements the CORRECT FDR timing for multi-omics meta-analysis:
+
+    Step 1: HAllA returns NOMINAL p-values (p_value_nominal)
+    Step 2: THIS TOOL combines nominal p-values → meta_p_values
+    Step 3: THIS TOOL applies FDR correction → q_values
+
+    **USE q_values (not meta_p_values) for significance calls!**
+
+    Stouffer's method:
+    1. Convert NOMINAL p-values to Z-scores (with directionality from effect sizes)
+    2. Combine Z-scores using weighted average
+    3. Convert back to meta p-values (still nominal)
+    4. Apply Benjamini-Hochberg FDR correction → q-values
 
     Args:
-        p_values_dict: Dict of modality -> list of p-values (one per feature)
-        effect_sizes_dict: Dict of modality -> list of effect sizes (log2FC or correlation)
-        weights: Dict of modality -> weight (default: equal weights or by sample size)
-        use_directionality: Incorporate effect size sign into Z-scores
+        p_values_dict: Dict of modality -> list of NOMINAL p-values
+                       (e.g., from run_halla_analysis with p_value_nominal)
+        effect_sizes_dict: Dict of modality -> list of effect sizes
+                          (log2FC, correlation) for directionality
+        weights: Dict of modality -> weight (default: equal weights)
+        use_directionality: Incorporate effect size sign into Z-scores (default: True)
 
     Returns:
         Dictionary with:
-        - meta_p_values: Combined p-values per feature
-        - meta_z_scores: Combined Z-scores
-        - significant_features: Features passing FDR threshold
-        - statistics: Summary statistics and diagnostics
+        - meta_p_values: Combined p-values (NOMINAL, before FDR)
+        - meta_z_scores: Combined Z-scores with directionality
+        - q_values: FDR-corrected p-values (USE THESE for significance)
+        - significant_features: Features passing FDR threshold with details
+        - statistics: Summary including workflow_confirmation
+        - p_value_types: Clarifies which values are nominal vs FDR-corrected
+        - recommendation: "Use q_values for significance"
 
     Example:
         ```
+        # After running HAllA analysis (which returns NOMINAL p-values)
         result = calculate_stouffer_meta(
             p_values_dict={
-                "rna": [0.001, 0.05, 0.3],
-                "protein": [0.002, 0.04, 0.25],
-                "phospho": [0.01, 0.06, 0.28]
+                "rna": [0.001, 0.05, 0.3],      # NOMINAL p-values from HAllA
+                "protein": [0.002, 0.04, 0.25],  # NOMINAL p-values from HAllA
+                "phospho": [0.01, 0.06, 0.28]    # NOMINAL p-values from HAllA
             },
             effect_sizes_dict={
                 "rna": [2.5, 1.2, -0.3],
@@ -562,7 +580,8 @@ def calculate_stouffer_meta(
             },
             use_directionality=True
         )
-        # Returns meta p-values and identifies 2 significant features
+        # Returns: meta_p_values (nominal) and q_values (FDR-corrected)
+        # Use: result['q_values'] for identifying significant features
         ```
     """
     logger.info(f"calculate_stouffer_meta called with {len(p_values_dict)} modalities")
@@ -573,6 +592,7 @@ def calculate_stouffer_meta(
         return {
             "meta_p_values": [0.0001, 0.02, 0.35][:n_features],
             "meta_z_scores": [3.72, 2.33, 0.93][:n_features],
+            "q_values": [0.0003, 0.04, 0.7][:n_features],
             "significant_features": [
                 {
                     "feature_index": 0,
@@ -599,7 +619,20 @@ def calculate_stouffer_meta(
                 "fdr_threshold": config.fdr_threshold,
                 "directionality_used": use_directionality,
                 "weights_used": weights is not None,
+                "modalities": list(p_values_dict.keys()),
+                "workflow_confirmation": {
+                    "step_1": "Input NOMINAL p-values (from HAllA)",
+                    "step_2": "Combined p-values using Stouffer's method",
+                    "step_3": "Applied FDR correction AFTER combination",
+                    "fdr_method": "Benjamini-Hochberg",
+                    "note": "This is the CORRECT workflow per bioinformatician feedback",
+                },
             },
+            "p_value_types": {
+                "meta_p_values": "NOMINAL (combined, before FDR)",
+                "q_values": "FDR-CORRECTED (use these for significance)",
+            },
+            "recommendation": "Use q_values (not meta_p_values) for identifying significant features",
             "status": "success (DRY_RUN mode)",
         }
 
