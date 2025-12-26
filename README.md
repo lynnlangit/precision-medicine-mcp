@@ -7,16 +7,12 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 [![Claude Desktop](https://img.shields.io/badge/Claude-Desktop-orange.svg)](https://claude.ai/download)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-## What's In It For You?
+## Statement of Purpose
 
-**Transform clinical decision-making with AI-orchestrated bioinformatics.**
-Analyze complete patient profiles—from genomics to spatial transcriptomics—using natural language. PatientOne demonstrates end-to-end precision medicine workflows for Stage IV Ovarian Cancer across 9 specialized MCP servers and 36 tools.
-
-**Key Benefits:**
-- ✅ Replace bash (or workflow) scripts with **conversational requests**
-- ✅ Integrate 5 data modalities: Clinical, Genomic, Multiomics, Spatial, Imaging
-- ✅ Reproducible by default - logged, versioned, repeatable
-- ✅ Modular architecture - add tools **without** rewriting pipelines
+**Transform clinical decision-making with AI-orchestrated bioinformatics**  
+- Analyze complete patient profiles—from genomics to spatial transcriptomics—using natural language   
+- Demonstate using an end-to-end precision medicine workflows for Stage IV Ovarian Cancer across 9 specialized MCP servers and 36 tools
+- Named 'Patient-One' in memory of a dear friend who passed away in 2025 of this deadly disease
 
 ---
 
@@ -44,9 +40,9 @@ PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a c
 - High proliferation (Ki67+) in tumor core regions
 - Actionable targets: PIK3CA inhibitors, immune checkpoint combinations
 
-**Try PatientOne:** [Quick Start Guide →](manual_testing/PatientOne-OvarianCancer/README.md)
-**Architecture Details:** [PatientOne Documentation →](architecture/patient-one/README.md)
-**Outputs Generated:** [For developers, care teams, and patients →](architecture/patient-one/patient-one-outputs/)
+**Try PatientOne:** [Quick Start Guide →](manual_testing/PatientOne-OvarianCancer/README.md)  
+**Architecture Details:** [PatientOne Documentation →](architecture/patient-one/README.md)  
+**Outputs Generated:** [For developers, care teams, and patients →](architecture/patient-one/patient-one-outputs/)  
 
 <kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
 
