@@ -6,11 +6,12 @@ See each subfolder for architectures. See also main Repo README.md for list of t
 
 ### 1) Multiomics (custom mcp servers + tools)
 
-**Purpose:** PDX multi-omics data integration with Stouffer's meta-analysis
+**Purpose:** PDX multi-omics data integration with preprocessing, association testing, and therapeutic target prediction
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    MULTIOMICS WORKFLOW ARCHITECTURE                      │
+│         MULTIOMICS WORKFLOW ARCHITECTURE (9 tools)                       │
+│         Enhanced with bioinformatician feedback (2025)                   │
 └─────────────────────────────────────────────────────────────────────────┘
 
                          Claude Desktop (MCP Host)
@@ -21,11 +22,17 @@ See each subfolder for architectures. See also main Repo README.md for list of t
          ┌──────────────────────┐        ┌──────────────────────┐
          │  mcp-multiomics      │        │  mcp-mockepic        │
          │  ─────────────────   │        │  ───────────────     │
-         │  • Data Integration  │        │  • Patient Data      │
-         │  • HAllA Analysis    |
-         │  • P-to-Z (signed)   |           • Clinical Metadata │
-         │  • Stouffer's Meta   │        └──────────────────────┘
-         │  • FDR Correction    │
+         │  PREPROCESSING:      │        │  • Patient Data      │
+         │  • Validate Data ⭐  │        │  • Clinical Metadata │
+         │  • Batch Correction  │        │  • Batch Info        │
+         │  • KNN Imputation    │        └──────────────────────┘
+         │  • QC Visualization  │
+         │                      │
+         │  ANALYSIS:           │
+         │  • Data Integration  │
+         │  • HAllA (chunked)   │
+         │  • Stouffer's Meta   │
+         │  • Upstream Regs ⭐  │
          │  • Visualizations    │
          └──────────┬───────────┘
                     │
@@ -35,23 +42,58 @@ See each subfolder for architectures. See also main Repo README.md for list of t
 ┌────────┐    ┌──────────┐         ┌────────────┐
 │  RNA   │    │ Protein  │         │  Phospho   │
 │  Data  │    │   Data   │         │    Data    │
+│ (raw)  │    │ (raw)    │         │   (raw)    │
 └────────┘    └──────────┘         └────────────┘
     │               │                       │
+    │  STEP 1: VALIDATE (batch effects, missing values)
     └───────────────┼───────────────────────┘
                     │
-            ┌───────▼────────┐
-            │  HAllA Analysis│
-            │  (per modality)│
-            └───────┬────────┘
-                    │
-              P-to-Z
          ┌──────────▼──────────┐
-         │  Stouffer's Method...  │
-         │  (meta-analysis)    │
-         │  • p-value combine  │
+         │  Data Validation ⭐ │
+         │  • Batch detection  │
+         │  • Missing patterns │
+         │  • Outliers         │
          └──────────┬──────────┘
                     │
-             FDR Correction
+         ┌──────────▼──────────┐
+         │  Preprocessing ⭐   │
+         │  • ComBat batch cor │
+         │  • KNN imputation   │
+         │  • Normalization    │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  QC Visualization ⭐│
+         │  • PCA before/after │
+         │  • Verify batch fix │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  Data Integration   │
+         │  • Align samples    │
+         │  • Normalize        │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  HAllA Analysis     │
+         │  • Chunked (1000)   │
+         │  • NOMINAL p-values │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  Stouffer's Meta    │
+         │  • Combine p-values │
+         │  • FDR AFTER ✓      │
+         │  • Directionality   │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  Upstream Regs ⭐   │
+         │  • Kinases          │
+         │  • TFs              │
+         │  • Drug targets     │
+         └──────────┬──────────┘
+                    │
          ┌──────────▼──────────┐
          │   Visualization     │
          │  • Heatmaps         │
@@ -60,10 +102,14 @@ See each subfolder for architectures. See also main Repo README.md for list of t
          └─────────────────────┘
 
 Key Features:
+  ⭐ NEW: Preprocessing pipeline (validate → preprocess → visualize)
+  ⭐ NEW: Upstream regulator prediction (IPA-like kinase/TF/drug analysis)
+  • Enhanced HAllA with chunking (1000 features/chunk = ~5 min vs days)
+  • Correct FDR workflow (applied AFTER Stouffer's combination)
   • Integrates RNA, Protein, Phosphorylation data
   • Statistical meta-analysis across modalities
-  • Identifies multi-modal resistance signatures
-  • Suitable for PDX treatment response studies
+  • Identifies multi-modal resistance signatures & therapeutic targets
+  • Suitable for clinical PDX treatment response studies
 ```
 
 ### 2) Spatial (custom mcp servers + tools)
