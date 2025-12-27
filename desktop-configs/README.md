@@ -16,7 +16,7 @@ This folder contains configuration files for connecting Claude Desktop to the Pr
 - All 9 MCP servers (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga, multiomics)
 - Full absolute paths to Python 3.11 virtual environments
 - All required environment variables
-- DRY_RUN mode enabled for safe testing
+- DRY_RUN mode enabled by default for quick & safe testing
 
 **How to use:**
 ```bash
