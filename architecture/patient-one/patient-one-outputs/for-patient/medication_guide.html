@@ -3,341 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Medication Guide - Understanding Your Cancer Treatment</title>
+    <title>Medication Guide - PAT001-OVC-2025</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: #f5f5f5;
+            color: #333;
         }
-        
-        .med-card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .med-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .med-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .brand-name {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-        
-        .how-it-works {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #2196f3;
-        }
-        
-        .side-effects {
-            background: #fff3e0;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #ff9800;
-        }
-        
-        .important-note {
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #f44336;
-        }
-        
-        .dosing-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        .dosing-table th {
-            background: #f5f5f5;
-            padding: 10px;
-            text-align: left;
-            border-bottom: 2px solid #ddd;
-        }
-        
-        .dosing-table td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .icon {
-            display: inline-block;
-            width: 25px;
-            text-align: center;
-            margin-right: 10px;
-        }
-        
-        h2 {
-            color: #4a4a4a;
-            border-bottom: 2px solid #e0e0e0;
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
             padding-bottom: 10px;
         }
-        
-        .tips-box {
-            background: #f0f9ff;
-            border: 1px solid #b3e5fc;
-            padding: 15px;
-            border-radius: 8px;
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #16a085;
+        }
+        .medication {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
             margin: 20px 0;
+            border-radius: 5px;
         }
-        
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .important {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
         ul {
-            margin-left: 20px;
+            margin: 10px 0;
         }
-        
         li {
             margin: 8px 0;
         }
-        
-        .combo-box {
-            background: linear-gradient(to right, #e8f5e9, #e3f2fd);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #4caf50;
+        .drug-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .section-note {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <div style="text-align: center; padding: 30px 0;">
-        <h1 style="color: #4a4a4a;">Your Medication Guide</h1>
-        <p style="color: #666;">Understanding Your Cancer Treatment Medications</p>
+    <h1>Medication Guide for PAT001-OVC-2025</h1>
+
+    <div class="success">
+        <strong>About This Guide:</strong> This document provides easy-to-understand information about the targeted therapies recommended based on your precision medicine analysis. These medications specifically target abnormalities found in your tumor's biology.
     </div>
 
-    <div class="combo-box">
-        <h2 style="border: none; color: #2e7d32;">🎯 Your Recommended Combination</h2>
-        <p><strong>PARP Inhibitor + PI3K Inhibitor</strong></p>
-        <p>These two medications work together to attack your cancer in different ways. Think of it like using two different keys to lock doors that cancer cells use to survive and grow.</p>
+    <h2>Your Personalized Treatment Approach</h2>
+
+    <p>Your tumor analysis showed that certain proteins in your cancer cells are overactive. These proteins help cancer cells survive and resist chemotherapy drugs like platinum. The medications described below work by blocking these specific proteins.</p>
+
+    <div class="success">
+        <strong>Key Finding:</strong> Your tumor has activation of a pathway called "PI3K/AKT/mTOR." This pathway acts like an "accelerator pedal" for cancer cell growth and survival. The recommended medications are like "brakes" for this pathway.
     </div>
 
-    <!-- Medication 1: Olaparib -->
-    <div class="med-card">
-        <div class="med-header">
-            <div class="med-name">Olaparib</div>
-            <div class="brand-name">Brand Name: Lynparza®</div>
-        </div>
+    <!-- NEW MEDICATION SECTIONS -->
 
-        <div class="how-it-works">
-            <h3><span class="icon">🔬</span>How It Works</h3>
-            <p>Olaparib is a PARP inhibitor. Think of PARP as a repair tool that cancer cells use to fix their damaged DNA. Because you have a BRCA1 mutation, your cancer cells are already bad at repairing DNA. Olaparib blocks their last repair tool, causing the cancer cells to die.</p>
-            <p><strong>Why it works for you:</strong> Your BRCA1 mutation makes your cancer especially vulnerable to this medication.</p>
-        </div>
+    <div class="medication">
+        <div class="drug-name">Alpelisib (Piqray®)</div>
+        <p class="section-note">A PI3K inhibitor - blocks the first step in the overactive pathway</p>
 
-        <table class="dosing-table">
-            <tr>
-                <th>How to Take</th>
-                <td>Two tablets (150mg each) twice daily</td>
-            </tr>
-            <tr>
-                <th>When to Take</th>
-                <td>Morning and evening, about 12 hours apart</td>
-            </tr>
-            <tr>
-                <th>With or Without Food</th>
-                <td>Can be taken with or without food</td>
-            </tr>
-            <tr>
-                <th>What It Looks Like</th>
-                <td>Oval, green tablets marked with "OP150"</td>
-            </tr>
-        </table>
+        <h3>What is this medication?</h3>
+        <p>Alpelisib is an FDA-approved targeted therapy that blocks a protein called PI3K (pronounced "pie-three-kinase"). Think of PI3K as a switch that turns on cancer cell survival signals. Your tumor analysis showed this switch is stuck in the "ON" position. Alpelisib helps turn it "OFF."</p>
 
-        <div class="side-effects">
-            <h3><span class="icon">⚠️</span>Common Side Effects</h3>
-            <ul>
-                <li><strong>Fatigue</strong> - Very common; plan rest periods</li>
-                <li><strong>Nausea</strong> - Usually mild; anti-nausea medication can help</li>
-                <li><strong>Low blood counts</strong> - Regular blood tests will monitor this</li>
-                <li><strong>Decreased appetite</strong> - Small, frequent meals may help</li>
-                <li><strong>Taste changes</strong> - Usually temporary</li>
-            </ul>
-        </div>
-
-        <div class="important-note">
-            <h3><span class="icon">❗</span>Important Safety Information</h3>
-            <ul>
-                <li>Tell your doctor about any new or worsening breathing problems</li>
-                <li>Avoid grapefruit and Seville oranges (can affect drug levels)</li>
-                <li>Use sun protection - may increase sun sensitivity</li>
-                <li>May affect fertility - discuss family planning with your doctor</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Medication 2: Alpelisib -->
-    <div class="med-card">
-        <div class="med-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-            <div class="med-name">Alpelisib</div>
-            <div class="brand-name">Brand Name: Piqray®</div>
-        </div>
-
-        <div class="how-it-works">
-            <h3><span class="icon">🔬</span>How It Works</h3>
-            <p>Alpelisib is a PI3K inhibitor. PI3K is like an "on switch" that tells cancer cells to grow and multiply. Your tests show this switch is stuck in the "on" position (PIK3CA mutation). Alpelisib turns off this switch, slowing or stopping cancer growth.</p>
-            <p><strong>Why it works for you:</strong> Your tumor has high PIK3CA activity, making it a prime target for this drug.</p>
-        </div>
-
-        <table class="dosing-table">
-            <tr>
-                <th>How to Take</th>
-                <td>One tablet (300mg) once daily</td>
-            </tr>
-            <tr>
-                <th>When to Take</th>
-                <td>Same time each day with food</td>
-            </tr>
-            <tr>
-                <th>With or Without Food</th>
-                <td>Must be taken WITH food</td>
-            </tr>
-            <tr>
-                <th>What It Looks Like</th>
-                <td>Light pink, round tablets</td>
-            </tr>
-        </table>
-
-        <div class="side-effects">
-            <h3><span class="icon">⚠️</span>Common Side Effects</h3>
-            <ul>
-                <li><strong>High blood sugar</strong> - Monitor blood glucose regularly</li>
-                <li><strong>Rash</strong> - Usually appears early; preventive treatment available</li>
-                <li><strong>Diarrhea</strong> - Stay hydrated; medication can help</li>
-                <li><strong>Nausea</strong> - Take with food to minimize</li>
-                <li><strong>Mouth sores</strong> - Special mouthwash can prevent/treat</li>
-            </ul>
-        </div>
-
-        <div class="important-note">
-            <h3><span class="icon">❗</span>Important Safety Information</h3>
-            <ul>
-                <li>Blood sugar will be monitored closely, especially if you have diabetes</li>
-                <li>Report any severe rash immediately</li>
-                <li>Stay hydrated to prevent kidney problems</li>
-                <li>May need to start preventive rash treatment before first dose</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Tips for Success -->
-    <div class="med-card" style="background: #f0f9ff;">
-        <h2 style="color: #1976d2; border-bottom: 2px solid #1976d2;">💡 Tips for Treatment Success</h2>
-        
-        <div class="tips-box">
-            <h3>Managing Your Medications</h3>
-            <ul>
-                <li><strong>Use a pill organizer</strong> - Helps track if you've taken your doses</li>
-                <li><strong>Set phone alarms</strong> - Reminders for each dose time</li>
-                <li><strong>Keep a medication diary</strong> - Track how you feel each day</li>
-                <li><strong>Don't stop suddenly</strong> - Always talk to your doctor first</li>
-            </ul>
-        </div>
-
-        <div class="tips-box">
-            <h3>Managing Side Effects</h3>
-            <ul>
-                <li><strong>For nausea:</strong> Eat small, frequent meals; try ginger tea</li>
-                <li><strong>For fatigue:</strong> Balance activity with rest; light exercise can help</li>
-                <li><strong>For rash:</strong> Use gentle, fragrance-free skincare; avoid hot water</li>
-                <li><strong>For diarrhea:</strong> Follow BRAT diet (bananas, rice, applesauce, toast)</li>
-            </ul>
-        </div>
-
-        <div class="tips-box">
-            <h3>When to Call Your Doctor</h3>
-            <ul>
-                <li>Fever over 100.4°F (38°C)</li>
-                <li>Severe or persistent diarrhea</li>
-                <li>Difficulty breathing or chest pain</li>
-                <li>Severe rash or skin reactions</li>
-                <li>Signs of high blood sugar (excessive thirst, frequent urination)</li>
-                <li>Unusual bruising or bleeding</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Support Resources -->
-    <div class="med-card" style="background: #e8f5e9;">
-        <h2 style="color: #2e7d32; border-bottom: 2px solid #4caf50;">📞 Support Resources</h2>
-        
-        <h3>Financial Assistance</h3>
+        <h3>Why is it recommended for you?</h3>
         <ul>
-            <li><strong>Lynparza Patient Assistance:</strong> 1-844-275-2360</li>
-            <li><strong>Piqray Patient Support:</strong> 1-844-747-7291</li>
-            <li><strong>CancerCare Co-Payment Assistance:</strong> 1-866-552-6729</li>
+            <li><strong>Your tumor analysis</strong> showed very high PI3K activity</li>
+            <li><strong>Genetic testing</strong> found you are missing a "brake" gene called PTEN</li>
+            <li><strong>Without PTEN:</strong> PI3K works overtime, helping cancer cells survive platinum chemotherapy</li>
+            <li><strong>Clinical evidence:</strong> Works well in tumors similar to yours</li>
         </ul>
 
-        <h3>Educational Resources</h3>
+        <h3>How do you take it?</h3>
         <ul>
-            <li><strong>FORCE (BRCA Support):</strong> www.facingourrisk.org</li>
-            <li><strong>Ovarian Cancer Research Alliance:</strong> www.ocrahope.org</li>
-            <li><strong>National Ovarian Cancer Coalition:</strong> www.ovarian.org</li>
+            <li><strong>Form:</strong> Tablet (pill)</li>
+            <li><strong>Dose:</strong> 300 mg (2 tablets of 150 mg each)</li>
+            <li><strong>When:</strong> Once daily, at the same time each day</li>
+            <li><strong>With or without food:</strong> WITH FOOD (take with a meal or snack)</li>
+            <li><strong>Important:</strong> Swallow tablets whole - do not crush, chew, or split</li>
         </ul>
 
-        <h3>24/7 Support</h3>
+        <h3>What are the side effects?</h3>
+        <div class="warning">
+            <strong>Most Common Side Effect: High Blood Sugar</strong>
+            <ul>
+                <li>Happens in 60-70% of patients</li>
+                <li>Usually starts in first few weeks</li>
+                <li>You will need to check your blood sugar regularly</li>
+                <li>Your doctor may prescribe metformin (diabetes medication) to help</li>
+            </ul>
+        </div>
+
+        <p><strong>Other Common Side Effects:</strong></p>
         <ul>
-            <li><strong>Your Oncology Clinic:</strong> [Clinic phone number]</li>
-            <li><strong>After-Hours Oncology:</strong> [After-hours number]</li>
-            <li><strong>Pharmacy Questions:</strong> [Pharmacy number]</li>
+            <li><strong>Diarrhea</strong> (40-50% of patients) - usually manageable with anti-diarrheal medication</li>
+            <li><strong>Skin rash</strong> (30-40%) - often mild, treatable with creams</li>
+            <li><strong>Nausea</strong> (25-35%) - anti-nausea medication can help</li>
+            <li><strong>Fatigue</strong> (20-30%) - may improve after first month</li>
+            <li><strong>Decreased appetite</strong> (15-25%)</li>
+        </ul>
+
+        <div class="important">
+            <strong>When to Call Your Doctor Right Away:</strong>
+            <ul>
+                <li>Blood sugar over 300 mg/dL</li>
+                <li>Extreme thirst or frequent urination</li>
+                <li>Severe diarrhea (more than 6 episodes per day)</li>
+                <li>Severe rash or blisters</li>
+                <li>Trouble breathing or severe allergic reaction</li>
+                <li>Fever over 100.4°F</li>
+            </ul>
+        </div>
+
+        <h3>What monitoring is needed?</h3>
+        <ul>
+            <li><strong>Blood sugar:</strong> Daily for first 2 weeks, then weekly</li>
+            <li><strong>Blood tests:</strong> Every 2 weeks for first 2 months, then monthly</li>
+            <li><strong>Tumor markers (CA-125):</strong> Every month</li>
+            <li><strong>Imaging (CT scan):</strong> Every 8 weeks to check if tumor is shrinking</li>
+        </ul>
+
+        <h3>FDA Approval Status</h3>
+        <div class="success">
+            <strong>FDA Approved:</strong> Yes, approved in May 2019 for breast cancer with PIK3CA mutations.
+        </div>
+        <p class="section-note">Note: Use in ovarian cancer is considered "off-label" but is appropriate because your tumor has the same PIK3CA/PTEN abnormalities. Your insurance may require pre-authorization.</p>
+
+        <h3>Cost and Insurance</h3>
+        <ul>
+            <li><strong>List price:</strong> Approximately $15,000 per month (without insurance)</li>
+            <li><strong>With insurance:</strong> Copay assistance programs available</li>
+            <li><strong>Manufacturer support:</strong> Novartis has a patient assistance program</li>
+            <li><strong>Clinical trial option:</strong> Free through research study (see below)</li>
         </ul>
     </div>
 
-    <!-- Questions to Ask -->
-    <div class="med-card">
-        <h2 style="color: #6a4c93;">❓ Questions for Your Next Appointment</h2>
-        
-        <div style="background: #f5f5f5; padding: 15px; border-radius: 8px;">
-            <h3>About Your Medications:</h3>
-            <ul>
-                <li>What should I do if I miss a dose?</li>
-                <li>Are there any foods or supplements I should avoid?</li>
-                <li>How will we know if the medications are working?</li>
-                <li>What side effects should I report immediately?</li>
-                <li>Can I take my other medications with these?</li>
-            </ul>
+    <div class="medication">
+        <div class="drug-name">Capivasertib (AZD5363)</div>
+        <p class="section-note">An AKT inhibitor - blocks the second step in the overactive pathway</p>
 
-            <h3>About Your Treatment Plan:</h3>
+        <h3>What is this medication?</h3>
+        <p>Capivasertib is an investigational drug (still in clinical trials) that blocks a protein called AKT. AKT is right "downstream" of PI3K - it receives signals from PI3K and passes them along to help cancer cells survive. Your tumor analysis showed AKT is highly active.</p>
+
+        <h3>Why is it recommended for you?</h3>
+        <ul>
+            <li><strong>Your tumor analysis</strong> showed very high AKT activity (even higher than PI3K)</li>
+            <li><strong>Without PTEN:</strong> AKT is constantly activated</li>
+            <li><strong>Scientific rationale:</strong> Blocking both PI3K AND AKT works better than blocking just one</li>
+            <li><strong>Prevents resistance:</strong> Cancer cells can't bypass treatment by activating the "backup" protein</li>
+        </ul>
+
+        <h3>How do you take it?</h3>
+        <ul>
+            <li><strong>Form:</strong> Tablet (pill)</li>
+            <li><strong>Dose:</strong> 400 mg (taken twice daily)</li>
+            <li><strong>Schedule:</strong> 4 days ON, 3 days OFF (to reduce side effects)</li>
+            <li><strong>Example schedule:</strong> Take Monday-Thursday, skip Friday-Sunday, repeat</li>
+            <li><strong>With or without food:</strong> Can be taken with or without food</li>
+            <li><strong>Important:</strong> Swallow whole - do not crush or chew</li>
+        </ul>
+
+        <h3>What are the side effects?</h3>
+        <div class="warning">
+            <strong>Most Common Side Effect: High Blood Sugar</strong>
             <ul>
-                <li>How long will I need to take these medications?</li>
-                <li>What happens if these medications stop working?</li>
-                <li>Are there clinical trials I could consider?</li>
-                <li>Should my family members get genetic testing?</li>
-                <li>What lifestyle changes would be helpful?</li>
+                <li>Happens in 50-60% of patients (similar to alpelisib)</li>
+                <li>When combined with alpelisib, blood sugar needs extra monitoring</li>
+                <li>Diabetes medication (metformin) usually helps</li>
             </ul>
         </div>
+
+        <p><strong>Other Common Side Effects:</strong></p>
+        <ul>
+            <li><strong>Diarrhea</strong> (35-45%)</li>
+            <li><strong>Nausea</strong> (30-40%)</li>
+            <li><strong>Fatigue</strong> (25-35%)</li>
+            <li><strong>Decreased appetite</strong> (20-30%)</li>
+            <li><strong>Rash</strong> (15-25%)</li>
+        </ul>
+
+        <div class="important">
+            <strong>When to Call Your Doctor Right Away:</strong>
+            <ul>
+                <li>Blood sugar over 300 mg/dL</li>
+                <li>Severe diarrhea or dehydration</li>
+                <li>Chest pain or shortness of breath</li>
+                <li>Severe fatigue that prevents daily activities</li>
+                <li>Any new or worsening symptoms</li>
+            </ul>
+        </div>
+
+        <h3>What monitoring is needed?</h3>
+        <ul>
+            <li><strong>Blood sugar:</strong> Daily for first month (especially important with combination therapy)</li>
+            <li><strong>Blood tests:</strong> Weekly for first month, then every 2 weeks</li>
+            <li><strong>Tumor response:</strong> CA-125 monthly, CT scan every 8 weeks</li>
+            <li><strong>On-treatment biopsy:</strong> May be requested at Week 4 to confirm AKT is being blocked</li>
+        </ul>
+
+        <h3>FDA Approval Status</h3>
+        <div class="warning">
+            <strong>Investigational Drug:</strong> Not yet FDA approved - available only through clinical trials.
+        </div>
+        <p class="section-note">Capivasertib is in Phase III clinical trials (the final phase before FDA approval). Early results are very promising, showing improved outcomes when combined with other therapies.</p>
+
+        <h3>How to access this medication</h3>
+        <div class="success">
+            <strong>Clinical Trial Opportunity:</strong>
+            <ul>
+                <li><strong>Trial Number:</strong> NCT03602859</li>
+                <li><strong>Title:</strong> "Alpelisib + Capivasertib in PTEN-deficient Solid Tumors"</li>
+                <li><strong>Your Match:</strong> You appear to be an excellent candidate
+                    <ul>
+                        <li>✓ PTEN loss (genetic deletion found)</li>
+                        <li>✓ Platinum-resistant ovarian cancer</li>
+                        <li>✓ PI3K and AKT activation confirmed</li>
+                    </ul>
+                </li>
+                <li><strong>Trial Benefits:</strong>
+                    <ul>
+                        <li>Free medication (both alpelisib and capivasertib)</li>
+                        <li>Close monitoring by research team</li>
+                        <li>Access to cutting-edge therapy</li>
+                        <li>Helping advance cancer research</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Clinical Trial Questions to Ask</h3>
+        <ul>
+            <li>Am I eligible based on my performance status and prior treatments?</li>
+            <li>How many patients have been enrolled so far?</li>
+            <li>What have the results shown in patients similar to me?</li>
+            <li>If the trial helps me, can I stay on the medication after the trial ends?</li>
+            <li>What happens if the medication stops working - what are my options?</li>
+        </ul>
     </div>
 
-    <div style="text-align: center; margin: 40px 0; padding: 20px; background: white; border-radius: 10px;">
-        <h3 style="color: #4a4a4a;">Remember: You're Not Alone</h3>
-        <p style="color: #666;">Your healthcare team is here to support you every step of the way.<br>
-        Never hesitate to ask questions or voice concerns about your treatment.</p>
-        <p style="margin-top: 20px; color: #999; font-size: 14px;">
-            This guide is for educational purposes. Always follow your doctor's specific instructions.<br>
-            Generated: December 2024 | Patient: Sarah Anderson
-        </p>
+    <div class="medication">
+        <div class="drug-name">Combination Therapy: Why Two Drugs?</div>
+        <p class="section-note">Understanding the dual-blockade strategy</p>
+
+        <h3>Why combine alpelisib and capivasertib?</h3>
+        <p>Your tumor analysis revealed that cancer cells are using <strong>both</strong> PI3K and AKT proteins to survive. Here's why blocking both is important:</p>
+
+        <h4>The Problem with Single Drugs:</h4>
+        <ul>
+            <li><strong>If we block only PI3K:</strong> Cancer cells can activate AKT through "backup" pathways</li>
+            <li><strong>If we block only AKT:</strong> PI3K can activate other survival proteins</li>
+            <li><strong>Result:</strong> Tumor may initially shrink, then grow back (resistance)</li>
+        </ul>
+
+        <h4>The Advantage of Combination:</h4>
+        <ul>
+            <li><strong>Dual blockade:</strong> Shuts down the pathway at TWO points</li>
+            <li><strong>Prevents escape:</strong> Cancer cells have fewer ways to bypass treatment</li>
+            <li><strong>Scientific evidence:</strong> Lab studies show synergistic effects (1 + 1 = 3)</li>
+            <li><strong>Better outcomes:</strong> Clinical trials show longer remissions with combination</li>
+        </ul>
+
+        <div class="success">
+            <strong>Your Tumor Profile Supports Combination:</strong>
+            <ul>
+                <li>PI3K activation score: Very high (Z = 3.0)</li>
+                <li>AKT activation score: Even higher (Z = 3.2)</li>
+                <li>PTEN status: Completely missing (both copies lost)</li>
+                <li>Clinical interpretation: Dual blockade is scientifically justified</li>
+            </ul>
+        </div>
+
+        <h3>What are the challenges?</h3>
+        <div class="warning">
+            <strong>More Side Effects with Combination:</strong>
+            <ul>
+                <li>High blood sugar is more common and may be more severe</li>
+                <li>Diarrhea may be more frequent</li>
+                <li>Fatigue may be greater</li>
+                <li>Careful monitoring is VERY important</li>
+            </ul>
+        </div>
+
+        <h3>How will we manage side effects?</h3>
+        <ul>
+            <li><strong>Proactive approach:</strong> Start metformin BEFORE beginning treatment</li>
+            <li><strong>Glucose monitoring:</strong> Check blood sugar daily, adjust diabetes medication as needed</li>
+            <li><strong>Low-glycemic diet:</strong> Dietician will help you choose foods that minimize blood sugar spikes</li>
+            <li><strong>Hydration:</strong> Drink plenty of water to prevent dehydration from diarrhea</li>
+            <li><strong>Dose adjustments:</strong> If side effects are severe, we can temporarily reduce doses</li>
+            <li><strong>Communication:</strong> Weekly check-ins during first month</li>
+        </ul>
+
+        <h3>What if the side effects are too much?</h3>
+        <p><strong>Alternative Options:</strong></p>
+        <ul>
+            <li><strong>Option 1:</strong> Try alpelisib alone first
+                <ul>
+                    <li>Fewer side effects</li>
+                    <li>Can add capivasertib later if needed</li>
+                </ul>
+            </li>
+            <li><strong>Option 2:</strong> Sequential therapy (one drug at a time)</li>
+            <li><strong>Option 3:</strong> Different PI3K/AKT inhibitor with better tolerance</li>
+            <li><strong>Option 4:</strong> Return to standard chemotherapy</li>
+        </ul>
+
+        <p class="section-note">Remember: Your care team is here to support you. If side effects are affecting your quality of life too much, we will work together to find the right balance or try a different approach.</p>
     </div>
+
+    <div class="medication">
+        <div class="drug-name">Everolimus (Afinitor®) - Alternative Option</div>
+        <p class="section-note">An mTOR inhibitor - blocks the third protein in the pathway</p>
+
+        <h3>What is this medication?</h3>
+        <p>Everolimus is an FDA-approved drug that blocks mTOR, which is "downstream" of both PI3K and AKT. Your analysis showed mTOR is also activated in your tumor.</p>
+
+        <h3>When might this be used?</h3>
+        <ul>
+            <li><strong>If combination therapy is not tolerated:</strong> Everolimus alone may be an option</li>
+            <li><strong>Second-line option:</strong> If alpelisib/capivasertib stops working</li>
+            <li><strong>Less intensive treatment:</strong> If you prefer a single drug with fewer side effects</li>
+        </ul>
+
+        <div class="warning">
+            <strong>Limitation:</strong> Blocking mTOR alone can cause PI3K and AKT to become even MORE active (compensatory activation). This is why the dual PI3K/AKT approach is preferred for your tumor profile.
+        </div>
+
+        <h3>How do you take it?</h3>
+        <ul>
+            <li><strong>Dose:</strong> 10 mg once daily</li>
+            <li><strong>Timing:</strong> Same time each day, with or without food</li>
+            <li><strong>Swallow whole:</strong> Do not crush or chew</li>
+        </ul>
+
+        <h3>What are the side effects?</h3>
+        <ul>
+            <li><strong>Mouth sores (stomatitis):</strong> Most common (40%) - mouthwash can help</li>
+            <li><strong>Infections:</strong> Slightly increased risk (30%)</li>
+            <li><strong>Fatigue:</strong> Common (25-30%)</li>
+            <li><strong>Diarrhea:</strong> Less common than with PI3K inhibitors (20%)</li>
+            <li><strong>Lung inflammation (pneumonitis):</strong> Rare but serious (3-5%)</li>
+        </ul>
+
+        <h3>FDA Approval Status</h3>
+        <div class="success">
+            <strong>FDA Approved:</strong> Yes, for kidney cancer, breast cancer, and neuroendocrine tumors.
+        </div>
+        <p class="section-note">Note: Use in ovarian cancer is off-label. Generally well-covered by insurance due to multiple FDA approvals.</p>
+    </div>
+
+    <h2>Important Information for All Medications</h2>
+
+    <div class="important">
+        <h3>Drug Interactions</h3>
+        <p><strong>Tell your doctor about ALL medications you take, including:</strong></p>
+        <ul>
+            <li>Prescription medications</li>
+            <li>Over-the-counter medications (like ibuprofen, antacids)</li>
+            <li>Vitamins and supplements</li>
+            <li>Herbal products</li>
+        </ul>
+        <p><strong>Important interactions to avoid:</strong></p>
+        <ul>
+            <li><strong>Strong CYP3A4 inhibitors:</strong> Ketoconazole, clarithromycin, grapefruit juice (can increase drug levels)</li>
+            <li><strong>Strong CYP3A4 inducers:</strong> Rifampin, St. John's Wort (can decrease drug levels)</li>
+            <li><strong>Diabetes medications:</strong> Insulin, sulfonylureas (may need dose adjustments)</li>
+        </ul>
+    </div>
+
+    <div class="important">
+        <h3>Pregnancy and Breastfeeding</h3>
+        <p><strong>These medications can harm an unborn baby.</strong></p>
+        <ul>
+            <li>Use effective birth control during treatment and for 1 week after stopping</li>
+            <li>Tell your doctor immediately if you become pregnant</li>
+            <li>Do not breastfeed while taking these medications</li>
+            <li>Male partners should also use contraception</li>
+        </ul>
+    </div>
+
+    <div class="important">
+        <h3>Missed Dose</h3>
+        <p><strong>If you miss a dose:</strong></p>
+        <ul>
+            <li>If less than 4 hours late: Take it as soon as you remember</li>
+            <li>If more than 4 hours late: Skip the missed dose, take the next dose at the regular time</li>
+            <li><strong>Never</strong> take two doses at once to make up for a missed dose</li>
+        </ul>
+    </div>
+
+    <h2>Questions to Ask Your Care Team</h2>
+    <ul>
+        <li>Am I eligible for the clinical trial combining alpelisib and capivasertib?</li>
+        <li>What is my expected response rate based on patients similar to me?</li>
+        <li>How will we monitor if the treatment is working?</li>
+        <li>What happens if my blood sugar becomes difficult to control?</li>
+        <li>Are there support services available (nutritionist, social worker, financial counselor)?</li>
+        <li>What are the warning signs that I should go to the emergency room?</li>
+        <li>How long might I stay on these medications if they are working?</li>
+        <li>What happens if the tumor develops resistance to these drugs?</li>
+    </ul>
+
+    <h2>Support Resources</h2>
+    <ul>
+        <li><strong>24/7 Nurse Line:</strong> [Insert hospital phone number]</li>
+        <li><strong>Financial Assistance:</strong>
+            <ul>
+                <li>Novartis Patient Assistance Program (for alpelisib): 1-800-XXX-XXXX</li>
+                <li>Cancer Financial Assistance Coalition: www.cancerfac.org</li>
+            </ul>
+        </li>
+        <li><strong>Clinical Trial Information:</strong> www.clinicaltrials.gov (search NCT03602859)</li>
+        <li><strong>Patient Support Groups:</strong> Ovarian Cancer Research Alliance (OCRA)</li>
+        <li><strong>Nutrition Services:</strong> Request referral to oncology dietician</li>
+    </ul>
+
+    <div class="success">
+        <h3>Remember</h3>
+        <p>These medications were specifically chosen based on your tumor's unique biology. While side effects can be challenging, many patients find them manageable with proper support and monitoring. Your care team is here to help you every step of the way.</p>
+        <p><strong>You are not alone in this journey.</strong></p>
+    </div>
+
+    <hr>
+    <p style="text-align: center; color: #666; font-size: 0.9em;">
+        <em>This medication guide was prepared based on your precision medicine tumor analysis<br>
+        Document Date: December 26, 2025 | Version 2.0</em>
+    </p>
 </body>
 </html>
