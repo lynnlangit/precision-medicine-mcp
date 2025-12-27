@@ -2,10 +2,18 @@
 
 import json
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from fastmcp import FastMCP
+
+# Import retry utilities for external API calls
+_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+if str(_shared_utils_path) not in sys.path:
+    sys.path.insert(0, str(_shared_utils_path))
+
+from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
 
 mcp = FastMCP("seqera")
 
@@ -45,6 +53,55 @@ SEQERA_API_URL = os.getenv("SEQERA_API_URL", "https://api.cloud.seqera.io")
 SEQERA_TOKEN = os.getenv("SEQERA_TOKEN", "mock_token")
 WORKSPACE_ID = os.getenv("SEQERA_WORKSPACE_ID", "workspace_default")
 DRY_RUN = os.getenv("SEQERA_DRY_RUN", "true").lower() == "true"
+
+
+# ============================================================================
+# RETRY LOGIC INTEGRATION GUIDE (for future real implementation)
+# ============================================================================
+# When implementing real Seqera Platform API calls, use retry utilities to
+# handle transient network failures and API rate limits:
+#
+# Example 1: Retry workflow launch with exponential backoff
+# @retry_with_backoff(
+#     max_retries=3,
+#     base_delay=2.0,
+#     max_delay=60.0,
+#     exceptions=(requests.HTTPError, requests.ConnectionError)
+# )
+# async def _launch_seqera_workflow(pipeline_id: str, params: dict):
+#     """Launch Nextflow workflow via Seqera API with retry."""
+#     response = await httpx.post(
+#         f"{SEQERA_API_URL}/workflow/launch",
+#         headers={"Authorization": f"Bearer {SEQERA_TOKEN}"},
+#         json={"pipeline": pipeline_id, "params": params}
+#     )
+#     response.raise_for_status()
+#     return response.json()
+#
+# Example 2: Optional API call for workflow status (polling)
+# @optional_api_call(fallback_value={"status": "unknown"})
+# async def _get_workflow_status(workflow_id: str):
+#     """Get workflow status (optional, for monitoring)."""
+#     response = await httpx.get(
+#         f"{SEQERA_API_URL}/workflow/{workflow_id}/status",
+#         headers={"Authorization": f"Bearer {SEQERA_TOKEN}"}
+#     )
+#     return response.json()
+#
+# Example 3: Circuit breaker for Seqera Platform API
+# seqera_api_breaker = CircuitBreaker(
+#     failure_threshold=5,
+#     recovery_timeout=180.0,  # 3 minutes
+#     name="Seqera-Platform-API"
+# )
+#
+# @seqera_api_breaker
+# async def _call_seqera_api(endpoint: str, method: str = "GET"):
+#     """Call Seqera API with circuit breaker protection."""
+#     # Protects against prolonged API outages
+#     # Opens circuit after 5 consecutive failures
+#     pass
+# ============================================================================
 
 @mcp.tool()
 async def launch_nextflow_pipeline(

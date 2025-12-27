@@ -2,10 +2,19 @@
 
 import json
 import os
+import sys
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 from fastmcp import FastMCP
 import pandas as pd
 import numpy as np
+
+# Import retry utilities for external API calls
+_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+if str(_shared_utils_path) not in sys.path:
+    sys.path.insert(0, str(_shared_utils_path))
+
+from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
 
 mcp = FastMCP("tcga")
 
@@ -41,6 +50,50 @@ To enable real data processing, set: TCGA_DRY_RUN=false
 
 
 DRY_RUN = os.getenv("TCGA_DRY_RUN", "true").lower() == "true"
+
+
+# ============================================================================
+# RETRY LOGIC INTEGRATION GUIDE (for future real implementation)
+# ============================================================================
+# When implementing real TCGA API calls, use retry utilities to handle
+# transient network failures:
+#
+# Example 1: Retry API calls with exponential backoff
+# @retry_with_backoff(
+#     max_retries=3,
+#     base_delay=1.0,
+#     exceptions=(requests.RequestException,)
+# )
+# async def _fetch_tcga_cohort(cohort_id: str):
+#     """Fetch cohort data from TCGA GDC API with retry."""
+#     response = await httpx.get(
+#         f"https://api.gdc.cancer.gov/cases?filters={cohort_id}"
+#     )
+#     response.raise_for_status()
+#     return response.json()
+#
+# Example 2: Optional API call with graceful degradation
+# @optional_api_call(fallback_value=None)
+# async def _fetch_tcga_annotations(sample_id: str):
+#     """Fetch annotations (optional, non-critical)."""
+#     response = await httpx.get(
+#         f"https://api.gdc.cancer.gov/annotations/{sample_id}"
+#     )
+#     return response.json()
+#
+# Example 3: Circuit breaker for critical external service
+# tcga_breaker = CircuitBreaker(
+#     failure_threshold=5,
+#     recovery_timeout=60.0,
+#     name="TCGA-GDC-API"
+# )
+#
+# @tcga_breaker
+# async def _fetch_tcga_data(endpoint: str):
+#     """Fetch data with circuit breaker protection."""
+#     # Circuit opens after 5 failures, tries recovery after 60s
+#     pass
+# ============================================================================
 
 
 @mcp.tool()

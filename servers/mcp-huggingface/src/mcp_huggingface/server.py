@@ -2,8 +2,17 @@
 
 import json
 import os
+import sys
+from pathlib import Path
 from typing import Any, Dict, List
 from fastmcp import FastMCP
+
+# Import retry utilities for external API calls
+_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+if str(_shared_utils_path) not in sys.path:
+    sys.path.insert(0, str(_shared_utils_path))
+
+from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
 
 mcp = FastMCP("huggingface")
 
@@ -40,6 +49,53 @@ To enable real data processing, set: HF_DRY_RUN=false
 
 HF_TOKEN = os.getenv("HF_TOKEN", "mock_token")
 DRY_RUN = os.getenv("HF_DRY_RUN", "true").lower() == "true"
+
+
+# ============================================================================
+# RETRY LOGIC INTEGRATION GUIDE (for future real implementation)
+# ============================================================================
+# When implementing real HuggingFace API calls, use retry utilities to handle
+# transient network failures and rate limits:
+#
+# Example 1: Retry model loading with exponential backoff
+# @retry_with_backoff(
+#     max_retries=3,
+#     base_delay=2.0,
+#     max_delay=30.0,
+#     exceptions=(requests.HTTPError,)
+# )
+# async def _load_hf_model(model_name: str):
+#     """Load HuggingFace model with retry logic."""
+#     from huggingface_hub import hf_hub_download
+#     model_path = hf_hub_download(
+#         repo_id=model_name,
+#         filename="pytorch_model.bin",
+#         token=HF_TOKEN
+#     )
+#     return model_path
+#
+# Example 2: Optional API call for model metadata (non-critical)
+# @optional_api_call(fallback_value={"status": "unavailable"})
+# async def _fetch_model_metadata(model_name: str):
+#     """Fetch model metadata (optional)."""
+#     response = await httpx.get(
+#         f"https://huggingface.co/api/models/{model_name}"
+#     )
+#     return response.json()
+#
+# Example 3: Circuit breaker for HuggingFace Hub API
+# hf_hub_breaker = CircuitBreaker(
+#     failure_threshold=5,
+#     recovery_timeout=120.0,  # 2 minutes
+#     name="HuggingFace-Hub-API"
+# )
+#
+# @hf_hub_breaker
+# async def _fetch_from_hf_hub(endpoint: str):
+#     """Fetch data with circuit breaker protection."""
+#     # Protects against prolonged Hub outages
+#     pass
+# ============================================================================
 
 @mcp.tool()
 async def load_genomic_model(

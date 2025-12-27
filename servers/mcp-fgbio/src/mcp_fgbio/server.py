@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -20,6 +21,13 @@ from .validation import (
     validate_vcf_file,
     format_validation_error,
 )
+
+# Import retry utilities for external API calls
+_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+if str(_shared_utils_path) not in sys.path:
+    sys.path.insert(0, str(_shared_utils_path))
+
+from api_retry import retry_with_backoff, optional_api_call
 
 # Initialize the MCP server
 mcp = FastMCP("fgbio", dependencies=["httpx", "aiofiles"])
@@ -158,8 +166,17 @@ def _run_fgbio_command(
     return result
 
 
+@retry_with_backoff(
+    max_retries=3,
+    base_delay=2.0,
+    max_delay=60.0,
+    exceptions=(IOError, Exception),
+    on_retry=lambda e, attempt: logger.warning(
+        f"Retry attempt {attempt} for download after error: {e}"
+    )
+)
 async def _download_file(url: str, output_path: Path) -> Dict[str, Any]:
-    """Download a file from a URL.
+    """Download a file from a URL with retry logic.
 
     Args:
         url: URL to download from
@@ -169,7 +186,11 @@ async def _download_file(url: str, output_path: Path) -> Dict[str, Any]:
         Dictionary with download metadata
 
     Raises:
-        IOError: If download fails
+        IOError: If download fails after retries
+
+    Note:
+        Automatically retries up to 3 times with exponential backoff
+        on network errors or transient failures.
     """
     import httpx
     import aiofiles

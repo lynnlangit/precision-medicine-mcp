@@ -9,11 +9,20 @@ Provides tools for:
 """
 
 import logging
+import sys
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from fastmcp import FastMCP
 
 from .config import config
+
+# Import cost tracking utilities
+_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+if str(_shared_utils_path) not in sys.path:
+    sys.path.insert(0, str(_shared_utils_path))
+
+from cost_tracking import CostTracker, CostEstimator
 from .tools.integration import integrate_omics_data_impl
 from .tools.stouffer import calculate_stouffer_meta_impl
 from .tools.preprocessing import (
@@ -997,12 +1006,111 @@ def predict_upstream_regulators(
 
     # Real implementation
     result = predict_upstream_regulators_impl(
-    return add_research_disclaimer(result, "analysis")
         differential_genes=differential_genes,
         regulator_types=regulator_types,
         fdr_threshold=fdr_threshold,
         activation_zscore_threshold=activation_zscore_threshold,
     )
+
+    return add_research_disclaimer(result, "analysis")
+
+
+# ============================================================================
+# COST TRACKING & ESTIMATION
+# ============================================================================
+
+
+@mcp.tool()
+async def estimate_analysis_cost(
+    num_samples: int,
+    modalities: List[str],
+    include_halla: bool = False,
+    include_upstream: bool = False
+) -> Dict[str, Any]:
+    """Estimate cost for multi-omics analysis before execution.
+
+    Helps researchers budget for computational costs before running analysis.
+
+    Args:
+        num_samples: Number of samples to analyze
+        modalities: List of modalities (e.g., ["rna", "protein", "phospho"])
+        include_halla: Include HAllA association testing
+        include_upstream: Include upstream regulator prediction
+
+    Returns:
+        Dictionary with cost estimates and breakdown
+
+    Example:
+        >>> cost = await estimate_analysis_cost(
+        ...     num_samples=10,
+        ...     modalities=["rna", "protein", "phospho"],
+        ...     include_halla=True
+        ... )
+        >>> print(f"Estimated cost: ${cost['total_usd']:.2f}")
+    """
+    estimator = CostEstimator()
+
+    # Base integration cost
+    integration_cost = estimator.multiomics_integration_cost(
+        num_samples=num_samples,
+        num_modalities=len(modalities)
+    )
+
+    costs = {
+        "integration": integration_cost,
+        "preprocessing": num_samples * 0.05,  # QC + normalization
+        "validation": num_samples * 0.02,  # Input validation
+    }
+
+    # Optional analyses
+    if include_halla:
+        # HAllA is computationally expensive
+        costs["halla_analysis"] = num_samples * 0.50 * len(modalities)
+
+    if include_upstream:
+        # Upstream regulator prediction
+        costs["upstream_prediction"] = 0.30  # Fixed cost per analysis
+
+    # Compute and storage
+    estimated_duration_hours = (num_samples * len(modalities)) / 100.0  # Rough estimate
+    costs["compute"] = estimator.compute_cost("aws_batch_medium", estimated_duration_hours)
+
+    estimated_size_gb = num_samples * len(modalities) * 0.1  # ~100MB per sample-modality
+    costs["storage_30days"] = estimator.storage_cost(estimated_size_gb, duration_days=30)
+
+    # Total
+    total = sum(costs.values())
+
+    # Budget recommendations
+    if total < 5:
+        budget_tier = "low"
+        recommendation = "Suitable for exploratory analysis"
+    elif total < 20:
+        budget_tier = "medium"
+        recommendation = "Standard multi-omics analysis"
+    else:
+        budget_tier = "high"
+        recommendation = "Large-scale comprehensive analysis"
+
+    return {
+        "estimated_cost_usd": total,
+        "breakdown": costs,
+        "parameters": {
+            "num_samples": num_samples,
+            "modalities": modalities,
+            "include_halla": include_halla,
+            "include_upstream": include_upstream,
+        },
+        "budget_tier": budget_tier,
+        "recommendation": recommendation,
+        "notes": [
+            "Costs are estimates based on typical analysis patterns",
+            "Actual costs may vary based on data complexity",
+            "Includes 30-day data caching by default",
+            "Use DRY_RUN mode for testing without charges"
+        ],
+        "status": "success"
+    }
 
 
 # ============================================================================
