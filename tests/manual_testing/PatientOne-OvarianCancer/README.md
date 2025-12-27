@@ -128,15 +128,20 @@ This is TEST_1 from the PatientOne workflow.
 
 Run all modular tests sequentially for comprehensive precision medicine analysis:
 
-| Test | Focus | Time | Prompt File |
-|------|-------|------|-------------|
-| **TEST_1** | Clinical + Genomic | 5-10 min | `implementation/TEST_1_CLINICAL_GENOMIC.txt` |
-| **TEST_2** | Multi-Omics Resistance | 5-10 min | `implementation/TEST_2_MULTIOMICS.txt` |
-| **TEST_3** | Spatial Transcriptomics | 5-10 min | `implementation/TEST_3_SPATIAL.txt` |
-| **TEST_4** | Histology & Imaging | 5-10 min | `implementation/TEST_4_IMAGING.txt` |
-| **TEST_5** | Integration & Recommendations | 5 min | `implementation/TEST_5_INTEGRATION.txt` |
+| Test | Focus | DRY_RUN Time | Real Data Time | DRY_RUN Cost | Real Data Cost |
+|------|-------|--------------|----------------|--------------|----------------|
+| **TEST_1** | Clinical + Genomic | 3-5 min | 10-15 min | $0.06 | $0.50-0.75 |
+| **TEST_2** | Multi-Omics Resistance | 5-8 min | 15-25 min | $0.07 | $2-4 |
+| **TEST_3** | Spatial Transcriptomics | 4-6 min | 45-90 min | $0.06 | $8-17 |
+| **TEST_4** | Histology & Imaging | 3-5 min | 20-40 min | $0.05 | $3-7 |
+| **TEST_5** | Integration & Recommendations | 5-7 min | 5-10 min | $0.09 | $0.25-0.50 |
+| **TOTAL** | Complete Analysis | **25-35 min** | **2-4 hours** | **~$0.32** | **$15-45** |
 
-**Total Duration:** 30-45 minutes
+**Cost Breakdown:**
+- **DRY_RUN:** Mainly Claude token usage (~30K tokens total)
+- **Real Data:** Computational processing ($14-30) + APIs ($0-5) + Claude tokens (~$0.50)
+
+📊 **[Full Cost Analysis & ROI →](../../../COST_ANALYSIS.md)**
 
 **Instructions:**
 1. Open each `TEST_*.txt` file in `implementation/` directory

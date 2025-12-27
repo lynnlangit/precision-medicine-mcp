@@ -42,6 +42,11 @@ PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a c
 - High proliferation (Ki67+) in tumor core regions
 - Actionable targets: PIK3CA inhibitors, immune checkpoint combinations
 
+**Cost & Performance:**
+- **DRY_RUN Demo:** 25-35 min, ~$0.32 (perfect for learning & testing)
+- **Real Patient Data:** 2-4 hours, $15-45 (replaces weeks of manual analysis)
+- **ROI:** Saves ~40 hours of bioinformatics work per patient ($3,200 value)
+
 **Architecture Diagram & Details:** [PatientOne Documentation →](architecture/patient-one/README.md)    
 **Try PatientOne:** [Quick Start Guide →](tests/manual_testing/PatientOne-OvarianCancer/README.md)  
 **Outputs Generated:** [For developers, care teams, and patients →](architecture/patient-one/patient-one-outputs/)    
@@ -233,6 +238,9 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 - [FastMCP Docs](https://github.com/modelcontextprotocol/python-sdk)
 - [BioinfoMCP Paper](https://arxiv.org/html/2510.02139v1)
 - [Spatial Transcriptomics Review](https://academic.oup.com/nar/article/53/12/gkaf536/8174767)
+
+**Cost & Performance Analysis:**
+- [Complete Cost Analysis & ROI](COST_ANALYSIS.md) - Detailed breakdown of DRY_RUN vs Real Data costs, time estimates, and return on investment calculations
 
 **Acknowledgments:** Model Context Protocol (Anthropic), BioinfoMCP, FGbio, TCGA, Seqera Platform
 

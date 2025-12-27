@@ -22,6 +22,14 @@ Complete guide to running PatientOne in DRY_RUN mode (synthetic data) vs Actual 
 
 PatientOne supports two distinct operating modes to accommodate different use cases:
 
+**📊 Quick Cost Comparison:**
+- **DRY_RUN:** 25-35 min, ~$0.32 total
+- **Actual Data:** 2-4 hours, $15-45 total
+
+**[→ See Full Cost Analysis & ROI](../../../COST_ANALYSIS.md)**
+
+---
+
 ### DRY_RUN Mode (Default)
 **Purpose:** Demonstration, testing, and validation without external dependencies
 
@@ -50,14 +58,16 @@ PatientOne supports two distinct operating modes to accommodate different use ca
 |---------|--------------|------------------|
 | **Data Source** | Synthetic responses | Your files in `/data/patient-data/` |
 | **External APIs** | None (mocked) | Real calls (TCGA, HuggingFace, etc.) |
-| **Execution Time** | Fast (5-10 min/test) | Variable (depends on data size) |
+| **Execution Time** | Fast (25-35 min total) | Longer (2-4 hours total) |
+| **Cost** | **~$0.32 total** | **$15-45 total** |
+| **Cost Breakdown** | Claude tokens only (~30K tokens) | Compute ($14-30) + APIs ($0-5) + Claude tokens |
 | **Setup Required** | Minimal | Data files + environment config |
 | **File I/O** | Minimal (no writes) | Full (reads/writes) |
 | **API Keys** | Not needed | May be required (HF_TOKEN, etc.) |
 | **Network** | Not needed | Required for external APIs |
 | **Reproducibility** | 100% deterministic | Variable (API responses may change) |
-| **Cost** | Free | May incur API costs |
-| **Use Cases** | Demo, testing, CI/CD | Real analysis, research, clinical |
+| **Value** | Perfect for learning & workflow validation | Production analysis, replaces ~40 hours manual work |
+| **Use Cases** | Demo, testing, CI/CD, education | Real analysis, research, clinical decision support |
 
 ### Server Behavior Differences
 
