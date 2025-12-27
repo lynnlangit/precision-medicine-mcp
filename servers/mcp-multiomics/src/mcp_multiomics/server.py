@@ -281,12 +281,13 @@ def validate_multiomics_data(
 
     # Real implementation
     result = validate_multiomics_data_impl(
-    return add_research_disclaimer(result, "analysis")
         rna_path=rna_path,
         protein_path=protein_path,
         phospho_path=phospho_path,
         metadata_path=metadata_path,
     )
+
+    return add_research_disclaimer(result, "analysis")
 
 
 @mcp.tool()
@@ -389,11 +390,10 @@ def preprocess_multiomics_data(
             },
             "outliers_removed": ["Sample_07", "Sample_12"],
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
     result = preprocess_multiomics_data_impl(
-    return add_research_disclaimer(result, "analysis")
         rna_path=rna_path,
         protein_path=protein_path,
         phospho_path=phospho_path,
@@ -404,6 +404,8 @@ def preprocess_multiomics_data(
         outlier_threshold=outlier_threshold,
         output_dir=output_dir,
     )
+
+    return add_research_disclaimer(result, "analysis")
 
 
 @mcp.tool()
@@ -482,17 +484,18 @@ def visualize_data_quality(
                 "→ Proceed with integrate_omics_data tool",
             ],
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
     result = visualize_data_quality_impl(
-    return add_research_disclaimer(result, "analysis")
         data_paths=data_paths,
         metadata_path=metadata_path,
         output_dir=output_dir,
         compare_before_after=compare_before_after,
         before_data_paths=before_data_paths,
     )
+
+    return add_research_disclaimer(result, "analysis")
 
 
 @mcp.tool()
@@ -582,11 +585,10 @@ def run_halla_analysis(
             "nominal_p_values": True,
             "recommendation": "Apply FDR correction after Stouffer's meta-analysis, not before",
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
     result = run_halla_analysis_impl(
-    return add_research_disclaimer(result, "analysis")
         data_path=data_path,
         modality1=modality1,
         modality2=modality2,
@@ -595,6 +597,8 @@ def run_halla_analysis(
         chunk_size=chunk_size,
         use_r_halla=use_r_halla,
     )
+
+    return add_research_disclaimer(result, "analysis")
 
 
 @mcp.tool()
@@ -709,17 +713,18 @@ def calculate_stouffer_meta(
             },
             "recommendation": "Use q_values (not meta_p_values) for identifying significant features",
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
     result = calculate_stouffer_meta_impl(
-    return add_research_disclaimer(result, "analysis")
         p_values_dict=p_values_dict,
         effect_sizes_dict=effect_sizes_dict,
         weights=weights,
         use_directionality=use_directionality,
         fdr_threshold=config.fdr_threshold,
     )
+
+    return add_research_disclaimer(result, "analysis")
 
 
 @mcp.tool()
@@ -777,7 +782,7 @@ def create_multiomics_heatmap(
                 "format": "plotly_json",
             },
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # TODO: Implement visualization
     raise NotImplementedError("Heatmap visualization not yet implemented")
@@ -843,7 +848,7 @@ def run_multiomics_pca(
                 "modalities_used": modalities or ["rna", "protein", "phospho"],
             },
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # TODO: Implement PCA analysis
     raise NotImplementedError("PCA analysis not yet implemented")
@@ -1002,7 +1007,7 @@ def predict_upstream_regulators(
             },
             "recommendation": "Focus on Alpelisib (PI3K inhibitor) - targets activated AKT/mTOR pathway",
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
     result = predict_upstream_regulators_impl(

@@ -7,6 +7,7 @@ and performing FASTQ quality validation using the FGbio toolkit.
 import asyncio
 import hashlib
 import json
+import logging
 import os
 import subprocess
 import sys
@@ -14,6 +15,9 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from fastmcp import FastMCP
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 from .validation import (
     ValidationError,
