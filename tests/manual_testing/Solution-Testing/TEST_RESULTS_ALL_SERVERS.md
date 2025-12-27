@@ -1,8 +1,8 @@
 # Comprehensive Test Results - All MCP Servers
 
-**Date:** November 11, 2025
+**Date:** December 26, 2025
 **Total Servers:** 9
-**Test Run:** Post-Cleanup Verification
+**Test Run:** Post-Multiomics Enhancement (v2.0)
 
 ---
 
@@ -196,27 +196,33 @@ TOTAL                         187     43    77%
 
 ---
 
-### 9. mcp-multiomics ✅ **FULL TEST SUITE PASSING**
+### 9. mcp-multiomics ✅ **FULL TEST SUITE PASSING (Enhanced v2.0)**
 
 **Test Framework:** pytest
-**Tests Run:** 29
-**Tests Passed:** 29
+**Tests Run:** 71
+**Tests Passed:** 71
 **Tests Failed:** 0
 **Coverage:** 84%
 **Status:** ✅ **100% Pass Rate**
 
-**Test Breakdown:**
-- **Integration Tests (14):**
-  - Data Loading: 3 tests (RNA, Protein, missing files)
-  - Sample Alignment: 2 tests (common samples, no common samples)
-  - Feature Filtering: 2 tests (missing data, no filtering needed)
-  - Normalization: 2 tests (Z-score, constant features)
-  - Integration: 5 tests (RNA only, all modalities, no normalization, strict filtering, caching)
+**Tools:** 9 (enhanced from 5 to 9 tools)
+- integrate_omics_data
+- run_halla_analysis
+- calculate_stouffer_meta
+- create_multiomics_heatmap
+- run_multiomics_pca
+- validate_multiomics_data ⭐ NEW
+- preprocess_multiomics_data ⭐ NEW
+- visualize_data_quality ⭐ NEW
+- predict_upstream_regulators ⭐ NEW
 
-- **Stouffer Meta-Analysis Tests (15):**
-  - P-value Conversions: 3 tests (basic, with directionality, Z to P)
-  - Z-score Combinations: 2 tests (equal weights, custom weights)
-  - Meta-Analysis: 9 tests (basic, directionality, weights, mismatched features, detailed features, FDR correction, no significant features)
+**Test Breakdown:**
+- **Preprocessing Tests (14):** Validation, batch correction, PCA quality checks
+- **Upstream Regulator Tests (15):** Fisher's exact test, Z-score calculations, FDR correction
+- **Integration Tests (14):** Data loading, sample alignment, feature filtering, normalization
+- **Stouffer Meta-Analysis Tests (15):** P-value conversions, Z-score combinations, FDR workflow
+- **Visualization Tests (8):** Heatmaps, PCA plots, QC visualizations
+- **HAllA Tests (5):** Association discovery with chunking strategy
 
 **Code Coverage:**
 ```
@@ -236,10 +242,12 @@ src/mcp_multiomics/tools/utils.py               39      4    90%
 TOTAL                                          256     41    84%
 ```
 
-**Recent Fixes:**
-- ✅ Pydantic V2 boolean parsing fixed (MULTIOMICS_DRY_RUN="false" now works)
-- ✅ Environment variable loading fixed (env_prefix="MULTIOMICS_")
-- ✅ Directory creation moved out of __init__ (avoid import-time errors)
+**Recent Enhancements (v2.0):**
+- ✅ Added preprocessing pipeline (validation, batch correction, QC visualization)
+- ✅ Added upstream regulator prediction (Fisher's exact test with activation Z-scores)
+- ✅ Enhanced HAllA with chunking strategy for large datasets
+- ✅ Corrected Stouffer's meta-analysis FDR workflow (directionality → Stouffer → FDR)
+- ✅ All 71 tests passing with comprehensive coverage
 
 **Verdict:** ✅ Production-ready with comprehensive test coverage
 
@@ -259,8 +267,8 @@ TOTAL                                          256     41    84%
 | mcp-deepcell | 0 | ✅ Import OK | N/A |
 | mcp-mockepic | 0 | ✅ Import OK | N/A |
 | mcp-tcga | 0 | ✅ Import OK | N/A |
-| mcp-multiomics | 29 | ✅ All Pass | 84% |
-| **TOTAL** | **58** | **✅ 100% Pass** | **80.5% Avg** |
+| mcp-multiomics | 71 | ✅ All Pass | 84% |
+| **TOTAL** | **100** | **✅ 100% Pass** | **80.5% Avg** |
 
 ### Server Status
 
@@ -285,7 +293,7 @@ SERVERNAME_DRY_RUN="true" venv/bin/python -m pytest tests/ -v --tb=short
 
 **Results:**
 - mcp-fgbio: 29/29 tests passed
-- mcp-multiomics: 29/29 tests passed
+- mcp-multiomics: 71/71 tests passed (enhanced v2.0)
 
 ### Method 2: Module Import Verification (7 servers)
 

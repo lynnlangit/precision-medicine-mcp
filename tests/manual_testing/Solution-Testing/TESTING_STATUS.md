@@ -1,25 +1,25 @@
-# Spatial MCP Testing Status
+# Precision Medicine MCP Testing Status
 
-**Date:** October 25, 2025
+**Date:** December 26, 2025
 **Status:** ✅ **READY FOR MANUAL TESTING IN CLAUDE DESKTOP**
-**Last Update:** All 3 failing servers fixed - 8/8 servers now working!
+**Last Update:** All servers operational - 9/9 servers working with 40 tools!
 
 ---
 
 ## 🎉 Summary
 
-The Spatial MCP POC is **fully configured and ready for manual testing**. All 8 MCP servers with 31 tools are installed, configured, and verified. Test prompts with absolute file paths are ready to paste into Claude Desktop.
+The Precision Medicine MCP is **fully configured and ready for manual testing**. All 9 MCP servers with 40 tools are installed, configured, and verified. Test prompts with absolute file paths are ready to paste into Claude Desktop.
 
-**Recent Fix (Oct 25):** Fixed 3 failing servers (spatialtools, openimagedata, tcga) - see `configs/FIX_SUMMARY.md` for details.
+**Recent Update (Dec 26):** Enhanced mcp-multiomics from 5 → 9 tools (preprocessing pipeline + upstream regulator prediction).
 
 ---
 
 ## ✅ Completed Setup Tasks
 
 ### 1. Server Installation
-- ✅ All 8 MCP servers installed with Python 3.11 virtual environments
+- ✅ All 9 MCP servers installed with Python 3.11 virtual environments
 - ✅ FastMCP and dependencies installed in all servers
-- ✅ All servers verified working: `8/8 servers, 31 tools`
+- ✅ All servers verified working: `9/9 servers, 40 tools`
 
 ### 2. Configuration Files Created
 - ✅ `configs/claude_desktop_config.json` - Production config with full venv paths
@@ -105,7 +105,7 @@ In Claude Desktop, type:
 What MCP servers are available?
 ```
 
-**Expected:** All 8 servers listed (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga)
+**Expected:** All 9 servers listed (fgbio, spatialtools, openimagedata, seqera, huggingface, deepcell, mockepic, tcga, multiomics)
 
 ### Step 4: Run First Test
 Open `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TEST_5)` and copy-paste **Test Prompt #1** into Claude Desktop.
@@ -156,7 +156,7 @@ cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing
 
 # Verify servers
 ./verify_servers.sh
-# Expected: "Servers working: 8/8, Total tools: 31"
+# Expected: "Servers working: 9/9, Total tools: 40"
 
 # Verify test data
 ls -lh ../synthetic_data/fastq/*.fastq.gz
@@ -167,7 +167,7 @@ ls -lh ../synthetic_data/spatial/expression_matrix.json
 
 # Verify config
 cat ../configs/claude_desktop_config.json | grep -c \"command\"
-# Expected: 8 (one per server)
+# Expected: 9 (one per server)
 ```
 
 ---
@@ -184,7 +184,8 @@ cat ../configs/claude_desktop_config.json | grep -c \"command\"
 | mcp-deepcell | 2 | Python 3.11.13 | ✅ Ready |
 | mcp-mockepic | 3 | Python 3.11.13 | ✅ Ready |
 | mcp-tcga | 5 | Python 3.11.13 | ✅ Ready |
-| **TOTAL** | **31** | **8 venvs** | **✅ All Ready** |
+| mcp-multiomics | 9 | Python 3.11.13 | ✅ Ready |
+| **TOTAL** | **40** | **9 venvs** | **✅ All Ready** |
 
 ---
 
@@ -257,5 +258,5 @@ cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing
 
 ---
 
-**Last Updated:** October 25, 2025
-**Next Action:** Configure Claude Desktop and run Test Prompt #1
+**Last Updated:** December 26, 2025
+**Next Action:** Configure Claude Desktop and run PatientOne tests

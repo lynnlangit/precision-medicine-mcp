@@ -64,7 +64,7 @@ Claude Desktop CAN access files through MCP server tools. Here's how:
 
 **✅ All 5 test prompts are now available:**
 - `TEST_1_CLINICAL_GENOMIC.txt`
-- `TEST_2_MULTIOMICS.txt`
+- `TEST_2_MULTIOMICS_ENHANCED.txt`
 - `TEST_3_SPATIAL.txt`
 - `TEST_4_IMAGING.txt`
 - `TEST_5_INTEGRATION.txt`

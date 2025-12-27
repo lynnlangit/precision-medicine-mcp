@@ -2,7 +2,7 @@
 
 ## Quick Answer
 
-To start and verify all 8 MCP servers in this work session:
+To start and verify all 9 MCP servers in this work session:
 
 ### 1. Install All Dependencies (One-Time Setup)
 ```bash
@@ -17,8 +17,8 @@ cd /Users/lynnlangit/Documents/GitHub/spatial-mcp
 
 Expected output:
 ```
-Servers working: 8/8
-Total tools: 31
+Servers working: 9/9
+Total tools: 40
 🎉 All MCP servers are operational!
 ```
 
@@ -27,7 +27,7 @@ Total tools: 31
 ## What These Scripts Do
 
 ### `install_dependencies.sh`
-- Creates a Python virtual environment for each of the 8 servers
+- Creates a Python virtual environment for each of the 9 servers
 - Installs FastMCP framework
 - Installs all required dependencies (numpy, pandas, httpx, etc.)
 - Sets up each server in development mode
@@ -36,7 +36,7 @@ Total tools: 31
 ### `verify_servers.sh`
 - Tests that each server can be imported
 - Counts and lists all tools in each server
-- Reports overall status (8/8 servers, 31 total tools)
+- Reports overall status (9/9 servers, 40 total tools)
 - Takes ~10-30 seconds to run
 
 ---
@@ -53,7 +53,8 @@ Total tools: 31
 | 6 | mcp-deepcell | 2 | Cell segmentation |
 | 7 | mcp-mockepic | 3 | Clinical data integration |
 | 8 | mcp-tcga | 5 | TCGA cancer genomics data |
-| **TOTAL** | **8 servers** | **31 tools** | **All operational** |
+| 9 | mcp-multiomics | 9 | Multi-omics integration with preprocessing |
+| **TOTAL** | **9 servers** | **40 tools** | **All operational** |
 
 ---
 
@@ -119,7 +120,7 @@ Ask Claude:
 What MCP servers are available?
 ```
 
-Should see all 8 servers listed.
+Should see all 9 servers listed.
 
 ### 4. Test with Example Prompt
 
@@ -182,11 +183,11 @@ Claude, I have 10x Visium spatial transcriptomics data. Please:
 1. **In this session:**
    - ✅ Run `./install_dependencies.sh`
    - ✅ Run `./verify_servers.sh`
-   - ✅ Verify output shows 8/8 servers working
+   - ✅ Verify output shows 9/9 servers working
 
 2. **In Claude Desktop:**
    - Configure with `configs/claude_desktop_config_complete.json`
-   - Restart and verify all 8 servers load
+   - Restart and verify all 9 servers load
    - Test with example prompts
 
 3. **For production:**
@@ -199,7 +200,7 @@ Claude, I have 10x Visium spatial transcriptomics data. Please:
 
 ## Troubleshooting
 
-### Issue: `verify_servers.sh` shows 0/8 servers working
+### Issue: `verify_servers.sh` shows 0/9 servers working
 
 **Solution:**
 ```bash

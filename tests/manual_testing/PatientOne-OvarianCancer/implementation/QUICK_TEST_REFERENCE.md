@@ -13,7 +13,7 @@ The full end-to-end test is too large for Claude Desktop, and Claude Desktop's M
 | Test | File | Servers | Time | Context |
 |------|------|---------|------|---------|
 | **1. Clinical & Genomic** | `TEST_1_CLINICAL_GENOMIC.txt` | mockepic, fgbio, tcga | 5-10 min | Low ⭐ |
-| **2. Multi-Omics** | `TEST_2_MULTIOMICS.txt` | multiomics | 5-10 min | Medium ⭐⭐ |
+| **2. Multi-Omics** | `TEST_2_MULTIOMICS_ENHANCED.txt` | multiomics | 5-10 min | Medium ⭐⭐ |
 | **3. Spatial** | `TEST_3_SPATIAL.txt` | spatialtools | 5-10 min | Medium ⭐⭐ |
 | **4. Imaging** | `TEST_4_IMAGING.txt` | openimagedata, deepcell | 5-10 min | Medium-High ⭐⭐⭐ |
 | **5. Integration** | `TEST_5_INTEGRATION.txt` | none (synthesis) | 5 min | Low ⭐ |
@@ -34,7 +34,7 @@ Copy → Paste into Claude Desktop → Verify results
 
 ### Step 2: Run Test 2
 ```bash
-cat TEST_2_MULTIOMICS.txt
+cat TEST_2_MULTIOMICS_ENHANCED.txt
 ```
 Copy → Paste into NEW conversation → Verify results
 

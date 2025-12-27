@@ -1,6 +1,6 @@
 # Manual Testing Resources
 
-This folder contains scripts and documentation for manually testing the Spatial MCP POC.
+This folder contains scripts and documentation for manually testing the Precision Medicine MCP servers.
 
 ## 📁 Contents
 
@@ -147,8 +147,8 @@ pip install -e ".[dev]"
 | mcp-deepcell | 2 | ✅ |
 | mcp-mockepic | 3 | ✅ |
 | mcp-tcga | 5 | ✅ |
-| mcp-multiomics | 5 | ✅ |
-| **TOTAL** | **36** | **✅** |
+| mcp-multiomics | 9 | ✅ |
+| **TOTAL** | **40** | **✅** |
 
 ---
 
@@ -200,6 +200,6 @@ cat TEST_1_CLINICAL_GENOMIC.txt  # Copy and paste into Claude Desktop
 
 ---
 
-**Last Updated:** November 12, 2025
+**Last Updated:** December 26, 2025
 **Status:** ✅ Ready for Testing
-**New:** PatientOne-OvarianCancer end-to-end testing scenario with 17 synthetic data files
+**New:** PatientOne v2.0 with enhanced multiomics analysis (9 tools, preprocessing + upstream regulators)

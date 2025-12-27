@@ -21,7 +21,7 @@ The original comprehensive end-to-end test hit **context limits** in Claude Desk
 | Test | File | Purpose | Time |
 |------|------|---------|------|
 | **1** | `TEST_1_CLINICAL_GENOMIC.txt` | Clinical data + genomic analysis | 5-10 min |
-| **2** | `TEST_2_MULTIOMICS.txt` | Multi-omics resistance analysis | 5-10 min |
+| **2** | `TEST_2_MULTIOMICS_ENHANCED.txt` | Multi-omics resistance analysis | 5-10 min |
 | **3** | `TEST_3_SPATIAL.txt` | Spatial transcriptomics | 5-10 min |
 | **4** | `TEST_4_IMAGING.txt` | Histology and imaging | 5-10 min |
 | **5** | `TEST_5_INTEGRATION.txt` | Integrated clinical report | 5 min |
@@ -69,7 +69,7 @@ Copy the output → Paste into Claude Desktop
 ### Step 3: Run Tests 2-5
 Use a **new conversation** for each test:
 ```bash
-cat TEST_2_MULTIOMICS.txt
+cat TEST_2_MULTIOMICS_ENHANCED.txt
 cat TEST_3_SPATIAL.txt
 cat TEST_4_IMAGING.txt
 cat TEST_5_INTEGRATION.txt

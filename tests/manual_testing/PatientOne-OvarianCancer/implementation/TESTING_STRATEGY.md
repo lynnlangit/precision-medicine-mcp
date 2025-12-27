@@ -23,7 +23,7 @@
 ---
 
 ### Test 2: Multi-Omics Resistance Analysis (5-10 minutes)
-**File:** `TEST_2_MULTIOMICS.txt`
+**File:** `TEST_2_MULTIOMICS_ENHANCED.txt`
 **Servers Used:** mcp-multiomics
 **Data Files:** 4 CSV files (subset of genes)
 **Context Usage:** ⭐⭐ Medium
@@ -96,7 +96,7 @@ Run tests in order, one conversation per test:
 ```
 Day 1:
   Conversation 1 → TEST_1_CLINICAL_GENOMIC.txt
-  Conversation 2 → TEST_2_MULTIOMICS.txt
+  Conversation 2 → TEST_2_MULTIOMICS_ENHANCED.txt
 
 Day 2:
   Conversation 3 → TEST_3_SPATIAL.txt
@@ -136,7 +136,7 @@ Just verify MCP servers work with existing data:
 
 ```
 Conversation 1 → TEST_1_CLINICAL_GENOMIC.txt (verify 3 servers)
-Conversation 2 → TEST_2_MULTIOMICS.txt (verify multiomics server)
+Conversation 2 → TEST_2_MULTIOMICS_ENHANCED.txt (verify multiomics server)
 Skip Tests 3-5
 ```
 
@@ -292,7 +292,7 @@ implementation/
 ├── TESTING_STRATEGY.md            ← This file
 │
 ├── TEST_1_CLINICAL_GENOMIC.txt    ✅ Small, safe to run
-├── TEST_2_MULTIOMICS.txt          ✅ Medium, should be safe
+├── TEST_2_MULTIOMICS_ENHANCED.txt          ✅ Medium, should be safe
 ├── TEST_3_SPATIAL.txt             ✅ Medium, should be safe
 ├── TEST_4_IMAGING.txt             ✅ Medium-large, may need adjustment
 └── TEST_5_INTEGRATION.txt         ✅ Small, safe to run

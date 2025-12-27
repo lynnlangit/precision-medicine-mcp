@@ -14,7 +14,7 @@
 | File Removed | Reason | Replaced By |
 |-------------|--------|-------------|
 | `TEST_1_CLINICAL_GENOMIC.txt` (v1) | Used absolute paths, hit context limits | `TEST_1_CLINICAL_GENOMIC.txt` (v2) |
-| `TEST_2_MULTIOMICS.txt` (v1) | Used absolute paths, hit context limits | `TEST_2_MULTIOMICS.txt` (v2) |
+| `TEST_2_MULTIOMICS_ENHANCED.txt` (v1) | Used absolute paths, hit context limits | `TEST_2_MULTIOMICS_ENHANCED.txt` (v2) |
 | `TEST_3_SPATIAL.txt` (v1) | Used absolute paths, hit context limits | `TEST_3_SPATIAL.txt` (v2) |
 | `TEST_4_IMAGING.txt` (v1) | Used absolute paths, hit context limits | `TEST_4_IMAGING.txt` (v2) |
 | `TEST_5_INTEGRATION.txt` (v1) | Used absolute paths | `TEST_5_INTEGRATION.txt` (v2) |
@@ -46,7 +46,7 @@
 ### Test Prompts (5 files)
 ```
 TEST_1_CLINICAL_GENOMIC.txt          (2,716 bytes)
-TEST_2_MULTIOMICS.txt                (3,142 bytes)
+TEST_2_MULTIOMICS_ENHANCED.txt                (3,142 bytes)
 TEST_3_SPATIAL.txt                   (3,333 bytes)
 TEST_4_IMAGING.txt                   (4,202 bytes)
 TEST_5_INTEGRATION.txt               (6,121 bytes)
@@ -138,7 +138,7 @@ If you had bookmarks or scripts referencing old files:
 | Old File (v1) | Current File (v2) |
 |----------|----------|
 | `TEST_1_CLINICAL_GENOMIC.txt` (absolute paths) | `TEST_1_CLINICAL_GENOMIC.txt` (relative paths) |
-| `TEST_2_MULTIOMICS.txt` (absolute paths) | `TEST_2_MULTIOMICS.txt` (relative paths) |
+| `TEST_2_MULTIOMICS_ENHANCED.txt` (absolute paths) | `TEST_2_MULTIOMICS_ENHANCED.txt` (relative paths) |
 | `TEST_3_SPATIAL.txt` (absolute paths) | `TEST_3_SPATIAL.txt` (relative paths) |
 | `TEST_4_IMAGING.txt` (absolute paths) | `TEST_4_IMAGING.txt` (relative paths) |
 | `TEST_5_INTEGRATION.txt` (absolute paths) | `TEST_5_INTEGRATION.txt` (relative paths) |
@@ -204,7 +204,7 @@ find /Users/.../data/patient-data/PAT001-OVC-2025 -type f | wc -l
 
 The "_FIXED" suffix has been removed from all test filenames for simplicity:
 - `TEST_1_CLINICAL_GENOMIC_FIXED.txt` → `TEST_1_CLINICAL_GENOMIC.txt`
-- `TEST_2_MULTIOMICS_FIXED.txt` → `TEST_2_MULTIOMICS.txt`
+- `TEST_2_MULTIOMICS_FIXED.txt` → `TEST_2_MULTIOMICS_ENHANCED.txt`
 - `TEST_3_SPATIAL_FIXED.txt` → `TEST_3_SPATIAL.txt`
 - `TEST_4_IMAGING_FIXED.txt` → `TEST_4_IMAGING.txt`
 - `TEST_5_INTEGRATION_FIXED.txt` → `TEST_5_INTEGRATION.txt`

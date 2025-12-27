@@ -89,7 +89,7 @@ data/patient-data/PAT001-OVC-2025/
 | File | Purpose | Changes |
 |------|---------|---------|
 | `TEST_1_CLINICAL_GENOMIC.txt` | Clinical + genomic analysis | Uses relative path `patient-data/PAT001-OVC-2025/clinical/` |
-| `TEST_2_MULTIOMICS.txt` | Multi-omics resistance analysis | Uses relative path `patient-data/PAT001-OVC-2025/multiomics/` |
+| `TEST_2_MULTIOMICS_ENHANCED.txt` | Multi-omics resistance analysis | Uses relative path `patient-data/PAT001-OVC-2025/multiomics/` |
 | `TEST_3_SPATIAL.txt` | Spatial transcriptomics | Uses relative path `patient-data/PAT001-OVC-2025/spatial/` |
 | `TEST_4_IMAGING.txt` | Histology and imaging | Uses relative path `patient-data/PAT001-OVC-2025/imaging/` |
 | `TEST_5_INTEGRATION.txt` | Integrated analysis | Synthesis only (no file loading) |
@@ -132,7 +132,7 @@ cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-Ovar
 
 # Copy and paste each test into Claude Desktop
 cat TEST_1_CLINICAL_GENOMIC.txt
-cat TEST_2_MULTIOMICS.txt
+cat TEST_2_MULTIOMICS_ENHANCED.txt
 cat TEST_3_SPATIAL.txt
 cat TEST_4_IMAGING.txt
 cat TEST_5_INTEGRATION.txt
@@ -188,7 +188,7 @@ Result: Claude Desktop uses MCP tools to read existing file
 
 ### New Files:
 1. `TEST_1_CLINICAL_GENOMIC.txt` - 79 lines
-2. `TEST_2_MULTIOMICS.txt` - 103 lines
+2. `TEST_2_MULTIOMICS_ENHANCED.txt` - 103 lines
 3. `TEST_3_SPATIAL.txt` - 103 lines
 4. `TEST_4_IMAGING.txt` - 100 lines
 5. `TEST_5_INTEGRATION.txt` - 155 lines

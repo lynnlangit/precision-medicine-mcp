@@ -11,7 +11,7 @@
 ### Option 1: Focused Tests (Recommended) ✅
 **Use these 5 smaller tests to avoid context limits:**
 - `TEST_1_CLINICAL_GENOMIC.txt` - Clinical data + genomics (3 servers)
-- `TEST_2_MULTIOMICS.txt` - Multi-omics analysis (1 server)
+- `TEST_2_MULTIOMICS_ENHANCED.txt` - Multi-omics analysis (1 server)
 - `TEST_3_SPATIAL.txt` - Spatial transcriptomics (1 server)
 - `TEST_4_IMAGING.txt` - Histology and imaging (2 servers)
 - `TEST_5_INTEGRATION.txt` - Synthesis and recommendations
