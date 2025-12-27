@@ -54,6 +54,44 @@ How do we integrate:
 **Traditional Approach:** Weeks of custom scripts, multiple software tools, manual data wrangling, siloed analysis
 **PatientOne with MCP:** Conversational requests that orchestrate 40 tools across 9 servers automatically
 
+### Data Integration Flow
+
+```mermaid
+flowchart LR
+    subgraph Input["5 Data Modalities"]
+        CLIN[Clinical<br/>Demographics<br/>CA-125<br/>Treatment Hx]
+        GEN[Genomic<br/>VCF Mutations<br/>CNVs<br/>TCGA Compare]
+        OMICS[Multi-Omics<br/>RNA-seq<br/>Proteomics<br/>Phospho]
+        SPAT[Spatial<br/>10x Visium<br/>900 spots<br/>6 regions]
+        IMG[Imaging<br/>H&E<br/>IF markers<br/>Cell seg]
+    end
+
+    subgraph Integration["AI Integration Layer"]
+        CLAUDE[Claude Desktop<br/>MCP Orchestration<br/>9 Servers • 40 Tools]
+    end
+
+    subgraph Output["Precision Medicine Output"]
+        RES[Resistance<br/>Mechanisms]
+        TARGETS[Treatment<br/>Targets]
+        TRIALS[Clinical<br/>Trials]
+    end
+
+    CLIN --> CLAUDE
+    GEN --> CLAUDE
+    OMICS --> CLAUDE
+    SPAT --> CLAUDE
+    IMG --> CLAUDE
+
+    CLAUDE --> RES
+    CLAUDE --> TARGETS
+    CLAUDE --> TRIALS
+
+    style CLAUDE fill:#fff4e1,stroke:#ff9800,stroke-width:3px
+    style RES fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    style TARGETS fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    style TRIALS fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+```
+
 ---
 
 ## Architecture Overview

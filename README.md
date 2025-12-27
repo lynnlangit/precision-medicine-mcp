@@ -48,6 +48,46 @@ PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a c
 
 ---
 
+## Server Ecosystem Overview
+
+```mermaid
+graph TD
+    subgraph "Clinical & Genomic Foundation"
+        EPIC[mcp-mockepic<br/>Clinical Data]
+        FGBIO[mcp-fgbio<br/>FASTQ/VCF]
+        TCGA[mcp-tcga<br/>Cancer Atlas]
+    end
+
+    subgraph "Multi-Omics Analysis"
+        MULTI[mcp-multiomics<br/>RNA/Protein/Phospho]
+    end
+
+    subgraph "Spatial Biology"
+        SPATIAL[mcp-spatialtools<br/>Spatial RNA-seq]
+        IMAGE[mcp-openimagedata<br/>Histology]
+        DEEPCELL[mcp-deepcell<br/>Cell Segmentation]
+    end
+
+    subgraph "AI & Workflow Orchestration"
+        HF[mcp-huggingface<br/>ML Models]
+        SEQERA[mcp-seqera<br/>Nextflow]
+    end
+
+    EPIC --> PATIENT[PatientOne<br/>Precision Medicine]
+    FGBIO --> PATIENT
+    TCGA --> PATIENT
+    MULTI --> PATIENT
+    SPATIAL --> PATIENT
+    IMAGE --> PATIENT
+    DEEPCELL --> PATIENT
+    HF --> PATIENT
+    SEQERA --> PATIENT
+
+    style PATIENT fill:#e1f5ff,stroke:#0066cc,stroke-width:3px
+```
+
+---
+
 ## Component Workflows
 
 PatientOne integrates these specialized workflows:
