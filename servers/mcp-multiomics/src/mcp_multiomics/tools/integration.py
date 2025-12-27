@@ -7,6 +7,13 @@ from typing import Any, Dict, Optional
 import pandas as pd
 
 from ..config import config
+from ..validation import (
+    ValidationError,
+    validate_multiomics_file,
+    validate_metadata_file,
+    validate_data_integration,
+    format_validation_error,
+)
 from .utils import (
     align_samples,
     calculate_qc_metrics,
@@ -42,7 +49,81 @@ def integrate_omics_data_impl(
     """
     logger.info("Starting multi-omics data integration")
 
+    # =========================================================================
+    # VALIDATION: Check input files before processing
+    # =========================================================================
+
+    validation_errors = []
+
+    # Validate RNA file (required)
+    logger.info(f"Validating RNA file: {rna_path}")
+    rna_valid, rna_errors, rna_df = validate_multiomics_file(
+        rna_path,
+        required_columns=["gene_id"],  # Minimal requirement
+        file_type="RNA",
+        allow_missing_columns=True  # We'll check sample columns later
+    )
+    if not rna_valid:
+        validation_errors.extend(rna_errors)
+    elif rna_errors:  # Warnings
+        for warning in rna_errors:
+            logger.warning(warning)
+
+    # Validate Protein file (optional)
+    if protein_path:
+        logger.info(f"Validating Protein file: {protein_path}")
+        protein_valid, protein_errors, protein_df = validate_multiomics_file(
+            protein_path,
+            required_columns=["gene_id"],
+            file_type="Protein",
+            allow_missing_columns=True
+        )
+        if not protein_valid:
+            validation_errors.extend(protein_errors)
+        elif protein_errors:
+            for warning in protein_errors:
+                logger.warning(warning)
+
+    # Validate Phospho file (optional)
+    if phospho_path:
+        logger.info(f"Validating Phospho file: {phospho_path}")
+        phospho_valid, phospho_errors, phospho_df = validate_multiomics_file(
+            phospho_path,
+            required_columns=["gene_id"],
+            file_type="Phospho",
+            allow_missing_columns=True
+        )
+        if not phospho_valid:
+            validation_errors.extend(phospho_errors)
+        elif phospho_errors:
+            for warning in phospho_errors:
+                logger.warning(warning)
+
+    # Validate Metadata file (optional)
+    if metadata_path:
+        logger.info(f"Validating Metadata file: {metadata_path}")
+        meta_valid, meta_errors, meta_df = validate_metadata_file(
+            metadata_path,
+            required_columns=["Sample"]
+        )
+        if not meta_valid:
+            validation_errors.extend(meta_errors)
+        elif meta_errors:
+            for warning in meta_errors:
+                logger.warning(warning)
+
+    # If any validation errors, raise exception with formatted message
+    if validation_errors:
+        error_msg = format_validation_error(validation_errors, rna_path)
+        logger.error("Input validation failed")
+        raise ValidationError(error_msg)
+
+    logger.info("✅ All input files validated successfully")
+
+    # =========================================================================
     # Load data files
+    # =========================================================================
+
     dataframes = {}
     original_counts = {}
 
