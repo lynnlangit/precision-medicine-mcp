@@ -47,14 +47,14 @@ KINASE_DATA = pd.DataFrame({
 # Create figure
 fig = plt.figure(figsize=(16, 12), dpi=300, facecolor='white')
 gs = fig.add_gridspec(4, 2, height_ratios=[1.3, 1.3, 1.2, 1.2],
-                       hspace=0.35, wspace=0.25,
-                       left=0.05, right=0.98, top=0.95, bottom=0.05)
+                       hspace=0.50, wspace=0.25,
+                       left=0.05, right=0.98, top=0.87, bottom=0.05)
 
 # ============================================================================
 # TITLE
 # ============================================================================
 fig.suptitle('Multi-Omics Resistance Analysis: PAT001-OVC-2025\nStage IV HGSOC, Platinum-Resistant (n=13 after QC)',
-             fontsize=20, fontweight='bold', y=0.98)
+             fontsize=20, fontweight='bold', y=0.95)
 
 # ============================================================================
 # PANEL A: QC & Batch Correction
@@ -82,7 +82,7 @@ ax_before.scatter(pc1_before_batch2, pc2_before_batch2, c=COLORS['batch2'],
                    s=100, edgecolor='black', linewidth=1.5, label='Batch 2', zorder=3)
 ax_before.set_xlabel('PC1 (67% variance)', fontsize=11, fontweight='bold')
 ax_before.set_ylabel('PC2 (15% variance)', fontsize=11, fontweight='bold')
-ax_before.set_title('A. Before Batch Correction', fontsize=14, fontweight='bold', pad=10)
+ax_before.set_title('A. Before Batch Correction', fontsize=14, fontweight='bold', pad=25)
 ax_before.legend(loc='upper right', frameon=True, fancybox=True)
 ax_before.grid(True, alpha=0.3, linestyle='--')
 ax_before.set_facecolor(COLORS['background'])
@@ -105,7 +105,7 @@ ax_after.scatter(pc1_after_sensitive, pc2_after_sensitive, c=COLORS['sensitive']
                   s=100, edgecolor='black', linewidth=1.5, label='Sensitive', marker='s', zorder=3)
 ax_after.set_xlabel('PC1 (42% variance)', fontsize=11, fontweight='bold')
 ax_after.set_ylabel('PC2 (23% variance)', fontsize=11, fontweight='bold')
-ax_after.set_title('After Batch Correction', fontsize=14, fontweight='bold', pad=10)
+ax_after.set_title('After Batch Correction', fontsize=14, fontweight='bold', pad=25)
 ax_after.legend(loc='upper right', frameon=True, fancybox=True)
 ax_after.grid(True, alpha=0.3, linestyle='--')
 ax_after.set_facecolor(COLORS['background'])
@@ -127,7 +127,7 @@ ax_after.text(0.5, 0.08, '✅ PC1 now biological (resistant vs sensitive)',
 ax_table = fig.add_subplot(gs[1, :])
 ax_table.axis('off')
 ax_table.set_title('B. Resistance Genes Across RNA, Protein, and Phosphorylation',
-                    fontsize=14, fontweight='bold', loc='left', pad=15)
+                    fontsize=14, fontweight='bold', loc='left', pad=30)
 
 # Create table
 table_data = []
@@ -195,7 +195,7 @@ ax_table.text(0.5, 0.15, note_text, transform=ax_table.transAxes,
 
 ax_kinases = fig.add_subplot(gs[2, :])
 ax_kinases.set_title('C. Upstream Regulator Predictions & Drug Targets',
-                      fontsize=14, fontweight='bold', pad=15)
+                      fontsize=14, fontweight='bold', pad=30)
 
 # Kinase bar chart
 y_pos = np.arange(len(KINASE_DATA))
@@ -239,7 +239,7 @@ ax_kinases.text(0.5, -0.25, trial_text, transform=ax_kinases.transAxes,
 
 ax_pathway = fig.add_subplot(gs[3, :])
 ax_pathway.set_title('D. PI3K/AKT/mTOR Pathway Activation & Therapeutic Strategy',
-                      fontsize=14, fontweight='bold', pad=15)
+                      fontsize=14, fontweight='bold', pad=30)
 ax_pathway.set_xlim(0, 10)
 ax_pathway.set_ylim(0, 10)
 ax_pathway.axis('off')
