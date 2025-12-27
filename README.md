@@ -42,8 +42,8 @@ PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a c
 - High proliferation (Ki67+) in tumor core regions
 - Actionable targets: PIK3CA inhibitors, immune checkpoint combinations
 
-**Try PatientOne:** [Quick Start Guide →](manual_testing/PatientOne-OvarianCancer/README.md)  
 **Architecture Diagram & Details:** [PatientOne Documentation →](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/README.md)   
+**Try PatientOne:** [Quick Start Guide →](manual_testing/PatientOne-OvarianCancer/README.md)  
 **Outputs Generated:** [For developers, care teams, and patients →](architecture/patient-one/patient-one-outputs/)  
 
 ---
