@@ -8,6 +8,37 @@ from fastmcp import FastMCP
 
 mcp = FastMCP("deepcell")
 
+# DRY_RUN warning wrapper
+def add_dry_run_warning(result: Any) -> Any:
+    """Add warning banner to results when in DRY_RUN mode."""
+    if not config.dry_run:
+        return result
+
+    warning = """
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    ⚠️  SYNTHETIC DATA WARNING ⚠️                          ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+This result was generated in DRY_RUN mode and does NOT represent real analysis.
+
+🔴 CRITICAL: Do NOT use this data for research decisions or publications.
+🔴 All values are SYNTHETIC/MOCKED and have no scientific validity.
+
+To enable real data processing, set: DEEPCELL_DRY_RUN=false
+
+═══════════════════════════════════════════════════════════════════════════
+
+"""
+
+    if isinstance(result, dict):
+        result["_DRY_RUN_WARNING"] = "SYNTHETIC DATA - NOT FOR RESEARCH USE"
+        result["_message"] = warning.strip()
+    elif isinstance(result, str):
+        result = warning + result
+
+    return result
+
+
 DRY_RUN = os.getenv("DEEPCELL_DRY_RUN", "true").lower() == "true"
 
 @mcp.tool()
@@ -81,7 +112,18 @@ def get_membrane_model_info() -> str:
     }, indent=2)
 
 def main() -> None:
-    """Run the MCP DeepCell server."""
+    """Run the MCP mcp-deepcell server."""
+    logger.info("Starting mcp-deepcell server...")
+
+    if config.dry_run:
+        logger.warning("=" * 80)
+        logger.warning("⚠️  DRY_RUN MODE ENABLED - RETURNING SYNTHETIC DATA")
+        logger.warning("⚠️  Results are MOCKED and do NOT represent real analysis")
+        logger.warning("⚠️  Set DEEPCELL_DRY_RUN=false for production use")
+        logger.warning("=" * 80)
+    else:
+        logger.info("✅ Real data processing mode enabled (DEEPCELL_DRY_RUN=false)")
+
     mcp.run(transport="stdio")
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@
 
 See each subfolder for architectures. See also main Repo README.md for list of tools for each custom MCP server
 
+**⚠️ Important:** Not all servers are production-ready. Check [Server Implementation Status](../docs/SERVER_IMPLEMENTATION_STATUS.md) before using for research or production.
+
 ## Architecture Workflows
 
 ### 1) Multiomics (custom mcp servers + tools)

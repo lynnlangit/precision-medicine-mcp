@@ -17,6 +17,54 @@ PatientOne demonstrates end-to-end precision medicine analysis integrating:
 
 ---
 
+## ⚠️ IMPORTANT: Research Use Only Disclaimer
+
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                     PATIENTONE WORKFLOW DISCLAIMER                         ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+⚠️  RESEARCH USE ONLY - NOT FOR CLINICAL DECISION-MAKING ⚠️
+
+This PatientOne workflow has NOT been clinically validated.
+Do NOT use for actual patient care decisions.
+
+CRITICAL LIMITATIONS:
+
+1. SYNTHETIC DATA
+   This demo uses synthetic/de-identified data for demonstration.
+   Results are for educational purposes only.
+
+2. AI-GENERATED INSIGHTS
+   Claude AI orchestrates the analysis but:
+   • May misinterpret complex data
+   • May hallucinate connections not supported by data
+   • Cannot replace expert human interpretation
+   • Requires validation by qualified bioinformaticians
+
+3. VALIDATION REQUIRED
+   ALL findings must be validated before research use:
+   • Statistical findings → Independent cohort
+   • Pathway predictions → Mechanistic studies
+   • Drug targets → Experimental models
+   • Clinical recommendations → Clinical trials
+
+4. NO LIABILITY
+   The developers and AI provider assume NO liability for:
+   • Treatment decisions based on this analysis
+   • Patient outcomes
+   • Misinterpretation of results
+   • Technical errors or bugs
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║  CONSULT A QUALIFIED ONCOLOGIST BEFORE ANY CLINICAL DECISION               ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+```
+
+**See [DISCLAIMERS.md](../../../docs/DISCLAIMERS.md) for complete safety guidelines.**
+
+---
+
 ## Prerequisites
 
 ### System Requirements

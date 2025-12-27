@@ -35,6 +35,66 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP("multiomics")
 
 
+# DRY_RUN warning wrapper
+def add_dry_run_warning(result: Any) -> Any:
+    """Add warning banner to results when in DRY_RUN mode."""
+    if not config.dry_run:
+        return result
+
+    warning = """
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    ⚠️  SYNTHETIC DATA WARNING ⚠️                          ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+This result was generated in DRY_RUN mode and does NOT represent real analysis.
+
+🔴 CRITICAL: Do NOT use this data for research decisions or publications.
+🔴 All values are SYNTHETIC/MOCKED and have no scientific validity.
+
+To enable real data processing, set: MULTIOMICS_DRY_RUN=false
+
+═══════════════════════════════════════════════════════════════════════════
+
+"""
+
+    if isinstance(result, dict):
+        result["_DRY_RUN_WARNING"] = "SYNTHETIC DATA - NOT FOR RESEARCH USE"
+        result["_message"] = warning.strip()
+    elif isinstance(result, str):
+        result = warning + result
+
+    return result
+
+
+# Research Use Only disclaimer
+def add_research_disclaimer(result: Any, analysis_type: str = "analysis") -> Any:
+    """Add research use disclaimer to results."""
+    disclaimer = f"""
+⚠️  RESEARCH USE ONLY - NOT FOR CLINICAL DECISION-MAKING ⚠️
+
+This {analysis_type} is provided for RESEARCH PURPOSES ONLY and has not been
+clinically validated. Results should NOT be used for:
+  • Patient diagnosis
+  • Treatment selection
+  • Clinical decision-making
+
+All findings must be:
+  1. Reviewed by qualified bioinformatics personnel
+  2. Validated with orthogonal methods (e.g., qPCR, Western blot)
+  3. Interpreted by board-certified oncologist before any clinical consideration
+
+═══════════════════════════════════════════════════════════════════════════
+"""
+
+    if isinstance(result, dict):
+        result["_DISCLAIMER"] = "RESEARCH USE ONLY - NOT FOR CLINICAL USE"
+        result["_research_disclaimer"] = disclaimer.strip()
+    elif isinstance(result, str):
+        result = disclaimer + "\n" + result
+
+    return result
+
+
 # ============================================================================
 # TOOLS
 # ============================================================================
@@ -86,7 +146,7 @@ def integrate_omics_data(
 
     if config.dry_run:
         # Mock response for testing
-        return {
+        return add_dry_run_warning({
             "integrated_data": {
                 "rna": {"shape": [1000, 15], "path": rna_path},
                 "protein": {"shape": [500, 15], "path": protein_path} if protein_path else None,
@@ -110,10 +170,10 @@ def integrate_omics_data(
                 "features_filtered": {"rna": 50, "protein": 20, "phospho": 15},
             },
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
-    return integrate_omics_data_impl(
+    result = integrate_omics_data_impl(
         rna_path=rna_path,
         protein_path=protein_path,
         phospho_path=phospho_path,
@@ -121,6 +181,7 @@ def integrate_omics_data(
         normalize=normalize,
         filter_missing=filter_missing,
     )
+    return add_research_disclaimer(result, "multi-omics data integration")
 
 
 @mcp.tool()
@@ -167,7 +228,7 @@ def validate_multiomics_data(
 
     if config.dry_run:
         # Mock response for testing
-        return {
+        return add_dry_run_warning({
             "validation_status": "warning",
             "sample_overlap": {
                 "rna_samples": 15,
@@ -207,10 +268,11 @@ def validate_multiomics_data(
                 "4. Consider removing outlier samples: Sample_07, Sample_12",
             ],
             "status": "success (DRY_RUN mode)",
-        }
+        })
 
     # Real implementation
-    return validate_multiomics_data_impl(
+    result = validate_multiomics_data_impl(
+    return add_research_disclaimer(result, "analysis")
         rna_path=rna_path,
         protein_path=protein_path,
         phospho_path=phospho_path,
@@ -274,7 +336,7 @@ def preprocess_multiomics_data(
 
     if config.dry_run:
         # Mock response for testing
-        return {
+        return add_dry_run_warning({
             "preprocessed_paths": {
                 "rna": f"{output_dir}/rna_preprocessed.csv" if output_dir else "/data/preprocessed/rna_preprocessed.csv",
                 "protein": f"{output_dir}/protein_preprocessed.csv" if output_dir and protein_path else None,
@@ -321,7 +383,8 @@ def preprocess_multiomics_data(
         }
 
     # Real implementation
-    return preprocess_multiomics_data_impl(
+    result = preprocess_multiomics_data_impl(
+    return add_research_disclaimer(result, "analysis")
         rna_path=rna_path,
         protein_path=protein_path,
         phospho_path=phospho_path,
@@ -384,7 +447,7 @@ def visualize_data_quality(
 
     if config.dry_run:
         # Mock response for testing
-        return {
+        return add_dry_run_warning({
             "plot_paths": {
                 "pca_plot": f"{output_dir}/pca_analysis.png" if output_dir else "/plots/pca_analysis.png",
                 "correlation_heatmap": f"{output_dir}/sample_correlation.png" if output_dir else "/plots/sample_correlation.png",
@@ -413,7 +476,8 @@ def visualize_data_quality(
         }
 
     # Real implementation
-    return visualize_data_quality_impl(
+    result = visualize_data_quality_impl(
+    return add_research_disclaimer(result, "analysis")
         data_paths=data_paths,
         metadata_path=metadata_path,
         output_dir=output_dir,
@@ -479,7 +543,7 @@ def run_halla_analysis(
 
     if config.dry_run:
         # Mock response
-        return {
+        return add_dry_run_warning({
             "associations": [
                 {
                     "feature1": f"{modality1}_gene_{i}",
@@ -512,7 +576,8 @@ def run_halla_analysis(
         }
 
     # Real implementation
-    return run_halla_analysis_impl(
+    result = run_halla_analysis_impl(
+    return add_research_disclaimer(result, "analysis")
         data_path=data_path,
         modality1=modality1,
         modality2=modality2,
@@ -590,7 +655,7 @@ def calculate_stouffer_meta(
     if config.dry_run:
         # Mock response
         n_features = len(next(iter(p_values_dict.values())))
-        return {
+        return add_dry_run_warning({
             "meta_p_values": [0.0001, 0.02, 0.35][:n_features],
             "meta_z_scores": [3.72, 2.33, 0.93][:n_features],
             "q_values": [0.0003, 0.04, 0.7][:n_features],
@@ -638,7 +703,8 @@ def calculate_stouffer_meta(
         }
 
     # Real implementation
-    return calculate_stouffer_meta_impl(
+    result = calculate_stouffer_meta_impl(
+    return add_research_disclaimer(result, "analysis")
         p_values_dict=p_values_dict,
         effect_sizes_dict=effect_sizes_dict,
         weights=weights,
@@ -687,7 +753,7 @@ def create_multiomics_heatmap(
     logger.info(f"create_multiomics_heatmap called: data_path={data_path}")
 
     if config.dry_run:
-        return {
+        return add_dry_run_warning({
             "plot_path": output_path or "/workspace/plots/multiomics_heatmap.png",
             "cluster_info": {
                 "row_clusters": 4,
@@ -749,7 +815,7 @@ def run_multiomics_pca(
     logger.info(f"run_multiomics_pca called: n_components={n_components}")
 
     if config.dry_run:
-        return {
+        return add_dry_run_warning({
             "variance_explained": [0.42, 0.23, 0.15][:n_components],
             "loadings": {
                 "PC1": {"top_features": ["TP53", "MYC", "EGFR"], "n_features": 1800},
@@ -839,7 +905,7 @@ def predict_upstream_regulators(
 
     if config.dry_run:
         # Mock response
-        return {
+        return add_dry_run_warning({
             "kinases": [
                 {
                     "name": "AKT1",
@@ -930,7 +996,8 @@ def predict_upstream_regulators(
         }
 
     # Real implementation
-    return predict_upstream_regulators_impl(
+    result = predict_upstream_regulators_impl(
+    return add_research_disclaimer(result, "analysis")
         differential_genes=differential_genes,
         regulator_types=regulator_types,
         fdr_threshold=fdr_threshold,
@@ -1022,7 +1089,16 @@ Sample_03,Drug_B,Resistant,2
 def main():
     """Run the MCP server."""
     logger.info("Starting mcp-multiomics server...")
-    logger.info(f"DRY_RUN mode: {config.dry_run}")
+
+    if config.dry_run:
+        logger.warning("=" * 80)
+        logger.warning("⚠️  DRY_RUN MODE ENABLED - RETURNING SYNTHETIC DATA")
+        logger.warning("⚠️  Results are MOCKED and do NOT represent real analysis")
+        logger.warning("⚠️  Set MULTIOMICS_DRY_RUN=false for production use")
+        logger.warning("=" * 80)
+    else:
+        logger.info("✅ Real data processing mode enabled (MULTIOMICS_DRY_RUN=false)")
+
     mcp.run()
 
 

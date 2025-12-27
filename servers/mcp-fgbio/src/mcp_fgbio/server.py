@@ -17,6 +17,37 @@ from fastmcp import FastMCP
 # Initialize the MCP server
 mcp = FastMCP("fgbio", dependencies=["httpx", "aiofiles"])
 
+# DRY_RUN warning wrapper
+def add_dry_run_warning(result: Any) -> Any:
+    """Add warning banner to results when in DRY_RUN mode."""
+    if not config.dry_run:
+        return result
+
+    warning = """
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    ⚠️  SYNTHETIC DATA WARNING ⚠️                          ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+This result was generated in DRY_RUN mode and does NOT represent real analysis.
+
+🔴 CRITICAL: Do NOT use this data for research decisions or publications.
+🔴 All values are SYNTHETIC/MOCKED and have no scientific validity.
+
+To enable real data processing, set: FGBIO_DRY_RUN=false
+
+═══════════════════════════════════════════════════════════════════════════
+
+"""
+
+    if isinstance(result, dict):
+        result["_DRY_RUN_WARNING"] = "SYNTHETIC DATA - NOT FOR RESEARCH USE"
+        result["_message"] = warning.strip()
+    elif isinstance(result, str):
+        result = warning + result
+
+    return result
+
+
 # Configuration helper functions (read from environment at runtime for testability)
 def _get_reference_data_dir() -> Path:
     """Get reference data directory from environment."""
@@ -766,6 +797,18 @@ def main() -> None:
 
     # Ensure directories exist
     _ensure_directories()
+
+    # Startup warnings for DRY_RUN mode
+    logger.info("Starting mcp-fgbio server...")
+
+    if config.dry_run:
+        logger.warning("=" * 80)
+        logger.warning("⚠️  DRY_RUN MODE ENABLED - RETURNING SYNTHETIC DATA")
+        logger.warning("⚠️  Results are MOCKED and do NOT represent real analysis")
+        logger.warning("⚠️  Set FGBIO_DRY_RUN=false for production use")
+        logger.warning("=" * 80)
+    else:
+        logger.info("✅ Real data processing mode enabled (FGBIO_DRY_RUN=false)")
 
     # Run the server
     mcp.run(transport="stdio")

@@ -8,6 +8,22 @@ PatientOne demonstrates how Claude orchestrates 9 specialized MCP servers to del
 
 ---
 
+## ⚠️ Research Use Only Disclaimer
+
+**CRITICAL:** This workflow is for RESEARCH and EDUCATIONAL purposes only.
+
+- ❌ **NOT clinically validated** - Do not use for actual patient care decisions
+- ❌ **NOT FDA-approved** - Not a medical device or diagnostic tool
+- ❌ **NOT a substitute for clinical judgment** - Requires expert review
+- ✅ **FOR demonstration** - Shows feasibility of AI-orchestrated precision medicine
+- ✅ **FOR research** - Hypothesis generation and method development
+
+**All data is synthetic.** Any resemblance to actual patients is coincidental.
+
+**See [complete disclaimers →](../../docs/DISCLAIMERS.md)**
+
+---
+
 ## Clinical Context
 
 ### Patient Profile (Synthetic Data)

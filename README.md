@@ -16,6 +16,24 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 
 ---
 
+## ⚠️ Important: Production Readiness Status
+
+**Before using these servers for research or production:**
+
+**Production-Ready Servers (2/9):**
+- ✅ **mcp-multiomics** - Multi-omics integration (91 tests, 68% coverage)
+- ✅ **mcp-fgbio** - Genomic QC (29 tests, 77% coverage)
+
+**Mocked/Partial Servers (7/9):**
+- 🔶 mcp-spatialtools (40% real - basic features only)
+- ❌ mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera (0% real - fully mocked)
+- 🔶 mcp-openimagedata (30% real - basic features only)
+- Mock EHR by design: mcp-mockepic
+
+**📋 Check detailed status before production use:** [Server Implementation Status Matrix →](docs/SERVER_IMPLEMENTATION_STATUS.md)
+
+---
+
 ## Featured Use Case: PatientOne
 
 **Comprehensive Precision Medicine Workflow for Stage IV Ovarian Cancer**
