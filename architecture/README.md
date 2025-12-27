@@ -312,7 +312,7 @@ Key Features:
 │  • Spatial: 3 files (coordinates, expression, annotations)               │
 │  • Imaging: 7 files (H&E, IF markers, multiplex)                         │
 │                                                                           │
-│  Test Location: /manual_testing/PatientOne-OvarianCancer/implementation/ │
+│  Test Location: /tests/manual_testing/PatientOne-OvarianCancer/          │
 └──────────────────────────────────────────────────────────────────────────┘
 
 Key Features:
