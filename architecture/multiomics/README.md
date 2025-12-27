@@ -1,8 +1,8 @@
 # Multiomics MCP Server - Architecture Document
 
-**Version:** 2.0 (Enhanced with Preprocessing & Upstream Regulators)  
-**Date:** December 26, 2025  
-**Status:** ✅ Production Ready - Fully Tested (71/71 tests passing)  
+**Version:** 2.0 (Enhanced with Preprocessing & Upstream Regulators)
+**Date:** December 26, 2025
+**Status:** ✅ Production Ready - Fully Tested (91 automated tests, 68% code coverage)  
 
 ---
 ## Executive Summary
@@ -15,7 +15,7 @@ The **mcp-multiomics** server provides comprehensive PDX multi-omics analysis wi
 - ✅ **Enhanced HAllA**: Chunking strategy for large datasets (1000 features/chunk)
 - ✅ **Correct FDR Workflow**: Applied AFTER Stouffer's meta-analysis
 
-**Development Status:** Complete (9 tools, 71 unit tests, comprehensive documentation)  
+**Development Status:** Complete (9 tools, 91 automated tests, 68% code coverage, comprehensive documentation)  
 **Complexity:** Medium-High (R integration optional via rpy2)  
 **Dependencies:** Python 3.11+, scipy, statsmodels, scikit-learn | Optional: R 4.3+, rpy2, HAllA R package  
 

@@ -343,11 +343,11 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 {
   "mcpServers": {
     "multiomics": {
-      "command": "/absolute/path/to/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+      "command": "/absolute/path/to/precision-medicine-mcp/servers/mcp-multiomics/venv/bin/python",
       "args": ["-m", "mcp_multiomics"],
-      "cwd": "/absolute/path/to/spatial-mcp/servers/mcp-multiomics",
+      "cwd": "/absolute/path/to/precision-medicine-mcp/servers/mcp-multiomics",
       "env": {
-        "PYTHONPATH": "/absolute/path/to/spatial-mcp/servers/mcp-multiomics/src",
+        "PYTHONPATH": "/absolute/path/to/precision-medicine-mcp/servers/mcp-multiomics/src",
         "MULTIOMICS_DATA_DIR": "/absolute/path/to/data/multiomics",
         "MULTIOMICS_CACHE_DIR": "/absolute/path/to/cache/multiomics",
         "MULTIOMICS_DRY_RUN": "true"
@@ -716,7 +716,7 @@ See the main repository LICENSE file.
 
 ## Support
 
-- **Issues**: https://github.com/spatial-mcp/spatial-mcp/issues
+- **Issues**: https://github.com/lynnlangit/precision-medicine-mcp/issues
 - **Documentation**: See main repository docs/
 - **MCP Specification**: https://modelcontextprotocol.io/
 

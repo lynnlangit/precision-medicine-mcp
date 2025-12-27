@@ -150,13 +150,13 @@ The Claude Desktop config file is correctly set:
 
 ```json
 "multiomics": {
-  "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+  "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-multiomics/venv/bin/python",
   "args": ["-m", "mcp_multiomics"],
-  "cwd": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics",
+  "cwd": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-multiomics",
   "env": {
-    "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/src",
-    "MULTIOMICS_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/multiomics",
-    "MULTIOMICS_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache/multiomics",
+    "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-multiomics/src",
+    "MULTIOMICS_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/multiomics",
+    "MULTIOMICS_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache/multiomics",
     "MULTIOMICS_DRY_RUN": "false"  ✅
   }
 }

@@ -18,7 +18,7 @@ This guide walks you through manually testing all 8 MCP servers in the Spatial M
 Run the installation script to set up all server dependencies:
 
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp
 ./install_dependencies.sh
 ```
 
@@ -56,7 +56,7 @@ source venv/bin/activate
 
 # Set environment variables
 export FGBIO_DRY_RUN=true
-export FGBIO_REFERENCE_DATA_DIR=/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/reference
+export FGBIO_REFERENCE_DATA_DIR=/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/reference
 
 # Test import
 python -c "from mcp_fgbio.server import mcp; print('✅ mcp-fgbio loaded')"

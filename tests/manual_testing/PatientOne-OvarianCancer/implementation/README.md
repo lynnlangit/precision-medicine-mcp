@@ -12,7 +12,7 @@
 
 **IMPORTANT:** The actual patient data files are located in:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025/
 ```
 
 This location is accessible to Claude Desktop's MCP servers. The data structure is:

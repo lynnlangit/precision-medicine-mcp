@@ -19,7 +19,7 @@ Please read all three documents to understand the full scope before we begin.
 Create the following directory structure:
 
 ```
-spatial-mcp-poc/
+precision-medicine-mcp-poc/
 ├── README.md
 ├── docs/
 │   ├── architecture.md

@@ -25,10 +25,10 @@ OSError: [Errno 30] Read-only file system: '/workspace'
 1. **Added missing environment variables** to `claude_desktop_config.json`:
    ```json
    // spatialtools
-   "SPATIAL_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache"
+   "SPATIAL_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache"
 
    // openimagedata
-   "IMAGE_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache/images"
+   "IMAGE_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache/images"
    ```
 
 2. **Created missing __main__.py** for tcga server:
@@ -112,7 +112,7 @@ cp claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_deskt
 
 **Purpose:**
 - Same structure as production config
-- Placeholder paths: `/ABSOLUTE/PATH/TO/spatial-mcp/...`
+- Placeholder paths: `/ABSOLUTE/PATH/TO/precision-medicine-mcp/...`
 - For users who cloned repo to different location
 
 **Usage:**
@@ -238,7 +238,7 @@ If you see references to `claude_desktop_config_fixed.json` in error messages:
 2. Verify all venv paths exist:
    ```bash
    for server in fgbio spatialtools openimagedata seqera huggingface deepcell mockepic tcga; do
-     ls /Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-$server/venv/bin/python
+     ls /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-$server/venv/bin/python
    done
    ```
 

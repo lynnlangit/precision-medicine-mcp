@@ -10,7 +10,7 @@ Claude Desktop's MCP servers run in containerized/isolated environments and can 
 
 All 17 synthetic patient data files have been copied to:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025/
 ```
 
 This directory is within the MCP servers' configured data directories.
@@ -51,7 +51,7 @@ data/patient-data/PAT001-OVC-2025/
 
 Claude Desktop CANNOT access files with paths like:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/...
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing/PatientOne-OvarianCancer/...
 ```
 
 ### ✅ DO: Use MCP Server Tools

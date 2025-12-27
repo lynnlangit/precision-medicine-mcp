@@ -35,7 +35,7 @@
 
 **Config location:**
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/configs/claude_desktop_config.json
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/configs/claude_desktop_config.json
 ```
 
 **Installation target:**
@@ -48,11 +48,11 @@
 ## ✅ Test Data Files
 
 ### FASTQ Files (for Test Prompts #1-2)
-- ✅ `/Users/lynnlangit/Documents/GitHub/spatial-mcp/synthetic_data/fastq/sample_001_R1.fastq.gz` (621KB)
-- ✅ `/Users/lynnlangit/Documents/GitHub/spatial-mcp/synthetic_data/fastq/sample_001_R2.fastq.gz` (791KB)
+- ✅ `/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/synthetic_data/fastq/sample_001_R1.fastq.gz` (621KB)
+- ✅ `/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/synthetic_data/fastq/sample_001_R2.fastq.gz` (791KB)
 
 ### Expression Matrix (for Test Prompts #3-7)
-- ✅ `/Users/lynnlangit/Documents/GitHub/spatial-mcp/synthetic_data/spatial/expression_matrix.json` (4.3MB)
+- ✅ `/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/synthetic_data/spatial/expression_matrix.json` (4.3MB)
 
 ---
 
@@ -124,7 +124,7 @@ All servers are configured with `DRY_RUN=true` environment variables:
 
 ### Verify All Servers Installed
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing
 ./verify_servers.sh
 ```
 
@@ -137,8 +137,8 @@ Total tools: 31
 
 ### Verify Test Data Exists
 ```bash
-ls -lh /Users/lynnlangit/Documents/GitHub/spatial-mcp/synthetic_data/fastq/*.fastq.gz
-ls -lh /Users/lynnlangit/Documents/GitHub/spatial-mcp/synthetic_data/spatial/expression_matrix.json
+ls -lh /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/synthetic_data/fastq/*.fastq.gz
+ls -lh /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/synthetic_data/spatial/expression_matrix.json
 ```
 
 ### Verify Config File

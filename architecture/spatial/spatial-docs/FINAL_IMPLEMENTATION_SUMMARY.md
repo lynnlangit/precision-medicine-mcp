@@ -7,7 +7,7 @@
 
 ## What Was Requested
 
-> "Read https://github.com/lynnlangit/spatial-mcp/blob/main/MCP_POC_Example_Prompts.md.pdf and evaluate if what is built will allow these prompts to be tested. If not, identify gaps and fix."
+> "Read https://github.com/lynnlangit/precision-medicine-mcp/blob/main/MCP_POC_Example_Prompts.md.pdf and evaluate if what is built will allow these prompts to be tested. If not, identify gaps and fix."
 
 ---
 
@@ -117,9 +117,9 @@ Added mcp-tcga server configuration:
 "tcga": {
   "command": "python",
   "args": ["-m", "mcp_tcga"],
-  "cwd": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-tcga",
+  "cwd": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-tcga",
   "env": {
-    "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-tcga/src",
+    "PYTHONPATH": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-tcga/src",
     "TCGA_DRY_RUN": "true"
   }
 }

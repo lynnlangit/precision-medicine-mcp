@@ -75,11 +75,11 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
 {
   "mcpServers": {
     "fgbio": {
-      "command": "/path/to/spatial-mcp/servers/mcp-fgbio/venv/bin/python",
+      "command": "/path/to/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python",
       "args": ["-m", "mcp_fgbio"],
-      "cwd": "/path/to/spatial-mcp/servers/mcp-fgbio",
+      "cwd": "/path/to/precision-medicine-mcp/servers/mcp-fgbio",
       "env": {
-        "PYTHONPATH": "/path/to/spatial-mcp/servers/mcp-fgbio/src",
+        "PYTHONPATH": "/path/to/precision-medicine-mcp/servers/mcp-fgbio/src",
         "FGBIO_REFERENCE_DATA_DIR": "/path/to/data/reference",
         "FGBIO_CACHE_DIR": "/path/to/data/cache",
         "FGBIO_DRY_RUN": "true"
@@ -362,7 +362,7 @@ See the main repository LICENSE file.
 
 ## Support
 
-- **Issues:** https://github.com/spatial-mcp/spatial-mcp/issues
+- **Issues:** https://github.com/lynnlangit/precision-medicine-mcp/issues
 - **Documentation:** See main repository docs/
 - **MCP Specification:** https://modelcontextprotocol.io/
 

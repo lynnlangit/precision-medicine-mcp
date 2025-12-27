@@ -119,7 +119,7 @@ How do we integrate:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/patient-one/patient-one-holistic.png"></kbd>
+<kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png"></kbd>
 
 ---
 

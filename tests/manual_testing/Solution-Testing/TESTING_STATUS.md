@@ -42,13 +42,13 @@ The Precision Medicine MCP is **fully configured and ready for manual testing**.
 ## 📁 New File Structure
 
 ```
-spatial-mcp/
+precision-medicine-mcp/
 ├── architecture/                          [NEW FOLDER]
 │   ├── Claude_Code_Startup_Prompt.md
 │   ├── MCP_POC_Example_Prompts.md.pdf
 │   ├── Spatial_MCP_Architecture_Diagram.html
 │   ├── Spatial_MCP_POC_Architecture.md
-│   └── spatial-mcp-arch.png
+│   └── precision-medicine-mcp-arch.png
 │
 ├── manual_testing/                        [NEW FOLDER]
 │   ├── README.md                          [UPDATED]
@@ -132,7 +132,7 @@ All prompts use **absolute paths** and are ready to paste into Claude Desktop:
 ## ⚠️ Critical Information
 
 ### File Paths
-- ✅ **ALL test prompts use ABSOLUTE paths** (e.g., `/Users/lynnlangit/Documents/GitHub/spatial-mcp/...`)
+- ✅ **ALL test prompts use ABSOLUTE paths** (e.g., `/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/...`)
 - ❌ **Relative paths will NOT work** in Claude Desktop's sandboxed environment
 
 ### Testing Environment
@@ -152,7 +152,7 @@ All servers run in `DRY_RUN=true` mode:
 Run this in Claude Code (VSCode) to verify everything is ready:
 
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing
 
 # Verify servers
 ./verify_servers.sh
@@ -229,7 +229,7 @@ cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | grep "com
 
 Should show paths like:
 ```
-"/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-fgbio/venv/bin/python"
+"/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python"
 ```
 
 ### Issue: Test prompt returns "File not found"
@@ -240,7 +240,7 @@ Should show paths like:
 
 **Solution:** Reinstall dependencies:
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing
 ./install_dependencies.sh
 ```
 

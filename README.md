@@ -20,7 +20,7 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 
 **Comprehensive Precision Medicine Workflow for Stage IV Ovarian Cancer**
 
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
+<kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
 
 PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a complete patient profile:
 
@@ -60,7 +60,7 @@ Process 10x Visium spatial RNA-seq: tissue segmentation → alignment → quanti
 Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
 ```
 
-[Spatial Architecture →](architecture/spatial/README.md) | [18 Example Prompts →](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/spatial/spatial-docs/MCP_POC_Example_Prompts.md)
+[Spatial Architecture →](architecture/spatial/README.md)
 
 ### 2. Multiomics Integration
 Integrate RNA, protein, and phosphorylation data using HAllA association testing and Stouffer's meta-analysis
@@ -74,7 +74,7 @@ Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, 
 Combine using Stouffer's method with directionality and FDR correction.
 ```
 
-[Multiomics Architecture →](architecture/multiomics/README.md) | [Detailed Guide →](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/architecture/multiomics/multiomics-docs)
+[Multiomics Architecture →](architecture/multiomics/README.md)
 
 ### 3. Clinical-Genomic Analysis
 Link patient EHR data with genomic variants, compare to TCGA cohorts, identify molecular subtypes
@@ -162,11 +162,11 @@ IMPORTANT: In this POC all MCP servers are running locally and are expected to u
 
 ```bash
 # Install (5 min)
-git clone https://github.com/lynnlangit/spatial-mcp.git
-cd spatial-mcp/manual_testing
+git clone https://github.com/lynnlangit/precision-medicine-mcp.git
+cd precision-medicine-mcp/manual_testing
 ./install_dependencies.sh
 
-# Configure Claude Desktop to use the custom MCP Servers
+# Configure Claude Desktop
 cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
 
 # Verify (restart Claude Desktop first)
@@ -180,13 +180,9 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 ## Example Client Usage
 
 **Example of MCP servers in action using Claude Desktop:**
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
+<kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/data/images/Claude-client.png" width=800></kbd>
 
-**End-to-end Patient Analysis Prompt:**
-```
-Full multiomics AND spatial integrated analysis of patient data using all custom mcp servers and associated tools
-```
-[See full PatientOne workflow prompt →](https://github.com/lynnlangit/spatial-mcp/blob/main/manual_testing/PatientOne-OvarianCancer/implementation/END_TO_END_TEST_PROMPT.md)
+**Try PatientOne:** [Quick Start Guide →](tests/manual_testing/PatientOne-OvarianCancer/README.md)
 
 ---
 

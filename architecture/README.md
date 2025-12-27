@@ -1,4 +1,4 @@
-# Spatial Multiomics MCP Servers POC
+# Precision Medicine MCP Servers
 
 See each subfolder for architectures. See also main Repo README.md for list of tools for each custom MCP server
 

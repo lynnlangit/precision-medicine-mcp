@@ -6,7 +6,7 @@ To start and verify all 9 MCP servers in this work session:
 
 ### 1. Install All Dependencies (One-Time Setup)
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp
 ./install_dependencies.sh
 ```
 

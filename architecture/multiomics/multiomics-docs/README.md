@@ -116,7 +116,7 @@ Which genes are significantly dysregulated across all modalities?
 
 ```json
 "multiomics": {
-  "command": "/path/to/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+  "command": "/path/to/precision-medicine-mcp/servers/mcp-multiomics/venv/bin/python",
   "args": ["-m", "mcp_multiomics"],
   "env": {
     "MULTIOMICS_DRY_RUN": "false"

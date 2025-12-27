@@ -498,7 +498,7 @@ See: `manual_testing/PatientOne-OvarianCancer/implementation/ (TEST_1 through TE
 - **All servers** respect DRY_RUN configuration
 - **All servers** integrate with Claude Desktop successfully
 
-The spatial-mcp project is **production-ready** for AI-orchestrated bioinformatics workflows.
+The precision-medicine-mcp project is **production-ready** for AI-orchestrated bioinformatics workflows.
 
 ---
 

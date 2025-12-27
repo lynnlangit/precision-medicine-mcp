@@ -35,7 +35,7 @@ cp claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_deskt
 
 **Contains:**
 - Same structure as the main config
-- Placeholder paths: `/ABSOLUTE/PATH/TO/spatial-mcp/...`
+- Placeholder paths: `/ABSOLUTE/PATH/TO/precision-medicine-mcp/...`
 
 **How to use:**
 1. Copy template to a new file
@@ -45,8 +45,8 @@ cp claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_deskt
 
 **Example replacements:**
 ```
-Before: "/ABSOLUTE/PATH/TO/spatial-mcp/servers/mcp-fgbio/venv/bin/python"
-After:  "/Users/yourname/projects/spatial-mcp/servers/mcp-fgbio/venv/bin/python"
+Before: "/ABSOLUTE/PATH/TO/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python"
+After:  "/Users/yourname/projects/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python"
 ```
 
 ---
@@ -79,7 +79,7 @@ Claude Desktop runs in a sandboxed environment and cannot resolve `python` or `p
 
 **✅ This WILL work:**
 ```json
-"command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-fgbio/venv/bin/python"
+"command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python"
 ```
 
 ### Environment Variables
@@ -122,7 +122,7 @@ To disable DRY_RUN mode (use real tools):
 
 The current configuration is set up for:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/
 ```
 
 If you cloned the repository to a different location, you'll need to:
@@ -145,7 +145,7 @@ Expected output: Should show the config JSON
 ```bash
 for server in fgbio spatialtools openimagedata seqera huggingface deepcell mockepic tcga multiomics; do
   echo "Checking mcp-$server..."
-  ls /Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-$server/venv/bin/python
+  ls /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-$server/venv/bin/python
 done
 ```
 

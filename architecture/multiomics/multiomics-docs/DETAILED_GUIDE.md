@@ -163,8 +163,8 @@ The mcp-multiomics server uses these environment variables:
 
 | Variable | Purpose | Default | Claude Desktop |
 |----------|---------|---------|----------------|
-| `MULTIOMICS_DATA_DIR` | Multi-omics data files | `/workspace/data/multiomics` | `/Users/.../spatial-mcp/data/multiomics` |
-| `MULTIOMICS_CACHE_DIR` | Cached results | `/workspace/cache/multiomics` | `/Users/.../spatial-mcp/data/cache/multiomics` |
+| `MULTIOMICS_DATA_DIR` | Multi-omics data files | `/workspace/data/multiomics` | `/Users/.../precision-medicine-mcp/data/multiomics` |
+| `MULTIOMICS_CACHE_DIR` | Cached results | `/workspace/cache/multiomics` | `/Users/.../precision-medicine-mcp/data/cache/multiomics` |
 | `MULTIOMICS_DRY_RUN` | Mock execution mode | `true` | `false` |
 | `MULTIOMICS_R_HOME` | R installation path | Auto-detect | Auto-detect |
 | `MULTIOMICS_LOG_LEVEL` | Logging level | `INFO` | `INFO` |
@@ -179,13 +179,13 @@ The mcp-multiomics server uses these environment variables:
 
 ```json
 "multiomics": {
-  "command": "/path/to/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+  "command": "/path/to/precision-medicine-mcp/servers/mcp-multiomics/venv/bin/python",
   "args": ["-m", "mcp_multiomics"],
-  "cwd": "/path/to/spatial-mcp/servers/mcp-multiomics",
+  "cwd": "/path/to/precision-medicine-mcp/servers/mcp-multiomics",
   "env": {
-    "PYTHONPATH": "/path/to/spatial-mcp/servers/mcp-multiomics/src",
-    "MULTIOMICS_DATA_DIR": "/path/to/spatial-mcp/data/multiomics",
-    "MULTIOMICS_CACHE_DIR": "/path/to/spatial-mcp/data/cache/multiomics",
+    "PYTHONPATH": "/path/to/precision-medicine-mcp/servers/mcp-multiomics/src",
+    "MULTIOMICS_DATA_DIR": "/path/to/precision-medicine-mcp/data/multiomics",
+    "MULTIOMICS_CACHE_DIR": "/path/to/precision-medicine-mcp/data/cache/multiomics",
     "MULTIOMICS_DRY_RUN": "false"
   }
 }
@@ -197,17 +197,17 @@ The mcp-multiomics server uses these environment variables:
 
 ### Installation
 
-The server is installed as part of the Spatial MCP project setup:
+The server is installed as part of the Precision Medicine MCP project setup:
 
 ```bash
-cd /path/to/spatial-mcp/manual_testing
+cd /path/to/precision-medicine-mcp/manual_testing
 ./install_dependencies.sh
 ```
 
 Or manually:
 
 ```bash
-cd /path/to/spatial-mcp/servers/mcp-multiomics
+cd /path/to/precision-medicine-mcp/servers/mcp-multiomics
 python3.11 -m venv venv
 source venv/bin/activate
 pip install -e ".[dev]"
@@ -216,7 +216,7 @@ pip install -e ".[dev]"
 ### Running Tests
 
 ```bash
-cd /path/to/spatial-mcp/servers/mcp-multiomics
+cd /path/to/precision-medicine-mcp/servers/mcp-multiomics
 
 # All tests
 MULTIOMICS_DRY_RUN="false" venv/bin/python -m pytest tests/ -v
@@ -574,7 +574,7 @@ MULTIOMICS_DRY_RUN="false" pytest tests/ -v
 
 For issues, questions, or contributions:
 
-1. **Server Issues**: Create issue in spatial-mcp repository
+1. **Server Issues**: Create issue in precision-medicine-mcp repository
 2. **Documentation**: Suggest edits via pull request
 3. **Scientific Questions**: Refer to publications in References section
 
@@ -583,4 +583,4 @@ For issues, questions, or contributions:
 **Last Updated:** November 11, 2025
 **Status:** ✅ Production Ready
 **Author:** Claude (Sonnet 4.5)
-**Project:** Spatial MCP - Multi-Omics Integration Server
+**Project:** Precision Medicine MCP - Multi-Omics Integration Server

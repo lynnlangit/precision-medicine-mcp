@@ -135,7 +135,7 @@ Split into 3 conversations:
 
 All test files in:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing/
 PatientOne-OvarianCancer/implementation/
 ```
 

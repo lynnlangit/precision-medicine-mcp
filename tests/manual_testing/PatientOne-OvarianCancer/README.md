@@ -13,7 +13,7 @@ PatientOne demonstrates end-to-end precision medicine analysis integrating:
 
 **All synthetic data** for demonstration purposes.
 
-<kbd><img src="https://github.com/lynnlangit/spatial-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=600></kbd>
+<kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=600></kbd>
 
 ---
 
@@ -99,7 +99,7 @@ Run **TEST_1** to see clinical + genomic integration:
 ```
 I want to run the PatientOne clinical and genomic analysis.
 
-Please read the following files from /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/:
+Please read the following files from /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025/:
 - clinical_demographics.json
 - ca125_timeline.csv
 - PAT001_somatic_variants.vcf

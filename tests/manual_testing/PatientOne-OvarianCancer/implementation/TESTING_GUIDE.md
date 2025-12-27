@@ -192,7 +192,7 @@ Expected outcome:
 
 **Note:** Patient data files have been moved to MCP-accessible location:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025/
 ├── clinical/
 │   ├── patient_demographics.json                ✅ Demographics, family history
 │   └── lab_results.json                         ✅ CA-125 trends, CBC, metabolic panel

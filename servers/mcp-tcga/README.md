@@ -177,11 +177,11 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 {
   "mcpServers": {
     "tcga": {
-      "command": "/absolute/path/to/spatial-mcp/servers/mcp-tcga/venv/bin/python",
+      "command": "/absolute/path/to/precision-medicine-mcp/servers/mcp-tcga/venv/bin/python",
       "args": ["-m", "mcp_tcga"],
-      "cwd": "/absolute/path/to/spatial-mcp/servers/mcp-tcga",
+      "cwd": "/absolute/path/to/precision-medicine-mcp/servers/mcp-tcga",
       "env": {
-        "PYTHONPATH": "/absolute/path/to/spatial-mcp/servers/mcp-tcga/src",
+        "PYTHONPATH": "/absolute/path/to/precision-medicine-mcp/servers/mcp-tcga/src",
         "TCGA_DRY_RUN": "true"
       }
     }

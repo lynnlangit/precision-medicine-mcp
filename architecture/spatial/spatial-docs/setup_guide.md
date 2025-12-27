@@ -71,7 +71,7 @@ cp configs/claude_desktop_config.json \
    ~/Library/Application\ Support/Claude/claude_desktop_config.json
 
 # Edit the configuration to match your paths
-# Update all /path/to/spatial-mcp references
+# Update all /path/to/precision-medicine-mcp references
 ```
 
 ### 5. Start Claude Desktop
@@ -124,8 +124,8 @@ Create a `.env` file in each server directory:
 **servers/mcp-fgbio/.env:**
 ```bash
 # Data directories
-FGBIO_REFERENCE_DATA_DIR=/absolute/path/to/spatial-mcp/data/reference
-FGBIO_CACHE_DIR=/absolute/path/to/spatial-mcp/data/cache
+FGBIO_REFERENCE_DATA_DIR=/absolute/path/to/precision-medicine-mcp/data/reference
+FGBIO_CACHE_DIR=/absolute/path/to/precision-medicine-mcp/data/cache
 
 # Development settings
 FGBIO_DRY_RUN=true
@@ -197,11 +197,11 @@ Follow similar steps for each server as they are implemented:
     "fgbio": {
       "command": "python",
       "args": ["-m", "mcp_fgbio"],
-      "cwd": "/absolute/path/to/spatial-mcp/servers/mcp-fgbio",
+      "cwd": "/absolute/path/to/precision-medicine-mcp/servers/mcp-fgbio",
       "env": {
-        "PYTHONPATH": "/absolute/path/to/spatial-mcp/servers/mcp-fgbio/src",
-        "FGBIO_REFERENCE_DATA_DIR": "/absolute/path/to/spatial-mcp/data/reference",
-        "FGBIO_CACHE_DIR": "/absolute/path/to/spatial-mcp/data/cache",
+        "PYTHONPATH": "/absolute/path/to/precision-medicine-mcp/servers/mcp-fgbio/src",
+        "FGBIO_REFERENCE_DATA_DIR": "/absolute/path/to/precision-medicine-mcp/data/reference",
+        "FGBIO_CACHE_DIR": "/absolute/path/to/precision-medicine-mcp/data/cache",
         "FGBIO_DRY_RUN": "true",
         "FGBIO_LOG_LEVEL": "INFO"
       }
@@ -210,7 +210,7 @@ Follow similar steps for each server as they are implemented:
 }
 ```
 
-**Important:** Replace all `/absolute/path/to/spatial-mcp` with the actual path to your repository.
+**Important:** Replace all `/absolute/path/to/precision-medicine-mcp` with the actual path to your repository.
 
 ### Reloading Configuration
 
@@ -336,7 +336,7 @@ pytest test_fgbio_integration.py -v
 1. **Verify PYTHONPATH in config:**
    ```json
    "env": {
-     "PYTHONPATH": "/absolute/path/to/spatial-mcp/servers/mcp-fgbio/src"
+     "PYTHONPATH": "/absolute/path/to/precision-medicine-mcp/servers/mcp-fgbio/src"
    }
    ```
 

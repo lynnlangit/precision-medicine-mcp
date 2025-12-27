@@ -112,21 +112,21 @@ Look for DRY_RUN environment variables (should all be `"true"`):
 {
   "mcpServers": {
     "mcp-fgbio": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-fgbio/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python",
       "args": ["-m", "mcp_fgbio"],
       "env": {
         "FGBIO_DRY_RUN": "true"
       }
     },
     "mcp-multiomics": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-multiomics/venv/bin/python",
       "args": ["-m", "mcp_multiomics"],
       "env": {
         "MULTIOMICS_DRY_RUN": "true"
       }
     },
     "mcp-spatialtools": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-spatialtools/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-spatialtools/venv/bin/python",
       "args": ["-m", "mcp_spatialtools"],
       "env": {
         "SPATIAL_DRY_RUN": "true"
@@ -178,7 +178,7 @@ Responses will include `"status": "success (DRY_RUN mode)"` to indicate syntheti
 
 ```bash
 # Example file structure (for reference in prompts)
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025/
 ├── clinical/
 │   ├── patient_demographics.json
 │   └── lab_results.json
@@ -242,34 +242,34 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
 {
   "mcpServers": {
     "mcp-fgbio": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-fgbio/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-fgbio/venv/bin/python",
       "args": ["-m", "mcp_fgbio"],
       "env": {
         "FGBIO_DRY_RUN": "false",
-        "FGBIO_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data",
-        "FGBIO_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache"
+        "FGBIO_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data",
+        "FGBIO_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache"
       }
     },
     "mcp-multiomics": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-multiomics/venv/bin/python",
       "args": ["-m", "mcp_multiomics"],
       "env": {
         "MULTIOMICS_DRY_RUN": "false",
-        "MULTIOMICS_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/multiomics",
-        "MULTIOMICS_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache/multiomics"
+        "MULTIOMICS_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/multiomics",
+        "MULTIOMICS_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache/multiomics"
       }
     },
     "mcp-spatialtools": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-spatialtools/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-spatialtools/venv/bin/python",
       "args": ["-m", "mcp_spatialtools"],
       "env": {
         "SPATIAL_DRY_RUN": "false",
-        "SPATIAL_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data",
-        "SPATIAL_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache"
+        "SPATIAL_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data",
+        "SPATIAL_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache"
       }
     },
     "mcp-tcga": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-tcga/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-tcga/venv/bin/python",
       "args": ["-m", "mcp_tcga"],
       "env": {
         "TCGA_DRY_RUN": "false"
@@ -277,7 +277,7 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
       }
     },
     "mcp-huggingface": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-huggingface/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-huggingface/venv/bin/python",
       "args": ["-m", "mcp_huggingface"],
       "env": {
         "HF_DRY_RUN": "false",
@@ -285,14 +285,14 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
       }
     },
     "mcp-deepcell": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-deepcell/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-deepcell/venv/bin/python",
       "args": ["-m", "mcp_deepcell"],
       "env": {
         "DEEPCELL_DRY_RUN": "false"
       }
     },
     "mcp-seqera": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-seqera/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-seqera/venv/bin/python",
       "args": ["-m", "mcp_seqera"],
       "env": {
         "SEQERA_DRY_RUN": "false",
@@ -300,19 +300,19 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
       }
     },
     "mcp-mockepic": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-mockepic/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-mockepic/venv/bin/python",
       "args": ["-m", "mcp_mockepic"],
       "env": {
         "EPIC_DRY_RUN": "true"  // Note: MockEpic always uses synthetic data
       }
     },
     "mcp-openimagedata": {
-      "command": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-openimagedata/venv/bin/python",
+      "command": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-openimagedata/venv/bin/python",
       "args": ["-m", "mcp_openimagedata"],
       "env": {
         "IMAGE_DRY_RUN": "false",
-        "IMAGE_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/images",
-        "IMAGE_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/cache/images"
+        "IMAGE_DATA_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/images",
+        "IMAGE_CACHE_DIR": "/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/cache/images"
       }
     }
   }
@@ -375,10 +375,10 @@ Place your patient data in the correct directory structure:
 
 ```bash
 # Create directory for your patient
-mkdir -p /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/YOUR_PATIENT_ID/
+mkdir -p /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/YOUR_PATIENT_ID/
 
 # Create subdirectories for each data modality
-mkdir -p /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/YOUR_PATIENT_ID/{clinical,genomics,multiomics,spatial,imaging}
+mkdir -p /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/YOUR_PATIENT_ID/{clinical,genomics,multiomics,spatial,imaging}
 ```
 
 #### Step 3: Validate Data File Formats
@@ -433,11 +433,11 @@ Before running full PatientOne workflow, test each server:
 
 ```bash
 # Test FGbio with real VCF
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-fgbio
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-fgbio
 FGBIO_DRY_RUN=false venv/bin/python -m mcp_fgbio
 
 # Test MultiOmics with real data
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/servers/mcp-multiomics
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/servers/mcp-multiomics
 MULTIOMICS_DRY_RUN=false venv/bin/python -m mcp_multiomics
 
 # etc. for all servers
@@ -450,7 +450,7 @@ Modify test prompts to reference your patient data:
 ```
 I want to analyze patient [YOUR_PATIENT_ID] using the PatientOne workflow.
 
-Please read the following files from /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/[YOUR_PATIENT_ID]/:
+Please read the following files from /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/[YOUR_PATIENT_ID]/:
 - clinical/patient_demographics.json
 - genomics/somatic_variants.vcf
 - multiomics/rna_expression.csv
@@ -474,7 +474,7 @@ Synthesize findings and provide treatment recommendations.
 ### Required Directory Structure
 
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/
 ├── patient-data/
 │   └── [PATIENT_ID]/
 │       ├── clinical/
@@ -744,10 +744,10 @@ tail -f ~/Library/Logs/Claude/mcp*.log
 **Solution:**
 ```bash
 # 1. Verify absolute paths
-ls -la /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/[PATIENT_ID]/
+ls -la /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/[PATIENT_ID]/
 
 # 2. Check file permissions
-chmod -R 644 /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/
+chmod -R 644 /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/
 
 # 3. Update paths in prompt to match your system
 pwd  # Check current directory

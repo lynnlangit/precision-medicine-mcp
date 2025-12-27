@@ -42,7 +42,7 @@ The comprehensive test tried to load all data at once:
 ### Problem 2: File Access ❌
 Claude Desktop's MCP servers run in containerized environments and cannot access arbitrary file paths like:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/...
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing/PatientOne-OvarianCancer/...
 ```
 
 ### Solution: FIXED Tests ✅

@@ -375,7 +375,7 @@ To reach **60% overall coverage** (gap: 3.1 points), prioritize:
 
 ```bash
 # Run all tests for all servers (from repo root)
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp
 
 for server in servers/mcp-*/; do
     echo "=== Testing $server ==="

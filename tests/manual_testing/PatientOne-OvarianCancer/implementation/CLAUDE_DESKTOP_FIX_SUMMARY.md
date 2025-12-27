@@ -10,7 +10,7 @@
 
 Claude Desktop's MCP servers run in containerized/isolated environments and cannot access files at arbitrary paths like:
 ```
-/Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/implementation/
+/Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing/PatientOne-OvarianCancer/implementation/
 ```
 
 When test prompts referenced these paths, Claude Desktop generated new synthetic data instead of using the existing files.
@@ -23,10 +23,10 @@ MCP servers are configured to access only specific data directories:
 
 | Server | Environment Variable | Configured Path |
 |--------|---------------------|-----------------|
-| spatialtools | SPATIAL_DATA_DIR | `/Users/.../spatial-mcp/data/` |
-| openimagedata | IMAGE_DATA_DIR | `/Users/.../spatial-mcp/data/images/` |
-| multiomics | MULTIOMICS_DATA_DIR | `/Users/.../spatial-mcp/data/multiomics/` |
-| fgbio | FGBIO_REFERENCE_DATA_DIR | `/Users/.../spatial-mcp/data/reference/` |
+| spatialtools | SPATIAL_DATA_DIR | `/Users/.../precision-medicine-mcp/data/` |
+| openimagedata | IMAGE_DATA_DIR | `/Users/.../precision-medicine-mcp/data/images/` |
+| multiomics | MULTIOMICS_DATA_DIR | `/Users/.../precision-medicine-mcp/data/multiomics/` |
+| fgbio | FGBIO_REFERENCE_DATA_DIR | `/Users/.../precision-medicine-mcp/data/reference/` |
 
 Files outside these directories are **not accessible** to MCP servers.
 
@@ -39,7 +39,7 @@ Files outside these directories are **not accessible** to MCP servers.
 **Copied all 17 synthetic patient data files to MCP-accessible location:**
 
 ```bash
-mkdir -p /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/{clinical,genomics,multiomics,spatial,imaging}
+mkdir -p /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025/{clinical,genomics,multiomics,spatial,imaging}
 
 # Copied files:
 cp -r .../implementation/clinical/* .../data/patient-data/PAT001-OVC-2025/clinical/
@@ -128,7 +128,7 @@ data/patient-data/PAT001-OVC-2025/
 
 **Option 1: Use Test Prompts (Recommended)**
 ```bash
-cd /Users/lynnlangit/Documents/GitHub/spatial-mcp/manual_testing/PatientOne-OvarianCancer/implementation/
+cd /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/manual_testing/PatientOne-OvarianCancer/implementation/
 
 # Copy and paste each test into Claude Desktop
 cat TEST_1_CLINICAL_GENOMIC.txt
@@ -148,7 +148,7 @@ Just describe your analysis goals using natural language. Claude Desktop will us
 ### Check Data Accessibility:
 ```bash
 # Verify all files copied
-find /Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025 -type f
+find /Users/lynnlangit/Documents/GitHub/precision-medicine-mcp/data/patient-data/PAT001-OVC-2025 -type f
 # Should show 17 files
 
 # Check MCP server configuration
