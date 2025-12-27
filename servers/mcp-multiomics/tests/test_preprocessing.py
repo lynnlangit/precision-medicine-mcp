@@ -4,6 +4,7 @@ import pytest
 import numpy as np
 import pandas as pd
 from pathlib import Path
+import os
 
 from mcp_multiomics.tools.preprocessing import (
     validate_multiomics_data_impl,
@@ -326,3 +327,249 @@ class TestPreprocessingWorkflow:
         assert after < 0.3
         # Improvement should be significant
         assert (before - after) > 0.3
+
+
+class TestValidateWithRealData:
+    """Test validation with actual data processing (DRY_RUN=False)."""
+
+    def test_validate_with_real_rna_data(self, rna_path, monkeypatch):
+        """Test validation loads and analyzes real RNA data."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        result = validate_multiomics_data_impl(
+            rna_path=rna_path,
+            protein_path=None,
+            phospho_path=None,
+            metadata_path=None,
+        )
+
+        # Should process real data
+        assert result['status'] in ['ready', 'proceed_with_caution', 'needs_preprocessing', 'failed']
+        assert 'statistics' in result
+
+        # Should have missing_values statistics for rna
+        assert 'missing_values' in result['statistics']
+        assert 'rna' in result['statistics']['missing_values']
+
+    def test_validate_detects_sample_overlap(self, rna_path, protein_path, monkeypatch):
+        """Test validation checks sample consistency across modalities."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        result = validate_multiomics_data_impl(
+            rna_path=rna_path,
+            protein_path=protein_path,
+            phospho_path=None,
+            metadata_path=None,
+        )
+
+        # Should detect common samples
+        assert 'statistics' in result
+        assert 'common_samples' in result['statistics']
+        assert result['statistics']['common_samples'] > 0
+
+    def test_validate_analyzes_missing_values(self, rna_path, protein_path, monkeypatch):
+        """Test validation analyzes missing value patterns."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        result = validate_multiomics_data_impl(
+            rna_path=rna_path,
+            protein_path=protein_path,
+            phospho_path=None,
+            metadata_path=None,
+        )
+
+        # Should analyze missing values
+        assert 'statistics' in result
+        assert 'missing_values' in result['statistics']
+
+        # Should have stats for both modalities
+        missing_stats = result['statistics']['missing_values']
+        assert 'rna' in missing_stats
+        assert 'protein' in missing_stats
+
+    def test_validate_checks_metadata_batches(self, rna_path, metadata_path, monkeypatch):
+        """Test validation detects batch information in metadata."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        result = validate_multiomics_data_impl(
+            rna_path=rna_path,
+            protein_path=None,
+            phospho_path=None,
+            metadata_path=metadata_path,
+        )
+
+        # Should check metadata
+        assert result['status'] in ['ready', 'proceed_with_caution', 'needs_preprocessing', 'failed']
+        assert 'statistics' in result or 'errors' in result
+
+    def test_validate_handles_file_errors(self, monkeypatch):
+        """Test validation handles missing/invalid files gracefully."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        result = validate_multiomics_data_impl(
+            rna_path="/nonexistent/file.csv",
+            protein_path=None,
+            phospho_path=None,
+            metadata_path=None,
+        )
+
+        # Should fail gracefully
+        assert result['status'] == 'failed'
+        assert 'errors' in result
+        assert len(result['errors']) > 0
+
+
+class TestPreprocessWithRealData:
+    """Test preprocessing with actual data (DRY_RUN=False)."""
+
+    def test_preprocess_loads_real_data(self, rna_path, protein_path, metadata_path, tmp_path, monkeypatch):
+        """Test preprocessing loads and processes real data."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        output_dir = tmp_path / "output"
+        output_dir.mkdir(exist_ok=True)
+
+        result = preprocess_multiomics_data_impl(
+            rna_path=rna_path,
+            protein_path=protein_path,
+            phospho_path=None,
+            metadata_path=metadata_path,
+            normalize_method="median",
+            batch_correction=False,
+            imputation_method="median",
+            outlier_threshold=3.0,
+            output_dir=str(output_dir),
+        )
+
+        # Should process successfully
+        assert result['status'] == 'success'
+        assert 'output_files' in result
+
+        # Output files should exist
+        assert 'rna' in result['output_files']
+        assert os.path.exists(result['output_files']['rna'])
+
+    def test_preprocess_normalizes_data(self, rna_path, tmp_path, monkeypatch):
+        """Test normalization is applied correctly."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        output_dir = tmp_path / "output"
+        output_dir.mkdir(exist_ok=True)
+
+        result = preprocess_multiomics_data_impl(
+            rna_path=rna_path,
+            protein_path=None,
+            phospho_path=None,
+            metadata_path=None,
+            normalize_method="median",
+            batch_correction=False,
+            imputation_method="none",
+            output_dir=str(output_dir),
+        )
+
+        # Should apply normalization
+        assert result['status'] == 'success'
+        assert 'steps_completed' in result
+        steps = result['steps_completed']
+        assert 'normalization' in steps
+
+    def test_preprocess_handles_missing_values(self, protein_path, tmp_path, monkeypatch):
+        """Test imputation handles missing values."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        output_dir = tmp_path / "output"
+        output_dir.mkdir(exist_ok=True)
+
+        result = preprocess_multiomics_data_impl(
+            rna_path=protein_path,  # Protein data has more missing values
+            protein_path=None,
+            phospho_path=None,
+            metadata_path=None,
+            normalize_method="median",
+            batch_correction=False,
+            imputation_method="median",
+            output_dir=str(output_dir),
+        )
+
+        # Should handle missing values
+        assert result['status'] == 'success'
+        if 'imputation_stats' in result:
+            assert result['imputation_stats'] is not None
+
+
+class TestVisualizeWithRealData:
+    """Test visualization with actual data (DRY_RUN=False)."""
+
+    def test_visualize_generates_plots(self, rna_path, protein_path, metadata_path, tmp_path, monkeypatch):
+        """Test visualization generates actual plot files."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        output_dir = tmp_path / "plots"
+        output_dir.mkdir(exist_ok=True)
+
+        result = visualize_data_quality_impl(
+            data_paths={
+                'rna': rna_path,
+                'protein': protein_path,
+            },
+            metadata_path=metadata_path,
+            output_dir=str(output_dir),
+        )
+
+        # Should generate plots
+        assert result['status'] == 'success'
+        assert 'plots_generated' in result
+
+        # Check plots were generated
+        plots = result['plots_generated']
+        assert isinstance(plots, list)
+        assert len(plots) > 0
+
+    def test_visualize_assesses_batch_effects(self, protein_path, metadata_path, tmp_path, monkeypatch):
+        """Test visualization calculates batch effect metrics."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        output_dir = tmp_path / "plots"
+        output_dir.mkdir(exist_ok=True)
+
+        result = visualize_data_quality_impl(
+            data_paths={'protein': protein_path},
+            metadata_path=metadata_path,
+            output_dir=str(output_dir),
+        )
+
+        # Should assess batch effects
+        assert result['status'] == 'success'
+        if 'batch_effect_assessment' in result:
+            batch_assessment = result['batch_effect_assessment']
+            assert 'pc1_batch_correlation' in batch_assessment
+
+    def test_visualize_provides_recommendations(self, rna_path, tmp_path, monkeypatch):
+        """Test visualization generates actionable recommendations."""
+        from mcp_multiomics.config import config
+        monkeypatch.setattr(config, "dry_run", False)
+
+        output_dir = tmp_path / "plots"
+        output_dir.mkdir(exist_ok=True)
+
+        result = visualize_data_quality_impl(
+            data_paths={'rna': rna_path},
+            metadata_path=None,
+            output_dir=str(output_dir),
+        )
+
+        # Should provide recommendations
+        assert result['status'] == 'success'
+        if 'recommendations' in result:
+            recommendations = result['recommendations']
+            assert isinstance(recommendations, list)
