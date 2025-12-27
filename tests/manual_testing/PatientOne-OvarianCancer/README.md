@@ -70,6 +70,23 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 
 ---
 
+## Running Modes: DRY_RUN vs Actual Data
+
+PatientOne can run in two modes:
+
+| Mode | Purpose | Data Source | External APIs | Best For |
+|------|---------|-------------|---------------|----------|
+| **DRY_RUN** (default) | Demo & testing | Synthetic responses | None | Quick demo, CI/CD, learning |
+| **Actual Data** | Real analysis | Your files | May connect | Production, research, clinical |
+
+**Quick Mode Selection:**
+- **DRY_RUN mode** (default): No setup needed, works immediately with synthetic data
+- **Actual Data mode**: Requires data files and configuration — see [📘 Data Modes Guide](./DATA_MODES_GUIDE.md)
+
+💡 **Tip:** Start with DRY_RUN mode to understand the workflow (5 min), then switch to actual data for real analysis.
+
+---
+
 ## Try PatientOne in 5 Minutes
 
 ### Option 1: Quick Demo (Single Test)
@@ -287,7 +304,13 @@ pwd  # Note current directory
 - All MCP servers are configured with `DRY_RUN=true` by default
 - This prevents actual external API calls while demonstrating tool orchestration
 - Servers return realistic synthetic responses
-- To disable DRY_RUN, edit `configs/claude_desktop_config.json` and change `*_DRY_RUN` to `false`
+
+**To use your own data:**
+- See the [📘 Data Modes Guide](./DATA_MODES_GUIDE.md) for complete instructions on:
+  - Switching from DRY_RUN to Actual Data mode
+  - Configuring environment variables
+  - Setting up data file directories
+  - Obtaining required API keys
 
 ---
 

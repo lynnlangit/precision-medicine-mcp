@@ -303,6 +303,10 @@ Comprehensive end-to-end testing prompts for the PatientOne ovarian cancer use c
 - `TEST_4_IMAGING.txt` - Histology image analysis
 - `TEST_5_INTEGRATION.txt` - Full precision medicine workflow
 
+**Running Modes:**
+- **DRY_RUN mode** (default): Synthetic data demo, no setup required
+- **Actual Data mode**: Process your own patient data — [Configuration Guide →](./manual_testing/PatientOne-OvarianCancer/DATA_MODES_GUIDE.md)
+
 ### Solution Testing
 Location: `/tests/manual_testing/Solution-Testing/`
 

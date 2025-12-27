@@ -253,11 +253,15 @@ PatientOne testing is divided into **5 modular tests** to avoid Claude Desktop c
 
 ### Quick Start
 
-See the [PatientOne Quick Start Guide](../../manual_testing/PatientOne-OvarianCancer/README.md) for:
-- Prerequisites and setup
-- Running individual tests
-- Expected outputs
-- Troubleshooting
+**Running PatientOne:**
+
+PatientOne supports two modes:
+- **DRY_RUN mode** (default): Uses synthetic data for demonstration — works immediately
+- **Actual Data mode**: Analyzes your real patient data files — requires configuration
+
+For detailed instructions:
+- [PatientOne Quick Start Guide →](../../tests/manual_testing/PatientOne-OvarianCancer/README.md) - How to run the tests
+- [Data Modes Configuration Guide →](../../tests/manual_testing/PatientOne-OvarianCancer/DATA_MODES_GUIDE.md) - DRY_RUN vs Actual Data setup
 
 ### Test Prompts
 
