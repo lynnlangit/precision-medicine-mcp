@@ -330,3 +330,8 @@ Key Features:
 - `multiomics/README.md` - Multiomics server architecture
 - `spatial/README.md` - Spatial transcriptomics pipeline architecture
 - `patient-one/README.md` - PatientOne end-to-end use case
+
+---
+
+**Last Updated:** December 27, 2025
+**Status:** Architecture documentation complete for 9 MCP servers
