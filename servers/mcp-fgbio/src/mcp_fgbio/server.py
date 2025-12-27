@@ -14,6 +14,13 @@ from typing import Any, Dict, Optional
 
 from fastmcp import FastMCP
 
+from .validation import (
+    ValidationError,
+    validate_fastq_file,
+    validate_vcf_file,
+    format_validation_error,
+)
+
 # Initialize the MCP server
 mcp = FastMCP("fgbio", dependencies=["httpx", "aiofiles"])
 
@@ -452,10 +459,33 @@ async def validate_fastq(
     """
     _ensure_directories()
 
-    fastq_file = Path(fastq_path)
+    # =========================================================================
+    # VALIDATION: Check FASTQ file format before processing
+    # =========================================================================
 
-    if not fastq_file.exists():
-        raise IOError(f"FASTQ file not found: {fastq_path}")
+    logger.info(f"Validating FASTQ file: {fastq_path}")
+    fastq_valid, fastq_messages, fastq_info = validate_fastq_file(fastq_path)
+
+    if not fastq_valid:
+        # Validation failed - raise error with helpful message
+        error_msg = format_validation_error(fastq_messages, fastq_path)
+        logger.error("FASTQ validation failed")
+        raise ValidationError(error_msg)
+
+    # Log validation warnings/info
+    for msg in fastq_messages:
+        if msg.startswith('⚠️'):
+            logger.warning(msg)
+        elif msg.startswith('✅') or msg.startswith('ℹ️'):
+            logger.info(msg)
+
+    logger.info("✅ FASTQ file validated successfully")
+
+    # =========================================================================
+    # Continue with quality analysis
+    # =========================================================================
+
+    fastq_file = Path(fastq_path)
 
     if _is_dry_run():
         # Return mock validation results
