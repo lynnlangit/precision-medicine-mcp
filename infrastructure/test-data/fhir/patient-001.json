@@ -1,0 +1,42 @@
+{
+  "resourceType": "Patient",
+  "id": "patient-001",
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http://hospital.example.org/patients",
+      "value": "P001"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "TestPatient",
+      "given": ["Jane", "Marie"]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1968-03-15",
+  "address": [
+    {
+      "use": "home",
+      "line": ["123 Test Street"],
+      "city": "TestCity",
+      "state": "IA",
+      "postalCode": "50000",
+      "country": "US"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "555-0123",
+      "use": "home"
+    },
+    {
+      "system": "email",
+      "value": "jane.testpatient@example.com"
+    }
+  ]
+}

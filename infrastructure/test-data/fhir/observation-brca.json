@@ -1,0 +1,47 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-brca",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "81247-9",
+        "display": "BRCA1+BRCA2 gene mutations found [Identifier] in Blood or Tissue by Molecular genetics method"
+      }
+    ],
+    "text": "BRCA1/2 Mutation Analysis"
+  },
+  "subject": {
+    "reference": "Patient/patient-001",
+    "display": "Jane Marie TestPatient"
+  },
+  "effectiveDateTime": "2022-07-10T09:00:00Z",
+  "issued": "2022-07-18T14:30:00Z",
+  "valueCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "260385009",
+        "display": "Negative"
+      }
+    ],
+    "text": "No pathogenic variants detected in BRCA1 or BRCA2"
+  },
+  "note": [
+    {
+      "text": "Germline testing: No pathogenic variants in BRCA1 or BRCA2. Somatic TP53 mutation detected (c.524G>A, p.Arg175His)."
+    }
+  ]
+}

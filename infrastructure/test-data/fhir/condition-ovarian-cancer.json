@@ -1,0 +1,102 @@
+{
+  "resourceType": "Condition",
+  "id": "condition-ovarian-cancer",
+  "clinicalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+        "code": "active",
+        "display": "Active"
+      }
+    ]
+  },
+  "verificationStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+        "code": "confirmed",
+        "display": "Confirmed"
+      }
+    ]
+  },
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+          "code": "encounter-diagnosis",
+          "display": "Encounter Diagnosis"
+        }
+      ]
+    }
+  ],
+  "severity": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "24484000",
+        "display": "Severe"
+      }
+    ]
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "399697003",
+        "display": "High grade serous ovarian carcinoma"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10",
+        "code": "C56.9",
+        "display": "Malignant neoplasm of ovary"
+      }
+    ],
+    "text": "Stage IV High-Grade Serous Ovarian Carcinoma (HGSOC), Platinum-Resistant"
+  },
+  "bodySite": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct",
+          "code": "15497006",
+          "display": "Ovarian structure"
+        }
+      ]
+    }
+  ],
+  "subject": {
+    "reference": "Patient/patient-001",
+    "display": "Jane Marie TestPatient"
+  },
+  "onsetDateTime": "2022-06-15",
+  "recordedDate": "2022-06-20T10:30:00Z",
+  "stage": [
+    {
+      "summary": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "258219007",
+            "display": "Stage IV"
+          }
+        ],
+        "text": "FIGO Stage IV"
+      },
+      "type": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "277649004",
+            "display": "FIGO staging"
+          }
+        ]
+      }
+    }
+  ],
+  "note": [
+    {
+      "text": "Platinum-resistant recurrence after initial treatment. TP53 mutation confirmed. Tumor shows high genomic instability."
+    }
+  ]
+}

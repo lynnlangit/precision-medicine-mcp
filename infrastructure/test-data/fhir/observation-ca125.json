@@ -1,0 +1,71 @@
+{
+  "resourceType": "Observation",
+  "id": "observation-ca125",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "10334-1",
+        "display": "Cancer antigen 125 [Units/volume] in Serum"
+      }
+    ],
+    "text": "CA-125"
+  },
+  "subject": {
+    "reference": "Patient/patient-001",
+    "display": "Jane Marie TestPatient"
+  },
+  "effectiveDateTime": "2024-12-01T09:00:00Z",
+  "issued": "2024-12-01T14:30:00Z",
+  "valueQuantity": {
+    "value": 487,
+    "unit": "U/mL",
+    "system": "http://unitsofmeasure.org",
+    "code": "U/mL"
+  },
+  "interpretation": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+          "code": "HH",
+          "display": "Critical high"
+        }
+      ]
+    }
+  ],
+  "referenceRange": [
+    {
+      "low": {
+        "value": 0,
+        "unit": "U/mL",
+        "system": "http://unitsofmeasure.org",
+        "code": "U/mL"
+      },
+      "high": {
+        "value": 35,
+        "unit": "U/mL",
+        "system": "http://unitsofmeasure.org",
+        "code": "U/mL"
+      },
+      "text": "Normal range: 0-35 U/mL"
+    }
+  ],
+  "note": [
+    {
+      "text": "Significantly elevated, consistent with active disease. Trending upward from previous value of 312 U/mL (2024-09-15)."
+    }
+  ]
+}

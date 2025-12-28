@@ -1,0 +1,58 @@
+{
+  "resourceType": "MedicationStatement",
+  "id": "medication-carboplatin",
+  "status": "completed",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code": "40048",
+        "display": "Carboplatin"
+      }
+    ],
+    "text": "Carboplatin"
+  },
+  "subject": {
+    "reference": "Patient/patient-001",
+    "display": "Jane Marie TestPatient"
+  },
+  "effectivePeriod": {
+    "start": "2022-08-01",
+    "end": "2022-11-30"
+  },
+  "dateAsserted": "2022-12-05",
+  "informationSource": {
+    "display": "Dr. Oncologist"
+  },
+  "reasonReference": [
+    {
+      "reference": "Condition/condition-ovarian-cancer"
+    }
+  ],
+  "note": [
+    {
+      "text": "First-line treatment: Carboplatin/Paclitaxel (6 cycles). Initial response achieved, but disease progression within 6 months indicating platinum resistance."
+    }
+  ],
+  "dosage": [
+    {
+      "text": "AUC 5 IV every 21 days",
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 21,
+          "periodUnit": "d"
+        }
+      },
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "47625008",
+            "display": "Intravenous route"
+          }
+        ]
+      }
+    }
+  ]
+}

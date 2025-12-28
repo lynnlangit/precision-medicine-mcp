@@ -1,0 +1,57 @@
+{
+  "resourceType": "MedicationStatement",
+  "id": "medication-bevacizumab",
+  "status": "active",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code": "149574",
+        "display": "Bevacizumab"
+      }
+    ],
+    "text": "Bevacizumab (Avastin)"
+  },
+  "subject": {
+    "reference": "Patient/patient-001",
+    "display": "Jane Marie TestPatient"
+  },
+  "effectivePeriod": {
+    "start": "2023-03-15"
+  },
+  "dateAsserted": "2024-12-01",
+  "informationSource": {
+    "display": "Dr. Oncologist"
+  },
+  "reasonReference": [
+    {
+      "reference": "Condition/condition-ovarian-cancer"
+    }
+  ],
+  "note": [
+    {
+      "text": "Second-line treatment for platinum-resistant disease. Currently ongoing. Clinical trial evaluating bevacizumab + PARP inhibitor combination."
+    }
+  ],
+  "dosage": [
+    {
+      "text": "15 mg/kg IV every 21 days",
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 21,
+          "periodUnit": "d"
+        }
+      },
+      "route": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "47625008",
+            "display": "Intravenous route"
+          }
+        ]
+      }
+    }
+  ]
+}

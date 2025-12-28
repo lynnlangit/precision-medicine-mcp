@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_backend"
+
+[project]
+name = "mcp-epic"
+version = "0.1.0"
+description = "MCP server for Epic FHIR integration with HIPAA de-identification"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "Precision Medicine MCP Team"}
+]
+license = {text = "MIT"}
+keywords = ["mcp", "epic", "fhir", "ehr", "healthcare", "hipaa"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "mcp>=1.1.2",
+    "fastmcp>=2.0.0",
+    "google-auth>=2.0.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/lynnlangit/precision-medicine-mcp"
+Issues = "https://github.com/lynnlangit/precision-medicine-mcp/issues"
+Documentation = "https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=4.1.0",
+    "black>=24.0.0",
+    "mypy>=1.8.0",
+]
+
+[tool.setuptools]
+packages = ["mcp_epic"]
+package-dir = {"" = "src"}
+
+[tool.black]
+line-length = 100
+target-version = ['py39']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
