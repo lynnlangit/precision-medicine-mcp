@@ -15,6 +15,8 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 import pandas as pd
 from fastmcp import FastMCP
+from scipy.spatial.distance import cdist
+from scipy.stats import norm
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -574,55 +576,212 @@ async def merge_tiles(
 # ============================================================================
 
 
+def _calculate_morans_i(
+    expression_values: np.ndarray,
+    coordinates: np.ndarray,
+    distance_threshold: float = 100.0
+) -> tuple[float, float, float]:
+    """Calculate Moran's I statistic for spatial autocorrelation.
+
+    Args:
+        expression_values: Gene expression values (1D array)
+        coordinates: Spatial coordinates (Nx2 array)
+        distance_threshold: Maximum distance for neighbors
+
+    Returns:
+        Tuple of (morans_i, z_score, p_value)
+    """
+    n = len(expression_values)
+
+    if n == 0:
+        return 0.0, 0.0, 1.0
+
+    # Build spatial weights matrix (neighbors within threshold)
+    distances = cdist(coordinates, coordinates)
+    weights = (distances < distance_threshold).astype(float)
+    np.fill_diagonal(weights, 0)  # No self-weighting
+
+    # Normalize weights (row-standardization)
+    row_sums = weights.sum(axis=1)
+    row_sums[row_sums == 0] = 1  # Avoid division by zero
+    weights = weights / row_sums[:, np.newaxis]
+
+    # Calculate Moran's I
+    mean_expr = expression_values.mean()
+    deviations = expression_values - mean_expr
+
+    numerator = np.sum(weights * np.outer(deviations, deviations))
+    denominator = np.sum(deviations ** 2)
+
+    if denominator == 0:
+        return 0.0, 0.0, 1.0
+
+    morans_i = (n / weights.sum()) * (numerator / denominator)
+
+    # Calculate expected value and variance for z-score
+    W = weights.sum()
+    E_I = -1.0 / (n - 1)  # Expected value under null hypothesis
+
+    # Simplified variance calculation
+    S1 = 0.5 * np.sum((weights + weights.T) ** 2)
+    S2 = np.sum((weights.sum(axis=1) + weights.sum(axis=0)) ** 2)
+
+    var_I = ((n * S1 - S2 + 3 * W ** 2) / (W ** 2 * (n ** 2 - 1))) - E_I ** 2
+
+    if var_I <= 0:
+        return morans_i, 0.0, 1.0
+
+    # Calculate z-score and p-value
+    z_score = (morans_i - E_I) / np.sqrt(var_I)
+    p_value = 2 * (1 - norm.cdf(abs(z_score)))  # Two-tailed test
+
+    return morans_i, z_score, p_value
+
+
 @mcp.tool()
 async def calculate_spatial_autocorrelation(
     expression_file: str,
     genes: List[str],
-    method: str = "morans_i"
+    coordinates_file: Optional[str] = None,
+    method: str = "morans_i",
+    distance_threshold: float = 100.0
 ) -> Dict[str, Any]:
     """Calculate spatial autocorrelation statistics for gene expression.
 
-    Computes Moran's I or Geary's C to detect spatial patterns in gene expression.
+    REAL IMPLEMENTATION: Uses scipy to compute Moran's I statistics.
+
+    Computes Moran's I to detect spatial clustering patterns in gene expression.
+    Moran's I ranges from -1 (dispersed) to +1 (clustered), with 0 indicating
+    random spatial distribution.
 
     Args:
-        expression_file: Path to spatial expression data with coordinates
+        expression_file: Path to spatial expression data (CSV with genes as columns)
         genes: List of genes to analyze
-        method: Statistical method - "morans_i" or "gearys_c"
+        coordinates_file: Path to spatial coordinates file (optional, can be embedded)
+        method: Statistical method - "morans_i" (only Moran's I supported currently)
+        distance_threshold: Maximum distance for defining neighbors (default: 100.0)
 
     Returns:
-        Dictionary with autocorrelation statistics per gene
+        Dictionary with autocorrelation statistics per gene:
+        - morans_i: Moran's I statistic (-1 to +1)
+        - z_score: Standardized test statistic
+        - p_value: Statistical significance
+        - interpretation: "clustered", "dispersed", or "random"
 
     Example:
         >>> result = await calculate_spatial_autocorrelation(
-        ...     expression_file="/data/expression_matrix.csv",
-        ...     genes=["EPCAM", "VIM"],
-        ...     method="morans_i"
+        ...     expression_file="/data/expression.csv",
+        ...     coordinates_file="/data/coordinates.csv",
+        ...     genes=["Ki67", "CD8A", "VIM"],
+        ...     distance_threshold=150.0
         ... )
     """
     if DRY_RUN:
+        # Return warning about dry run mode
+        return add_dry_run_warning({
+            "method": method,
+            "genes_analyzed": 0,
+            "results": [],
+            "message": "DRY_RUN mode enabled. Set SPATIAL_DRY_RUN=false for real analysis."
+        })
+
+    try:
+        # Load expression data
+        expr_data = pd.read_csv(expression_file, index_col=0)
+
+        # Load or extract coordinates
+        if coordinates_file:
+            coord_data = pd.read_csv(coordinates_file, index_col=0)
+            # Assume coordinates have 'x' and 'y' or 'x_coord' and 'y_coord' columns
+            coord_cols = [c for c in coord_data.columns if 'x' in c.lower() or 'y' in c.lower()]
+            if len(coord_cols) < 2:
+                coord_cols = coord_data.columns[:2]  # Use first two columns
+            coordinates = coord_data[coord_cols].values
+        elif 'x_coord' in expr_data.columns and 'y_coord' in expr_data.columns:
+            # Coordinates embedded in expression file
+            coordinates = expr_data[['x_coord', 'y_coord']].values
+            expr_data = expr_data.drop(['x_coord', 'y_coord'], axis=1)
+        else:
+            return {
+                "status": "error",
+                "error": "No spatial coordinates found",
+                "message": "Provide coordinates_file or include x_coord/y_coord in expression file"
+            }
+
+        # Calculate autocorrelation for each gene
         autocorr_results = []
+
         for gene in genes:
-            # Mock spatial autocorrelation values
-            morans_i = np.random.uniform(-0.2, 0.8)
-            p_value = 0.001 if abs(morans_i) > 0.3 else 0.15
+            if gene not in expr_data.columns:
+                autocorr_results.append({
+                    "gene": gene,
+                    "status": "not_found",
+                    "message": f"Gene {gene} not found in expression data"
+                })
+                continue
+
+            expression_values = expr_data[gene].values
+
+            # Calculate Moran's I
+            morans_i, z_score, p_value = _calculate_morans_i(
+                expression_values,
+                coordinates,
+                distance_threshold
+            )
+
+            # Interpret result
+            if p_value < 0.05:
+                if morans_i > 0.3:
+                    interpretation = "significantly clustered"
+                elif morans_i < -0.3:
+                    interpretation = "significantly dispersed"
+                else:
+                    interpretation = "weakly patterned"
+            else:
+                interpretation = "random (not significant)"
 
             autocorr_results.append({
                 "gene": gene,
-                "morans_i": round(morans_i, 4),
-                "p_value": round(p_value, 4),
-                "z_score": round((morans_i + 0.1) / 0.15, 3),
-                "interpretation": "clustered" if morans_i > 0.3 else "dispersed" if morans_i < -0.3 else "random"
+                "morans_i": round(float(morans_i), 4),
+                "z_score": round(float(z_score), 3),
+                "p_value": round(float(p_value), 4),
+                "significant": p_value < 0.05,
+                "interpretation": interpretation,
+                "distance_threshold": distance_threshold
             })
 
+        # Summary statistics
+        significant_clustered = sum(
+            1 for r in autocorr_results
+            if r.get("significant") and r.get("morans_i", 0) > 0.3
+        )
+        significant_dispersed = sum(
+            1 for r in autocorr_results
+            if r.get("significant") and r.get("morans_i", 0) < -0.3
+        )
+
         return {
+            "status": "success",
             "method": method,
-            "genes_analyzed": len(genes),
+            "genes_analyzed": len([r for r in autocorr_results if "morans_i" in r]),
+            "genes_not_found": len([r for r in autocorr_results if r.get("status") == "not_found"]),
+            "distance_threshold": distance_threshold,
+            "num_spots": len(coordinates),
             "results": autocorr_results,
-            "significantly_clustered": sum(1 for r in autocorr_results if r["morans_i"] > 0.3),
-            "mode": "dry_run"
+            "summary": {
+                "significantly_clustered": significant_clustered,
+                "significantly_dispersed": significant_dispersed,
+                "random_pattern": len(autocorr_results) - significant_clustered - significant_dispersed
+            }
         }
 
-    return {"results": []}
+    except Exception as e:
+        logger.error(f"Error calculating spatial autocorrelation: {e}")
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to calculate spatial autocorrelation. Check file paths and format."
+        }
 
 
 # ============================================================================
@@ -831,6 +990,198 @@ async def perform_pathway_enrichment(
         }
 
     return {"pathways": []}
+
+
+# ============================================================================
+# TOOL 9: get_spatial_data_for_patient (Clinical-Spatial Bridge)
+# ============================================================================
+
+# Clinical condition → Gene of Interest mapping
+CONDITION_GENE_MAP = {
+    "ovarian cancer": ["Ki67", "TP53", "BRCA1", "BRCA2", "EPCAM", "CA125", "PAX8"],
+    "HGSOC": ["TP53", "Ki67", "FOXM1", "MYC", "CCNE1"],  # High-grade serous
+    "platinum-resistant": ["ABCB1", "ERCC1", "GSTP1", "BRCA1"],
+    "stage IV": ["Ki67", "MYC", "VIM", "CDH1"],  # Advanced cancer markers
+    "serous carcinoma": ["TP53", "PAX8", "WT1", "CA125"]
+}
+
+# Treatment → Biomarker mapping
+TREATMENT_BIOMARKER_MAP = {
+    "bevacizumab": ["VEGFA", "CD31", "HIF1A", "KDR"],  # Anti-angiogenic
+    "carboplatin": ["ERCC1", "XPA", "BRCA1", "BRCA2"],  # DNA repair
+    "paclitaxel": ["TUBB3", "MAP2", "MAPT"],  # Microtubule targeting
+    "avastin": ["VEGFA", "CD31", "HIF1A"]  # Brand name for bevacizumab
+}
+
+# Observation/Biomarker → Gene mapping
+BIOMARKER_GENE_MAP = {
+    "CA-125": ["CA125", "MUC16"],  # CA-125 is encoded by MUC16
+    "BRCA": ["BRCA1", "BRCA2"],
+    "high CA-125": ["CA125", "MUC16", "Ki67", "TP53"]  # Elevated tumor marker
+}
+
+# Patient ID → Spatial Dataset mapping
+PATIENT_SPATIAL_MAP = {
+    "patient-001": "PAT001-OVC-2025",
+    "PAT001": "PAT001-OVC-2025"
+}
+
+
+@mcp.tool()
+async def get_spatial_data_for_patient(
+    patient_id: str,
+    tissue_type: str = "tumor",
+    include_clinical_context: bool = True,
+    conditions: Optional[List[str]] = None,
+    medications: Optional[List[str]] = None,
+    biomarkers: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
+    """Get spatial transcriptomics data for a patient with clinical context.
+
+    This tool creates a bridge between clinical FHIR data (from mcp-epic) and
+    spatial transcriptomics data, enriching spatial analysis with patient context.
+
+    Args:
+        patient_id: Patient identifier (e.g., "patient-001")
+        tissue_type: Tissue type to analyze ("tumor", "normal", "margin")
+        include_clinical_context: Include clinical metadata in response
+        conditions: List of patient conditions (e.g., ["ovarian cancer", "HGSOC"])
+        medications: List of current medications (e.g., ["Bevacizumab"])
+        biomarkers: Dict of biomarker results (e.g., {"CA-125": 487})
+
+    Returns:
+        Dictionary containing:
+        - spatial_data_path: Path to spatial expression data
+        - coordinate_file: Path to spatial coordinates
+        - annotation_file: Path to region annotations
+        - genes_of_interest: Genes relevant to patient's condition
+        - suggested_analyses: Recommended spatial analyses
+        - clinical_summary: Patient clinical context (if requested)
+
+    Example:
+        >>> result = await get_spatial_data_for_patient(
+        ...     patient_id="patient-001",
+        ...     conditions=["ovarian cancer", "HGSOC"],
+        ...     medications=["Bevacizumab"],
+        ...     biomarkers={"CA-125": 487}
+        ... )
+        >>> print(result["genes_of_interest"])
+        ['Ki67', 'TP53', 'VEGFA', 'CA125', 'BRCA1']
+    """
+    # Map patient ID to spatial dataset
+    spatial_dataset = PATIENT_SPATIAL_MAP.get(patient_id, patient_id)
+
+    # Build path to spatial data
+    patient_data_dir = DATA_DIR / "patient-data" / spatial_dataset / "spatial"
+
+    # Check if data exists
+    if not patient_data_dir.exists():
+        return {
+            "status": "error",
+            "error": f"No spatial data found for patient {patient_id}",
+            "searched_path": str(patient_data_dir),
+            "message": f"Expected spatial data at {patient_data_dir} but directory not found."
+        }
+
+    # Identify genes of interest based on clinical context
+    genes_of_interest = set()
+
+    if conditions:
+        for condition in conditions:
+            condition_lower = condition.lower()
+            for key, genes in CONDITION_GENE_MAP.items():
+                if key in condition_lower:
+                    genes_of_interest.update(genes)
+
+    if medications:
+        for medication in medications:
+            medication_lower = medication.lower()
+            for key, genes in TREATMENT_BIOMARKER_MAP.items():
+                if key in medication_lower:
+                    genes_of_interest.update(genes)
+
+    if biomarkers:
+        for biomarker_name, value in biomarkers.items():
+            biomarker_lower = biomarker_name.lower()
+            # Check for elevated markers
+            if isinstance(value, (int, float)) and value > 100:  # Arbitrary threshold
+                key = f"high {biomarker_lower}"
+                if key in BIOMARKER_GENE_MAP:
+                    genes_of_interest.update(BIOMARKER_GENE_MAP[key])
+            # Regular biomarker mapping
+            for key, genes in BIOMARKER_GENE_MAP.items():
+                if key in biomarker_lower:
+                    genes_of_interest.update(genes)
+
+    # Default genes if no clinical context provided
+    if not genes_of_interest:
+        genes_of_interest = {"Ki67", "CD8A", "VIM", "EPCAM"}  # General cancer markers
+
+    # Build suggested analyses
+    suggested_analyses = []
+
+    if conditions and any("cancer" in c.lower() for c in conditions):
+        suggested_analyses.extend([
+            "Calculate spatial autocorrelation for proliferation markers (Ki67)",
+            "Analyze immune infiltration patterns (CD8A, CD4)",
+            "Assess tumor-stroma interaction (VIM, EPCAM)"
+        ])
+
+    if medications:
+        if any("bevacizumab" in m.lower() or "avastin" in m.lower() for m in medications):
+            suggested_analyses.append(
+                "Evaluate angiogenesis markers (VEGFA, CD31) for treatment response"
+            )
+        if any("platinum" in m.lower() or "carboplatin" in m.lower() for m in medications):
+            suggested_analyses.append(
+                "Check DNA repair gene expression (BRCA1, ERCC1) for resistance markers"
+            )
+
+    # Build clinical summary
+    clinical_summary = None
+    if include_clinical_context:
+        clinical_summary = {
+            "patient_id": patient_id,
+            "conditions": conditions or [],
+            "medications": medications or [],
+            "biomarkers": biomarkers or {},
+            "tissue_type": tissue_type
+        }
+
+    # Prepare file paths
+    expression_file = patient_data_dir / "visium_gene_expression.csv"
+    coordinates_file = patient_data_dir / "visium_spatial_coordinates.csv"
+    annotations_file = patient_data_dir / "visium_region_annotations.csv"
+
+    result = {
+        "status": "success",
+        "patient_id": patient_id,
+        "spatial_dataset": spatial_dataset,
+        "data_directory": str(patient_data_dir),
+        "files": {
+            "expression": str(expression_file) if expression_file.exists() else None,
+            "coordinates": str(coordinates_file) if coordinates_file.exists() else None,
+            "annotations": str(annotations_file) if annotations_file.exists() else None
+        },
+        "genes_of_interest": sorted(list(genes_of_interest)),
+        "num_genes_of_interest": len(genes_of_interest),
+        "suggested_analyses": suggested_analyses,
+        "tissue_type": tissue_type
+    }
+
+    if clinical_summary:
+        result["clinical_summary"] = clinical_summary
+
+    # Add available file info
+    available_files = []
+    for file_type, file_path in result["files"].items():
+        if file_path and Path(file_path).exists():
+            available_files.append(file_type)
+
+    result["available_files"] = available_files
+    result["data_ready"] = len(available_files) > 0
+
+    return result
 
 
 # ============================================================================
