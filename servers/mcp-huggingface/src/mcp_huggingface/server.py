@@ -20,10 +20,16 @@ from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
 
 mcp = FastMCP("huggingface")
 
+def _is_dry_run() -> bool:
+    """Check if DRY_RUN mode is enabled."""
+    return os.getenv("HF_DRY_RUN", "false").lower() == "true"
+
+DRY_RUN = _is_dry_run()
+
 # DRY_RUN warning wrapper
 def add_dry_run_warning(result: Any) -> Any:
     """Add warning banner to results when in DRY_RUN mode."""
-    if not config.dry_run:
+    if not DRY_RUN:
         return result
 
     warning = """
@@ -209,7 +215,7 @@ def main() -> None:
     """Run the MCP mcp-huggingface server."""
     logger.info("Starting mcp-huggingface server...")
 
-    if config.dry_run:
+    if DRY_RUN:
         logger.warning("=" * 80)
         logger.warning("⚠️  DRY_RUN MODE ENABLED - RETURNING SYNTHETIC DATA")
         logger.warning("⚠️  Results are MOCKED and do NOT represent real analysis")
