@@ -1,0 +1,15 @@
+{
+  "patient_id": "patient-001",
+  "analysis_date": "2025-12-29T11:30:11.739420",
+  "data_directory": "/Users/lynnlangit/Documents/GitHub/spatial-mcp/data/patient-data/PAT001-OVC-2025/spatial",
+  "output_directory": "results/patient-001",
+  "spatial_data": {
+    "num_genes": 31,
+    "num_spots": 900,
+    "num_regions": 6
+  },
+  "analysis_results": {
+    "num_degs": 17,
+    "num_svgs": 31
+  }
+}

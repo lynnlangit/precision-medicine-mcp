@@ -1,0 +1,104 @@
+================================================================================
+CLINICAL ANALYSIS REPORT
+================================================================================
+
+Patient: Jane TestPatient
+Gender: female
+DOB: 1968-03-15
+Report Date: 2025-12-29 11:30:11
+
+DIAGNOSES:
+  - Stage IV High-Grade Serous Ovarian Carcinoma (HGSOC), Platinum-Resistant
+
+CURRENT MEDICATIONS:
+  - Bevacizumab (Avastin) (active)
+  - Paclitaxel (completed)
+  - Carboplatin (completed)
+
+MOLECULAR ANALYSIS SUMMARY:
+--------------------------------------------------------------------------------
+
+1. DIFFERENTIAL EXPRESSION (tumor_core vs stroma):
+   Total DEGs: 17
+   Upregulated: 13
+   Downregulated: 4
+
+   Top 5 upregulated genes in tumor:
+      TP53: log2FC = 4.654, FDR = 5.04e-20
+      KRT8: log2FC = 4.345, FDR = 2.68e-18
+      ABCB1: log2FC = 4.285, FDR = 4.20e-18
+      BCL2L1: log2FC = 3.683, FDR = 2.95e-19
+      MKI67: log2FC = 3.564, FDR = 1.22e-14
+
+2. SPATIAL ORGANIZATION:
+   Spatially variable genes: 31
+
+   Top 5 spatially clustered genes:
+      HIF1A: Moran's I = 0.1411, p = 0.00e+00
+      BCL2L1: Moran's I = 0.1269, p = 0.00e+00
+      CD3D: Moran's I = 0.1103, p = 0.00e+00
+      KRT8: Moran's I = 0.1071, p = 0.00e+00
+      MYC: Moran's I = 0.1065, p = 0.00e+00
+
+3. TUMOR MICROENVIRONMENT:
+   Cell type enrichment by region:
+
+   necrotic_hypoxic:
+      fibroblasts: 75.7
+      immune_cells: 83.5
+      hypoxic: 607.5
+      resistant: 73.1
+   stroma:
+      fibroblasts: 748.6
+      immune_cells: 76.3
+      hypoxic: 70.2
+      resistant: 61.2
+   stroma_immune:
+      fibroblasts: 362.6
+      immune_cells: 603.3
+      hypoxic: 95.0
+      resistant: 98.6
+   tumor_core:
+      fibroblasts: 67.1
+      immune_cells: 81.7
+      hypoxic: 60.6
+      resistant: 716.8
+   tumor_interface:
+      fibroblasts: 65.9
+      immune_cells: 60.8
+      hypoxic: 64.1
+      resistant: 384.0
+   tumor_proliferative:
+      fibroblasts: 64.1
+      immune_cells: 80.5
+      hypoxic: 61.1
+      resistant: 728.7
+
+CLINICAL IMPLICATIONS:
+--------------------------------------------------------------------------------
+
+Drug Resistance Markers Detected:
+  - PIK3CA: 3.11× fold change
+  - AKT1: 3.24× fold change
+  - MTOR: 3.17× fold change
+  - ABCB1: 4.29× fold change
+
+  ⚠️  Consider:
+     - PI3K/AKT pathway inhibitors (Alpelisib, Capivasertib)
+     - MDR reversal agents
+
+Hypoxic Regions Identified:
+  - HIF1A: Moran's I = 0.1411 (spatially clustered)
+  - VEGFA: Moran's I = 0.1053 (spatially clustered)
+  - CA9: Moran's I = 0.1026 (spatially clustered)
+
+  ⚠️  Consider:
+     - Hypoxia-targeting agents (Evofosfamide, TH-302)
+     - VEGF inhibitors (Bevacizumab)
+
+================================================================================
+DISCLAIMER:
+This analysis is for RESEARCH PURPOSES ONLY.
+NOT validated for clinical decision-making.
+All treatment decisions must be made by qualified oncologists.
+================================================================================
