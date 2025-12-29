@@ -197,10 +197,14 @@ async def filter_quality(
             # All columns should be numeric gene expression values now (barcode is index)
             gene_cols = [col for col in data_filtered.columns if col not in ['x', 'y', 'in_tissue', 'n_reads', 'n_genes', 'mt_percent']]
             if gene_cols:
+                # For small gene panels (< min_genes total genes), adjust threshold intelligently
+                total_genes = len(gene_cols)
+                effective_min_genes = min(min_genes, max(1, total_genes // 4))  # Require at least 25% of genes
+
                 # Convert to numeric, coerce errors to NaN
                 numeric_data = data_filtered[gene_cols].apply(pd.to_numeric, errors='coerce')
                 n_genes_per_spot = (numeric_data > 0).sum(axis=1)
-                data_filtered = data_filtered[n_genes_per_spot >= min_genes].copy()
+                data_filtered = data_filtered[n_genes_per_spot >= effective_min_genes].copy()
 
         # Filter by mitochondrial percentage (if mt_percent column exists)
         if 'mt_percent' in data_filtered.columns:
@@ -767,13 +771,16 @@ async def calculate_spatial_autocorrelation(
             else:
                 interpretation = "random (not significant)"
 
+            # Explicitly convert to Python native types to avoid numpy serialization issues
+            is_significant = float(p_value) < 0.05
+
             autocorr_results.append({
-                "gene": gene,
+                "gene": str(gene),
                 "morans_i": round(float(morans_i), 4),
                 "z_score": round(float(z_score), 3),
                 "p_value": round(float(p_value), 4),
-                "significant": bool(p_value < 0.05),  # Convert numpy.bool_ to Python bool
-                "interpretation": interpretation,
+                "significant": bool(is_significant),  # Convert to Python bool
+                "interpretation": str(interpretation),
                 "distance_threshold": float(distance_threshold)
             })
 
@@ -1285,22 +1292,22 @@ async def deconvolve_cell_types(
         # Prepare output with spot-level scores
         spot_scores = []
         for spot_id in scores_df.index:
-            spot_dict = {"spot_id": spot_id}
+            spot_dict = {"spot_id": str(spot_id)}  # Ensure spot_id is string
             for cell_type in scores_df.columns:
-                spot_dict[cell_type] = round(float(scores_df.loc[spot_id, cell_type]), 4)
+                spot_dict[str(cell_type)] = round(float(scores_df.loc[spot_id, cell_type]), 4)
             spot_scores.append(spot_dict)
 
         return {
             "status": "success",
             "spots_analyzed": int(len(expr_data_genes)),
-            "cell_types": list(signatures.keys()),
+            "cell_types": [str(ct) for ct in signatures.keys()],  # Ensure strings
             "num_cell_types": int(len(signatures)),
             "normalized": bool(normalize),
             "spot_scores": spot_scores,  # Per-spot cell type scores
             "summary_statistics": summary_stats,
             "signatures_used": signatures_used,
             "dominant_cell_type_distribution": {
-                cell_type: int(count)
+                str(cell_type): int(count)
                 for cell_type, count in dominant_cell_types.items()
             },
             "mode": "real_analysis"
