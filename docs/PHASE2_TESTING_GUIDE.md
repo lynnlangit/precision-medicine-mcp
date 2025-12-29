@@ -26,6 +26,7 @@ Perform cell type deconvolution on Patient-001 spatial data. Use the ovarian can
 ```
 
 **What to expect:**
+- **Steps: 2-3 steps** (efficient with token optimization)
 - Analysis of 900 spots across 8 cell types
 - Summary statistics showing:
   - Tumor cells: ~20%
@@ -38,6 +39,11 @@ Perform cell type deconvolution on Patient-001 spatial data. Use the ovarian can
 - Endothelial cell presence validates bevacizumab therapy
 - CD8+ T-cell infiltration suggests immunotherapy potential
 - Mesenchymal signature explains platinum resistance
+
+**Token Efficiency Note:**
+- By default, the tool returns summary statistics only (3KB response)
+- Spot-level scores (212KB) are excluded to prevent token bloat
+- If you need per-spot details, use `include_spot_scores=True`
 
 ---
 
