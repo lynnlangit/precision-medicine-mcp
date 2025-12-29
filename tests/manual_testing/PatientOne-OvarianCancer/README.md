@@ -189,7 +189,7 @@ Run all modular tests sequentially for comprehensive precision medicine analysis
 - **DRY_RUN:** Mainly Claude token usage (~30K tokens total)
 - **Real Data:** Computational processing ($14-30) + APIs ($0-5) + Claude tokens (~$0.50)
 
-📊 **[Full Cost Analysis & ROI →](../../../COST_ANALYSIS.md)**
+📊 **[Full Cost Analysis & ROI →](../../../docs/COST_ANALYSIS.md)**
 
 **Instructions:**
 1. Open each `TEST_*.txt` file in `implementation/` directory
@@ -410,8 +410,8 @@ For detailed guidance on configuring Claude Desktop for file access, see:
 After completing PatientOne:
 
 1. **Explore Individual Workflows:**
-   - [Spatial Transcriptomics](../../architecture/spatial/README.md)
-   - [Multiomics Integration](../../architecture/multiomics/README.md)
+   - [Spatial Transcriptomics](../../../architecture/spatial/README.md)
+   - [Multiomics Integration](../../../architecture/multiomics/README.md)
 
 2. **Customize for Your Data:**
    - Replace synthetic patient data with your own
@@ -424,8 +424,8 @@ After completing PatientOne:
    - Deploy Nextflow pipelines via Seqera Platform
 
 4. **Read Full Architecture:**
-   - [PatientOne Architecture](../../architecture/patient-one/README.md)
-   - [Comprehensive Documentation](../../README.md)
+   - [PatientOne Architecture](../../../architecture/patient-one/README.md)
+   - [Comprehensive Documentation](../../../README.md)
 
 ---
 
