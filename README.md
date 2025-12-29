@@ -21,7 +21,6 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 
 <kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
 
-**End-to-end demonstration using all 9 MCP servers:**
 - **Patient:** Stage IV HGSOC, platinum-resistant, BRCA1 mutation
 - **Data Modalities:** Clinical (Epic FHIR) → Genomic (FGbio, TCGA) → Multi-omics (RNA/Protein/Phospho) → Spatial (900 spots, 31 genes) → Imaging (H&E, multiplex IF)
 - **Cost:** DRY_RUN demo in 25-35 min (~$0.32) or real analysis in 1-3 hours ($7-29)
