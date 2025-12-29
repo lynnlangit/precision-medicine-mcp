@@ -140,7 +140,7 @@ graph TD
 - **Architecture:** [System Design](architecture/README.md) • [PatientOne Architecture](architecture/patient-one/README.md)
 - **Best Reference:** [mcp-multiomics](servers/mcp-multiomics/README.md) (91 tests, 68% coverage, HAllA integration)
 - **95% Real Example:** [mcp-spatialtools](servers/mcp-spatialtools/) ([Implementation Status](servers/mcp-spatialtools/SERVER_IMPLEMENTATION_STATUS.md))
-- **Testing Guide:** [Solution Testing](tests/manual_testing/Solution-Testing/README.md)
+- **Testing Guide:** [Manual Testing Guide](tests/manual_testing/Solution-Testing/MANUAL_TESTING_GUIDE.md)
 - **Status Matrix:** [All Server Implementation Details](docs/SERVER_IMPLEMENTATION_STATUS.md)
 
 **Example Outputs for Developers:**
