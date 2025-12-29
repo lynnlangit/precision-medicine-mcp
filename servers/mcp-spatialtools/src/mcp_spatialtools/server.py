@@ -438,7 +438,7 @@ async def align_spatial_data(
             "mode": "dry_run"
         }
 
-    # Real STAR alignment (mocked for POC)
+    # Real STAR alignment
     try:
         star_cmd = [
             STAR_PATH,
@@ -452,44 +452,193 @@ async def align_spatial_data(
             "--limitBAMsortRAM", "32000000000"
         ]
 
-        if DRY_RUN:
-            # Just return mock result
-            pass
-        else:
-            # Would actually run STAR
-            result = subprocess.run(
+        # Execute STAR alignment
+        result = subprocess.run(
+            star_cmd,
+            capture_output=True,
+            text=True,
+            timeout=1800  # 30 minute timeout
+        )
+
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(
+                result.returncode,
                 star_cmd,
-                capture_output=True,
-                text=True,
-                timeout=1800  # 30 minute timeout
+                result.stdout,
+                result.stderr
             )
 
-            if result.returncode != 0:
-                raise subprocess.CalledProcessError(
-                    result.returncode,
-                    star_cmd,
-                    result.stdout,
-                    result.stderr
-                )
+        # Parse STAR log file for alignment statistics
+        log_file_path = output_path / "Log.final.out"
+        alignment_stats = _parse_star_log(log_file_path)
 
-        # Parse STAR log (mocked)
         return {
             "aligned_bam": str(output_path / "Aligned.sortedByCoord.out.bam"),
-            "alignment_stats": {
-                "total_reads": 50000000,
-                "uniquely_mapped": 42500000,
-                "multi_mapped": 3750000,
-                "unmapped": 3750000,
-                "alignment_rate": 0.925,
-                "unique_mapping_rate": 0.85
-            },
-            "log_file": str(output_path / "Log.final.out")
+            "alignment_stats": alignment_stats,
+            "log_file": str(log_file_path)
         }
 
     except subprocess.TimeoutExpired as e:
         raise IOError(f"STAR alignment timeout: {e}") from e
     except Exception as e:
         raise IOError(f"STAR alignment failed: {e}") from e
+
+
+def _parse_star_log(log_file_path: Path) -> Dict[str, Any]:
+    """Parse STAR Log.final.out to extract alignment statistics.
+
+    Args:
+        log_file_path: Path to STAR Log.final.out file
+
+    Returns:
+        Dictionary with alignment statistics:
+            - total_reads: Total number of input reads
+            - uniquely_mapped: Number of uniquely mapped reads
+            - multi_mapped: Number of multi-mapping reads
+            - unmapped: Number of unmapped reads
+            - alignment_rate: Fraction of reads aligned (unique + multi)
+            - unique_mapping_rate: Fraction of reads uniquely mapped
+
+    Raises:
+        IOError: If log file not found or parsing fails
+
+    Example STAR log format:
+                              Number of input reads |       50000000
+                   Uniquely mapped reads number |       42500000
+       Number of reads mapped to multiple loci |       3750000
+            Number of reads unmapped: too short |       3750000
+    """
+    if not log_file_path.exists():
+        raise IOError(f"STAR log file not found: {log_file_path}")
+
+    try:
+        # Initialize counters
+        total_reads = 0
+        uniquely_mapped = 0
+        multi_mapped = 0
+        unmapped_mismatches = 0
+        unmapped_short = 0
+        unmapped_other = 0
+
+        # Parse log file
+        with open(log_file_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+
+                # Extract total input reads
+                if "Number of input reads" in line:
+                    total_reads = int(line.split('|')[1].strip())
+
+                # Extract uniquely mapped reads
+                elif "Uniquely mapped reads number" in line:
+                    uniquely_mapped = int(line.split('|')[1].strip())
+
+                # Extract multi-mapping reads
+                elif "Number of reads mapped to multiple loci" in line:
+                    multi_mapped = int(line.split('|')[1].strip())
+
+                # Extract unmapped reads (3 categories)
+                elif "Number of reads unmapped: too many mismatches" in line:
+                    unmapped_mismatches = int(line.split('|')[1].strip())
+                elif "Number of reads unmapped: too short" in line:
+                    unmapped_short = int(line.split('|')[1].strip())
+                elif "Number of reads unmapped: other" in line:
+                    unmapped_other = int(line.split('|')[1].strip())
+
+        # Calculate totals
+        unmapped = unmapped_mismatches + unmapped_short + unmapped_other
+
+        # Validate totals (should sum to total_reads)
+        counted_total = uniquely_mapped + multi_mapped + unmapped
+        if abs(counted_total - total_reads) > 100:  # Allow small rounding errors
+            raise ValueError(
+                f"STAR log parsing error: counted {counted_total} reads "
+                f"but log reports {total_reads} total reads"
+            )
+
+        # Calculate rates
+        if total_reads > 0:
+            alignment_rate = (uniquely_mapped + multi_mapped) / total_reads
+            unique_mapping_rate = uniquely_mapped / total_reads
+        else:
+            alignment_rate = 0.0
+            unique_mapping_rate = 0.0
+
+        return {
+            "total_reads": total_reads,
+            "uniquely_mapped": uniquely_mapped,
+            "multi_mapped": multi_mapped,
+            "unmapped": unmapped,
+            "alignment_rate": alignment_rate,
+            "unique_mapping_rate": unique_mapping_rate
+        }
+
+    except Exception as e:
+        raise IOError(f"Failed to parse STAR log file {log_file_path}: {e}") from e
+
+
+def _create_synthetic_fastq(
+    output_r1: Path,
+    output_r2: Path,
+    num_reads: int = 1000,
+    read_length: int = 100
+) -> None:
+    """Generate synthetic paired-end FASTQ files for testing.
+
+    Creates minimal valid FASTQ files with random sequences and quality scores,
+    suitable for testing alignment workflows without requiring large real datasets.
+
+    Args:
+        output_r1: Path for R1 FASTQ file (will be gzipped)
+        output_r2: Path for R2 FASTQ file (will be gzipped)
+        num_reads: Number of read pairs to generate (default: 1000)
+        read_length: Length of each read in bp (default: 100)
+
+    FASTQ format:
+        @read_id
+        SEQUENCE
+        +
+        QUALITY_SCORES
+
+    Example:
+        >>> _create_synthetic_fastq(
+        ...     output_r1=Path("test_R1.fastq.gz"),
+        ...     output_r2=Path("test_R2.fastq.gz"),
+        ...     num_reads=1000
+        ... )
+    """
+    import gzip
+    import random
+
+    # Nucleotides for random sequence generation
+    nucleotides = ['A', 'C', 'G', 'T']
+
+    # Phred+33 quality scores (ASCII 33-73 = Q0-Q40)
+    # Using Q30 (ASCII 63 '?') for simplicity - high quality
+    quality_char = '?' * read_length
+
+    def generate_read(read_num: int, r_type: str) -> str:
+        """Generate a single FASTQ read entry."""
+        # Random sequence
+        sequence = ''.join(random.choice(nucleotides) for _ in range(read_length))
+
+        # FASTQ format (4 lines per read)
+        return f"@read_{read_num}_{r_type}\n{sequence}\n+\n{quality_char}\n"
+
+    # Generate R1 file
+    with gzip.open(output_r1, 'wt') as f1:
+        for i in range(num_reads):
+            f1.write(generate_read(i, 'R1'))
+
+    # Generate R2 file
+    with gzip.open(output_r2, 'wt') as f2:
+        for i in range(num_reads):
+            f2.write(generate_read(i, 'R2'))
+
+    logger.info(f"Created synthetic FASTQ files: {output_r1}, {output_r2}")
+    logger.info(f"  Reads: {num_reads}, Length: {read_length}bp")
+    logger.info(f"  R1 size: {output_r1.stat().st_size / 1024:.1f} KB")
+    logger.info(f"  R2 size: {output_r2.stat().st_size / 1024:.1f} KB")
 
 
 # ============================================================================
