@@ -22,7 +22,7 @@ See each subfolder for architectures. See also main Repo README.md for list of t
                     │                               │
                     ▼                               ▼
          ┌──────────────────────┐        ┌──────────────────────┐
-         │  mcp-multiomics      │        │  mcp-mockepic        │
+         │  mcp-multiomics      │        │  mcp-epic            │
          │  ─────────────────   │        │  ───────────────     │
          │  PREPROCESSING:      │        │  • Patient Data      │
          │  • Validate Data ⭐  │        │  • Clinical Metadata │
@@ -188,7 +188,7 @@ Key Features:
 │  ├─ mcp-tcga           (Cancer genomics reference)
 │  ├─ mcp-spatialtools   (Core spatial processing)
 │  ├─ mcp-huggingface    (ML models)
-│  ├─ mcp-mockepic       (Clinical data)
+│  ├─ mcp-epic           (Clinical data)
 │  ├─ mcp-openimagedata  (Histology images)
 │  ├─ mcp-seqera         (Workflow orchestration)
 │  └─ mcp-deepcell       (Cell segmentation)
@@ -222,7 +222,7 @@ Key Features:
 │  CLINICAL DATA   │    │   GENOMIC DATA     │    │  MULTIOMICS DATA   │
 │  ──────────────  │    │   ────────────     │    │  ──────────────    │
 │                  │    │                    │    │                    │
-│ mcp-mockepic     │    │ mcp-fgbio          │    │ mcp-multiomics     │
+│ mcp-epic         │    │ mcp-fgbio          │    │ mcp-multiomics     │
 │ • Demographics   │    │ • FASTQ validation │    │ • RNA-seq (PDX)    │
 │ • CA-125 trends  │    │ • VCF processing   │    │ • Proteomics       │
 │ • Treatment Hx   │    │                    │    │ • Phosphoproteomics│
@@ -297,7 +297,7 @@ Key Features:
 
 ┌──────────────────────────────────────────────────────────────────────────┐
 │  ALL 9 MCP Servers Utilized:                                             │
-│  ├─ mcp-mockepic       (EHR/Clinical data)                              │
+│  ├─ mcp-epic           (EHR/Clinical data)                              │
 │  ├─ mcp-fgbio          (Genomic QC & validation)                        │
 │  ├─ mcp-tcga           (TCGA cohort comparison)                         │
 │  ├─ mcp-multiomics     (PDX multi-omics integration)                    │
@@ -335,5 +335,5 @@ Key Features:
 
 ---
 
-**Last Updated:** December 27, 2025
+**Last Updated:** December 29, 2025
 **Status:** Architecture documentation complete for 9 MCP servers

@@ -120,7 +120,7 @@ flowchart LR
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
-│  1. CLINICAL DATA (MockEpic Server)                         │
+│  1. CLINICAL DATA (Epic Server)                             │
 │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
 │  • Demographics, family history                             │
 │  • CA-125 tumor marker trends (4 timepoints)                │
@@ -183,7 +183,7 @@ flowchart LR
 
 | Workflow Stage | MCP Servers Engaged | Tools Used | Output |
 |---|---|---|---|
-| **1. Clinical Retrieval** | MockEpic | `query_patient_records`, `search_diagnoses` | Demographics, CA-125 trends, ICD-10 codes |
+| **1. Clinical Retrieval** | Epic | `query_patient_records`, `search_diagnoses` | Demographics, CA-125 trends, ICD-10 codes |
 | **2. Genomic Analysis** | FGbio, TCGA | `validate_fastq`, `query_gene_annotations`, `compare_to_cohort`, `get_mutation_data` | VCF variants, CNV profile, TCGA subtype |
 | **3. Multiomics Integration** | MultiOmics | `integrate_omics_data`, `calculate_stouffer_meta`, `create_multiomics_heatmap` | Resistance gene signatures, pathway activation |
 | **4. Spatial Processing** | SpatialTools, DeepCell | `filter_quality`, `split_by_region`, `align_spatial_data`, `segment_cells` | Spatial expression maps, tissue segmentation |
@@ -246,7 +246,7 @@ All synthetic patient data located in: `/data/patient-data/PAT001-OVC-2025/`
 
 ### 3. Clinical-Molecular Integration
 
-**From Clinical Data (MCP-MockEpic):**
+**From Clinical Data (MCP-Epic):**
 - **CA-125 response pattern:** Initial deep response (1456 → 22 U/mL) followed by resistance (→ 389 U/mL)
 - **BRCA1 germline mutation:** HRD-positive → PARP inhibitor candidate, BUT PIK3CA pathway may confer resistance
 - **Platinum-free interval:** 8 months → platinum-resistant category
@@ -297,7 +297,7 @@ PatientOne testing is divided into **5 modular tests** to avoid Claude Desktop c
 
 | Test | Focus | Servers | Data Files | Duration | Status |
 |------|-------|---------|------------|----------|--------|
-| **TEST_1** | Clinical + Genomic | MockEpic, FGbio, TCGA | 3 files | 5-10 min | ✅ |
+| **TEST_1** | Clinical + Genomic | Epic, FGbio, TCGA | 3 files | 5-10 min | ✅ |
 | **TEST_2** | Multi-Omics | MultiOmics | 4 files | 5-10 min | ✅ |
 | **TEST_3** | Spatial Transcriptomics | SpatialTools, DeepCell | 3 files | 5-10 min | ✅ |
 | **TEST_4** | Histology & Imaging | OpenImageData, DeepCell | 4 images | 5-10 min | ✅ |
@@ -409,6 +409,6 @@ All PatientOne analyses are:
 
 ---
 
-**Last Updated:** December 26, 2025
+**Last Updated:** December 29, 2025
 **Version:** 1.0
 **Status:** Demonstration POC with synthetic data

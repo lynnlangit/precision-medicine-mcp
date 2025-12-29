@@ -28,7 +28,7 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 - 🔶 mcp-spatialtools (40% real - basic features only)
 - ❌ mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera (0% real - fully mocked)
 - 🔶 mcp-openimagedata (30% real - basic features only)
-- Mock EHR by design: mcp-mockepic
+- Mock EHR by design: mcp-epic
 
 **📋 Check detailed status before production use:** [Server Implementation Status Matrix →](docs/SERVER_IMPLEMENTATION_STATUS.md)
 
@@ -40,34 +40,13 @@ AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Conte
 
 <kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>
 
-PatientOne demonstrates how Claude orchestrates ALL 9 MCP servers to analyze a complete patient profile:
+**End-to-end demonstration using all 9 MCP servers:**
+- **Patient:** Stage IV HGSOC, platinum-resistant, BRCA1 mutation
+- **Data Modalities:** Clinical (Epic) → Genomic (FGbio, TCGA) → Multiomics (RNA/Protein/Phospho) → Spatial (900 spots, 31 genes) → Imaging (H&E, multiplex IF)
+- **Cost:** DRY_RUN demo in 25-35 min (~$0.32) or real analysis in 2-4 hours ($15-45)
+- **ROI:** Replaces ~40 hours of manual bioinformatics work per patient
 
-**Patient Profile (Synthetic):**
-- 58-year-old female with Stage IV High-Grade Serous Ovarian Cancer (HGSOC)
-- Platinum-resistant, BRCA1 germline mutation
-- Post-surgery, considering experimental therapies
-
-**5 Integrated Data Modalities:**
-1. **Clinical** (MockEpic) - Demographics, CA-125 trends, treatment history
-2. **Genomic** (FGbio, TCGA) - Somatic mutations (TP53, PIK3CA, PTEN), CNVs, HRD score
-3. **Multiomics** (MultiOmics) - RNA/Protein/Phospho from 15 PDX samples (resistant vs sensitive)
-4. **Spatial** (SpatialTools) - 10x Visium spatial transcriptomics (900 spots, 31 genes, 6 regions)
-5. **Imaging** (OpenImageData, DeepCell) - H&E histology, multiplex IF, cell segmentation
-
-**Key Findings from PatientOne Analysis:**
-- PI3K/AKT/mTOR pathway activation in resistant samples
-- Immune exclusion phenotype (low CD8+ infiltration)
-- High proliferation (Ki67+) in tumor core regions
-- Actionable targets: PIK3CA inhibitors, immune checkpoint combinations
-
-**Cost & Performance:**
-- **DRY_RUN Demo:** 25-35 min, ~$0.32 (perfect for learning & testing)
-- **Real Patient Data:** 2-4 hours, $15-45 (replaces weeks of manual analysis)
-- **ROI:** Saves ~40 hours of bioinformatics work per patient ($3,200 value)
-
-**Architecture Diagram & Details:** [PatientOne Documentation →](architecture/patient-one/README.md)    
-**Try PatientOne:** [Quick Start Guide →](tests/manual_testing/PatientOne-OvarianCancer/README.md)  
-**Outputs Generated:** [For developers, care teams, and patients →](architecture/patient-one/patient-one-outputs/)    
+**📖 Learn More:** [PatientOne Documentation →](architecture/patient-one/README.md) | [Quick Start →](tests/manual_testing/PatientOne-OvarianCancer/README.md) | [Sample Outputs →](architecture/patient-one/patient-one-outputs/)    
 
 ---
 
@@ -111,111 +90,21 @@ graph TD
 
 ---
 
-## Component Workflows
+## MCP Server Ecosystem (9 Servers, 40 Tools)
 
-PatientOne integrates these specialized workflows:
+| Server | Tools | Purpose | Status |
+|--------|-------|---------|--------|
+| **mcp-fgbio** | 4 | FASTQ/VCF processing, genome references | ✅ Production |
+| **mcp-spatialtools** | 10 | Spatial transcriptomics (QC, DEG, deconvolution, Moran's I) | 🔶 Partial |
+| **mcp-openimagedata** | 3 | Histology image retrieval and registration | 🔶 Partial |
+| **mcp-multiomics** | 9 | RNA/Protein/Phospho integration (HAllA, Stouffer) | ✅ Production |
+| **mcp-tcga** | 5 | Cancer atlas queries, cohort comparisons | ❌ Mocked |
+| **mcp-epic** | 3 | Clinical EHR data (mock) | ❌ By design |
+| **mcp-deepcell** | 2 | Cell segmentation and classification | ❌ Mocked |
+| **mcp-huggingface** | 3 | Genomic language models | ❌ Mocked |
+| **mcp-seqera** | 3 | Nextflow workflow orchestration | ❌ Mocked |
 
-### 1. Spatial Transcriptomics Analysis
-Process 10x Visium spatial RNA-seq: tissue segmentation → alignment → quantification → spatial expression mapping
-
-**Example Prompt:**
-```
-Process 10x Visium: fetch hg38 → validate FASTQ → extract UMIs → align → quantify → compare TCGA
-```
-
-[Spatial Architecture →](architecture/spatial/README.md)
-
-### 2. Multiomics Integration
-Integrate RNA, protein, and phosphorylation data using HAllA association testing and Stouffer's meta-analysis
-
-**Example Prompt:**
-```
-Analyze PDX treatment resistance with RNA, Protein, Phospho data for TP53, MYC, KRAS:
-- RNA p-values: [0.001, 0.002, 0.05], log2FC: [2.5, 1.8, 1.2]
-- Protein p-values: [0.005, 0.01, 0.03], log2FC: [2.0, 1.6, 1.1]
-
-Combine using Stouffer's method with directionality and FDR correction.
-```
-
-[Multiomics Architecture →](architecture/multiomics/README.md)
-
-### 3. Clinical-Genomic Analysis
-Link patient EHR data with genomic variants, compare to TCGA cohorts, identify molecular subtypes
-
-**Example Prompt:**
-```
-Query patient PAT001 clinical records → extract genomic variants from VCF → compare to TCGA ovarian cancer cohort → identify molecular subtype
-```
-
----
-
-## Which MCP Servers Are Here?
-
-### Foundational Tools (All Workflows)
-
-**1. FGbio - FASTQ & Genomic Data Processing (4 tools)**
-- `fetch_reference_genome` - Download reference genome sequences
-- `validate_fastq` - Quality validation of FASTQ files
-- `extract_umis` - UMI extraction and processing
-- `query_gene_annotations` - Retrieve gene annotation data
-
-**4. Seqera - Nextflow Workflow Management (3 tools)**
-- `launch_nextflow_pipeline` - Execute Nextflow workflows via Seqera Platform
-- `monitor_workflow_status` - Track pipeline execution status
-- `list_available_pipelines` - Query nf-core and custom pipelines
-
-**5. HuggingFace - Genomic Language Models (3 tools)**
-- `load_genomic_model` - Load pre-trained genomic language models
-- `predict_cell_type` - Cell type classification using foundation models
-- `embed_sequences` - Generate embeddings for DNA/RNA sequences
-
-### Spatial Biology Tools
-
-**2. SpatialTools - Spatial Transcriptomics Analysis (8 tools)**
-- `filter_quality` - QC filtering of spatial barcodes
-- `split_by_region` - Segment data by spatial regions
-- `align_spatial_data` - Align reads to reference genome using STAR
-- `merge_tiles` - Combine multiple spatial tiles
-- `calculate_spatial_autocorrelation` - Calculate spatial gene expression patterns
-- `perform_differential_expression` - Differential expression analysis
-- `perform_batch_correction` - Batch correction across samples
-- `perform_pathway_enrichment` - Pathway enrichment analysis
-
-**3. OpenImageData - Histology Image Processing (3 tools)**
-- `fetch_histology_image` - Retrieve tissue histology images
-- `register_image_to_spatial` - Align histology images with spatial coordinates
-- `extract_image_features` - Extract computer vision features from histology
-
-**6. DeepCell - Cell Segmentation & Analysis (2 tools)**
-- `segment_cells` - Deep learning-based cell segmentation
-- `classify_cell_states` - Cell state/phenotype classification
-
-### Multiomics & Clinical Tools
-
-**9. MultiOmics - Multi-Omics Integration (9 tools)**
-- `validate_multiomics_data` - Quality validation before analysis (batch effects, missing values)
-- `preprocess_multiomics_data` - Batch correction, imputation, normalization
-- `visualize_data_quality` - QC plots (PCA, correlation, before/after comparison)
-- `integrate_omics_data` - Integrate RNA, protein, and phosphorylation data
-- `run_halla_analysis` - HAllA hierarchical all-against-all association testing
-- `calculate_stouffer_meta` - Combine p-values across omics modalities
-- `predict_upstream_regulators` - Identify kinases, TFs, and drug targets
-- `create_multiomics_heatmap` - Create integrated heatmap visualization
-- `run_multiomics_pca` - PCA on integrated multi-omics data
-
-**8. TCGA - The Cancer Genome Atlas (5 tools)**
-- `query_tcga_cohorts` - Search TCGA datasets by cancer type
-- `fetch_expression_data` - Download gene expression data
-- `compare_to_cohort` - Compare sample expression to TCGA cohort
-- `get_survival_data` - Retrieve survival data correlated with expression
-- `get_mutation_data` - Retrieve mutation frequencies from cohort
-
-**7. MockEpic - Clinical Data (Mock EHR) (3 tools)**
-- `query_patient_records` - Retrieve patient demographics and clinical data
-- `link_spatial_to_clinical` - Connect spatial data to clinical outcomes
-- `search_diagnoses` - Query ICD-10 diagnosis codes
-
-**Total: 9 servers, 40 tools**
+**📋 Detailed tool listings:** See individual server READMEs in [servers/](servers/)
 
 ---
 
@@ -226,11 +115,11 @@ IMPORTANT: In this POC all MCP servers are running locally and are expected to u
 ```bash
 # Install (5 min)
 git clone https://github.com/lynnlangit/precision-medicine-mcp.git
-cd precision-medicine-mcp/manual_testing
+cd precision-medicine-mcp/tests/manual_testing/Solution-Testing
 ./install_dependencies.sh
 
 # Configure Claude Desktop
-cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
+cp ../../../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/claude_desktop_config.json
 
 # Verify (restart Claude Desktop first)
 ./verify_servers.sh
@@ -265,5 +154,5 @@ cp ../configs/claude_desktop_config.json ~/Library/Application\ Support/Claude/c
 ---
 
 
-**Last Updated:** December 27, 2025
+**Last Updated:** December 29, 2025
 **Built for the precision medicine community**
