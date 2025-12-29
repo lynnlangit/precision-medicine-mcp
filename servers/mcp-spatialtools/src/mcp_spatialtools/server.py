@@ -826,64 +826,174 @@ async def perform_differential_expression(
 ) -> Dict[str, Any]:
     """Perform differential expression analysis between sample groups.
 
+    REAL IMPLEMENTATION: Uses scipy for statistical testing and FDR correction.
+
     Args:
-        expression_file: Path to expression matrix
-        group1_samples: Sample IDs for group 1
-        group2_samples: Sample IDs for group 2
-        test_method: Statistical test - "wilcoxon", "t_test", "deseq2"
-        min_log_fc: Minimum log fold-change threshold
+        expression_file: Path to expression matrix (CSV with spots as rows, genes as columns)
+        group1_samples: Sample/spot IDs for group 1 (e.g., tumor core spots)
+        group2_samples: Sample/spot IDs for group 2 (e.g., tumor margin spots)
+        test_method: Statistical test - "wilcoxon" (Mann-Whitney U) or "t_test"
+        min_log_fc: Minimum absolute log2 fold-change threshold for significance
 
     Returns:
-        Dictionary with differential expression results
+        Dictionary with differential expression results including:
+        - results: List of DEG results per gene
+        - top_upregulated: Top genes upregulated in group1
+        - top_downregulated: Top genes downregulated in group1
+        - summary statistics
 
     Example:
         >>> result = await perform_differential_expression(
-        ...     expression_file="/data/expression.csv",
-        ...     group1_samples=["patient1", "patient2"],
-        ...     group2_samples=["patient3", "patient4"],
+        ...     expression_file="/data/tumor_core.csv",
+        ...     group1_samples=["SPOT_01_01", "SPOT_01_02"],
+        ...     group2_samples=["SPOT_05_01", "SPOT_05_02"],
         ...     min_log_fc=0.5
         ... )
     """
     if DRY_RUN:
-        # Generate mock DEG results
-        num_genes = 100
+        return add_dry_run_warning({
+            "test_method": test_method,
+            "results": [],
+            "message": "DRY_RUN mode enabled. Set SPATIAL_DRY_RUN=false for real analysis."
+        })
+
+    try:
+        from scipy.stats import mannwhitneyu, ttest_ind
+
+        # Load expression data
+        expr_data = pd.read_csv(expression_file, index_col=0)
+
+        # Validate sample IDs
+        available_samples = set(expr_data.index)
+        group1_valid = [s for s in group1_samples if s in available_samples]
+        group2_valid = [s for s in group2_samples if s in available_samples]
+
+        if not group1_valid:
+            return {
+                "status": "error",
+                "error": "No valid samples found in group1",
+                "available_samples": list(available_samples)[:10]
+            }
+
+        if not group2_valid:
+            return {
+                "status": "error",
+                "error": "No valid samples found in group2",
+                "available_samples": list(available_samples)[:10]
+            }
+
+        # Perform differential expression for each gene
         deg_results = []
 
-        for i in range(num_genes):
-            gene = f"GENE{i:04d}"
-            log_fc = np.random.uniform(-3, 3)
-            base_mean = np.random.uniform(100, 5000)
-            p_value = np.exp(-abs(log_fc)) * 0.1
-            p_adj = min(p_value * num_genes, 1.0)
+        # Get only numeric gene columns (exclude metadata columns)
+        gene_cols = [col for col in expr_data.columns
+                     if col not in ['x', 'y', 'in_tissue', 'region', 'n_reads', 'n_genes', 'mt_percent']]
+
+        for gene in gene_cols:
+            group1_expr = expr_data.loc[group1_valid, gene].values
+            group2_expr = expr_data.loc[group2_valid, gene].values
+
+            # Skip genes with no expression in either group
+            if group1_expr.sum() == 0 and group2_expr.sum() == 0:
+                continue
+
+            # Calculate fold change
+            pseudocount = 1e-10
+            mean1 = float(group1_expr.mean() + pseudocount)
+            mean2 = float(group2_expr.mean() + pseudocount)
+            log2_fc = float(np.log2(mean1 / mean2))
+            base_mean = float((mean1 + mean2) / 2)
+
+            # Statistical test
+            try:
+                if test_method == "wilcoxon":
+                    # Mann-Whitney U test (non-parametric)
+                    stat, pval = mannwhitneyu(group1_expr, group2_expr, alternative='two-sided')
+                else:  # t_test
+                    # Independent t-test (parametric)
+                    stat, pval = ttest_ind(group1_expr, group2_expr)
+
+                pval = float(pval)
+            except Exception as e:
+                # If test fails (e.g., all identical values), set p=1
+                pval = 1.0
 
             deg_results.append({
-                "gene": gene,
-                "log2_fold_change": round(log_fc, 3),
-                "base_mean": round(base_mean, 2),
-                "p_value": round(p_value, 6),
-                "p_adj": round(p_adj, 6),
-                "significant": abs(log_fc) >= min_log_fc and p_adj < 0.05
+                'gene': gene,
+                'log2_fold_change': log2_fc,
+                'base_mean': base_mean,
+                'mean_group1': mean1,
+                'mean_group2': mean2,
+                'pvalue': pval
             })
 
-        significant = [r for r in deg_results if r["significant"]]
-        upregulated = [r for r in significant if r["log2_fold_change"] > 0]
-        downregulated = [r for r in significant if r["log2_fold_change"] < 0]
+        # FDR correction using Benjamini-Hochberg
+        if deg_results:
+            pvalues = np.array([r['pvalue'] for r in deg_results])
+
+            # Benjamini-Hochberg FDR correction
+            n = len(pvalues)
+            sorted_indices = np.argsort(pvalues)
+            sorted_pvals = pvalues[sorted_indices]
+
+            # Calculate q-values
+            qvalues = np.zeros(n)
+            for i in range(n):
+                rank = i + 1
+                qvalues[sorted_indices[i]] = min(sorted_pvals[i] * n / rank, 1.0)
+
+            # Ensure monotonicity (q-values should not decrease)
+            for i in range(n - 2, -1, -1):
+                if qvalues[sorted_indices[i]] > qvalues[sorted_indices[i + 1]]:
+                    qvalues[sorted_indices[i]] = qvalues[sorted_indices[i + 1]]
+
+            # Add q-values and significance to results
+            for i, result in enumerate(deg_results):
+                result['qvalue'] = float(qvalues[i])
+                result['significant'] = bool(
+                    qvalues[i] < 0.05 and abs(result['log2_fold_change']) >= min_log_fc
+                )
+
+        # Sort by p-value
+        deg_results_sorted = sorted(deg_results, key=lambda x: x['pvalue'])
+
+        # Extract significant genes
+        significant = [r for r in deg_results_sorted if r.get('significant', False)]
+        upregulated = [r for r in significant if r['log2_fold_change'] > 0]
+        downregulated = [r for r in significant if r['log2_fold_change'] < 0]
+
+        # Round values for cleaner output
+        for r in deg_results_sorted:
+            r['log2_fold_change'] = round(r['log2_fold_change'], 4)
+            r['base_mean'] = round(r['base_mean'], 2)
+            r['mean_group1'] = round(r['mean_group1'], 2)
+            r['mean_group2'] = round(r['mean_group2'], 2)
+            r['pvalue'] = round(r['pvalue'], 6)
+            r['qvalue'] = round(r['qvalue'], 6)
 
         return {
+            "status": "success",
             "test_method": test_method,
-            "group1_size": len(group1_samples),
-            "group2_size": len(group2_samples),
-            "total_genes_tested": num_genes,
-            "significant_genes": len(significant),
-            "upregulated": len(upregulated),
-            "downregulated": len(downregulated),
-            "results": deg_results[:20],  # Return top 20
-            "top_upregulated": sorted(upregulated, key=lambda x: x["log2_fold_change"], reverse=True)[:5],
-            "top_downregulated": sorted(downregulated, key=lambda x: x["log2_fold_change"])[:5],
-            "mode": "dry_run"
+            "group1_size": int(len(group1_valid)),
+            "group2_size": int(len(group2_valid)),
+            "total_genes_tested": int(len(deg_results)),
+            "significant_genes": int(len(significant)),
+            "upregulated_genes": int(len(upregulated)),
+            "downregulated_genes": int(len(downregulated)),
+            "results": deg_results_sorted,
+            "top_upregulated": sorted(upregulated, key=lambda x: x['log2_fold_change'], reverse=True)[:10],
+            "top_downregulated": sorted(downregulated, key=lambda x: x['log2_fold_change'])[:10],
+            "significant_results": significant,
+            "mode": "real_analysis"
         }
 
-    return {"results": []}
+    except Exception as e:
+        logger.error(f"Error performing differential expression: {e}")
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Failed to perform differential expression analysis"
+        }
 
 
 # ============================================================================
