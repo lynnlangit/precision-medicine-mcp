@@ -19,7 +19,9 @@ COPY _shared_temp/utils/ /app/shared/utils/
 COPY . /app/servers/mcp-multiomics/
 
 # Install Python dependencies
+# Set RPY2_CFFI_MODE=ABI to build rpy2 without R (Python fallback available)
 WORKDIR /app/servers/mcp-multiomics
+ENV RPY2_CFFI_MODE=ABI
 RUN pip install --no-cache-dir -e .
 
 # Set environment variables for SSE transport
