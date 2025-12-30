@@ -112,41 +112,75 @@ This repository serves multiple audiences in the precision medicine ecosystem. F
 - Integration patterns for external tools (STAR, ComBat, HAllA)
 - Real vs mocked implementation strategies
 
-**Server Architecture:**
+**Complete System Architecture:**
 
 ```mermaid
-graph TD
-    subgraph "Clinical & Genomic Foundation"
-        EPIC[mcp-mockepic<br/>Clinical Data<br/>❌ Mock]
-        FGBIO[mcp-fgbio<br/>FASTQ/VCF<br/>✅ Production]
-        TCGA[mcp-tcga<br/>Cancer Atlas<br/>❌ Mocked]
+graph TB
+    subgraph "User Interfaces"
+        STREAMLIT[🌐 Streamlit Chat UI<br/>Web Interface<br/>Cloud Run]
+        JUPYTER[📓 Jupyter Notebook<br/>Data Science Interface<br/>Cloud Run]
+        DESKTOP[💬 Claude Desktop<br/>Local STDIO]
     end
 
-    subgraph "Multi-Omics Analysis"
-        MULTI[mcp-multiomics<br/>RNA/Protein/Phospho<br/>✅ Production]
+    subgraph "AI Orchestration Layer"
+        API[🤖 Claude API<br/>Anthropic Sonnet 4.5<br/>MCP Client Support]
     end
 
-    subgraph "Spatial Biology"
-        SPATIAL[mcp-spatialtools<br/>Spatial RNA-seq<br/>⚠️ 95% Real]
-        IMAGE[mcp-openimagedata<br/>Histology<br/>🔶 Partial]
-        DEEPCELL[mcp-deepcell<br/>Cell Segmentation<br/>❌ Mocked]
+    subgraph "GCP Cloud Run - MCP Servers"
+        subgraph "Clinical & Genomic"
+            EPIC[mcp-mockepic<br/>Mock FHIR<br/>❌ Demo]
+            FGBIO[mcp-fgbio<br/>FASTQ/VCF<br/>✅ Production]
+            TCGA[mcp-tcga<br/>Cancer Data<br/>❌ Mocked]
+        end
+
+        subgraph "Multi-Omics"
+            MULTI[mcp-multiomics<br/>RNA/Protein/Phospho<br/>✅ Production]
+        end
+
+        subgraph "Spatial Biology"
+            SPATIAL[mcp-spatialtools<br/>Spatial RNA-seq<br/>⚠️ 95% Real]
+            IMAGE[mcp-openimagedata<br/>Histology<br/>🔶 30% Real]
+            DEEPCELL[mcp-deepcell<br/>Segmentation<br/>❌ Mocked]
+        end
+
+        subgraph "AI & Workflows"
+            HF[mcp-huggingface<br/>ML Models<br/>❌ Mocked]
+            SEQERA[mcp-seqera<br/>Nextflow<br/>❌ Mocked]
+        end
     end
 
-    subgraph "AI & Workflow Orchestration"
-        HF[mcp-huggingface<br/>ML Models<br/>❌ Mocked]
-        SEQERA[mcp-seqera<br/>Nextflow<br/>❌ Mocked]
+    subgraph "Analysis Workflow"
+        PATIENT[🏥 PatientOne<br/>Stage IV HGSOC<br/>Multi-Omics Analysis]
     end
 
-    EPIC -.-> PATIENT[PatientOne<br/>Precision Medicine]
+    STREAMLIT ==> API
+    JUPYTER ==> API
+    DESKTOP --> API
+
+    API ==> FGBIO
+    API ==> MULTI
+    API --> SPATIAL
+    API -.-> EPIC
+    API -.-> TCGA
+    API -.-> IMAGE
+    API -.-> DEEPCELL
+    API -.-> HF
+    API -.-> SEQERA
+
     FGBIO ==> PATIENT
-    TCGA -.-> PATIENT
     MULTI ==> PATIENT
     SPATIAL --> PATIENT
+    EPIC -.-> PATIENT
+    TCGA -.-> PATIENT
     IMAGE -.-> PATIENT
     DEEPCELL -.-> PATIENT
     HF -.-> PATIENT
     SEQERA -.-> PATIENT
 
+    style STREAMLIT fill:#d1ecf1,stroke:#0c5460,stroke-width:2px
+    style JUPYTER fill:#d1ecf1,stroke:#0c5460,stroke-width:2px
+    style DESKTOP fill:#d1ecf1,stroke:#0c5460,stroke-width:2px
+    style API fill:#cce5ff,stroke:#004085,stroke-width:3px
     style PATIENT fill:#e1f5ff,stroke:#0066cc,stroke-width:3px
     style FGBIO fill:#d4edda,stroke:#28a745,stroke-width:2px
     style MULTI fill:#d4edda,stroke:#28a745,stroke-width:2px
@@ -159,12 +193,18 @@ graph TD
     style EPIC fill:#e2e3e5,stroke:#6c757d,stroke-width:1px
 ```
 
-**Legend:**
-- ✅ Production Ready (solid green, thick arrows `==>`) - 2/9 servers
-- ⚠️ Conditionally Ready (yellow, solid arrows `-->`) - 1/9 servers
-- 🔶 Partial (light yellow, dotted `-.->`  ) - 1/9 servers
-- ❌ Mocked (red, dotted `-.->`) - 4/9 servers
-- Mock by Design (gray, dotted `-.->`) - 1/9 servers
+**Architecture Layers:**
+- **User Interfaces:** Streamlit UI (web) • Jupyter Notebook (data science) • Claude Desktop (local)
+- **AI Orchestration:** Claude API with MCP client support (connects to all 9 servers)
+- **MCP Servers:** 9 servers deployed on GCP Cloud Run (SSE transport)
+- **Analysis Workflow:** PatientOne precision medicine analysis
+
+**Server Status:**
+- ✅ **Production Ready** (2/9): mcp-fgbio, mcp-multiomics
+- ⚠️ **95% Real** (1/9): mcp-spatialtools
+- 🔶 **30% Real** (1/9): mcp-openimagedata
+- ❌ **Mocked** (4/9): mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera
+- **Mock by Design** (1/9): mcp-mockepic (intentionally synthetic FHIR data)
 
 **Development Resources:**
 - **Architecture:** [System Design](architecture/README.md) • [PatientOne Architecture](architecture/patient-one/README.md)
