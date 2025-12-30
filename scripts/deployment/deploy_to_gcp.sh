@@ -108,6 +108,7 @@ deploy_server() {
     fi
 
     # Deploy to Cloud Run
+    # Force environment variables to override any cached values
     gcloud run deploy "${server_name}" \
         --source "${server_path}" \
         --platform managed \
@@ -118,6 +119,7 @@ deploy_server() {
         --min-instances 0 \
         --max-instances 10 \
         --timeout 300 \
+        --update-env-vars MCP_TRANSPORT=sse \
         --quiet
 
     # Clean up temporary shared directory
