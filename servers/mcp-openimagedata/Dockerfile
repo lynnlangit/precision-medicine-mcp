@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install -y \
 # Create directory structure
 RUN mkdir -p /app/servers/mcp-openimagedata /app/shared/utils
 
-# Copy shared utilities
-COPY ../../shared/utils/ /app/shared/utils/
+# Copy shared utilities (from repo root)
+COPY shared/utils/ /app/shared/utils/
 
-# Copy server code
-COPY . /app/servers/mcp-openimagedata/
+# Copy server code (from repo root)
+COPY servers/mcp-openimagedata/ /app/servers/mcp-openimagedata/
 
 # Install Python dependencies
 WORKDIR /app/servers/mcp-openimagedata
@@ -34,10 +34,6 @@ RUN mkdir -p /app/data/images /app/data/cache/images
 
 # Expose port
 EXPOSE 3004
-
-# Health check commented out - FastMCP doesn't provide /health endpoint
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-#     CMD curl -f http://localhost:3004/health || exit 1
 
 # Run the server
 CMD ["python", "-m", "mcp_openimagedata"]

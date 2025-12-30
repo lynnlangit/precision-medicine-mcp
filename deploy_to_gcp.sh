@@ -103,10 +103,12 @@ deploy_server() {
     print_info "Building and deploying from ${server_path}..."
 
     # Deploy to Cloud Run
-    # Note: Dockerfile sets MCP_TRANSPORT=sse and other defaults
-    # Cloud Run automatically sets PORT environment variable
+    # Note: Build from repo root to access shared/utils
+    # Dockerfile is at servers/${server_name}/Dockerfile
+    cd "${REPO_ROOT}"
     gcloud run deploy "${server_name}" \
-        --source "${server_path}" \
+        --source "." \
+        --dockerfile "servers/${server_name}/Dockerfile" \
         --platform managed \
         --region "${REGION}" \
         --allow-unauthenticated \
@@ -116,6 +118,7 @@ deploy_server() {
         --max-instances 10 \
         --timeout 300 \
         --quiet
+    cd - > /dev/null
 
     if [ $? -eq 0 ]; then
         # Get the service URL

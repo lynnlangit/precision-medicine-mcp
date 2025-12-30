@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install -y \
 # Create directory structure
 RUN mkdir -p /app/servers/mcp-seqera /app/shared/utils
 
-# Copy shared utilities
-COPY ../../shared/utils/ /app/shared/utils/
+# Copy shared utilities (from repo root)
+COPY shared/utils/ /app/shared/utils/
 
-# Copy server code
-COPY . /app/servers/mcp-seqera/
+# Copy server code (from repo root)
+COPY servers/mcp-seqera/ /app/servers/mcp-seqera/
 
 # Install Python dependencies
 WORKDIR /app/servers/mcp-seqera
@@ -34,10 +34,6 @@ RUN mkdir -p /app/data/seqera /app/data/cache/seqera
 
 # Expose port
 EXPOSE 3005
-
-# Health check commented out - FastMCP doesn't provide /health endpoint
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-#     CMD curl -f http://localhost:3005/health || exit 1
 
 # Run the server
 CMD ["python", "-m", "mcp_seqera"]

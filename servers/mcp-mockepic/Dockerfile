@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install -y \
 # Create directory structure
 RUN mkdir -p /app/servers/mcp-mockepic /app/shared/utils
 
-# Copy shared utilities
-COPY ../../shared/utils/ /app/shared/utils/
+# Copy shared utilities (from repo root)
+COPY shared/utils/ /app/shared/utils/
 
-# Copy server code
-COPY . /app/servers/mcp-mockepic/
+# Copy server code (from repo root)
+COPY servers/mcp-mockepic/ /app/servers/mcp-mockepic/
 
 # Install Python dependencies
 WORKDIR /app/servers/mcp-mockepic
@@ -34,10 +34,6 @@ RUN mkdir -p /app/data/epic /app/data/cache/epic
 
 # Expose port
 EXPOSE 3008
-
-# Health check commented out - FastMCP doesn't provide /health endpoint
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-#     CMD curl -f http://localhost:3008/health || exit 1
 
 # Run the server
 CMD ["python", "-m", "mcp_mockepic"]
