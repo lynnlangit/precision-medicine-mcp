@@ -5,7 +5,7 @@
 Verify all 9 MCP servers are working in **2-3 seconds**:
 
 ```bash
-python3 verify_all_servers.py
+python3 tests/verify_all_servers.py
 ```
 
 ### Expected Output:
@@ -75,7 +75,7 @@ venv/bin/pip install -e .
 
 **Then re-run:**
 ```bash
-python3 verify_all_servers.py
+python3 tests/verify_all_servers.py
 ```
 
 ---

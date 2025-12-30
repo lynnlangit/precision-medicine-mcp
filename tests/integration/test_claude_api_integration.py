@@ -24,12 +24,12 @@ NC = '\033[0m'
 
 
 def load_deployment_urls():
-    """Load deployed server URLs from deployment_urls.txt"""
-    urls_file = Path(__file__).parent / "deployment_urls.txt"
+    """Load deployed server URLs from infrastructure/deployment_urls.txt"""
+    urls_file = Path(__file__).parent.parent.parent / "infrastructure" / "deployment_urls.txt"
 
     if not urls_file.exists():
-        print(f"{RED}Error: deployment_urls.txt not found{NC}")
-        print("Run ./deploy_to_gcp.sh first")
+        print(f"{RED}Error: infrastructure/deployment_urls.txt not found{NC}")
+        print("Run ./scripts/deployment/deploy_to_gcp.sh first")
         sys.exit(1)
 
     servers = {}

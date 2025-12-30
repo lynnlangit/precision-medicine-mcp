@@ -230,12 +230,12 @@ Claude API (HTTP/SSE)
 
 **Step 1: Verify Health**
 ```bash
-./test_gcp_servers.sh
+./tests/integration/test_gcp_servers.sh
 ```
 
 **Step 2: Test with Claude API**
 ```python
-python test_claude_api_integration.py
+python tests/integration/test_claude_api_integration.py
 ```
 
 **Step 3: Run PatientOne Workflow**
@@ -273,8 +273,8 @@ python run_patientone_gcp.py
 
 ## Next Steps
 
-1. ✅ **Deploy servers:** `./deploy_to_gcp.sh`
-2. ✅ **Verify health:** `./test_gcp_servers.sh`
+1. ✅ **Deploy servers:** `./scripts/deployment/deploy_to_gcp.sh`
+2. ✅ **Verify health:** `./tests/integration/test_gcp_servers.sh`
 3. ✅ **Test with Claude API:** Use Python SDK (examples above)
 4. ✅ **Set up authentication:** For production use
 

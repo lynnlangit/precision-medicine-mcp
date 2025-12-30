@@ -11,8 +11,8 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
-URLS_FILE="${REPO_ROOT}/deployment_urls.txt"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+URLS_FILE="${REPO_ROOT}/infrastructure/deployment_urls.txt"
 
 print_header() {
     echo -e "${BLUE}============================================================${NC}"

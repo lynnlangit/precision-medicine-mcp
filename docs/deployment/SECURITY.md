@@ -16,7 +16,7 @@
 
 ### **In Test Scripts:**
 
-**File:** `test_claude_api_integration.py`
+**File:** `tests/integration/test_claude_api_integration.py`
 
 ```python
 # Line 109-112: API key loaded from environment only

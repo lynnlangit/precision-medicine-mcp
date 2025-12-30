@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # Configuration
 PROJECT_ID="${GCP_PROJECT_ID:-precision-medicine-poc}"
 REGION="${GCP_REGION:-us-central1}"
-REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 
 # Server configurations (bash 3 compatible)
 SERVERS=(
@@ -133,7 +133,7 @@ deploy_server() {
             --format 'value(status.url)')
 
         print_success "Deployed: ${SERVICE_URL}"
-        echo "${server_name}=${SERVICE_URL}" >> "${REPO_ROOT}/deployment_urls.txt"
+        echo "${server_name}=${SERVICE_URL}" >> "${REPO_ROOT}/infrastructure/deployment_urls.txt"
     else
         print_error "Failed to deploy ${server_name}"
         return 1
@@ -178,7 +178,7 @@ main() {
     check_prerequisites
 
     # Clear previous deployment URLs
-    > "${REPO_ROOT}/deployment_urls.txt"
+    > "${REPO_ROOT}/infrastructure/deployment_urls.txt"
 
     # Deploy all servers
     print_header "Deploying All Servers"
@@ -205,9 +205,9 @@ main() {
     echo ""
 
     # Display all URLs
-    if [ -f "${REPO_ROOT}/deployment_urls.txt" ]; then
+    if [ -f "${REPO_ROOT}/infrastructure/deployment_urls.txt" ]; then
         print_header "Deployed Server URLs"
-        cat "${REPO_ROOT}/deployment_urls.txt"
+        cat "${REPO_ROOT}/infrastructure/deployment_urls.txt"
         echo ""
     fi
 
@@ -215,11 +215,11 @@ main() {
     print_header "Health Check Tests"
     while IFS='=' read -r server url; do
         test_server "$server" "$url" || true
-    done < "${REPO_ROOT}/deployment_urls.txt"
+    done < "${REPO_ROOT}/infrastructure/deployment_urls.txt"
 
     echo ""
     print_header "Next Steps"
-    echo -e "${YELLOW}1. Copy deployment_urls.txt URLs for your Claude API configuration${NC}"
+    echo -e "${YELLOW}1. Copy infrastructure/deployment_urls.txt URLs for your Claude API configuration${NC}"
     echo -e "${YELLOW}2. Update authentication tokens (if needed)${NC}"
     echo -e "${YELLOW}3. Test servers with: curl \${SERVICE_URL}/health${NC}"
     echo -e "${YELLOW}4. See GCP_TESTING_GUIDE.md for Claude API integration${NC}"
