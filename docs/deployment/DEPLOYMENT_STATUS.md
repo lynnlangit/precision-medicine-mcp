@@ -1,210 +1,215 @@
 # GCP Cloud Run Deployment Status
 
-**Date:** December 29, 2025
-**Deployment Attempt:** Final (after multiple fixes)
-**Result:** Partial Success (2/9 servers deployed)
+**Date:** December 30, 2025
+**Result:** ✅ **COMPLETE SUCCESS - All 9 Servers Deployed**
 
 ---
 
-## Deployment Results
+## Final Deployment Results
 
-### ✅ Successfully Deployed (2/9)
+### ✅ All 9 Servers Successfully Deployed and Running
 
 | Server | URL | Status |
 |--------|-----|--------|
-| **mcp-deepcell** | https://mcp-deepcell-ondu7mwjpa-uc.a.run.app | Running on SSE, port 8080 |
-| **mcp-mockepic** | https://mcp-mockepic-ondu7mwjpa-uc.a.run.app | Running on SSE, port 8080 |
-
-### ❌ Failed to Deploy (7/9)
-
-| Server | Error | Root Cause |
-|--------|-------|------------|
-| mcp-fgbio | Container failed to start on PORT=3000 | Using HTTP transport, binding to 127.0.0.1:8000 |
-| mcp-multiomics | Build failed | Build context issue |
-| mcp-spatialtools | Container failed to start on PORT=3002 | Transport/port misconfiguration |
-| mcp-tcga | Container failed to start on PORT=3003 | Transport/port misconfiguration |
-| mcp-openimagedata | Container failed to start on PORT=3004 | Transport/port misconfiguration |
-| mcp-seqera | Container failed to start on PORT=3005 | Transport/port misconfiguration |
-| mcp-huggingface | Container failed to start on PORT=3006 | Transport/port misconfiguration |
+| **mcp-deepcell** | https://mcp-deepcell-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-fgbio** | https://mcp-fgbio-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-huggingface** | https://mcp-huggingface-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-mockepic** | https://mcp-mockepic-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-multiomics** | https://mcp-multiomics-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-openimagedata** | https://mcp-openimagedata-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-seqera** | https://mcp-seqera-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-spatialtools** | https://mcp-spatialtools-ondu7mwjpa-uc.a.run.app | ✅ Running |
+| **mcp-tcga** | https://mcp-tcga-ondu7mwjpa-uc.a.run.app | ✅ Running |
 
 ---
 
-## Root Cause Analysis
+## Issues Identified and Resolved
 
-### Issue: Environment Variable Not Being Applied
+### Issue 1: Shared Utilities Import Error (5 servers)
+**Affected:** mcp-fgbio, mcp-multiomics, mcp-tcga, mcp-seqera, mcp-huggingface
 
-**Expected behavior:**
-```
-ENV MCP_TRANSPORT=sse  # In Dockerfile
-→ Server reads MCP_TRANSPORT → Uses SSE transport → Binds to 0.0.0.0:$PORT
+**Problem:**
+- Servers used hardcoded path `Path(__file__).resolve().parents[4] / "shared" / "utils"`
+- This path doesn't exist in container directory structure
+- Caused `IndexError: 4` preventing server startup
+
+**Solution:**
+```python
+# Try direct import first (works if PYTHONPATH is set)
+try:
+    from api_retry import retry_with_backoff, optional_api_call
+except ImportError:
+    # Fallback to parents[4] for local development
+    _shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+    if str(_shared_utils_path) not in sys.path:
+        sys.path.insert(0, str(_shared_utils_path))
+    from api_retry import retry_with_backoff, optional_api_call
 ```
 
-**Actual behavior (failed servers):**
-```
-Server ignores MCP_TRANSPORT → Defaults to HTTP → Binds to 127.0.0.1:8000
-```
-
-**Evidence from Cloud Run logs:**
-
-**Successful (mcp-deepcell):**
-```
-INFO: Starting MCP server 'deepcell' with transport 'sse' on http://0.0.0.0:8080/sse
-```
-
-**Failed (mcp-fgbio):**
-```
-INFO: Starting MCP server 'fgbio' with transport 'http' on http://127.0.0.1:8000/mcp
+**Dockerfile update:**
+```dockerfile
+ENV PYTHONPATH=/app/shared/utils:${PYTHONPATH}
 ```
 
 ---
 
-## What Works
+### Issue 2: Environment Variable Caching (all servers)
+**Affected:** All 9 servers
 
-1. ✅ **Docker builds complete successfully** (containers built for all servers)
-2. ✅ **SSE transport works** (proven by mcp-deepcell and mcp-mockepic)
-3. ✅ **Cloud Run PORT variable works** (both successful servers use port 8080)
-4. ✅ **Shared utilities accessible** (no import errors)
-5. ✅ **Dockerfile structure correct** (all use same template)
+**Problem:**
+- Cloud Run was caching old `MCP_TRANSPORT=http` from previous deployments
+- Dockerfile `ENV` statements alone don't override cached Cloud Run configurations
+- Servers started with HTTP transport on 127.0.0.1:8000 instead of SSE on 0.0.0.0:PORT
 
----
+**Evidence:**
+- Dockerfile: `ENV MCP_TRANSPORT=sse`
+- Deployed container: `MCP_TRANSPORT=http` (cached old value)
 
-## What Needs Investigation
-
-1. **Why environment variables inconsistent?**
-   - Same Dockerfile template used for all servers
-   - mcp-deepcell works, mcp-fgbio doesn't
-   - Possible caching issue?
-
-2. **Transport parameter handling in FastMCP**
-   - FastMCP version differences?
-   - How does it read environment variables?
-   - Does it fallback to HTTP when SSE fails?
-
-3. **Cloud Run deployment differences**
-   - Why did only 2 servers deploy successfully?
-   - Different Cloud Build behavior?
-
----
-
-## Files Modified During Deployment Debugging
-
-### Core Fixes Applied
-
-1. **Server Code** (all 9 servers):
-   - Made transport configurable via `MCP_TRANSPORT` env var
-   - Added port configuration from `PORT` or `MCP_PORT`
-   - SSE/HTTP transports bind to `0.0.0.0`
-
-2. **Dockerfiles** (all 9 servers):
-   - Set `MCP_TRANSPORT=sse`
-   - Set default `MCP_PORT=<port_number>`
-   - Copy `_shared_temp/utils/` for shared utilities
-
-3. **Deployment Script** (`scripts/deployment/deploy_to_gcp.sh`):
-   - Temporarily copies `shared/` to `_shared_temp/` in each server dir
-   - Uses `--source "${server_path}"` (Cloud Run standard approach)
-   - Cleans up `_shared_temp/` after deployment
-
-4. **Repository Structure**:
-   - Reorganized files into logical subdirectories
-   - Documentation → `docs/deployment/` and `docs/testing/`
-   - Scripts → `scripts/deployment/`
-   - Tests → `tests/` and `tests/integration/`
-
----
-
-## Next Steps
-
-### Option 1: Debug Failed Servers
-
-1. Check FastMCP version in failing containers
-2. Add explicit logging of MCP_TRANSPORT value
-3. Test with simplified Dockerfile (minimal dependencies)
-4. Force rebuild without cache: `--no-cache`
-
-### Option 2: Use Working Pattern
-
-1. Analyze mcp-deepcell and mcp-mockepic configuration
-2. Identify what makes them work
-3. Apply identical pattern to other 7 servers
-4. Redeploy one server at a time
-
-### Option 3: Alternative Deployment Approach
-
-1. Use Cloud Build with explicit build configs
-2. Pre-build containers and push to Container Registry
-3. Deploy from pre-built images
-4. More control over build process
-
----
-
-## Testing the Successfully Deployed Servers
-
-### mcp-deepcell
-
+**Solution:**
 ```bash
-# Health check (expect 405 - Method Not Allowed)
-curl https://mcp-deepcell-ondu7mwjpa-uc.a.run.app/sse
-
-# Test with Claude API
-python tests/integration/test_claude_api_integration.py
+# Added to deployment script
+gcloud run deploy "${server_name}" \
+  --update-env-vars MCP_TRANSPORT=sse \
+  # ... other flags
 ```
 
-### mcp-mockepic
+This explicitly sets the environment variable, overriding any cached values.
 
+---
+
+### Issue 3: RPY2 Build Dependency (mcp-multiomics only)
+**Affected:** mcp-multiomics
+
+**Problem:**
+- Dependency `rpy2` requires R (statistical programming language) to build
+- R not available in `python:3.11-slim` base image
+- Build failed with: `Error: rpy2 in API mode cannot be built without R in the PATH`
+
+**Solution:**
+```dockerfile
+# Set RPY2_CFFI_MODE=ABI to build rpy2 without R
+ENV RPY2_CFFI_MODE=ABI
+RUN pip install --no-cache-dir -e .
+```
+
+**Note:** The code has a Python fallback for HAllA analysis, so rpy2 can be installed but doesn't need to be functional.
+
+---
+
+## Files Modified
+
+### Server Code (5 files)
+- `servers/mcp-fgbio/src/mcp_fgbio/server.py`
+- `servers/mcp-multiomics/src/mcp_multiomics/server.py`
+- `servers/mcp-tcga/src/mcp_tcga/server.py`
+- `servers/mcp-seqera/src/mcp_seqera/server.py`
+- `servers/mcp-huggingface/src/mcp_huggingface/server.py`
+
+**Change:** Wrapped shared utilities imports in try/except pattern
+
+### Dockerfiles (6 files)
+- All 5 servers above + `servers/mcp-fgbio/Dockerfile`
+- Added `ENV PYTHONPATH=/app/shared/utils:${PYTHONPATH}`
+- mcp-multiomics: Added `ENV RPY2_CFFI_MODE=ABI`
+
+### Deployment Script
+- `scripts/deployment/deploy_to_gcp.sh`
+- Added `--update-env-vars MCP_TRANSPORT=sse` to gcloud deploy command
+
+---
+
+## Deployment Process
+
+**Methodical one-at-a-time deployment:**
+1. ✅ mcp-fgbio (tested fix)
+2. ✅ mcp-multiomics (added RPY2 fix)
+3. ✅ mcp-tcga, mcp-seqera, mcp-huggingface (sequential)
+4. ✅ mcp-spatialtools, mcp-openimagedata (final batch)
+
+**Already working:**
+- ✅ mcp-deepcell
+- ✅ mcp-mockepic
+
+**Time:** ~2 hours total deployment time
+
+---
+
+## Verification
+
+All servers verified running with correct configuration:
+- ✅ Transport: SSE (not http)
+- ✅ Port: Cloud Run assigned port (read from PORT env var)
+- ✅ Host: 0.0.0.0 (not 127.0.0.1)
+- ✅ Health checks: Passing
+
+**Example log (mcp-fgbio):**
+```
+INFO: Starting MCP server 'fgbio' with transport 'sse' on http://0.0.0.0:3000/sse
+INFO: Default STARTUP TCP probe succeeded after 1 attempt for container "mcp-fgbio-1" on port 3000
+```
+
+---
+
+## Testing the Servers
+
+Use the automated test script:
 ```bash
-# Health check (expect 405)
-curl https://mcp-mockepic-ondu7mwjpa-uc.a.run.app/sse
+export ANTHROPIC_API_KEY=your_key_here
+python tests/integration/test_all_gcp_servers.py
+```
 
-# Test with Claude API
-python tests/integration/test_claude_api_integration.py
+Or test individual servers:
+```python
+import anthropic
+
+client = anthropic.Anthropic()
+
+response = client.beta.messages.create(
+    model="claude-sonnet-4-5",
+    max_tokens=512,
+    messages=[{
+        "role": "user",
+        "content": "List the available tools from the fgbio MCP server."
+    }],
+    mcp_servers=[{
+        "type": "url",
+        "url": "https://mcp-fgbio-ondu7mwjpa-uc.a.run.app/sse",
+        "name": "fgbio",
+    }],
+    tools=[{"type": "mcp_toolset", "mcp_server_name": "fgbio"}],
+    betas=["mcp-client-2025-11-20"]
+)
+
+print(response.content[0].text)
 ```
 
 ---
 
 ## Commits Made
 
-1. **Fix GCP Cloud Run deployment for all 9 MCP servers** (42e7b6c)
-   - Made transport configurable
-   - Added port configuration
-   - Updated all server code
+1. **Fix shared utilities import for container deployment** (9f35320)
+   - Try/except import pattern for all 5 servers
+   - Added PYTHONPATH to Dockerfiles
 
-2. **Fix Docker container path structure for shared utilities** (335bd8b)
-   - Added `/app/servers/<name>` structure
-   - Copied shared utilities correctly
+2. **Force MCP_TRANSPORT=sse in deployment script** (f6606da)
+   - Added --update-env-vars to deployment command
 
-3. **Fix Docker build context to use repository root** (118e8c6)
-   - Changed deployment to use repo root context
-   - Updated Dockerfile COPY paths
-
-4. **Fix gcloud deployment with temporary shared directory copy** (9e959e8)
-   - Copy shared/ to _shared_temp/ temporarily
-   - Compatible with gcloud --source flag
-
-5. **Reorganize repository structure** (aac00d6)
-   - Moved files to logical subdirectories
-   - Updated all references
+3. **Fix mcp-multiomics build: add RPY2_CFFI_MODE=ABI** (b01c7fe)
+   - Allows rpy2 to build without R installed
 
 ---
 
 ## Summary
 
-**Achievements:**
-- ✅ 2/9 servers successfully deployed to Cloud Run
-- ✅ Proved SSE transport works in containerized environment
-- ✅ Repository reorganized for better maintainability
-- ✅ All code committed and pushed to GitHub
+**Final Status:** 🎉 **100% Success - All 9 Servers Deployed**
 
-**Outstanding Issues:**
-- ❌ 7/9 servers failing with transport/port configuration
-- ❌ Inconsistent environment variable behavior
-- ❌ Need to investigate FastMCP's environment handling
+**Key Learnings:**
+1. Docker ENV vars can be overridden by Cloud Run cached configs - always use `--update-env-vars` for critical settings
+2. Container path structure differs from local development - use PYTHONPATH or try/except imports
+3. Optional dependencies (like rpy2) can be built in ABI mode without full installation
+4. Methodical one-at-a-time deployment is more efficient for debugging than batch deployments
 
-**Time Investment:**
-- Multiple deployment attempts
-- Extensive debugging of Docker builds
-- Cloud Run log analysis
-- Code reorganization
-
-**Recommendation:**
-Focus on understanding why mcp-deepcell and mcp-mockepic succeeded where others failed. The solution is proven to work - we just need consistent application across all servers.
+**Next Steps:**
+- ✅ Run automated test suite (`test_all_gcp_servers.py`)
+- ✅ Configure Claude Desktop to use deployed servers
+- ✅ Document usage examples for each server
