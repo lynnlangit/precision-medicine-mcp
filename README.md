@@ -249,6 +249,7 @@ All 9 servers successfully deployed and tested on Google Cloud Platform:
 
 <details>
 <summary><h3>🏥 Clinical Care Teams (Oncologists, Genetic Counselors)</h3></summary>
+    
 *You want to understand how AI-orchestrated bioinformatics can support clinical decision-making*
 
 **⚠️ IMPORTANT:** This repository is for **RESEARCH USE ONLY**. Not validated for clinical decision-making, FDA/EMA approval, or patient care.
@@ -270,7 +271,6 @@ All 9 servers successfully deployed and tested on Google Cloud Platform:
 **⚠️ Disclaimer:** This is research technology, not clinical care. Always consult qualified oncologists for medical decisions.
 
 </details>
-
 
 <details>
 <summary><h3>👥 Patients & Families</h3></summary>
@@ -338,11 +338,6 @@ This project is named in memory of a dear friend who passed from High-Grade Sero
 ## Acknowledgments
 
 This project is dedicated to **PatientOne** - in memory of a dear friend who passed from High-Grade Serous Ovarian Carcinoma in 2025. Her courage inspired the creation of these AI-orchestrated bioinformatics tools.
-
-**Built with:**
-- [Model Context Protocol](https://modelcontextprotocol.io/) (Anthropic)
-- [BioinfoMCP](https://arxiv.org/html/2510.02139v1) research framework
-- Open-source bioinformatics community (FGbio, TCGA, GENCODE, KEGG, 10x Genomics)
 
 **For detailed acknowledgments, citations, and scientific references:**
 - [Complete Acknowledgments](ACKNOWLEDGMENTS.md)
