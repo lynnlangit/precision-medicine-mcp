@@ -226,6 +226,8 @@ cp ../../../desktop-configs/claude_desktop_config.json \
 
 **GCP Cloud Run Deployment:**
 
+<img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/data/images/gcp-deploy.png">
+
 All 9 servers successfully deployed and tested on Google Cloud Platform:
 
 | Server | Status | Test Result | URL |
