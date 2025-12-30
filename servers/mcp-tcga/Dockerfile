@@ -25,6 +25,7 @@ RUN pip install --no-cache-dir -e .
 # Set environment variables for SSE transport
 ENV MCP_TRANSPORT=sse
 ENV MCP_PORT=3003
+ENV PYTHONPATH=/app/shared/utils:${PYTHONPATH}
 ENV TCGA_DRY_RUN=false
 ENV TCGA_DATA_DIR=/app/data/tcga
 ENV TCGA_CACHE_DIR=/app/data/cache/tcga

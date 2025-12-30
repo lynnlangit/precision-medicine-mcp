@@ -19,11 +19,16 @@ from fastmcp import FastMCP
 from .config import config
 
 # Import cost tracking utilities
-_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
-if str(_shared_utils_path) not in sys.path:
-    sys.path.insert(0, str(_shared_utils_path))
-
-from cost_tracking import CostTracker, CostEstimator
+# In container: /app/shared/utils is in PYTHONPATH
+# In development: Try to add shared/utils to path
+try:
+    from cost_tracking import CostTracker, CostEstimator
+except ImportError:
+    # Development mode - add shared/utils to path
+    _shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+    if str(_shared_utils_path) not in sys.path:
+        sys.path.insert(0, str(_shared_utils_path))
+    from cost_tracking import CostTracker, CostEstimator
 from .tools.integration import integrate_omics_data_impl
 from .tools.stouffer import calculate_stouffer_meta_impl
 from .tools.preprocessing import (

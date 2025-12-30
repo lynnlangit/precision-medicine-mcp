@@ -12,11 +12,16 @@ from fastmcp import FastMCP
 logger = logging.getLogger(__name__)
 
 # Import retry utilities for external API calls
-_shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
-if str(_shared_utils_path) not in sys.path:
-    sys.path.insert(0, str(_shared_utils_path))
-
-from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
+# In container: /app/shared/utils is in PYTHONPATH
+# In development: Try to add shared/utils to path
+try:
+    from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
+except ImportError:
+    # Development mode - add shared/utils to path
+    _shared_utils_path = Path(__file__).resolve().parents[4] / "shared" / "utils"
+    if str(_shared_utils_path) not in sys.path:
+        sys.path.insert(0, str(_shared_utils_path))
+    from api_retry import retry_with_backoff, optional_api_call, CircuitBreaker
 
 mcp = FastMCP("huggingface")
 

@@ -25,6 +25,7 @@ RUN pip install --no-cache-dir -e .
 # Set environment variables for SSE transport
 ENV MCP_TRANSPORT=sse
 ENV MCP_PORT=3001
+ENV PYTHONPATH=/app/shared/utils:${PYTHONPATH}
 ENV MULTIOMICS_DRY_RUN=false
 ENV MULTIOMICS_DATA_DIR=/app/data/multiomics
 ENV MULTIOMICS_CACHE_DIR=/app/data/cache/multiomics

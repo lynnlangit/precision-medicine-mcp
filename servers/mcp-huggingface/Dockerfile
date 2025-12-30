@@ -25,6 +25,7 @@ RUN pip install --no-cache-dir -e .
 # Set environment variables for SSE transport
 ENV MCP_TRANSPORT=sse
 ENV MCP_PORT=3006
+ENV PYTHONPATH=/app/shared/utils:${PYTHONPATH}
 ENV HF_DRY_RUN=false
 ENV HF_DATA_DIR=/app/data/huggingface
 ENV HF_CACHE_DIR=/app/data/cache/huggingface

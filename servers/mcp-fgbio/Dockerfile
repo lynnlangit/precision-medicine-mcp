@@ -25,6 +25,7 @@ RUN pip install --no-cache-dir -e .
 # Set environment variables for SSE transport
 ENV MCP_TRANSPORT=sse
 ENV MCP_PORT=3000
+ENV PYTHONPATH=/app/shared/utils:${PYTHONPATH}
 ENV FGBIO_DRY_RUN=false
 ENV FGBIO_DATA_DIR=/app/data/reference
 ENV FGBIO_CACHE_DIR=/app/data/cache
