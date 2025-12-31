@@ -4,7 +4,7 @@
 
 PatientOne demonstrates how Claude orchestrates 9 specialized MCP servers to deliver comprehensive precision medicine analysis for a patient with Stage IV Ovarian Cancer. This end-to-end workflow integrates clinical, genomic, multiomics, spatial, and imaging data to identify resistance mechanisms and actionable treatment targets.
 
-**What makes PatientOne unique:** Unlike traditional bioinformatics pipelines that analyze individual data types in isolation, PatientOne shows how AI can seamlessly integrate across all modalities through natural language—replacing weeks of glue code with conversational requests.
+**What makes PatientOne unique:** Unlike traditional bioinformatics pipelines that analyze individual data types in isolation, PatientOne shows how AI can seamlessly integrate across all modalities through **natural language**—replacing weeks of glue code with conversational requests.
 
 ---
 
@@ -173,7 +173,7 @@ flowchart LR
 └─────────────────────────────────────────────────────────────┘
 ```
 
-<kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png"></kbd>
+
 
 ---
 
