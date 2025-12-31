@@ -561,6 +561,6 @@ See main repository LICENSE file.
 
 ---
 
-**Last Updated**: 2025-01-30
+**Last Updated**: 2025-12-30
 **Version**: 1.0.0
 **Contact**: See `/docs/hospital-deployment/OPERATIONS_MANUAL.md` for support contacts

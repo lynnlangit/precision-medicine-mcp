@@ -2,7 +2,7 @@
 ## HIPAA-Compliant Logging for Precision Medicine MCP
 
 **Version:** 1.0
-**Last Updated:** December 2025
+**Last Updated:** 2025-12
 **Purpose:** Guide for accessing, analyzing, and reporting on audit logs
 
 ---

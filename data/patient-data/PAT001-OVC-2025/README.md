@@ -184,7 +184,7 @@ This directory contains **100% synthetic patient data** created for demonstratio
 Precision Medicine MCP Synthetic Patient Dataset (PAT001-OVC-2025)
 Generated for demonstration purposes
 https://github.com/lynnlangit/precision-medicine-mcp
-December 2025
+2025-12
 ```
 
 ---
@@ -263,6 +263,6 @@ find . -type f -exec sha256sum {} \; > checksums.txt
 
 ---
 
-**Last Updated:** December 29, 2025
+**Last Updated:** 2025-12-29
 **Dataset Version:** 1.0
 **Status:** 100% Synthetic - Research/Demo Use Only

@@ -4,13 +4,13 @@
 
 This document outlines the prioritized path to move the Precision Medicine MCP POC from development to production deployment in a hospital cloud infrastructure for testing with actual patient data.
 
-**POC Status (December 30, 2025):** All 9 servers deployed to GCP Cloud Run, tested via Claude API
+**POC Status (2025-12-30):** All 9 servers deployed to GCP Cloud Run, tested via Claude API
 **Next Goal:** HIPAA-compliant hospital deployment with real patient data
 **Timeline Estimate:** 12-16 weeks for Phase 1-3
 
 ---
 
-## POC Deployment Status (December 30, 2025)
+## POC Deployment Status (2025-12-30)
 
 ### GCP Cloud Run Deployment: ✅ COMPLETE
 
@@ -22,7 +22,7 @@ All 9 MCP servers successfully deployed to Google Cloud Platform and tested:
 | mcp-multiomics | 95% real | ✅ Deployed | ✓ PASS |
 | mcp-spatialtools | 95% real | ✅ Deployed | ✓ PASS |
 | mcp-tcga | Mock (by design) | ✅ Deployed | ✓ PASS |
-| mcp-openimagedata | Mock (by design) | ✅ Deployed | ✓ PASS |
+| mcp-openimagedata | 30% real (basic features) | ✅ Deployed | ✓ PASS |
 | mcp-seqera | Mock (by design) | ✅ Deployed | ✓ PASS |
 | mcp-huggingface | Mock (by design) | ✅ Deployed | ✓ PASS |
 | mcp-deepcell | Mock (by design) | ✅ Deployed | ✓ PASS |
@@ -59,7 +59,7 @@ All 9 MCP servers successfully deployed to Google Cloud Platform and tested:
 
 ### Mock Servers (Require Real Implementation for Hospital Use) (5/9)
 - 🔶 **mcp-tcga** - Mock (needs real TCGA GDC API integration for comparative analysis)
-- 🔶 **mcp-openimagedata** - Mock (needs real imaging database integration)
+- 🔶 **mcp-openimagedata** - 30% real (basic features working, needs advanced imaging integration)
 - 🔶 **mcp-deepcell** - Mock (needs DeepCell API or self-hosted models)
 - 🔶 **mcp-huggingface** - Mock (needs real HuggingFace API integration)
 - 🔶 **mcp-seqera** - Mock (needs Seqera Platform license or Nextflow integration)

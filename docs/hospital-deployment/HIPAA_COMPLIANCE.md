@@ -2,7 +2,7 @@
 ## Precision Medicine MCP System
 
 **Version:** 1.0
-**Last Updated:** December 2025
+**Last Updated:** 2025-12
 **Compliance Officer:** [Hospital Privacy Officer Name]
 **System:** Precision Medicine MCP Servers
 

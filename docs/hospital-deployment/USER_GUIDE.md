@@ -2,7 +2,7 @@
 ## For Clinicians and Bioinformaticians
 
 **Version:** 1.0
-**Last Updated:** December 2025
+**Last Updated:** 2025-12
 **Target Users:** Ovarian Cancer Research Team (5 users)
 
 ---

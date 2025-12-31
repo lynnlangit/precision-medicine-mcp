@@ -2,7 +2,7 @@
 ## Research Hospital Production Deployment
 
 **Version:** 1.0
-**Last Updated:** December 2025
+**Last Updated:** 2025-12
 **Deployment:** HIPAA-Compliant Production
 **Environment:** GCP Cloud Run
 

@@ -2,7 +2,7 @@
 ## For Hospital IT and System Administrators
 
 **Version:** 1.0
-**Last Updated:** December 2025
+**Last Updated:** 2025-12
 **Target Audience:** Hospital IT staff, GCP administrators
 
 ---

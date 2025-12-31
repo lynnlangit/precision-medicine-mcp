@@ -408,4 +408,4 @@ curl https://mcp-<name>-ondu7mwjpa-uc.a.run.app/sse
 
 ---
 
-**Last Updated:** December 30, 2025
+**Last Updated:** 2025-12-30
