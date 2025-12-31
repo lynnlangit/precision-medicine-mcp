@@ -68,7 +68,7 @@ How do we integrate:
 - Available therapeutic options
 
 **Traditional Approach:** Weeks of custom scripts, multiple software tools, manual data wrangling, siloed analysis
-**PatientOne with MCP:** Conversational requests that orchestrate 40 tools across 9 servers automatically
+**PatientOne with MCP:** Conversational requests that orchestrate 36 tools across 9 servers automatically
 
 ### Data Integration Flow
 
@@ -201,16 +201,16 @@ flowchart LR
 
 All synthetic patient data located in: `/data/patient-data/PAT001-OVC-2025/`
 
-### File Inventory (17 files, ~3.2 MB total)
+### File Inventory (18 files, ~3.2 MB total)
 
 | Modality | Files | Size | Content Description |
 |----------|-------|------|---------------------|
 | **Clinical** | 2 | 10.7 KB | `clinical_demographics.json`, `ca125_timeline.csv` |
 | **Genomic** | 1 | 2.3 KB | `PAT001_somatic_variants.vcf` (12 key variants) |
 | **Multiomics** | 4 | 504 KB | `pdx_rna_expression.csv` (1K genes), `pdx_protein.csv` (500), `pdx_phospho.csv` (300), `pdx_metadata.csv` |
-| **Spatial** | 3 | 559 KB | `visium_spots.csv` (900 spots), `visium_expression.csv` (31 genes), `visium_regions.csv` (6 regions) |
+| **Spatial** | 4 | 559 KB | `visium_spots.csv` (900 spots), `visium_expression.csv` (31 genes), `visium_regions.csv` (6 regions), `visium_spatial_data.csv` (combined) |
 | **Imaging** | 7 | 2.2 MB | H&E + IF (DAPI, CD3, CD8, Ki67, PanCK) + multiplex |
-| **TOTAL** | **17** | **~3.2 MB** | Complete precision medicine dataset |
+| **TOTAL** | **18** | **~3.2 MB** | Complete precision medicine dataset |
 
 ---
 
@@ -409,6 +409,6 @@ All PatientOne analyses are:
 
 ---
 
-**Last Updated:** December 29, 2025
+**Last Updated:** 2025-12-29
 **Version:** 1.0
 **Status:** Demonstration POC with synthetic data
