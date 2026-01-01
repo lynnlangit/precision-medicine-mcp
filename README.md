@@ -459,11 +459,6 @@ gantt
 - 🎯 **Week 16**: All 9 servers operational, 5 users trained, security audit passed
 - 🎯 **Week 24**: Production launch with 100 patients, full monitoring, IT handoff complete
 
-**Why 6 months vs 3 months?**
-- HIPAA compliance reviews take 2-3× longer than standard IT security
-- Epic FHIR integration requires extensive testing with de-identification
-- Clinical validation by practitioners (oncologists, pathologists) for each analysis type
-- IRB approval processes for research use of the system
 
 </details>
 
