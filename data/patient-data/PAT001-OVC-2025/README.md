@@ -31,8 +31,8 @@ This directory contains **100% synthetic patient data** created for demonstratio
 
 | File | Size | Description | Source |
 |------|------|-------------|--------|
-| `clinical_demographics.json` | 532 B | Patient demographics, stage, diagnosis | Synthetic |
-| `ca125_timeline.csv` | 365 B | CA-125 tumor marker trajectory | Modeled after clinical patterns |
+| `patient_demographics.json` | 4.7 KB | Patient demographics, stage, diagnosis, BRCA1 status | Synthetic |
+| `lab_results.json` | 6.0 KB | CA-125 tumor marker trajectory and lab results | Modeled after clinical patterns |
 
 **Generation method:**
 - Demographics: Randomly generated name, age, dates
@@ -44,7 +44,7 @@ This directory contains **100% synthetic patient data** created for demonstratio
 
 | File | Size | Description | Source |
 |------|------|-------------|--------|
-| `PAT001_somatic_variants.vcf` | 2.3 KB | Somatic mutations (TP53, PIK3CA, PTEN) | Based on TCGA-OV data |
+| `somatic_variants.vcf` | 2.3 KB | Somatic mutations (TP53, PIK3CA, PTEN) | Based on TCGA-OV data |
 
 **Generation method:**
 - Selected common ovarian cancer driver mutations from TCGA
@@ -102,10 +102,10 @@ This directory contains **100% synthetic patient data** created for demonstratio
 
 | File | Size | Description | Source |
 |------|------|-------------|--------|
-| `visium_spots.csv` | 34 KB | Spatial coordinates for 900 spots | Synthetic |
-| `visium_expression.csv` | 117 KB | Gene expression (31 genes × 900 spots) | Synthetic |
-| `visium_regions.csv` | 18 KB | Tissue region annotations | Synthetic |
-| `visium_spatial_data.csv` | 146 KB | Combined coordinates + expression | Synthetic |
+| `visium_gene_expression.csv` | 117 KB | Gene expression (31 genes × 900 spots) | Synthetic |
+| `visium_spatial_coordinates.csv` | 34 KB | Spatial coordinates for 900 spots | Synthetic |
+| `visium_region_annotations.csv` | 18 KB | Tissue region annotations (6 regions) | Synthetic |
+| `filtered/visium_gene_expression_filtered.csv` | 146 KB | Filtered expression matrix | Synthetic |
 
 **Demonstration specifications:**
 - 900 spots (simplified from typical 3,000-5,000)
@@ -153,13 +153,13 @@ This directory contains **100% synthetic patient data** created for demonstratio
 
 | File | Size | Description | Source |
 |------|------|-------------|--------|
-| `HE_tissue_section.tif` | 1.2 MB | H&E histology (placeholder) | Synthetic placeholder |
-| `IF_DAPI.tif` | 512 KB | Nuclear staining (placeholder) | Synthetic placeholder |
-| `IF_CD3.tif` | 512 KB | T cell marker (placeholder) | Synthetic placeholder |
-| `IF_CD8.tif` | 512 KB | Cytotoxic T cell marker (placeholder) | Synthetic placeholder |
-| `IF_Ki67.tif` | 512 KB | Proliferation marker (placeholder) | Synthetic placeholder |
-| `IF_PanCK.tif` | 512 KB | Epithelial marker (placeholder) | Synthetic placeholder |
-| `IF_multiplex.tif` | 2.1 MB | 6-plex IF image (placeholder) | Synthetic placeholder |
+| `PAT001_tumor_HE_20x.tiff` | 300 KB | H&E histology 20× magnification | Synthetic placeholder |
+| `PAT001_tumor_IF_DAPI.tiff` | 300 KB | Nuclear staining (DAPI) | Synthetic placeholder |
+| `PAT001_tumor_IF_CD3.tiff` | 300 KB | T cell marker (CD3) | Synthetic placeholder |
+| `PAT001_tumor_IF_CD8.tiff` | 300 KB | Cytotoxic T cell marker (CD8) | Synthetic placeholder |
+| `PAT001_tumor_IF_KI67.tiff` | 300 KB | Proliferation marker (Ki67) | Synthetic placeholder |
+| `PAT001_tumor_IF_PanCK.tiff` | 300 KB | Epithelial marker (PanCK) | Synthetic placeholder |
+| `PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff` | 300 KB | Multiplex IF (TP53/Ki67/DAPI) | Synthetic placeholder |
 
 **Note:** Image files are placeholder TIFFs. In DRY_RUN mode, MCP servers return synthetic segmentation/analysis results without processing actual images.
 
@@ -262,12 +262,12 @@ For **actual** ovarian cancer datasets, use these public resources:
 
 #### Demonstration Data (This Synthetic Dataset)
 
-**Total:** ~4.5 MB uncompressed
-- Clinical: <1 KB
+**Total:** ~4.9 MB uncompressed
+- Clinical: 10.7 KB
 - Genomics: 2.3 KB
-- Multi-omics: 38 KB (15 PDX samples, simplified)
+- Multi-omics: 505 KB (15 PDX samples, simplified)
 - Spatial: 315 KB (900 spots × 31 genes)
-- Imaging: 4.1 MB (placeholders)
+- Imaging: ~2.1 MB (placeholders)
 
 #### Production Data (Realistic Hospital Volumes)
 
@@ -277,7 +277,7 @@ For **actual** ovarian cancer datasets, use these public resources:
 |----------|--------------|-------------------|-------|
 | **Clinical** | <1 KB | <1 KB | FHIR JSON, minimal |
 | **Genomics (VCF)** | 2.3 KB | 50-500 KB | WGS VCF larger, WES similar |
-| **Multi-omics** | 38 KB | **2.7 GB** | See breakdown below |
+| **Multi-omics** | 505 KB | **2.7 GB** | See breakdown below |
 | **Spatial** | 315 KB | **100-500 MB** | See breakdown below |
 | **Imaging** | 4.1 MB | **500 MB - 2 GB** | Full resolution histology |
 
