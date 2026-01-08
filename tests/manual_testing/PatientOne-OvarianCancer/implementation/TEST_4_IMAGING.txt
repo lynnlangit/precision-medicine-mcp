@@ -19,6 +19,29 @@ Files are in: `patient-data/PAT001-OVC-2025/imaging/`
 - PAT001_tumor_IF_KI67.tiff (FLUORESCENCE)
 - PAT001_tumor_multiplex_IF_TP53_KI67_DAPI.tiff (FLUORESCENCE - 3 channels)
 
+### Pre-Flight Validation:
+
+Before starting analysis, verify image quality:
+
+1. **File existence check:**
+   - Confirm all 4 TIFF files are accessible
+   - Check file sizes are reasonable (~300 KB each as placeholders, or larger for real images)
+
+2. **Image format validation:**
+   - H&E image: Should be RGB or grayscale TIFF (brightfield microscopy)
+   - IF images: Should be single-channel grayscale TIFF (fluorescence)
+   - Multiplex IF: Should be 3-channel TIFF (TP53/KI67/DAPI)
+
+3. **Image dimensions:**
+   - Check image width × height (typical: 1000-2000 pixels for 20× magnification)
+   - Verify all images from same tissue section have consistent dimensions
+
+4. **Imaging modality verification:**
+   - H&E: Confirm it's chromogenic staining (NOT fluorescence)
+   - IF images: Confirm fluorescence microscopy format
+
+**If validation fails:** Report specific issues (missing files, incorrect format, dimension mismatches) but continue with best-effort analysis using available images.
+
 ### Analysis Steps:
 
 1. **H&E Histology Analysis (use openimagedata):**
@@ -59,6 +82,57 @@ Files are in: `patient-data/PAT001-OVC-2025/imaging/`
      * TP53+/KI67+ double-positive cells (% of total)
    - Are TP53-mutant cells also highly proliferative?
 
+5. **Generate visualizations** (CRITICAL for validation):
+
+   **For CD8 IF image:**
+   - **Segmentation overlay:** Original IF image with cell boundaries outlined
+     * CD8+ cells marked in one color (e.g., green)
+     * CD8- cells marked in different color (e.g., red)
+     * Expected: Few green cells, mostly at periphery
+
+   - **Spatial distribution map:** Heatmap showing CD8+ cell density across tissue
+     * Hotspots indicate immune infiltration
+     * Expected: Peripheral clustering, central exclusion
+
+   **For Ki67 IF image:**
+   - **Segmentation overlay:** Original IF image with nuclear segmentation boundaries
+     * Ki67+ nuclei marked (e.g., yellow)
+     * Ki67- nuclei marked (e.g., blue)
+     * Expected: ~50% yellow nuclei (high proliferation)
+
+   - **Proliferation heatmap:** Spatial map of Ki67+ cell density
+     * Expected: Heterogeneous distribution, higher in some regions
+
+   **For Multiplex IF image:**
+   - **Channel composite:** RGB overlay showing all 3 channels
+     * Red (TP53) + Green (KI67) + Blue (DAPI)
+     * Yellow cells = TP53+/KI67+ double-positive
+     * Expected: Many yellow cells (TP53-mutant cells proliferating)
+
+   - **Cell phenotype segmentation:** Cells colored by phenotype
+     * TP53+/KI67+ = yellow
+     * TP53+/KI67- = red
+     * TP53-/KI67+ = green
+     * TP53-/KI67- = gray
+     * Expected: Dominant yellow population (~40-50%)
+
+   - **Quantification scatter plot:** TP53 intensity (x-axis) vs KI67 intensity (y-axis)
+     * Each point = one cell
+     * Quadrant analysis shows double-positive population
+     * Expected: Upper-right quadrant enrichment
+
+   **For H&E image:**
+   - **Annotated morphology:** H&E image with regions highlighted
+     * Necrotic areas outlined in one color
+     * High cellularity regions outlined in another color
+     * Expected: ~15-20% necrotic area, ~70-80% high cellularity
+
+   **Note:** If servers cannot generate image outputs, provide detailed text descriptions including:
+   - Cell counts and percentages
+   - Spatial distribution patterns (peripheral vs central, uniform vs clustered)
+   - Phenotype breakdowns
+   - Quantitative metrics for validation
+
 ## Expected Results:
 
 **H&E Morphology:**
@@ -94,16 +168,23 @@ Please provide:
    - Necrotic regions: Present/Absent (XX% of tissue)
    - Tissue architecture description
    - Consistent with HGSOC diagnosis? (Yes/No)
+   - **Visualization:** Annotated morphology image (or text description of necrotic/cellular regions)
 
 2. **CD8 T Cell Analysis:**
    - CD8+ cell density: XX cells/mm²
    - Spatial pattern: Periphery vs Infiltrating
    - Immune phenotype: Hot/Warm/Cold?
+   - **Visualizations:**
+     * Segmentation overlay (CD8+ vs CD8- cells marked)
+     * Spatial distribution heatmap (or text description of clustering pattern)
 
 3. **Ki67 Proliferation:**
    - Ki67 index: XX% positive
    - Distribution pattern: Uniform vs Heterogeneous
    - Proliferation level: High/Medium/Low
+   - **Visualizations:**
+     * Nuclear segmentation overlay (Ki67+ vs Ki67- nuclei marked)
+     * Proliferation heatmap (or text description of spatial variation)
 
 4. **Multiplex IF Results:**
    - Total cells segmented: XXX
@@ -111,12 +192,22 @@ Please provide:
    - KI67+: XX%
    - TP53+/KI67+: XX%
    - Correlation: Are TP53+ cells proliferating? (Yes/No)
+   - **Visualizations:**
+     * RGB channel composite (TP53/KI67/DAPI overlay)
+     * Cell phenotype segmentation (colored by marker expression)
+     * Scatter plot (TP53 vs KI67 intensity, or table of quadrant counts)
 
 5. **Overall Imaging Interpretation:**
    - Is this a highly proliferative tumor? (Yes)
    - Is there immune exclusion? (Yes)
    - Does imaging support molecular findings? (Yes)
    - Implications for immunotherapy? (Limited efficacy expected)
+
+**For all visualizations:** If image outputs are not available, provide detailed text descriptions including:
+- Quantitative metrics (cell counts, percentages, densities)
+- Spatial patterns (peripheral vs central, uniform vs heterogeneous, clustered vs diffuse)
+- Color coding schemes used
+- Key observations that would be visible in the image
 
 ## Validation Checkpoints:
 

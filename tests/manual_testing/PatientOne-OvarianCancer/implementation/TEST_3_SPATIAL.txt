@@ -17,6 +17,29 @@ Files are in: `patient-data/PAT001-OVC-2025/spatial/`
 - visium_gene_expression.csv
 - visium_region_annotations.csv
 
+### Pre-Flight Validation:
+
+Before starting analysis, verify data quality:
+
+1. **File existence check:**
+   - Confirm all 3 CSV files are accessible
+   - Check file sizes are reasonable (coordinates ~34 KB, expression ~117 KB, regions ~18 KB)
+
+2. **Data integrity check:**
+   - Coordinates file: Should have ~900 rows (spots) with x, y coordinates
+   - Expression file: Should have ~900 rows × 31 genes columns
+   - Regions file: Should have ~900 rows with 6 unique region labels
+
+3. **Expected genes present:**
+   - Verify all 8 key genes exist in expression file: MKI67, PCNA, PIK3CA, AKT1, ABCB1, CD3D, CD8A, CD68
+   - If any genes missing, report and continue with available genes
+
+4. **Expected regions present:**
+   - Verify all 6 regions exist: tumor_core, tumor_proliferative, tumor_interface, stroma_immune, stroma, necrotic_hypoxic
+   - If any regions missing, report and adjust analysis accordingly
+
+**If validation fails:** Report specific issues but continue with best-effort analysis using available data.
+
 ### Analysis Steps:
 
 1. **Load spatial data:**
@@ -38,6 +61,29 @@ Files are in: `patient-data/PAT001-OVC-2025/spatial/`
    - Is there spatial heterogeneity in resistance markers?
    - Are immune cells excluded from tumor regions?
    - Tumor-stroma interface patterns?
+
+5. **Generate visualizations** (CRITICAL for validation):
+   - **Spatial heatmap:** Show expression of top 6 spatially variable genes overlaid on tissue coordinates
+     * Use different color scale for each gene
+     * Include spatial coordinates (x, y) to show tissue layout
+     * Expected: MKI67 high in tumor_proliferative, CD8A high in stroma_immune
+
+   - **Region composition bar chart:** Show number of spots per tissue region
+     * 6 regions on x-axis, spot count on y-axis
+     * Expected: stroma_immune has most spots (~212), tumor_core has fewest (~69)
+
+   - **Gene expression heatmap:** 8 genes (rows) × 6 regions (columns)
+     * Color intensity = mean expression level per region
+     * Expected: MKI67/PCNA high in tumor_proliferative, CD3D/CD8A/CD68 high in stroma_immune
+
+   - **Spatial autocorrelation plot:** Moran's I for top spatially variable genes
+     * Bar chart showing Moran's I statistic for each gene
+     * Expected: High autocorrelation (I > 0.5) for regionalized markers
+
+   **Note:** If spatialtools cannot generate images, provide detailed text descriptions of what each plot would show, including:
+   - Which genes/regions would be highlighted
+   - Expected patterns (hotspots, gradients, exclusion zones)
+   - Quantitative values for validation
 
 ## Expected Results:
 
@@ -88,7 +134,18 @@ Please provide:
    - Resistance marker distribution pattern
    - Immune cell localization
 
-4. **Clinical Interpretation:**
+4. **Visualizations** (Required):
+   - Spatial heatmap (or detailed text description if image not available)
+   - Region composition bar chart (or data table)
+   - Gene expression heatmap (8×6 matrix with values)
+   - Spatial autocorrelation plot (or Moran's I values table)
+
+   **If providing text descriptions instead of images, include:**
+   - Quantitative values (expression levels, spot counts, Moran's I)
+   - Spatial patterns (which regions show hotspots, gradients, exclusion)
+   - Color mapping descriptions (what high/low values represent)
+
+5. **Clinical Interpretation:**
    - Is there spatial heterogeneity in resistance markers? (Yes)
    - Are immune cells excluded from tumor? (Yes)
    - Tumor microenvironment classification: Cold vs Hot? (Cold)

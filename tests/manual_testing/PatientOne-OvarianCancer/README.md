@@ -292,6 +292,7 @@ Understanding the difference between imaging types is critical for correct analy
 - Identifies 6 tissue regions (tumor_core, proliferative, interface, stroma, etc.)
 - Maps spatial expression patterns from CSV files
 - Quantifies immune cell distribution
+- **Generates visualizations:** Spatial heatmaps, gene expression matrices, autocorrelation plots
 
 **Note:** Uses only tabular CSV data, not images. DeepCell is NOT needed for this test.
 
@@ -300,6 +301,12 @@ Understanding the difference between imaging types is critical for correct analy
 - High proliferation in tumor_proliferative region (Ki67+, PCNA+)
 - Thick stromal barrier separating immune cells from tumor
 - Spatial heterogeneity in resistance markers
+
+**Expected Visualizations:**
+- Spatial heatmap showing top 6 spatially variable genes across tissue coordinates
+- Gene expression heatmap (8 key genes × 6 regions)
+- Region composition bar chart
+- Spatial autocorrelation plot (Moran's I)
 
 ---
 
@@ -312,6 +319,7 @@ Understanding the difference between imaging types is critical for correct analy
 - Processes **immunofluorescence (IF) images** using fluorescence microscopy (DAPI, CD3, CD8, Ki67, PanCK)
 - Performs cell segmentation on IF images with DeepCell
 - Quantifies proliferation and immune infiltration
+- **Generates visualizations:** Segmentation overlays, spatial distribution maps, phenotype analyses
 
 **Note:** H&E uses chromogenic stains (brightfield), while IF uses fluorescent antibodies (fluorescence). These require different imaging modalities.
 
@@ -320,6 +328,12 @@ Understanding the difference between imaging types is critical for correct analy
 - Ki67 proliferation index: 45-55% (HIGH)
 - CD8+ T cell density: 5-15 cells/mm² (LOW, mostly peripheral)
 - CD3+ overall: 30-50 cells/mm² (moderate T cells, but not cytotoxic)
+
+**Expected Visualizations:**
+- **CD8 IF:** Segmentation overlay (CD8+ vs CD8-), spatial distribution heatmap
+- **Ki67 IF:** Nuclear segmentation overlay (Ki67+ vs Ki67-), proliferation heatmap
+- **Multiplex IF:** RGB channel composite, cell phenotype segmentation, scatter plot (TP53 vs KI67)
+- **H&E:** Annotated morphology showing necrotic regions and high cellularity areas
 
 ---
 
