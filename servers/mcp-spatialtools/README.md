@@ -519,6 +519,179 @@ Include clinical context to inform the analysis.
 
 **Integration:** Works with `mcp-epic` server to link FHIR clinical data with spatial datasets.
 
+---
+
+## Visualization Tools
+
+The following visualization tools generate publication-quality PNG images for spatial analysis results:
+
+### 11. generate_spatial_heatmap
+
+Generate spatial heatmaps showing gene expression overlaid on tissue coordinates.
+
+**Parameters:**
+- `expression_file` (string): Path to expression matrix CSV
+- `coordinates_file` (string): Path to spatial coordinates CSV
+- `genes` (list): List of gene names to visualize (max 6)
+- `output_filename` (string, optional): Custom output filename
+- `colormap` (string, optional): Matplotlib colormap (default: "viridis")
+
+**Returns:**
+```json
+{
+  "status": "success",
+  "output_file": "/workspace/output/visualizations/spatial_heatmap_20250108_143022.png",
+  "genes_plotted": ["MKI67", "PCNA", "CD8A", "CD68", "MUC16", "TP53"],
+  "genes_not_found": [],
+  "num_spots": 900,
+  "description": "Spatial heatmap showing expression of 6 genes across tissue coordinates.",
+  "visualization_type": "spatial_heatmap"
+}
+```
+
+**Example usage with Claude:**
+```
+Generate spatial heatmaps for proliferation markers:
+- Expression: /data/PAT001-OVC-2025/visium_gene_expression.csv
+- Coordinates: /data/PAT001-OVC-2025/visium_spatial_coordinates.csv
+- Genes: MKI67, PCNA, TOP2A, AURKA, CDK1, CCNB1
+- Use "plasma" colormap
+```
+
+**Output:** Multi-panel figure with separate heatmap for each gene, showing spatial distribution across tissue.
+
+### 12. generate_gene_expression_heatmap
+
+Generate gene × region expression heatmap matrix.
+
+**Parameters:**
+- `expression_file` (string): Path to expression matrix CSV
+- `regions_file` (string): Path to region annotations CSV
+- `genes` (list): List of gene names to include
+- `output_filename` (string, optional): Custom output filename
+- `colormap` (string, optional): Seaborn colormap (default: "RdYlBu_r")
+
+**Returns:**
+```json
+{
+  "status": "success",
+  "output_file": "/workspace/output/visualizations/gene_region_heatmap_20250108_143045.png",
+  "genes_plotted": ["MKI67", "PCNA", "PIK3CA", "AKT1", "ABCB1", "CD3D", "CD8A", "CD68"],
+  "genes_not_found": [],
+  "regions": ["tumor_core", "tumor_proliferative", "tumor_interface", "stroma_immune", "stroma", "necrotic_hypoxic"],
+  "num_spots": 900,
+  "expression_matrix": {...},
+  "description": "Gene expression heatmap showing 8 genes across 6 tissue regions with mean expression values.",
+  "visualization_type": "gene_region_heatmap"
+}
+```
+
+**Example usage with Claude:**
+```
+Create a heatmap showing key genes across tumor regions:
+- Expression: /data/expression.csv
+- Regions: /data/region_annotations.csv
+- Genes: MKI67, PCNA, PIK3CA, AKT1, ABCB1, CD3D, CD8A, CD68
+```
+
+**Output:** Annotated heatmap with genes as rows, regions as columns, and mean expression values displayed.
+
+### 13. generate_region_composition_chart
+
+Generate bar chart showing spot counts per tissue region.
+
+**Parameters:**
+- `regions_file` (string): Path to region annotations CSV
+- `output_filename` (string, optional): Custom output filename
+- `colormap` (string, optional): Matplotlib colormap (default: "tab10")
+
+**Returns:**
+```json
+{
+  "status": "success",
+  "output_file": "/workspace/output/visualizations/region_composition_20250108_143102.png",
+  "region_counts": {
+    "tumor_core": 69,
+    "tumor_proliferative": 138,
+    "tumor_interface": 200,
+    "stroma_immune": 212,
+    "stroma": 158,
+    "necrotic_hypoxic": 123
+  },
+  "total_spots": 900,
+  "num_regions": 6,
+  "description": "Region composition showing 900 total spots across 6 regions.",
+  "visualization_type": "region_composition_bar_chart"
+}
+```
+
+**Example usage with Claude:**
+```
+Show the distribution of spots across tissue regions:
+- Regions: /data/PAT001-OVC-2025/visium_region_annotations.csv
+```
+
+**Output:** Bar chart with region names on x-axis and spot counts on y-axis.
+
+### 14. visualize_spatial_autocorrelation
+
+Visualize Moran's I spatial autocorrelation statistics.
+
+**Parameters:**
+- `autocorrelation_results` (dict): Output from `calculate_spatial_autocorrelation` tool
+- `output_filename` (string, optional): Custom output filename
+- `top_n` (integer, optional): Show top N genes (default: 10)
+
+**Returns:**
+```json
+{
+  "status": "success",
+  "output_file": "/workspace/output/visualizations/spatial_autocorr_20250108_143120.png",
+  "genes_plotted": ["MUC16", "MKI67", "PCNA", "CD8A", "CD68", "PIK3CA"],
+  "description": "Spatial autocorrelation (Moran's I) for 6 genes. Green bars indicate clustering, red indicate dispersion.",
+  "visualization_type": "spatial_autocorrelation_bar_chart"
+}
+```
+
+**Example usage with Claude:**
+```
+After running calculate_spatial_autocorrelation, visualize the results:
+- Input: <results from previous autocorrelation analysis>
+- Show top 10 genes
+```
+
+**Output:** Horizontal bar chart showing Moran's I values (green for positive/clustered, red for negative/dispersed).
+
+---
+
+### Visualization Workflow Example
+
+**Complete workflow with visualizations:**
+
+```
+Claude, analyze Patient-001 spatial data and generate visualizations:
+
+STEP 1: Load data
+- Get spatial dataset for patient-001
+
+STEP 2: Generate spatial heatmaps
+- Genes: MKI67, PCNA, CD8A, CD68, MUC16, TP53
+- Show expression across tissue coordinates
+
+STEP 3: Calculate spatial autocorrelation
+- Same genes as heatmaps
+- Then visualize Moran's I results
+
+STEP 4: Generate gene-region heatmap
+- Show mean expression per region
+- Include immune markers and proliferation markers
+
+STEP 5: Show region composition
+- Bar chart of spot distribution
+
+This provides complete spatial analysis with publication-ready figures.
+```
+
 ## Available Resources
 
 ### spatial://config
