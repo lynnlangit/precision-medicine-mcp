@@ -1,15 +1,16 @@
-# Precision Medicine MCP Servers
+# Precision Medicine MCP 
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![MCP](https://img.shields.io/badge/MCP-2025--06--18-green.svg)](https://modelcontextprotocol.io/)
 [![Claude Desktop](https://img.shields.io/badge/Claude-Desktop-orange.svg)](https://claude.ai/download)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-*AI-Orchestrated Clinical Bioinformatics for Precision Oncology using Model Context Protocol (MCP)*
+*AI-Orchestrated Clinical Bioinformatics for Precision Oncology using custom Model Context Protocol (MCP) servers*
+<img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/data/images/repo-image.png">
 
 ## What and Why
 - The Problem: Multi-modal precision medicine is siloed and code-heavy
-- What PatientOne does:
+- What the set of custom MCP servers does (PatientOne use case example):
   - Makes complex analysis significantly faster and easier
   - System coordinates disparate servers and stitches results together after being given a natural-language prompt
 - What it is NOT: Not clinically validated yet
@@ -24,18 +25,17 @@
 
 - ANALYZE complete patient profiles using **natural language**
 - DEMONSTRATE end-to-end precision medicine workflows
-  - Using example of Stage IV Ovarian Cancer
+  - Using patient example of Ovarian Cancer (Stage IV HGSOC, platinum-resistant, BRCA1 mutation)
   - Extensible for other comorbidities
 - USE 10 MCP servers (9 deployed + mcp-epic local) with 55+ bioinformatics tools
-  - Patient Example: Stage IV HGSOC, platinum-resistant, BRCA1 mutation
   - Data Modalities: Clinical
-    - (Epic FHIR) → Genomic (FGbio, TCGA) →
-    - Multi-omics (RNA/Protein/Phospho) →
-    - Spatial (Visium) → Imaging (H&E, multiplex IF)
+    - (Epic FHIR) + Genomic (FGbio, TCGA) +
+    - Multi-omics (RNA/Protein/Phospho) +
+    - Spatial (Visium) + Imaging (H&E, multiplex IF)
   - Cost Estimates:
     - Demonstration: DRY_RUN demo in 25-35 min (~$1 tokens only) or small files in 1-3 hours ($7-29)
     - Production: Realistic hospital data in 2-4 hours ($24-92 pre-aligned) or 4-8 hours ($29-102 raw FASTQ)
-    - Includes: Compute + APIs + Claude tokens (~$1-2, stays low because servers return summaries!)
+    - Includes: Compute + APIs + Claude tokens (~$1-2, stays low because servers return summaries)
 - LEARN More:
   - [PatientOne Documentation](architecture/patient-one/README.md)
   - [Quick Start](tests/manual_testing/PatientOne-OvarianCancer/README.md)
