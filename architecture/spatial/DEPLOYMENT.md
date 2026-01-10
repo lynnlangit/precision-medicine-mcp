@@ -6,9 +6,9 @@ GCP Cloud Run deployment procedures and status.
 
 ## Current Deployment Status
 
-**Last Deployment:** January 9, 2026
-**Servers Deployed:** 5/10 (mcp-spatialtools, mcp-openimagedata, mcp-fgbio, mcp-multiomics, mcp-mockepic)
-**Mode:** Development (public access)
+**Last Deployment:** January 10, 2026
+**Servers Deployed:** 6/10 (spatialtools, openimagedata, fgbio, multiomics, epic, mockepic)
+**Mode:** Development (public access) + Production (epic - private)
 **Region:** us-central1
 
 ---
