@@ -22,25 +22,25 @@
 
 <kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/architecture/patient-one/patient-one-holistic.png" width=800></kbd>  
 
-**Comprehensive Precision Medicine Workflow for Stage IV Ovarian Cancer**
-- Analyze complete patient profiles—from genomics to spatial transcriptomics—using **natural language**
-- Demonstrate end-to-end precision medicine workflows for using example of Stage IV Ovarian Cancer (extensible for other comorbidities)
-- Use 10 MCP servers (9 deployed + mcp-epic local) with 55+ bioinformatics tools
+- ANALYZE complete patient profiles using **natural language**
+- DEMONSTRATE end-to-end precision medicine workflows
+  - Using example of Stage IV Ovarian Cancer
+  - Extensible for other comorbidities
+- USE 10 MCP servers (9 deployed + mcp-epic local) with 55+ bioinformatics tools
   - Patient Example: Stage IV HGSOC, platinum-resistant, BRCA1 mutation
-  - Data Modalities:
-    - Clinical (Epic FHIR) →
-    - Genomic (FGbio, TCGA) → Multi-omics (RNA/Protein/Phospho) →
+  - Data Modalities: Clinical
+    - (Epic FHIR) → Genomic (FGbio, TCGA) →
+    - Multi-omics (RNA/Protein/Phospho) →
     - Spatial (Visium) → Imaging (H&E, multiplex IF)
   - Cost Estimates:
     - Demonstration: DRY_RUN demo in 25-35 min (~$1 tokens only) or small files in 1-3 hours ($7-29)
     - Production: Realistic hospital data in 2-4 hours ($24-92 pre-aligned) or 4-8 hours ($29-102 raw FASTQ)
     - Includes: Compute + APIs + Claude tokens (~$1-2, stays low because servers return summaries!)
-
-**📖 Learn More:** 
-- [PatientOne Documentation →](architecture/patient-one/README.md)
-- [Quick Start →](tests/manual_testing/PatientOne-OvarianCancer/README.md)
-- [Sample Outputs →](architecture/patient-one/patient-one-outputs/)
-- [Executive Summary →](docs/EXECUTIVE_SUMMARY.md) for **💼 For Funders & Decision-Makers:**
+- LEARN More:
+  - [PatientOne Documentation](architecture/patient-one/README.md)
+  - [Quick Start](tests/manual_testing/PatientOne-OvarianCancer/README.md)
+  - [Sample Outputs](architecture/patient-one/patient-one-outputs/)
+  - [Executive Summary](docs/EXECUTIVE_SUMMARY.md) 
 
 ## Who is this For?
 
@@ -463,8 +463,6 @@ gantt
 
 
 </details>
-
----
 
 <details>
 <summary><h3>🏥 Clinical Care Teams (Oncologists, Genetic Counselors)</h3></summary>
