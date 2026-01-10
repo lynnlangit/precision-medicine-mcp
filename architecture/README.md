@@ -12,7 +12,7 @@ See each subfolder for architectures. See also main Repo README.md for list of t
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│         MULTIOMICS WORKFLOW ARCHITECTURE (9 tools)                       │
+│         MULTIOMICS WORKFLOW ARCHITECTURE (10 tools)                      │
 │         Enhanced with bioinformatician feedback (2025)                   │
 └─────────────────────────────────────────────────────────────────────────┘
 
@@ -311,8 +311,9 @@ Key Features:
 - Enables single-cell spatial analysis with multiple marker co-expression
 
 ┌──────────────────────────────────────────────────────────────────────────┐
-│  ALL 9 MCP Servers Utilized:                                             │
-│  ├─ mcp-epic           (EHR/Clinical data)                              │
+│  ALL 10 MCP Servers:                                                     │
+│  ├─ mcp-epic           (Real Epic FHIR - local only)                    │
+│  ├─ mcp-mockepic       (Mock EHR - deployed to GCP)                     │
 │  ├─ mcp-fgbio          (Genomic QC & validation)                        │
 │  ├─ mcp-tcga           (TCGA cohort comparison)                         │
 │  ├─ mcp-multiomics     (PDX multi-omics integration)                    │
@@ -321,6 +322,9 @@ Key Features:
 │  ├─ mcp-deepcell       (AI cell segmentation)                           │
 │  ├─ mcp-seqera         (Workflow orchestration)                         │
 │  └─ mcp-huggingface    (ML model inference)                             │
+│                                                                           │
+│  Note: mcp-epic runs locally for hospital production with real Epic     │
+│        FHIR. mcp-mockepic runs on GCP for demos with synthetic data.    │
 │                                                                           │
 │  Synthetic Data (17 files):                                              │
 │  • Clinical: 2 files (demographics, labs)                                │
@@ -351,10 +355,24 @@ Key Features:
 
 ---
 
-**Last Updated:** January 10, 2026
-**Status:** Architecture documentation complete for 9 MCP servers
+**Last Updated:** 2026-01-10
+**Status:** Architecture documentation complete for 10 MCP servers
 
-**⚠️ Note on Tool References:** ASCII diagrams above may show abbreviated tool names. For complete, up-to-date tool lists:
-- mcp-spatialtools: 14 tools (10 analysis + 4 visualization) - 95% real implementation
-- mcp-openimagedata: 5 tools (fetch_histology_image, register_image_to_spatial, extract_image_features, generate_multiplex_composite, generate_he_annotation) - 60% real implementation
-- See each server's README for complete tool documentation
+**⚠️ Note on Tool References:** ASCII diagrams above may show abbreviated tool names. For complete tool counts from source code:
+
+| Server | Tools | Implementation Status |
+|--------|-------|----------------------|
+| **mcp-fgbio** | **4** | 95% real - Reference genome, FASTQ validation, UMI extraction, gene annotations |
+| **mcp-multiomics** | **10** | 85% real - Integration, validation, preprocessing, HAllA, Stouffer, upstream regulators, visualizations, cost estimation |
+| **mcp-spatialtools** | **14** | 95% real - 10 analysis + 4 visualization tools (batch correction, pathway enrichment, spatial autocorrelation, cell deconvolution) |
+| **mcp-tcga** | **5** | 0% mocked - TCGA cohort queries, expression data, survival data, mutation data |
+| **mcp-openimagedata** | **5** | 60% real - Image loading, multiplex composite, H&E annotation (3 real); registration, feature extraction (2 mocked) |
+| **mcp-deepcell** | **4** | 0% mocked - Cell segmentation, phenotype classification, overlay generation |
+| **mcp-seqera** | **3** | 0% mocked - Nextflow pipeline launch, workflow monitoring |
+| **mcp-huggingface** | **3** | 0% mocked - Model loading, cell type prediction, sequence embedding |
+| **mcp-epic** | **4** | 100% real (local only) - Patient demographics, conditions, observations, medications from Epic FHIR API |
+| **mcp-mockepic** | **3** | 0% by design - Synthetic patient records, spatial-clinical linking, diagnosis search |
+
+**TOTAL: 55 tools across 10 servers**
+
+See each server's README or source code for detailed tool documentation.

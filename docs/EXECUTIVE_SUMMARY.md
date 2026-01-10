@@ -26,7 +26,7 @@ The **Precision Medicine MCP System** is a production-ready AI-orchestrated plat
 
 ### For Bioinformaticians
 
-- **Unified Platform**: One interface to access 9 specialized bioinformatics tools
+- **Unified Platform**: One interface to access 10 MCP servers providing 55+ bioinformatics tools
 - **Reproducible Workflows**: Automated orchestration eliminates manual pipeline errors
 - **Natural Language Interface**: Query complex data without writing code
 

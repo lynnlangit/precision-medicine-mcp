@@ -1,6 +1,6 @@
 # MCP Server Implementation Status Matrix
 
-**Last Updated:** 2025-12-30
+**Last Updated:** 2026-01-10
 **Purpose:** Clearly document what's real vs mocked in each server to prevent accidental use of synthetic data
 
 ---
@@ -25,7 +25,7 @@
 | **mcp-multiomics** | **85%** | ✅ Production Ready | **YES** | Low - Extensively tested |
 | **mcp-fgbio** | **95%** | ✅ Production Ready | **YES** | Low - Core features real |
 | **mcp-spatialtools** | **95%** | ✅ Production Ready | **YES** | Low - All core features implemented |
-| **mcp-epic** | **100%** | ✅ Production Ready | **YES** | Low - Real Epic FHIR with de-identification |
+| **mcp-epic** | **100%** | ✅ Production Ready (Local Only) | **YES** | Low - Real Epic FHIR with de-identification |
 | **mcp-openimagedata** | **60%** | ⚠️ Partial | **NO** | Medium - Registration/features mocked |
 | **mcp-tcga** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
 | **mcp-deepcell** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
@@ -33,20 +33,60 @@
 | **mcp-seqera** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
 | **mcp-mockepic** | **0%** | ✅ Intentional Mock | **N/A** | Low - Mock EHR by design |
 
-**Production Ready Count:** 4/9 servers (44%)
-**Fully Mocked Count:** 5/9 servers (56%)
-**Partial Implementation:** 1/9 servers (11%)
+**Production Ready Count:** 4/10 servers (40%)
+**Fully Mocked Count:** 5/10 servers (50%)
+**Partial Implementation:** 1/10 servers (10%)
 
-**🎉 GCP Cloud Run Deployment:** All 9 servers deployed to production infrastructure (2025-12-30)
+**Total MCP Servers:** 10 (9 deployed to GCP + mcp-epic local only)
+
+**🎉 GCP Cloud Run Deployment:** 9 servers deployed to production infrastructure (2025-12-30)
+
+---
+
+## Epic FHIR Integration: mcp-epic vs mcp-mockepic
+
+**⚠️ IMPORTANT DISTINCTION:** This system includes TWO Epic FHIR servers with different purposes.
+
+### mcp-epic (Real Epic FHIR - Local Only)
+
+- **Status:** ✅ 100% Real Implementation
+- **Deployment:** Local STDIO only (NOT deployed to GCP Cloud Run)
+- **Tools:** 4 tools
+  - `get_patient_demographics` - Retrieve patient demographic data
+  - `get_patient_conditions` - Fetch patient conditions/diagnoses
+  - `get_patient_observations` - Get patient observations (labs, vitals)
+  - `get_patient_medications` - Retrieve medication records
+- **Data Source:** Real Epic FHIR API with HIPAA Safe Harbor de-identification
+- **Purpose:** Production hospital deployment with real patient data
+- **Use Case:** Hospital integration with Epic EHR for precision medicine workflows
+- **Security:** Built-in de-identification removes all 18 HIPAA identifiers
+
+### mcp-mockepic (Mock EHR - GCP Deployed)
+
+- **Status:** ✅ Intentional Mock (synthetic data by design)
+- **Deployment:** GCP Cloud Run (publicly accessible demo endpoint)
+- **Tools:** 3 tools
+  - `query_patient_records` - Query synthetic patient records
+  - `link_spatial_to_clinical` - Link synthetic spatial data to clinical
+  - `search_diagnoses` - Search synthetic diagnosis codes
+- **Data Source:** 100% synthetic FHIR resources for demonstration
+- **Purpose:** Demonstration, education, and workflow development
+- **Use Case:** Demos, testing, education without real PHI
+- **Security:** No real patient data - safe for public demos
+
+**When to Use Which:**
+- **Hospital Production:** Use mcp-epic (local deployment with Epic FHIR API credentials)
+- **Demos & Testing:** Use mcp-mockepic (deployed on GCP, no Epic credentials needed)
+- **Development:** Use mcp-mockepic for workflow development, then switch to mcp-epic for production
 
 ---
 
 ## GCP Cloud Run Deployment Status
 
 **Deployment Date:** 2025-12-30
-**Status:** ✅ ALL 9 SERVERS DEPLOYED TO PRODUCTION
+**Status:** ✅ 9 SERVERS DEPLOYED TO GCP CLOUD RUN
 
-All servers successfully deployed to Google Cloud Platform Cloud Run with the following configuration:
+Nine servers successfully deployed to Google Cloud Platform Cloud Run (mcp-epic runs locally only):
 
 ### Deployment Details
 
@@ -55,12 +95,12 @@ All servers successfully deployed to Google Cloud Platform Cloud Run with the fo
 | mcp-fgbio | https://mcp-fgbio-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ✅ Validated |
 | mcp-multiomics | https://mcp-multiomics-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ✅ Validated |
 | mcp-spatialtools | https://mcp-spatialtools-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ✅ Validated |
-| mcp-epic | https://mcp-epic-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ✅ Validated |
 | mcp-tcga | https://mcp-tcga-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ⚠️ Mocked |
 | mcp-openimagedata | https://mcp-openimagedata-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ⚠️ Partial |
 | mcp-seqera | https://mcp-seqera-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ⚠️ Mocked |
 | mcp-huggingface | https://mcp-huggingface-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ⚠️ Mocked |
 | mcp-deepcell | https://mcp-deepcell-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ⚠️ Mocked |
+| mcp-mockepic | https://mcp-mockepic-{hash}.run.app/sse | SSE over HTTP | ✅ Running | ⚠️ Mock by Design |
 
 ### Infrastructure Configuration
 
@@ -944,7 +984,7 @@ If you're unsure whether a server is safe for your use case, contact the develop
 
 ---
 
-**Last Updated:** 2025-12-30
+**Last Updated:** 2026-01-10
 **Maintained by:** Precision Medicine MCP Team
 **Review Schedule:** Update after each server implementation change
 

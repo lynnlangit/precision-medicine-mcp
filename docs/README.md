@@ -10,7 +10,7 @@ Complete documentation for the Precision Medicine MCP system, organized by audie
 |----------|----------|---------|
 | **[Executive Summary](EXECUTIVE_SUMMARY.md)** | Funders, Decision-Makers | ROI analysis, budget, timeline, risk assessment |
 | **[Production Roadmap](PRODUCTION_ROADMAP.md)** | Technical Leads, PMs | Path from POC to hospital production |
-| **[Server Implementation Status](SERVER_IMPLEMENTATION_STATUS.md)** | Developers | Current state of all 9 MCP servers |
+| **[Server Implementation Status](SERVER_IMPLEMENTATION_STATUS.md)** | Developers | Current state of all 10 MCP servers (9 deployed + mcp-epic local) |
 
 ---
 
@@ -29,7 +29,7 @@ Complete documentation for the Precision Medicine MCP system, organized by audie
 | Document | Description |
 |----------|-------------|
 | **[deployment/](deployment/)** | POC deployment to GCP Cloud Run |
-| └─ [Deployment Status](deployment/DEPLOYMENT_STATUS.md) | Current GCP Cloud Run deployment state (all 9 servers) |
+| └─ [Deployment Status](deployment/DEPLOYMENT_STATUS.md) | Current GCP Cloud Run deployment state (9 servers deployed) |
 | └─ [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) | Test deployed servers via Claude API |
 | └─ [Security](deployment/SECURITY.md) | Security considerations for POC deployment |
 | **[hospital-deployment/](hospital-deployment/)** | Production hospital deployment |
@@ -185,7 +185,7 @@ docs/
 - [Executive Summary](EXECUTIVE_SUMMARY.md) - ROI: $3,187 savings per patient
 
 ### Deployment
-- [Deployment Status](deployment/DEPLOYMENT_STATUS.md) - All 9 servers deployed ✅
+- [Deployment Status](deployment/DEPLOYMENT_STATUS.md) - 9 servers deployed to GCP ✅
 - [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) - Test via Claude API
 - [Production Roadmap](PRODUCTION_ROADMAP.md) - 12-16 week timeline
 
@@ -201,7 +201,7 @@ docs/
 - [Audit Log Guide](hospital-deployment/AUDIT_LOG_GUIDE.md) - 10-year retention
 
 ### Testing
-- [GCP Server Test Plan](testing/GCP_SERVER_TEST_PLAN.md) - All 9 servers tested ✅
+- [GCP Server Test Plan](testing/GCP_SERVER_TEST_PLAN.md) - 9 deployed servers tested ✅
 - [Test Prompts](testing/TEST_PROMPTS.md) - Sample queries for each server
 - [Verify Servers](testing/VERIFY_SERVERS.md) - Verification procedures
 
@@ -216,6 +216,6 @@ docs/
 
 ---
 
-**Last Updated:** 2025-12-30
+**Last Updated:** 2026-01-10
 **Total Documents:** 30 files
 **Status:** Documentation complete for POC and hospital deployment

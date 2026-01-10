@@ -25,7 +25,7 @@
 **Comprehensive Precision Medicine Workflow for Stage IV Ovarian Cancer**
 - Analyze complete patient profiles—from genomics to spatial transcriptomics—using **natural language**
 - Demonstrate end-to-end precision medicine workflows for using example of Stage IV Ovarian Cancer (extensible for other comorbidities)
-- Use 9 specialized MCP servers and 40+ analysis tools
+- Use 10 MCP servers (9 deployed + mcp-epic local) with 55+ bioinformatics tools
   - Patient Example: Stage IV HGSOC, platinum-resistant, BRCA1 mutation
   - Data Modalities:
     - Clinical (Epic FHIR) →
@@ -245,15 +245,15 @@ graph TB
 
 **Architecture Layers:**
 - **User Interfaces:** Streamlit UI (web) • Jupyter Notebook (data science) • Claude Desktop (local)
-- **AI Orchestration:** Claude API with MCP client support (connects to all 9 servers)
-- **MCP Servers:** 9 servers deployed on GCP Cloud Run (SSE transport)
+- **AI Orchestration:** Claude API with MCP client support (connects to 10 MCP servers)
+- **MCP Servers:** 9 servers deployed on GCP Cloud Run + mcp-epic local (SSE transport)
 - **Analysis Workflow:** PatientOne precision medicine analysis
 
 **Server Status:**
-- ✅ **Production Ready** (4/9): mcp-fgbio, mcp-multiomics, mcp-spatialtools, mcp-epic
-- 🔶 **60% Real** (1/9): mcp-openimagedata
-- ❌ **Mocked** (4/9): mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera
-- **Mock by Design** (1/9): mcp-mockepic (intentionally synthetic FHIR data)
+- ✅ **Production Ready** (4/10): mcp-fgbio, mcp-multiomics, mcp-spatialtools, mcp-epic (local)
+- 🔶 **60% Real** (1/10): mcp-openimagedata
+- ❌ **Mocked** (4/10): mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera
+- **Mock by Design** (1/10): mcp-mockepic (intentionally synthetic FHIR data)
 
 **Development Resources:**
 - **Architecture:** [System Design](architecture/README.md) • [PatientOne Architecture](architecture/patient-one/README.md)
@@ -287,7 +287,7 @@ git clone https://github.com/lynnlangit/precision-medicine-mcp.git
 cd precision-medicine-mcp/tests/manual_testing/Solution-Testing
 
 # 2. Install dependencies
-./install_dependencies.sh  # Installs 9 MCP servers
+./install_dependencies.sh  # Installs 10 MCP servers
 
 # 3. Configure Claude Desktop
 cp ../../../desktop-configs/claude_desktop_config.json \
@@ -310,14 +310,14 @@ cp ../../../desktop-configs/claude_desktop_config.json \
 **Infrastructure Resources:**
 - **Cloud Setup:** [GCP Deployment Guide](infrastructure/GET_STARTED.md) - Healthcare API, FHIR stores, Vertex AI
 - **Config Files:** [Claude Desktop Config](desktop-configs/claude_desktop_config.json)
-- **Automated Testing:** [Verify All 9 Servers](tests/manual_testing/Solution-Testing/MANUAL_TESTING_GUIDE.md)
+- **Automated Testing:** [Verify Server Installation](tests/manual_testing/Solution-Testing/MANUAL_TESTING_GUIDE.md)
 - **STAR Installation:** [STAR Aligner Setup](servers/mcp-spatialtools/INSTALL_STAR.md) (for spatial analysis)
 
 **GCP Cloud Run Deployment:**
 
 <img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/data/images/gcp-deploy.png">
 
-All 9 servers successfully deployed and tested on Google Cloud Platform:
+9 servers successfully deployed and tested on Google Cloud Platform (mcp-epic runs locally):
 
 | Server | Status | Test Result | URL |
 |--------|--------|-------------|-----|
@@ -331,7 +331,8 @@ All 9 servers successfully deployed and tested on Google Cloud Platform:
 | mcp-deepcell | ✅ Running | ✓ PASS | https://mcp-deepcell-ondu7mwjpa-uc.a.run.app |
 | mcp-mockepic | ✅ Running | ✓ PASS | https://mcp-mockepic-ondu7mwjpa-uc.a.run.app |
 
-**Test Results:** 9/9 servers passed functional testing via Claude API (2025-12-30)
+**Test Results:** 9/9 deployed servers passed functional testing via Claude API (2025-12-30)
+**Note:** mcp-epic (real Epic FHIR) runs locally only - not deployed to GCP
 
 - **Deployment Guide:** [GCP Cloud Run Setup](docs/deployment/DEPLOYMENT_STATUS.md)
 - **Test Script:** [Automated Testing](tests/integration/test_all_gcp_servers.py)
@@ -470,7 +471,7 @@ gantt
 
 **Key Milestones:**
 - 🎯 **Week 8**: Core servers deployed, SSO working, Epic connected
-- 🎯 **Week 16**: All 9 servers operational, 5 users trained, security audit passed
+- 🎯 **Week 16**: All 10 servers operational (9 GCP + mcp-epic local), 5 users trained, security audit passed
 - 🎯 **Week 24**: Production launch with 100 patients, full monitoring, IT handoff complete
 
 
