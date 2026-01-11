@@ -8,211 +8,120 @@ Complete documentation for the Precision Medicine MCP system, organized by audie
 
 | Document | Audience | Purpose |
 |----------|----------|---------|
-| **[Executive Summary](EXECUTIVE_SUMMARY.md)** | Funders, Decision-Makers | ROI analysis, budget, timeline, risk assessment |
-| **[Production Roadmap](PRODUCTION_ROADMAP.md)** | Technical Leads, PMs | Path from POC to hospital production |
-| **[Server Implementation Status](SERVER_IMPLEMENTATION_STATUS.md)** | Developers | Current state of all 10 MCP servers (9 deployed + mcp-epic local) |
+| **[Executive Summary](EXECUTIVE_SUMMARY.md)** | 💼 Funders, Decision-Makers | ROI analysis, budget, timeline, risk assessment |
+| **[Production Roadmap](PRODUCTION_ROADMAP.md)** | 📋 Technical Leads, PMs | Path from POC to hospital production |
+| **[Server Implementation Status](SERVER_IMPLEMENTATION_STATUS.md)** | 💻 Developers | Current state of all 10 MCP servers (9 deployed + mcp-epic local) |
 
 ---
 
-## 📚 Documentation by Category
+## 👥 Who Is This For?
 
-### Getting Started
+Detailed guides for each audience with workflows, examples, and resources:
 
-| Document | Description |
-|----------|-------------|
-| [Claude Desktop Quickstart](guides/CLAUDE_DESKTOP_QUICKSTART.md) | Set up and run MCP servers locally with Claude Desktop |
-| [Quick Test Prompts](../tests/manual_testing/QUICK_TEST_PROMPTS.md) | Sample queries to test each MCP server |
-| [Automated Patient Reports](guides/AUTOMATED_PATIENT_REPORTS.md) | Generate comprehensive patient analysis reports |
-
-### Deployment & Operations
-
-| Document | Description |
-|----------|-------------|
-| **[deployment/](deployment/)** | POC deployment to GCP Cloud Run |
-| └─ [Deployment Status](deployment/DEPLOYMENT_STATUS.md) | Current GCP Cloud Run deployment state (9 servers deployed) |
-| └─ [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) | Test deployed servers via Claude API |
-| └─ [Security](deployment/SECURITY.md) | Security considerations for POC deployment |
-| **[hospital-deployment/](hospital-deployment/)** | Production hospital deployment |
-| └─ [Operations Manual](hospital-deployment/OPERATIONS_MANUAL.md) | System architecture, incident response |
-| └─ [Admin Guide](hospital-deployment/ADMIN_GUIDE.md) | User management, monitoring, security |
-| └─ [User Guide](hospital-deployment/USER_GUIDE.md) | For clinicians and bioinformaticians |
-| └─ [HIPAA Compliance](hospital-deployment/HIPAA_COMPLIANCE.md) | Compliance validation and procedures |
-| └─ [Audit Log Guide](hospital-deployment/AUDIT_LOG_GUIDE.md) | 10-year retention and reporting |
-| └─ [Runbooks](hospital-deployment/RUNBOOKS/) | Troubleshooting procedures |
-
-### Cost & Governance
-
-| Document | Description |
-|----------|-------------|
-| **[operations/](operations/)** | Cost, governance, and operational docs |
-| └─ [Cost Analysis](operations/COST_ANALYSIS.md) | Token pricing, cost per analysis, optimization strategies |
-| └─ [Cost Tracking & Monitoring](operations/COST_TRACKING_MONITORING.md) | Real-time cost monitoring and budget management |
-| └─ [Data Governance](operations/DATA_GOVERNANCE.md) | Data handling, privacy, retention policies |
-| └─ [Risk Mitigation Summary](operations/RISK_MITIGATION_SUMMARY.md) | Risk assessment and mitigation strategies |
-
-### Technical Deep Dives
-
-| Document | Description |
-|----------|-------------|
-| **[technical/](technical/)** | Technical architecture and patterns |
-| └─ [Error Handling & Retry Logic](technical/ERROR_HANDLING_RETRY_LOGIC.md) | Resilience patterns and error handling |
-| **[guides/](guides/)** | User and integration guides |
-| └─ [Clinical-Spatial Integration](guides/CLINICAL_SPATIAL_INTEGRATION.md) | How clinical and spatial data integrate |
-
-### Reference Materials
-
-| Document | Description |
-|----------|-------------|
-| [Disclaimers](DISCLAIMERS.md) | Research use only, liability, data disclaimers |
-| [References](REFERENCES.md) | Citations, publications, external resources |
+| Persona | Description | Guide |
+|---------|-------------|-------|
+| 🔬 **Bioinformaticians** | Analyze multi-omics data, build pipelines, develop models | [Full Guide →](guides/personas/bioinformaticians.md) |
+| 💻 **MCP Developers** | Build custom MCP servers, extend bioinformatics tools | [Full Guide →](guides/personas/mcp-developers.md) |
+| 🛠️ **Software Engineers** | Deploy, integrate, scale the system | [Full Guide →](guides/personas/software-engineers.md) |
+| 🏥 **Clinical Care Teams** | Understand AI-orchestrated bioinformatics for oncology | [Full Guide →](guides/personas/clinical-care-teams.md) |
+| 👥 **Patients & Families** | Learn about precision medicine for ovarian cancer | [Full Guide →](guides/personas/patients-and-families.md) |
+| 🎓 **Students & Educators** | Teach or learn precision medicine & bioinformatics | [Full Guide →](guides/personas/students-and-educators.md) |
 
 ---
 
-## 📂 Documentation Organization
+## 📚 Documentation by Audience
 
-**Organized structure (6 files at root + 5 subdirectories):**
+### 💼 For Funders & Decision-Makers
+- 📊 [Executive Summary](EXECUTIVE_SUMMARY.md) - ROI, budget, timeline
+- 🗺️ [Production Roadmap](PRODUCTION_ROADMAP.md) - Path to production
+- 💰 [Cost Analysis](operations/COST_ANALYSIS.md) - Detailed cost breakdown ($0.32-$102 per analysis)
+- ⚠️ [Risk Mitigation](operations/RISK_MITIGATION_SUMMARY.md) - Risk assessment
 
-```
-docs/
-├── README.md (this file)
-│
-├── Core Documentation (5 files - high visibility)
-│   ├── EXECUTIVE_SUMMARY.md          # For funders
-│   ├── PRODUCTION_ROADMAP.md         # Planning & roadmap
-│   ├── SERVER_IMPLEMENTATION_STATUS.md # Server status
-│   ├── DISCLAIMERS.md                # Foundational
-│   └── REFERENCES.md                 # Citations
-│
-├── guides/ (3 files)
-│   ├── CLAUDE_DESKTOP_QUICKSTART.md
-│   ├── AUTOMATED_PATIENT_REPORTS.md
-│   └── CLINICAL_SPATIAL_INTEGRATION.md
-│
-├── operations/ (4 files)
-│   ├── COST_ANALYSIS.md
-│   ├── COST_TRACKING_MONITORING.md
-│   ├── DATA_GOVERNANCE.md
-│   └── RISK_MITIGATION_SUMMARY.md
-│
-├── technical/ (1 file)
-│   └── ERROR_HANDLING_RETRY_LOGIC.md
-│
-├── deployment/ (3 files)
-│   ├── DEPLOYMENT_STATUS.md
-│   ├── GCP_TESTING_GUIDE.md
-│   └── SECURITY.md
-│
-└── hospital-deployment/ (5 files + runbooks)
-    ├── OPERATIONS_MANUAL.md
-    ├── ADMIN_GUIDE.md
-    ├── USER_GUIDE.md
-    ├── HIPAA_COMPLIANCE.md
-    ├── AUDIT_LOG_GUIDE.md
-    └── RUNBOOKS/
-        ├── server-down.md
-        ├── epic-connection-failure.md
-        └── sso-issues.md
-```
+### 🏥 For Hospital Administrators
+- 📘 [Operations Manual](hospital-deployment/OPERATIONS_MANUAL.md) - System architecture, incident response
+- 🔐 [HIPAA Compliance](hospital-deployment/HIPAA_COMPLIANCE.md) - De-identification, audit logs
+- 👤 [Admin Guide](hospital-deployment/ADMIN_GUIDE.md) - User management, monitoring
+- 📊 [Cost Tracking](operations/COST_TRACKING_MONITORING.md) - Real-time budget management
+- 🛡️ [Data Governance](operations/DATA_GOVERNANCE.md) - Privacy, retention policies
 
-**Total:** 26 documentation files
-**Root Level:** 6 files (down from 14) + 5 subdirectories
+### 🧑‍⚕️ For Clinicians & Researchers
+- 📖 [User Guide](hospital-deployment/USER_GUIDE.md) - How to use the system
+- 📝 [Automated Patient Reports](guides/AUTOMATED_PATIENT_REPORTS.md) - Generate analysis reports
+- 🔗 [Clinical-Spatial Integration](guides/CLINICAL_SPATIAL_INTEGRATION.md) - How data integrates
 
-**Note:** Testing documentation has been consolidated into [tests/](../tests/) directory.
+### 💻 For Developers
+- ✅ [Server Implementation Status](SERVER_IMPLEMENTATION_STATUS.md) - Current server state (167 tests ✅)
+- 🚀 [Claude Desktop Quickstart](guides/CLAUDE_DESKTOP_QUICKSTART.md) - Local development setup
+- ☁️ [Deployment Status](deployment/DEPLOYMENT_STATUS.md) - 9 servers on GCP Cloud Run ✅
+- 🧪 [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) - Test deployed servers via Claude API
+- 🔧 [Error Handling](technical/ERROR_HANDLING_RETRY_LOGIC.md) - Resilience patterns
+
+### 🧪 For QA & Testing
+- 📋 [Testing Overview](../tests/README.md) - 167 automated tests across all servers
+- ⚡ [Quick Test Prompts](../tests/manual_testing/QUICK_TEST_PROMPTS.md) - Copy-paste queries for rapid testing
+- 🏥 [PatientOne Tests](../tests/manual_testing/PatientOne-OvarianCancer/) - End-to-end integration workflows
+
+### 🔧 For IT Operations
+- 📚 [Operations Manual](hospital-deployment/OPERATIONS_MANUAL.md) - System operations
+- 🔐 [Security](deployment/SECURITY.md) - Security considerations for POC
+- 📊 [Audit Log Guide](hospital-deployment/AUDIT_LOG_GUIDE.md) - 10-year retention procedures
+- 🚨 [Runbooks](hospital-deployment/RUNBOOKS/) - Incident response procedures (server-down, SSO issues, Epic failures)
 
 ---
 
-## 🎭 Documentation by Audience
+## 🗂️ All Documentation Files
 
-### For Funders & Decision-Makers
-1. [Executive Summary](EXECUTIVE_SUMMARY.md) - Start here for ROI, budget, timeline
-2. [Production Roadmap](PRODUCTION_ROADMAP.md) - Path to production deployment
-3. [Cost Analysis](operations/COST_ANALYSIS.md) - Detailed cost breakdown
-4. [Risk Mitigation Summary](operations/RISK_MITIGATION_SUMMARY.md) - Risk assessment
+### 📁 Getting Started
+- 🚀 [Claude Desktop Quickstart](guides/CLAUDE_DESKTOP_QUICKSTART.md) - Set up MCP servers locally
+- ⚡ [Quick Test Prompts](../tests/manual_testing/QUICK_TEST_PROMPTS.md) - Sample queries for each server
+- 📝 [Automated Patient Reports](guides/AUTOMATED_PATIENT_REPORTS.md) - Generate comprehensive reports
 
-### For Hospital Administrators
-1. [Hospital Deployment Guide](hospital-deployment/OPERATIONS_MANUAL.md)
-2. [HIPAA Compliance](hospital-deployment/HIPAA_COMPLIANCE.md)
-3. [Admin Guide](hospital-deployment/ADMIN_GUIDE.md)
-4. [Cost Tracking & Monitoring](operations/COST_TRACKING_MONITORING.md)
-5. [Data Governance](operations/DATA_GOVERNANCE.md)
+### 📁 Deployment & Operations
+- ☁️ [Deployment Status](deployment/DEPLOYMENT_STATUS.md) - 9 servers deployed to GCP Cloud Run ✅
+- 🧪 [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) - Test deployed servers
+- 🔐 [Security](deployment/SECURITY.md) - POC security considerations
+- 🏥 [Hospital Deployment](hospital-deployment/) - Production HIPAA-compliant setup (5 docs + runbooks)
 
-### For Clinicians & Researchers
-1. [User Guide](hospital-deployment/USER_GUIDE.md) - How to use the system
-2. [Automated Patient Reports](guides/AUTOMATED_PATIENT_REPORTS.md) - Generate analysis reports
-3. [Clinical-Spatial Integration](guides/CLINICAL_SPATIAL_INTEGRATION.md) - How data integrates
+### 📁 Cost & Governance
+- 💰 [Cost Analysis](operations/COST_ANALYSIS.md) - $0.32 demo to $7-102 production per analysis
+- 📊 [Cost Tracking & Monitoring](operations/COST_TRACKING_MONITORING.md) - Real-time monitoring
+- 🛡️ [Data Governance](operations/DATA_GOVERNANCE.md) - Data handling, privacy, retention
+- ⚠️ [Risk Mitigation](operations/RISK_MITIGATION_SUMMARY.md) - Risk assessment
 
-### For Developers
-1. [Server Implementation Status](SERVER_IMPLEMENTATION_STATUS.md) - Current server state
-2. [Claude Desktop Quickstart](guides/CLAUDE_DESKTOP_QUICKSTART.md) - Local development setup
-3. [Deployment Status](deployment/DEPLOYMENT_STATUS.md) - GCP Cloud Run deployment
-4. [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) - Test deployed servers
-5. [Error Handling & Retry Logic](technical/ERROR_HANDLING_RETRY_LOGIC.md) - Resilience patterns
+### 📁 Technical Deep Dives
+- 🔧 [Error Handling & Retry Logic](technical/ERROR_HANDLING_RETRY_LOGIC.md) - Resilience patterns
+- 🔗 [Clinical-Spatial Integration](guides/CLINICAL_SPATIAL_INTEGRATION.md) - Data integration patterns
 
-### For QA & Testing
-1. [Testing Overview](../tests/README.md) - Complete testing documentation (167 automated tests)
-2. [GCP Testing Guide](../tests/integration/GCP_TESTING_GUIDE.md) - Test deployed servers via Claude API
-3. [Quick Test Prompts](../tests/manual_testing/QUICK_TEST_PROMPTS.md) - Copy-paste queries for rapid testing
-4. [Phase 2 Features Guide](../tests/manual_testing/PHASE2_FEATURES_GUIDE.md) - Cell type deconvolution & DE testing
-5. [PatientOne Tests](../tests/manual_testing/PatientOne-OvarianCancer/) - End-to-end integration tests
+### 📁 Reference Materials
+- ⚠️ [Disclaimers](DISCLAIMERS.md) - Research use only, liability, data disclaimers
+- 📚 [References](REFERENCES.md) - Citations, publications, external resources
 
-### For IT Operations
-1. [Operations Manual](hospital-deployment/OPERATIONS_MANUAL.md) - System operations
-2. [Admin Guide](hospital-deployment/ADMIN_GUIDE.md) - User and system management
-3. [Audit Log Guide](hospital-deployment/AUDIT_LOG_GUIDE.md) - Logging and compliance
-4. [Runbooks](hospital-deployment/RUNBOOKS/) - Incident response procedures
-5. [Security](deployment/SECURITY.md) - Security considerations
+**Total:** 26 documentation files organized in 5 subdirectories
 
 ---
-
-## 🔍 Quick Links by Topic
-
-### Cost & Budget
-- [Cost Analysis](operations/COST_ANALYSIS.md) - $0.32 demo to $7-29 production per analysis
-- [Cost Tracking & Monitoring](operations/COST_TRACKING_MONITORING.md) - Real-time monitoring
-- [Executive Summary](EXECUTIVE_SUMMARY.md) - ROI: $3,187 savings per patient
-
-### Deployment
-- [Deployment Status](deployment/DEPLOYMENT_STATUS.md) - 9 servers deployed to GCP ✅
-- [GCP Testing Guide](deployment/GCP_TESTING_GUIDE.md) - Test via Claude API
-- [Production Roadmap](PRODUCTION_ROADMAP.md) - 12-16 week timeline
-
-### Hospital Production
-- [Hospital Deployment](hospital-deployment/) - Complete HIPAA-compliant setup
-- [3-Month Timeline](PRODUCTION_ROADMAP.md#timeline) - MVP → Pilot → Production
-- [HIPAA Compliance](hospital-deployment/HIPAA_COMPLIANCE.md) - De-identification, audit logs
-
-### Security & Compliance
-- [HIPAA Compliance](hospital-deployment/HIPAA_COMPLIANCE.md) - Safe Harbor de-identification
-- [Security](deployment/SECURITY.md) - POC security considerations
-- [Data Governance](operations/DATA_GOVERNANCE.md) - Privacy, retention, access control
-- [Audit Log Guide](hospital-deployment/AUDIT_LOG_GUIDE.md) - 10-year retention
-
-### Testing
-- [Testing Overview](../tests/README.md) - 167 automated tests across all servers ✅
-- [GCP Testing Guide](../tests/integration/GCP_TESTING_GUIDE.md) - Test 9 deployed servers via Claude API
-- [Quick Test Prompts](../tests/manual_testing/QUICK_TEST_PROMPTS.md) - 10 copy-paste queries for rapid testing
-- [PatientOne Integration Tests](../tests/manual_testing/PatientOne-OvarianCancer/) - End-to-end workflows
-
----
-
-## 📖 Related Documentation
-
-- **Main Project:** [README.md](../README.md) - Project overview and architecture
-- **PatientOne:** [architecture/patient-one/](../architecture/patient-one/) - End-to-end workflow
-- **Servers:** [servers/*/README.md](../servers/) - Individual server documentation
-- **Testing:** [tests/](../tests/) - Test implementations and results
 
 ## 🏗️ Architecture Documentation
 
 Detailed workflow architectures for each analysis modality:
 
-- **[Multiomics Integration](../architecture/multiomics/README.md)** - RNA/Protein/Phospho integration workflow (mcp-multiomics)
-- **[Spatial Transcriptomics](../architecture/spatial-transcriptomics/README.md)** - Visium spatial RNA-seq pipeline (mcp-spatialtools)
-- **[Imaging Analysis](../architecture/imaging/README.md)** - H&E + MxIF workflows (mcp-openimagedata, mcp-deepcell)
-- **[PatientOne Use Case](../architecture/patient-one/README.md)** - End-to-end precision medicine workflow
+- 🧬 **[Clinical Data](../architecture/clinical/README.md)** - FHIR EHR integration (mcp-epic, mcp-mockepic)
+- 🧪 **[Genomic Cohorts](../architecture/genomic/README.md)** - TCGA cohort analysis (mcp-tcga)
+- 🖼️ **[Imaging](../architecture/imaging/README.md)** - H&E + MxIF workflows (mcp-openimagedata, mcp-deepcell)
+- 🔬 **[Multiomics](../architecture/multiomics/README.md)** - RNA/Protein/Phospho integration (mcp-multiomics)
+- 📍 **[Spatial Transcriptomics](../architecture/spatial-transcriptomics/README.md)** - Visium spatial RNA-seq (mcp-spatialtools)
+- 🤖 **[AI/ML Inference](../architecture/ai-ml/README.md)** - Foundation models (mcp-huggingface)
+- ⚙️ **[Workflow Orchestration](../architecture/workflow/README.md)** - Nextflow pipelines (mcp-seqera)
+- 🏥 **[PatientOne Use Case](../tests/manual_testing/PatientOne-OvarianCancer/architecture/README.md)** - End-to-end precision medicine workflow
 
 ---
 
-**Last Updated:** 2026-01-10
-**Total Documents:** 30 files
-**Status:** Documentation complete for POC and hospital deployment
+## 🔗 Related Documentation
+
+- 📖 **Main Project:** [README.md](../README.md) - Project overview and quick start
+- 🧬 **Servers:** [servers/*/README.md](../servers/) - Individual server documentation (10 servers)
+- 🧪 **Testing:** [tests/](../tests/) - Test implementations and results (167 tests ✅)
+
+---
+
+**Last Updated:** 2026-01-11
+**Total Documents:** 26 files + 6 persona guides
