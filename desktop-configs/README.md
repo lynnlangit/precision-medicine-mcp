@@ -70,6 +70,8 @@ Claude Desktop runs in a sandboxed environment and cannot resolve `python` or `p
 
 ### Environment Variables
 
+📋 **[See Complete Server Status →](../servers/README.md#-server-status)** - All 10 servers with tools, status, and documentation
+
 Each server requires specific environment variables:
 
 | Server | Required Variables | Purpose |

@@ -55,6 +55,8 @@ The Precision Medicine MCP system provides AI-powered analysis of spatial transc
 
 ## Architecture
 
+📋 **[See Complete Server Status →](../../servers/README.md#-server-status)** - All 10 MCP servers with tools, status, and documentation
+
 ### High-Level Architecture
 
 ```

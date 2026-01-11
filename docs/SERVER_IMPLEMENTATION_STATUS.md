@@ -18,20 +18,9 @@
 
 ---
 
-## Quick Reference Table
+## Quick Reference
 
-| Server | Real % | Status | Safe for Production? | Primary Risk |
-|--------|--------|--------|---------------------|--------------|
-| **mcp-multiomics** | **85%** | ✅ Production Ready | **YES** | Low - Extensively tested |
-| **mcp-fgbio** | **95%** | ✅ Production Ready | **YES** | Low - Core features real |
-| **mcp-spatialtools** | **95%** | ✅ Production Ready | **YES** | Low - All core features implemented |
-| **mcp-epic** | **100%** | ✅ Production Ready (Local Only) | **YES** | Low - Real Epic FHIR with de-identification |
-| **mcp-openimagedata** | **60%** | ⚠️ Partial | **NO** | Medium - Registration/features mocked |
-| **mcp-tcga** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
-| **mcp-deepcell** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
-| **mcp-huggingface** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
-| **mcp-seqera** | **0%** | ❌ Fully Mocked | **NO** | **CRITICAL - All synthetic** |
-| **mcp-mockepic** | **0%** | ✅ Intentional Mock | **N/A** | Low - Mock EHR by design |
+📋 **[See Server Status Table →](../servers/README.md#-server-status)** - Tools, status, and documentation for all 10 servers
 
 **Production Ready Count:** 4/10 servers (40%)
 **Fully Mocked Count:** 5/10 servers (50%)
@@ -40,6 +29,15 @@
 **Total MCP Servers:** 10 (9 deployed to GCP + mcp-epic local only)
 
 **🎉 GCP Cloud Run Deployment:** 9 servers deployed to production infrastructure (2025-12-30)
+
+### Production Safety Summary
+
+| Safe for Production? | Servers | Risk Level |
+|---------------------|---------|------------|
+| **YES** | mcp-multiomics (85%), mcp-fgbio (95%), mcp-spatialtools (95%), mcp-epic (100% local) | ✅ Low - Extensively tested |
+| **NO** | mcp-openimagedata (60%) | ⚠️ Medium - Registration/features mocked |
+| **NO** | mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera (0%) | ❌ **CRITICAL - All synthetic** |
+| **N/A** | mcp-mockepic (0%) | ✅ Low - Mock EHR by design |
 
 ---
 

@@ -43,6 +43,8 @@ cp ../../../desktop-configs/claude_desktop_config.json \
 
 9 servers successfully deployed and tested on Google Cloud Platform (mcp-epic runs locally):
 
+📋 **[See Server Status →](../../../servers/README.md#-server-status)** - Complete server status and implementation details
+
 | Server | Status | Test Result | URL |
 |--------|--------|-------------|-----|
 | mcp-fgbio | ✅ Running | ✓ PASS | https://mcp-fgbio-ondu7mwjpa-uc.a.run.app |

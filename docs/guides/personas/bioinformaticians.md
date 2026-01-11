@@ -69,14 +69,13 @@ graph LR
 
 ## Production-Ready Servers
 
-| Server | Tools | Status | Key Features |
-|--------|-------|--------|--------------|
-| **mcp-multiomics** | 9 | ✅ Production | HAllA integration, Stouffer meta-analysis, upstream regulators |
-| **mcp-fgbio** | 4 | ✅ Production | FASTQ/VCF QC, genome reference management |
-| **mcp-spatialtools** | 14 | ✅ 95% Real | STAR alignment, ComBat batch correction, pathway enrichment, Moran's I, 4 visualizations |
+📋 **[See Complete Server Status →](../../../servers/README.md#-server-status)** - All 10 servers with tools, status, and documentation
 
-**Additional Production-Ready Servers:**
-- mcp-epic (100% real - Epic FHIR with de-identification)
+**Production Ready (4/10 servers):**
+- **mcp-multiomics** (85% real) - HAllA integration, Stouffer meta-analysis, upstream regulators
+- **mcp-fgbio** (95% real) - FASTQ/VCF QC, genome reference management
+- **mcp-spatialtools** (95% real) - STAR alignment, ComBat batch correction, pathway enrichment, Moran's I, 4 visualizations
+- **mcp-epic** (100% real, local only) - Epic FHIR with HIPAA de-identification
 
 **Mocked Servers** (workflow demonstration only):
 - mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera (0% real)

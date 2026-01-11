@@ -9,18 +9,12 @@ You have **10 MCP servers** configured in Claude Desktop, giving you access to s
 
 ### Available MCP Servers
 
-| Server | Status | Purpose | Tools Available |
-|--------|--------|---------|-----------------|
-| **spatialtools** | ✅ **ACTIVE** | Spatial transcriptomics analysis | 10 tools (Phase 2 complete) |
-| **epic** | ✅ **ACTIVE** | GCP Healthcare API FHIR integration | Patient data retrieval |
-| fgbio | 🟡 DRY_RUN | Genomics (fgbio toolkit) | Reference-based analysis |
-| openimagedata | 🟡 DRY_RUN | Public imaging datasets | Image data access |
-| seqera | 🟡 DRY_RUN | Nextflow pipelines via Seqera | Workflow execution |
-| huggingface | 🟡 DRY_RUN | HuggingFace models | ML model integration |
-| deepcell | 🟡 DRY_RUN | DeepCell segmentation | Cell segmentation |
-| mockepic | 🟡 DRY_RUN | Mock Epic FHIR | Testing FHIR workflows |
-| tcga | 🟡 DRY_RUN | TCGA cancer genomics | Public cancer data |
-| multiomics | 🟡 DRY_RUN | Multi-omics integration | Data fusion |
+📋 **[See Complete Server Status →](../../../servers/README.md#-server-status)** - All 10 servers with tools, status, and documentation
+
+**Active Configuration:**
+- ✅ **spatialtools** - Spatial transcriptomics analysis (14 tools, 95% real)
+- ✅ **epic** - GCP Healthcare API FHIR integration (4 tools, 100% real, local only)
+- 🟡 **fgbio, openimagedata, seqera, huggingface, deepcell, mockepic, tcga, multiomics** - DRY_RUN mode for testing
 
 **Legend:**
 - ✅ **ACTIVE** = Real data mode, fully functional

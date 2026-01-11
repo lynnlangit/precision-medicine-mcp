@@ -17,6 +17,8 @@
 
 ## 📋 Coverage by Server
 
+📋 **[See Server Status →](../servers/README.md#-server-status)** - Complete server status and implementation details
+
 | Server | Coverage | Tests | Status | Production Ready |
 |--------|----------|-------|--------|------------------|
 | 🧬 **mcp-fgbio** | 77% | 29 | ✅ Complete | ✅ YES (95% real) |

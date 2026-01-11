@@ -16,19 +16,9 @@ This document outlines the prioritized path to move the Precision Medicine MCP P
 
 ### GCP Cloud Run Deployment: ✅ COMPLETE
 
-All 9 MCP servers successfully deployed to Google Cloud Platform and tested:
+All 9 MCP servers successfully deployed to Google Cloud Platform and tested.
 
-| Server | Implementation Status | GCP Deployment | Test Result |
-|--------|---------------------|----------------|-------------|
-| mcp-fgbio | 95% real | ✅ Deployed | ✓ PASS |
-| mcp-multiomics | 95% real | ✅ Deployed | ✓ PASS |
-| mcp-spatialtools | 95% real | ✅ Deployed | ✓ PASS |
-| mcp-tcga | Mock (by design) | ✅ Deployed | ✓ PASS |
-| mcp-openimagedata | 30% real (basic features) | ✅ Deployed | ✓ PASS |
-| mcp-seqera | Mock (by design) | ✅ Deployed | ✓ PASS |
-| mcp-huggingface | Mock (by design) | ✅ Deployed | ✓ PASS |
-| mcp-deepcell | Mock (by design) | ✅ Deployed | ✓ PASS |
-| mcp-mockepic | Mock (by design) | ✅ Deployed | ✓ PASS |
+📋 **[See Server Status →](../servers/README.md#-server-status)** - Complete status, tools, and implementation details for all 10 servers
 
 **Test Results:** 9/9 servers passed functional testing via Claude API
 

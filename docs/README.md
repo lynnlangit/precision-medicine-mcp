@@ -71,6 +71,8 @@ Each guide includes workflows, examples, tools, and resources tailored to your n
 
 ## 🏗️ Architecture by Modality
 
+📋 **[See Individual Server Status →](../servers/README.md#-server-status)** - Detailed tools and documentation for all 10 servers
+
 Detailed workflow architectures for each analysis type:
 
 | Modality | Servers | Documentation |
