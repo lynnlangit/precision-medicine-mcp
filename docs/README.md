@@ -408,16 +408,9 @@ The Precision Medicine MCP system is **production-ready for HIPAA-compliant hosp
 - [HIPAA Compliance](hospital-deployment/HIPAA_COMPLIANCE.md) - Compliance validation
 - [Audit Log Guide](hospital-deployment/AUDIT_LOG_GUIDE.md) - 10-year retention procedures
 
-**Deployment Configuration:**
-- **Budget**: ~$1,000/month during pilot phase
-- **Timeline**: 6 months (MVP Foundation → Pilot Testing → Production Launch)
-- **Users**: Initial pilot with 5 testers (2 clinicians, 3 bioinformaticians)
-- **Data Scope**: 100 patients for ovarian cancer spatial genomics research
-- **Rationale**: Healthcare deployments require 2× longer due to HIPAA, IRB, and clinical validation
 
 **6-Month Deployment Timeline:**
 
-Healthcare deployments require longer timelines due to HIPAA compliance, clinical validation, and practitioner review requirements.
 
 ```mermaid
 gantt
