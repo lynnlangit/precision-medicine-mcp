@@ -91,7 +91,7 @@ graph TB
 ### For Research Hospitals
 
 - **Accelerate Research**: Reduce multi-omics analysis time from weeks to hours
-- **Cost Savings**: $3,187 saved per patient compared to traditional manual analysis
+- **Cost Savings**: $3,000+ saved per patient compared to traditional manual analysis
 - **Risk Reduction**: 41% reduction in analysis errors through automated data integration
 - **HIPAA Compliance**: Built-in de-identification and audit logging for clinical data
 - **Scalable**: Start with 100 patients, scale to institutional biobank
@@ -112,31 +112,11 @@ graph TB
 
 ## Financial Summary
 
-### Development Costs (Sunk)
-- **Total POC Development**: ~$8,000 (6 weeks, volunteer effort)
-  - Infrastructure setup: $2,000
-  - MCP server development: $4,500
-  - Testing and validation: $1,500
-
-### Operational Costs (Ongoing)
-
-**Demonstration/Testing (Small Synthetic Files):**
-- **Per Analysis**: ~$1 (DRY_RUN or small files)
-- **Monthly (100 analyses)**: ~$100
-
-**Production - Small Files (Testing/Development):**
-- **Per Analysis**: $7 - $29 (small synthetic files for workflow testing)
-- **Monthly Pilot** (5 users, 100 analyses): ~$1,300
-
-**Production - Realistic Hospital Volumes:**
-- **Per Analysis**: $24 - $102 (realistic 3-8 GB patient data)
-  - Pre-aligned data (Space Ranger output): $24-92 per analysis
-  - Raw FASTQ (full pipeline): $29-102 per analysis
-  - Includes: Compute ($22-99) + APIs (~$1) + Claude tokens (~$1-2)
-- **Monthly Pilot** (5 users, 100 patients): ~$2,400 - $9,200
-- **Annual Production** (20 users, 500 patients): ~$12,000 - $51,000
-
 ### Return on Investment
+
+**Payback Period:** First 2-3 patients analyzed  
+**Annual ROI** (100 patients, production volumes): ~$313,000 savings  
+**Annual ROI** (500 patients, production volumes): ~$1.6M savings
 
 **Traditional Multi-Omics Analysis:**
 - Manual data integration: 40-60 hours @ $150/hr = $6,000 - $9,000
@@ -157,9 +137,23 @@ graph TB
 - Timeline: Same day to 2 days (despite larger data, parallel processing maintains speed)
 - **Savings per Patient:** $3,098 - $3,176 (average: $3,137)
 
-**Payback Period:** First 2-3 patients analyzed
-**Annual ROI** (100 patients, production volumes): ~$313,000 savings
-**Annual ROI** (500 patients, production volumes): ~$1.6M savings
+### Operational Costs (Ongoing)
+
+**Demonstration/Testing (Small Synthetic Files):**
+- **Per Analysis**: ~$1 (DRY_RUN or small files)
+- **Monthly (100 analyses)**: ~$100
+
+**Production - Small Files (Testing/Development):**
+- **Per Analysis**: $7 - $29 (small synthetic files for workflow testing)
+- **Monthly Pilot** (5 users, 100 analyses): ~$1,300
+
+**Production - Realistic Hospital Volumes:**
+- **Per Analysis**: $24 - $102 (realistic 3-8 GB patient data)
+  - Pre-aligned data (Space Ranger output): $24-92 per analysis
+  - Raw FASTQ (full pipeline): $29-102 per analysis
+  - Includes: Compute ($22-99) + APIs (~$1) + Claude tokens (~$1-2)
+- **Monthly Pilot** (5 users, 100 patients): ~$2,400 - $9,200
+- **Annual Production** (20 users, 500 patients): ~$12,000 - $51,000
 
 ---
 
@@ -374,48 +368,13 @@ Healthcare deployments require longer timelines than AdTech/FinTech due to HIPAA
 
 ---
 
-## Funding Request
-
-### Pilot Phase (3 months)
-
-**Total Request:** $15,000
-
-**Budget Breakdown:**
-- **Development Team Support** (20 hrs/month @ $150/hr): $9,000
-  - Month 1: Infrastructure setup and SSO integration
-  - Month 2: Testing support and bug fixes
-  - Month 3: Documentation and knowledge transfer
-
-- **Operational Costs** (GCP + Anthropic API): $3,100
-  - Month 1 MVP: $800
-  - Month 2 Pilot: $1,100
-  - Month 3 Production: $1,200
-
-- **Training and Documentation**: $2,900
-  - User training materials
-  - Hospital-specific documentation
-  - Compliance documentation
-  - Runbook creation
-
-### Production Phase (Year 1)
-
-**Estimated Annual Budget:** $30,000
-
-- **Operational Costs**: $15,000 (20 users, 500 patients)
-- **Ongoing Support**: $12,000 (8 hrs/month @ $150/hr)
-- **Server Enhancements**: $3,000 (mock → production for remaining servers)
-
-**ROI Year 1:** $318,700 savings - $30,000 cost = **$288,700 net benefit**
-
----
-
 ## Next Steps
 
 ### For Funding Decision (Week 0)
 1. ✅ Review this executive summary and detailed documentation
 2. ⏳ Schedule demo with hospital stakeholders (2 hours)
 3. ⏳ Obtain commitment from hospital IT, Epic integration, and research teams
-4. ⏳ Approve pilot budget ($15,000)
+4. ⏳ Approve pilot budget ($150,000)
 5. ⏳ Identify GCP project and Azure AD tenant
 
 ### For Deployment Kickoff (Week 1)
@@ -426,7 +385,7 @@ Healthcare deployments require longer timelines than AdTech/FinTech due to HIPAA
 5. Select 10-20 test patients from ovarian cancer research cohort
 
 ### For Communication
-- **Demo Request:** Contact [Project Lead] to schedule live demonstration
+- **Demo Request:** Contact Lynn Langit to schedule live demonstration
 - **Technical Questions:** See [Technical Documentation](../README.md)
 - **Hospital Deployment:** See [Hospital Deployment Guide](../infrastructure/hospital-deployment/README.md)
 - **Cost Details:** See [Cost Analysis](operations/COST_ANALYSIS.md)
@@ -437,9 +396,9 @@ Healthcare deployments require longer timelines than AdTech/FinTech due to HIPAA
 
 The Precision Medicine MCP System represents a proven, cost-effective solution for hospital-based precision oncology research. With:
 
-- **$3,187 savings per patient** compared to traditional analysis
+- **$3,000+ savings per patient** compared to traditional analysis
 - **HIPAA-compliant, production-ready** deployment architecture
-- **3-month timeline** from approval to production
+- **6-month timeline** from approval to production
 - **Low technical risk** with comprehensive mitigation strategies
 - **Strong ROI**: Payback in first 3 patients, $288,700 net benefit Year 1
 
@@ -450,4 +409,4 @@ This system is ready for immediate pilot deployment, with a clear path to instit
 **Document Version:** 1.0
 **Date:** 2025-12-30
 **Status:** Ready for Funding Review
-**Contact:** [Project Lead Contact Information]
+**Contact:** Lynn Langit
