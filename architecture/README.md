@@ -2,8 +2,6 @@
 
 **Purpose:** Architecture documentation for modality-specific analysis workflows
 
-**⚠️ Important:** Not all servers are production-ready. Check [Server Implementation Status](../docs/SERVER_IMPLEMENTATION_STATUS.md) before using for research or production.
-
 ---
 
 ## Architecture by Analysis Modality
@@ -233,6 +231,8 @@ For deployment, testing, and production operations, see:
 ---
 
 ## Complete Server Inventory
+
+**⚠️ Important:** Not all servers are production-ready. Check [Server Implementation Status](../docs/SERVER_IMPLEMENTATION_STATUS.md) before using for research or production.
 
 | Server | Tools | Status | Primary Use |
 |--------|-------|--------|-------------|
