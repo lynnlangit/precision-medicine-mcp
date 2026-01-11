@@ -12,15 +12,72 @@ This directory contains high-level architecture documentation organized by **ana
 
 | Modality | Servers | Tools | Status | Documentation |
 |----------|---------|-------|--------|---------------|
+| **Clinical Data** | mcp-epic, mcp-mockepic | 7 | Production/Mock | [clinical/README.md](clinical/README.md) |
+| **Genomic Cohorts** | mcp-tcga | 5 | Mocked (GDC-ready) | [genomic/README.md](genomic/README.md) |
 | **Imaging** | mcp-openimagedata, mcp-deepcell | 9 | Partial (60%/0%) | [imaging/README.md](imaging/README.md) |
 | **Multiomics** | mcp-multiomics | 10 | Production (85%) | [multiomics/README.md](multiomics/README.md) |
 | **Spatial Transcriptomics** | mcp-fgbio, mcp-spatialtools | 18 | Production (95%) | [spatial-transcriptomics/README.md](spatial-transcriptomics/README.md) |
+| **AI/ML Inference** | mcp-huggingface | 3 | Mocked (HF-ready) | [ai-ml/README.md](ai-ml/README.md) |
+| **Workflow Orchestration** | mcp-seqera | 3 | Mocked (Seqera-ready) | [workflow/README.md](workflow/README.md) |
 
-**Total:** 3 analysis modalities, 5 specialized servers, 37 tools
+**Total:** 7 analysis modalities, 10 specialized servers, 55 tools
 
 ---
 
-## 1. Imaging Analysis
+## 1. Clinical Data Retrieval
+
+**Purpose:** Electronic Health Record (EHR) integration for patient clinical context
+
+**Servers:**
+- **mcp-epic** (4 tools, 100% real) - Real Epic FHIR API with HIPAA de-identification (local only)
+- **mcp-mockepic** (3 tools, mock by design) - Synthetic patient data for development/demos (GCP deployed)
+
+**Key Features:**
+- FHIR R4 data retrieval (demographics, diagnoses, labs, medications)
+- Automatic HIPAA Safe Harbor de-identification
+- Clinical-spatial outcome linkage
+- OAuth 2.0 authentication with rate limiting
+
+**Workflow:**
+```
+Patient EHR → FHIR API → De-identification → Clinical Data
+  ↓ Demographics, Conditions, Observations, Medications
+  ↓ Link to spatial/multi-omics findings
+  ↓ Outcome correlation (PFS, treatment response)
+```
+
+**See:** [clinical/README.md](clinical/README.md) for detailed architecture
+
+---
+
+## 2. Genomic Cohort Analysis
+
+**Purpose:** TCGA cohort comparison for population-level genomic context
+
+**Server:**
+- **mcp-tcga** (5 tools, mocked) - Query 33 TCGA cancer types, 11,000+ samples
+
+**Key Features:**
+- Cohort discovery across 33 cancer types
+- Gene expression comparison (z-scores, percentiles, p-values)
+- Somatic mutation frequency queries
+- Survival stratification (Kaplan-Meier, hazard ratios)
+- Statistical testing against population distributions
+
+**Workflow:**
+```
+TCGA Database (33 cancer types)
+  ↓ Expression Data, Mutations, Survival
+  ↓ Statistical Comparison (patient vs cohort)
+  ↓ Survival Analysis, Mutation Frequency
+  ↓ Integration with spatial/clinical data
+```
+
+**See:** [genomic/README.md](genomic/README.md) for detailed architecture
+
+---
+
+## 3. Imaging Analysis
 
 **Purpose:** Histology and multiplexed immunofluorescence (MxIF) image processing
 
@@ -36,7 +93,7 @@ This directory contains high-level architecture documentation organized by **ana
 
 ---
 
-## 2. Multiomics Integration
+## 4. Multiomics Integration
 
 **Purpose:** PDX multi-omics data integration with preprocessing, association testing, and therapeutic target prediction
 
@@ -67,7 +124,33 @@ RNA + Protein + Phospho Data
 
 ---
 
-## 3. Spatial Transcriptomics
+## 5. AI/ML Model Inference
+
+**Purpose:** Genomic foundation model inference for cell type prediction and sequence embedding
+
+**Server:**
+- **mcp-huggingface** (3 tools, mocked) - Pre-trained model access (DNABERT-2, Geneformer, Nucleotide-Transformer)
+
+**Key Features:**
+- Cell type annotation from single-cell expression data
+- DNA/RNA sequence embeddings (768-dimensional vectors)
+- Variant effect scoring via embedding distance
+- Foundation model feature extraction
+
+**Workflow:**
+```
+Single-cell Data / DNA Sequences
+  ↓ Load foundation model (Geneformer, DNABERT-2, etc.)
+  ↓ Generate predictions or embeddings
+  ↓ Cell type labels OR sequence feature vectors
+  ↓ Integration with spatial/multi-omics analysis
+```
+
+**See:** [ai-ml/README.md](ai-ml/README.md) for detailed architecture
+
+---
+
+## 6. Spatial Transcriptomics
 
 **Purpose:** Spatial gene expression analysis with tissue context
 
@@ -85,6 +168,33 @@ RNA + Protein + Phospho Data
 - **FASTQ Workflow** (implemented, not tested) - Raw sequencing alignment with STAR
 
 **See:** [spatial-transcriptomics/README.md](spatial-transcriptomics/README.md) for detailed architecture
+
+---
+
+## 7. Workflow Orchestration
+
+**Purpose:** Nextflow pipeline execution and monitoring via Seqera Platform
+
+**Server:**
+- **mcp-seqera** (3 tools, mocked) - Launch/monitor pipelines, access nf-core catalog (90+ workflows)
+
+**Key Features:**
+- nf-core pipeline submission (rnaseq, sarek, spatial, etc.)
+- Multi-cloud execution (AWS Batch, Azure Batch, GCP Batch, local HPC)
+- Real-time progress monitoring and resource tracking
+- Cost estimation and usage metrics
+
+**Workflow:**
+```
+Select Pipeline (nf-core/rnaseq, nf-core/sarek, etc.)
+  ↓ Configure parameters (genome, aligner, input paths)
+  ↓ Choose compute environment (AWS, GCP, local)
+  ↓ Submit job → Monitor progress
+  ↓ Track resources (CPU hours, memory, cost)
+  ↓ Retrieve results for downstream analysis
+```
+
+**See:** [workflow/README.md](workflow/README.md) for detailed architecture
 
 ---
 
