@@ -8,11 +8,11 @@
 <img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/data/images/repo-image.png">
 
 ## What and Why
-- The Problem: multi-modal precision medicine is siloed and code-heavy
+- The Problem: multi-modal precision medicine is siloed and code-heavy, **too slow** for patient care treatment options
 - This Solution: a set of custom MCP servers for analysis and data retrieval (PatientOne/Ovarian Cancer use case example):
-  - Makes complex analysis significantly faster and easier by presenting a customized, single interface for tools and data accessible using natural language questions
-  - System coordinates disparate servers and stitches results together after being given a natural-language prompt
-  - Solution is extensible for other comorbidity types (i.e. other cancers, other diseases)
+  - Makes complex analysis significantly **faster and easier** by presenting a customized, single interface for tools and data accessible using **natural language** questions
+  - System coordinates disparate servers and stitches results together after being given a prompt in English
+  - Solution is **extensible** for other comorbidity types (i.e. other cancers, other diseases)
   - "What is an MCP Server?" [(article)](https://medium.com/@elisowski/mcp-explained-the-new-standard-connecting-ai-to-everything-79c5a1c98288)
 - What it is NOT: Not clinically validated yet
 - See it / Try it: <5 minute local demo (small subset of full example) - [recording](https://www.youtube.com/watch?v=LUldOHHX5Yo) | [code](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/tests/manual_testing/PatientOne-OvarianCancer)
