@@ -15,10 +15,7 @@
   - Solution is extensible for other comorbidity types (i.e. other cancers, other diseases)
   - "What is an MCP Server?" [(article)](https://medium.com/@elisowski/mcp-explained-the-new-standard-connecting-ai-to-everything-79c5a1c98288)
 - What it is NOT: Not clinically validated yet
-- Who it’s for: Researchers, Clinicians, Platform Builders, Workflow Architects
 - See it / Try it: <5 minute local demo - [recording](https://www.youtube.com/watch?v=LUldOHHX5Yo) | [code](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/tests/manual_testing/PatientOne-OvarianCancer)
-
----
 
 ## Featured Use Case: PatientOne
 
@@ -28,11 +25,14 @@
   - [PatientOne Documentation](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/tests/manual_testing/PatientOne-OvarianCancer/architecture)
   - [Quick Start](tests/manual_testing/PatientOne-OvarianCancer/README.md)
   - [Sample Outputs](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/tests/manual_testing/PatientOne-OvarianCancer/architecture/patient-one-outputs)
-  - [Executive Summary](docs/EXECUTIVE_SUMMARY.md) 
+  - [Executive Summary](docs/EXECUTIVE_SUMMARY.md)
 
-## Who is this For?
+ ---
 
-This repository serves multiple audiences in the precision medicine ecosystem. Find your role below:
+## Which Audiences is this example for?
+
+This repository serves multiple audiences in the precision medicine ecosystem.  
+Find your role below and click the associated link to see more information about this example tailored for your role:
 
 ### 🔬 Bioinformaticians
 *Analyze multi-omics cancer data, build data pipelines, develop predictive models*
