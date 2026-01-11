@@ -2,15 +2,6 @@
 
 This directory contains sample data for testing and demonstrating the Precision Medicine MCP servers.
 
-## 📂 Sample Patient Data Directory Structure
-
-- **`patient-data/PAT001-OVC-2025/`** - Complete synthetic patient datasets for PatientOne workflow
-  - **`clinical/`** - clinical patient data (JSON)
-  - **`genomics/`** - variants - vcf data (VCF)
-  - **`imaging/`** - histology and IF imaging data (TIFF)
-  - **`multiomics/`** - multi-omics analysis data - RNA/Protein/Phospho (CSV)
-  - **`imaging/`** - Visium output (CSV)
-
 ## 🏥 PatientOne Synthetic Dataset
 
 For complete details on the PatientOne demonstration dataset (Stage IV Ovarian Cancer):
