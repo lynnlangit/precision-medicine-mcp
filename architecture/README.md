@@ -173,6 +173,11 @@ Architecture documentation for modality-specific analysis workflows.
 - [Servers Directory](../servers/) - Individual server READMEs (10 servers)
 - [Testing Guide](../tests/README.md) - 167 automated tests ✅
 
+### 🔧 Extensibility
+- **[ADD_NEW_MODALITY_SERVER.md](../docs/guides/ADD_NEW_MODALITY_SERVER.md)** - Step-by-step guide for adding new modalities (metabolomics, radiomics, etc.)
+- **[Server Template](../templates/mcp-server-boilerplate/)** - Reusable boilerplate with FastMCP patterns
+- **Time estimate:** 4-8 hours from template to deployed server
+
 ### 📚 Main Docs
 - [Main README](../README.md) - Project overview
 - [Documentation Index](../docs/README.md) - Complete documentation

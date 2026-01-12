@@ -1,0 +1,22 @@
+[project]
+name = "mcp-{{SERVER_NAME}}"
+version = "0.1.0"
+description = "MCP server for {{MODALITY_DESCRIPTION}}"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.13.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "scipy>=1.11.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

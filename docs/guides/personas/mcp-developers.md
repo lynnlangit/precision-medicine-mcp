@@ -9,6 +9,27 @@
 - Integration patterns for external tools (STAR, ComBat, HAllA)
 - Real vs mocked implementation strategies
 
+## 🚀 Building Your Own Modality Server
+
+**NEW:** Complete guide for extending this architecture with new data modalities (metabolomics, radiomics, single-cell, etc.)
+
+📖 **[ADD_NEW_MODALITY_SERVER.md](../ADD_NEW_MODALITY_SERVER.md)** - Comprehensive 500+ line guide with:
+- Step-by-step implementation (planning → deployment)
+- Reusable boilerplate template ([templates/mcp-server-boilerplate](../../../templates/mcp-server-boilerplate/))
+- Integration checklist
+- Testing requirements
+- Example: Adding an 11th server (metabolomics)
+
+**What you get:**
+- ✅ FastMCP patterns and best practices
+- ✅ DRY_RUN mode implementation
+- ✅ Testing framework with pytest
+- ✅ GCP Cloud Run deployment guide
+- ✅ Documentation templates
+- ✅ Integration with existing 10 servers
+
+**Time to add new server:** 4-8 hours from template to deployed
+
 ## Complete System Architecture (10 MCP Servers)
 
 ```mermaid
