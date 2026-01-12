@@ -327,7 +327,7 @@ class MetricsAggregator:
 
 def load_sample_metrics(sample_name: str = "patientone_workflow") -> MetricsAggregator:
     """
-    Load sample metrics from dashboard/sample_data directory.
+    Load sample metrics from ui/dashboard/sample_data directory.
 
     Args:
         sample_name: Name of sample file (without .yaml extension)

@@ -84,7 +84,7 @@ See [sample_data/patientone_workflow.yaml](sample_data/patientone_workflow.yaml)
 ## Architecture
 
 ```
-dashboard/
+ui/dashboard/
 ├── streamlit_app.py              # Main Streamlit dashboard
 ├── cost_calculator.py            # Anthropic API pricing calculations
 ├── metrics_aggregator.py         # Load and process metrics
@@ -338,7 +338,7 @@ jobs:
 
       - name: Analyze costs
         run: |
-          pip install -r dashboard/requirements.txt
+          pip install -r ui/dashboard/requirements.txt
           python -c "
           from metrics_aggregator import MetricsAggregator
           agg = MetricsAggregator('test_metrics.yaml')
@@ -376,9 +376,9 @@ pip install -r requirements.txt
 
 **Issue**: `FileNotFoundError: Sample metrics file not found`
 
-**Solution**: Ensure you're running from the `dashboard/` directory:
+**Solution**: Ensure you're running from the `ui/dashboard/` directory:
 ```bash
-cd dashboard
+cd ui/dashboard
 streamlit run streamlit_app.py
 ```
 
