@@ -18,6 +18,7 @@
 - [Backup & Disaster Recovery](#backup--disaster-recovery)
 - [Incident Response](#incident-response)
 - [Maintenance Procedures](#maintenance-procedures)
+- [Bias Auditing Procedures](#bias-auditing-procedures)
 - [Security Operations](#security-operations)
 - [Contact Information](#contact-information)
 
@@ -465,6 +466,227 @@ gcloud run services update-traffic mcp-fgbio \
   --to-revisions=mcp-fgbio-00001-abc=100 \
   --region=us-central1
 ```
+
+---
+
+## Bias Auditing Procedures
+
+### Overview
+
+All AI/ML-powered precision medicine analyses must undergo regular bias audits to ensure algorithmic fairness across diverse patient populations, in compliance with FDA AI/ML SaMD guidance, AMA Code of Medical Ethics Opinion 2.3.2, and NIH All of Us diversity requirements.
+
+**Why Bias Auditing Matters:**
+- Ensures equitable treatment recommendations across ancestries
+- Detects representation gaps in genomic reference data
+- Identifies proxy features that may introduce bias
+- Builds trust in AI-powered clinical decision support
+- Maintains compliance with emerging healthcare AI standards
+
+**Audit Scope:**
+- Data representation across diverse ancestries (European, African, Asian, Latino, etc.)
+- Fairness of variant pathogenicity predictions
+- Fairness of treatment recommendations
+- Detection of proxy features (e.g., zip code, insurance status)
+- Ancestry-aware confidence scoring validation
+
+### Audit Schedule
+
+**Initial Audit (Before Production):**
+- Run comprehensive bias audit before deploying new workflow
+- Document baseline fairness metrics
+- Implement required mitigations before launch
+
+**Quarterly Audits (Every 3 Months):**
+- Run scheduled bias audit on production data
+- Review representation changes as patient cohort grows
+- Monitor fairness metric trends
+- Update mitigations as needed
+
+**Triggered Audits (As Needed):**
+- After workflow changes (new tools, updated models)
+- After reference dataset updates
+- If user reports suspected bias
+- After significant patient cohort changes
+
+**Annual Comprehensive Audit:**
+- Full review of all workflows
+- External validation (future phase)
+- Update bias mitigation strategies
+- Report to IRB and hospital ethics committee
+
+### Running a Bias Audit
+
+**Preparation (30 minutes):**
+
+1. **Gather Required Data:**
+   ```bash
+   # Export genomics data from analysis results
+   # Ensure ancestry column is included
+   # Example format: patient_id, variant_id, gene, ancestry, pathogenicity, confidence
+
+   # Export clinical data (de-identified)
+   # Include demographics: patient_id, age, sex, ancestry, diagnosis
+   ```
+
+2. **Set Up Environment:**
+   ```bash
+   # SSH to audit workstation
+   ssh audit@mcp-audit-workstation
+
+   # Navigate to bias audit directory
+   cd /opt/bias-audits
+
+   # Activate Python environment (if needed)
+   source venv/bin/activate
+   ```
+
+**Running the Audit (1-2 hours):**
+
+```bash
+# Run bias audit script
+python3 /opt/spatial-mcp/scripts/audit/audit_bias.py \
+  --workflow patientone \
+  --genomics-data data/genomics/quarterly_analysis_2026Q1.csv \
+  --clinical-data data/fhir/patients_deidentified_2026Q1.json \
+  --output reports/bias_audit_2026-Q1.html \
+  --min-representation 0.10 \
+  --max-disparity 0.10 \
+  --reference-dataset gnomad
+
+# The script will:
+# 1. Check data representation across ancestries
+# 2. Calculate fairness metrics (demographic parity, equalized odds)
+# 3. Detect proxy features
+# 4. Analyze ancestry-aware confidence scoring
+# 5. Generate HTML report with risk-coded findings
+```
+
+**Expected Output:**
+- HTML report: `reports/bias_audit_2026-Q1.html`
+- Risk levels: CRITICAL, HIGH, MEDIUM, ACCEPTABLE
+- Warnings and recommendations for each finding
+
+### Reviewing Audit Reports
+
+**Report Structure:**
+
+1. **Data Representation Analysis**
+   - Ancestry distribution in analysis cohort
+   - Comparison to reference datasets (gnomAD, All of Us)
+   - Risk level: CRITICAL (<5%), HIGH (<10%), MEDIUM (<20%), ACCEPTABLE (≥20%)
+
+2. **Fairness Metrics**
+   - Demographic Parity: Equal positive prediction rates
+   - Equalized Odds: Equal TPR/FPR across ancestries
+   - Calibration: Predicted probabilities match actual frequencies
+   - Risk level: CRITICAL (>20% disparity), HIGH (>10%), ACCEPTABLE (≤10%)
+
+3. **Proxy Feature Detection**
+   - Features correlated with protected attributes (ancestry, sex)
+   - Feature importance scores
+   - Recommendation: REMOVE if importance >5% and correlation >0.5
+
+4. **Ancestry-Aware Confidence**
+   - Mean confidence by ancestry
+   - Disparity across groups
+   - Warnings for understudied populations
+
+**Review Checklist:**
+
+- [ ] Data representation meets 10% minimum threshold for all ancestries
+- [ ] No fairness metrics exceed 10% disparity
+- [ ] No proxy features with HIGH or CRITICAL risk
+- [ ] Confidence scoring appropriately flagged for understudied ancestries
+- [ ] All CRITICAL and HIGH risks have mitigation plans
+- [ ] Report archived for compliance (10-year retention)
+
+### Implementing Mitigations
+
+**Common Findings and Mitigations:**
+
+| Finding | Risk Level | Mitigation | Timeline |
+|---------|-----------|------------|----------|
+| **Ancestry <5% representation** | CRITICAL | Do not deploy; find alternative dataset or supplement with diverse data | Before deployment |
+| **Ancestry <10% representation** | HIGH | Document limitation; use ancestry-aware confidence scoring; alert clinicians | Within 1 week |
+| **Fairness disparity >20%** | CRITICAL | Do not deploy; retrain model with fairness-aware techniques | Before deployment |
+| **Fairness disparity >10%** | HIGH | Implement mitigation before deployment; monitor closely | Within 2 weeks |
+| **Proxy feature detected** | HIGH-CRITICAL | Remove feature and retrain model | Within 2 weeks |
+| **GTEx reference (85% European)** | MEDIUM | Document limitation; validate with TOPMed or Human Cell Atlas | Within 1 month |
+
+**Mitigation Tracking:**
+```bash
+# Document mitigation in issue tracker
+# Example:
+Issue: #234 - High risk: BRCA variant database Euro-centric
+Status: In Progress
+Mitigation: Flag variants with <5 studies in patient ancestry
+Owner: Bioinformatics Team
+Due: 2026-02-15
+```
+
+### Documentation Requirements
+
+**Audit Reports:**
+- Save to: `/opt/bias-audits/reports/bias_audit_YYYY-QX.html`
+- Archive to Cloud Storage: `gs://{project}-audit-reports/bias/`
+- Retention: 10 years (HIPAA compliance)
+
+**Mitigation Plans:**
+- Document all HIGH and CRITICAL findings
+- Record implemented mitigations
+- Track effectiveness of mitigations
+- Report to IRB quarterly
+
+**Quarterly Report Template:**
+```
+Bias Audit Report - 2026 Q1
+============================
+
+Audit Date: 2026-01-12
+Auditor: Alex Kim (alex.kim@hospital.org)
+Workflow: PatientOne (Ovarian Cancer)
+Patient Cohort: 100 patients
+
+Summary:
+--------
+- Data Representation: MEDIUM RISK (Asian ancestry 8%, Latino 12%)
+- Fairness Metrics: ACCEPTABLE (max disparity 7%)
+- Proxy Features: None detected
+- Overall Risk: MEDIUM
+
+Findings:
+---------
+1. Asian ancestry representation below 10% threshold (8%)
+   - Mitigation: Document limitation, use ancestry-aware confidence scoring
+   - Status: Implemented 2026-01-15
+
+2. BRCA variant database Euro-centric (ClinVar 70% European)
+   - Mitigation: Flag variants with <5 studies in patient ancestry
+   - Status: Implemented 2026-01-15
+
+Recommendations:
+----------------
+1. Supplement with All of Us reference data (80% underrepresented groups)
+2. Schedule triggered audit after next reference dataset update
+3. Monitor representation as patient cohort grows
+
+Next Audit: 2026-04-12 (Q2)
+```
+
+### Bias Audit Contacts
+
+| Role | Contact | Responsibility |
+|------|---------|----------------|
+| **Bias Audit Lead** | Alex Kim (alex.kim@hospital.org) | Run quarterly audits, review findings |
+| **PI (Ovarian Cancer)** | Dr. Jennifer Martinez | Approve mitigations, IRB reporting |
+| **Privacy Officer** | Lisa Thompson | Review compliance, approve documentation |
+| **Ethics Committee** | ethics@hospital.org | Annual review, major findings |
+
+### Related Documentation
+
+- [Ethics & Bias Framework](../../docs/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../docs/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [PatientOne Bias Audit](../../docs/ethics/PATIENTONE_BIAS_AUDIT.md) - Example demonstration
 
 ---
 

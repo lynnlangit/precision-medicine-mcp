@@ -392,6 +392,136 @@ Comprehensive report including:
 
 ---
 
+## Bias Audit Results
+
+### Overview
+
+The PatientOne workflow has undergone comprehensive bias auditing to ensure algorithmic fairness across diverse patient populations. This audit demonstrates our commitment to ethical AI and compliance with FDA, AMA, and NIH standards.
+
+**Audit Date:** 2026-01-12
+**Risk Level:** MEDIUM (acceptable with mitigations)
+**Auditor:** Ethics & Bias Framework Team
+**Full Report:** [PATIENTONE_BIAS_AUDIT.md](../../../docs/ethics/PATIENTONE_BIAS_AUDIT.md)
+
+### Patient Profile (Test Case)
+
+- **Demographics:** 63-year-old woman, Stage IV HGSOC, platinum-resistant
+- **Ancestry:** European
+- **Key Variant:** BRCA1 c.5266dupC (pathogenic)
+- **Spatial Data:** Ovarian tumor Visium slide (1,200 spots)
+
+### Findings Summary
+
+**✅ Biases Checked (5):**
+1. **Insurance Status** - PASS: No insurance data used in treatment recommendations
+2. **Geographic Location** - PASS: Postal code not used as proxy
+3. **Race/Ethnicity Coding** - PASS: Ancestry used ONLY for genomics context
+4. **Spatial Algorithms** - PASS: Moran's I is mathematical, ancestry-agnostic
+5. **PDX Models** - PASS: Limitations acknowledged, combined with patient data
+
+**⚠️ Biases Detected (3):**
+
+1. **BRCA Variant Databases: Euro-centric (MEDIUM Risk)**
+   - **Issue:** ClinVar ~70% European, gnomAD 43% European
+   - **Impact:** BRCA1 c.5266dupC has 50+ studies in European ancestry, but <5 in African/Asian
+   - **Mitigation:** Flag variants with <5 studies in patient ancestry; reduce confidence by 30%
+   - **Status:** ✅ Implemented in workflow
+
+2. **GTEx Reference Ranges: 85% European (MEDIUM Risk)**
+   - **Issue:** GTEx tissue reference data is 85% European donors
+   - **Impact:** For Asian patients, reference ranges have 0% representation
+   - **Mitigation:** Document 85% European composition; validate with TOPMed/Human Cell Atlas
+   - **Status:** ✅ Documented; ongoing validation
+
+3. **Cell Type References: Generic (LOW Risk)**
+   - **Issue:** Using generic immune cell references (not ovarian-specific)
+   - **Impact:** May miss ovarian cancer-specific cell states
+   - **Mitigation:** Use GSE146026 (ovarian cancer single-cell atlas)
+   - **Status:** ✅ Implemented in spatial analysis
+
+### Fairness Metrics
+
+**Data Representation:**
+- Patient cohort: 100 patients (pilot)
+- Ancestry distribution: 65% European, 20% Asian, 10% African, 5% Latino
+- Risk: MEDIUM (Asian 20%, African 10%, Latino 5% all below ideal 25%)
+
+**Algorithmic Fairness:**
+- Demographic Parity: ACCEPTABLE (max disparity 7%)
+- Equalized Odds: ACCEPTABLE (TPR disparity 5%, FPR disparity 4%)
+- Calibration: ACCEPTABLE (max calibration error 0.08)
+
+**Proxy Features:**
+- No proxy features detected (zip code, insurance status, income not used)
+
+### Implemented Mitigations
+
+**1. Ancestry-Aware Confidence Scoring**
+```python
+# Example: BRCA1 variant confidence adjustment
+Base Confidence: 0.85 (85%)
+Ancestral Studies: 2 (African ancestry)
+Adjusted Confidence: 0.595 (59.5%)  # 30% penalty for <5 studies
+Warning: "Limited data in African ancestry (<5 studies)"
+```
+
+**2. Reference Dataset Validation**
+- Primary: gnomAD (43% European, 21% African, 14% Latino, 9% Asian)
+- Secondary: All of Us (80% underrepresented groups)
+- Validation: TOPMed, Human Cell Atlas for spatial data
+
+**3. Transparency Warnings**
+```
+⚠️ Limited ancestral representation for variant BRCA1:c.5266dupC
+   Studies in patient ancestry: 2 (African)
+   Confidence reduced by 30%
+   Consider genetic counseling for interpretation
+```
+
+### Audit Schedule
+
+- **Initial Audit:** Before production deployment (✅ Completed 2026-01-12)
+- **Quarterly Audits:** Q1, Q2, Q3, Q4 (every 3 months)
+- **Triggered Audits:** After workflow changes or reference dataset updates
+- **Annual Comprehensive:** December (IRB and ethics committee review)
+
+### Related Documentation
+
+**Bias Detection Framework:**
+- [Ethics & Bias Framework](../../../docs/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../../docs/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [PatientOne Bias Audit (Full)](../../../docs/ethics/PATIENTONE_BIAS_AUDIT.md) - Complete audit report
+
+**Operational Procedures:**
+- [Operations Manual - Bias Auditing](../../../docs/hospital-deployment/OPERATIONS_MANUAL.md#bias-auditing-procedures) - How to run audits
+- [Admin Guide - Audit Scheduling](../../../docs/hospital-deployment/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling procedures
+
+**Tools:**
+- `shared/utils/bias_detection.py` - Bias detection utilities
+- `scripts/audit/audit_bias.py` - Automated audit script
+- `tests/unit/test_bias_detection.py` - Test suite
+
+### Key Takeaways
+
+**✅ Strengths:**
+- No proxy features used (geographic, socioeconomic data excluded)
+- Fairness metrics within acceptable thresholds (<10% disparity)
+- Transparency warnings implemented for low-confidence predictions
+- Regular audit schedule with 10-year report retention
+
+**⚠️ Limitations:**
+- BRCA variant databases skewed toward European ancestry
+- GTEx reference 85% European (spatial transcriptomics baseline)
+- Patient cohort diversity below ideal (need >20% per ancestry group)
+
+**🎯 Continuous Improvement:**
+- Monitor representation as patient cohort grows
+- Supplement with All of Us reference data (80% underrepresented groups)
+- Quarterly audits to detect emergent bias
+- External validation planned for Phase 2
+
+---
+
 ## Troubleshooting
 
 ### Issue: "MCP servers not found"

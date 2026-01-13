@@ -318,6 +318,106 @@ Healthcare deployments require longer timelines than AdTech/FinTech due to HIPAA
 
 ---
 
+## Ethics & Algorithmic Fairness
+
+### Commitment to Ethical AI
+
+The Precision Medicine MCP System incorporates comprehensive bias detection and mitigation strategies to ensure equitable treatment recommendations across diverse patient populations. This addresses **trust as the primary barrier to clinical AI adoption** (JAMA Network Open, 2020).
+
+**Compliance Standards:**
+- FDA AI/ML-Based Software as Medical Device (SaMD) guidance
+- AMA Code of Medical Ethics Opinion 2.3.2 (Physicians' use of AI)
+- NIH All of Us Research Program diversity requirements
+- 21st Century Cures Act health equity mandate
+
+### Bias Auditing Framework
+
+**Regular Audits:**
+- **Quarterly audits** (every 3 months) of production workflows
+- **Triggered audits** after workflow changes or reference dataset updates
+- **Annual comprehensive audit** with IRB and ethics committee review
+- **10-year retention** of all audit reports for compliance
+
+**What We Audit:**
+
+| Audit Type | Focus | Risk Threshold |
+|------------|-------|----------------|
+| **Data Representation** | Ancestry distribution in analysis cohort | <5% critical, <10% high, <20% medium |
+| **Fairness Metrics** | Demographic parity, equalized odds, calibration | >20% disparity critical, >10% high |
+| **Proxy Features** | Geographic, socioeconomic features correlated with protected attributes | Remove if importance >5% |
+| **Confidence Scoring** | Ancestry-aware adjustments for understudied populations | Flag variants with <5 studies in patient ancestry |
+
+**Example Finding (PatientOne Audit):**
+```
+Risk Level: MEDIUM (acceptable with mitigations)
+Findings:
+1. BRCA variant databases Euro-centric (70% European in ClinVar)
+   - Mitigation: Flag variants with <5 studies in patient ancestry
+   - Status: Implemented
+
+2. GTEx reference 85% European
+   - Mitigation: Document limitation, validate with TOPMed/Human Cell Atlas
+   - Status: Ongoing
+```
+
+### Diverse Reference Datasets
+
+**Genomics:** gnomAD (43% European, 21% African, 14% Latino, 9% Asian), All of Us (80% underrepresented groups)
+
+**Spatial Transcriptomics:** Human Cell Atlas (35M+ cells, global diversity), TOPMed (180K+ genomes, diverse US population)
+
+**Clinical Data:** FHIR records include ancestry, used ONLY for genomic interpretation (not as biological proxy for treatment decisions)
+
+### Transparency & Explainability
+
+**Uncertainty Quantification:**
+- Confidence scores adjusted for understudied ancestries (30% penalty for <5 studies)
+- Warnings generated for limited ancestral representation
+- Clinicians see "Limited data in [ancestry] ancestry" alerts
+
+**SHAP Values (Future Phase):**
+- Planned integration for feature importance explanations
+- Helps clinicians understand which factors drive treatment recommendations
+
+### Mitigations Implemented
+
+| Bias Type | Detection | Mitigation |
+|-----------|-----------|------------|
+| **Representation Bias** | Check ancestry distribution against gnomAD/All of Us | Document limitation; use ancestry-aware confidence scoring |
+| **Algorithmic Bias** | Measure demographic parity, equalized odds | Retrain with fairness-aware techniques if disparity >10% |
+| **Proxy Features** | Detect correlation with protected attributes | Remove geographic, socioeconomic features (zip code, insurance) |
+| **Interpretation Bias** | Manual clinician review in audit workflow | Provide ancestral context with all genomic recommendations |
+
+### Tools & Documentation
+
+**Bias Detection Tools:**
+- `shared/utils/bias_detection.py` - Automated bias detection utilities (~600 lines)
+- `scripts/audit/audit_bias.py` - CLI audit script with HTML report generation (~550 lines)
+- `tests/unit/test_bias_detection.py` - Comprehensive test suite (~450 lines)
+
+**Documentation:**
+- [Ethics & Bias Framework](ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide (3-5 days per audit)
+- [PatientOne Bias Audit](ethics/PATIENTONE_BIAS_AUDIT.md) - Demonstration with real findings
+- [Operations Manual - Bias Auditing](hospital-deployment/OPERATIONS_MANUAL.md#bias-auditing-procedures) - Procedures
+- [Admin Guide - Bias Audit Scheduling](hospital-deployment/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling
+
+### Impact on Trust & Adoption
+
+**Why This Matters:**
+- **73% of patients** express concern about AI bias in healthcare (Nature Medicine, 2023)
+- **Equity gaps** in precision medicine threaten to widen health disparities
+- **Regulatory expectation**: FDA increasingly requires bias evaluation for AI/ML medical devices
+- **Institutional requirement**: IRBs and ethics committees now expect systematic bias audits
+
+**Our Approach:**
+- **Proactive**: Regular audits before issues arise, not reactive to complaints
+- **Transparent**: All audit reports archived for 10-year retention, shared with ethics committee
+- **Actionable**: Clear mitigation timelines (CRITICAL: blocking deployment, HIGH: 1-2 weeks, MEDIUM: 1 month)
+- **Continuous**: Quarterly monitoring ensures bias doesn't emerge as patient cohort grows
+
+---
+
 ## Success Metrics
 
 ### Technical Performance

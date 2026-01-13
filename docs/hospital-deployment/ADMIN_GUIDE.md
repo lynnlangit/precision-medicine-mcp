@@ -13,6 +13,7 @@
 - [User Management](#user-management)
 - [Server Management](#server-management)
 - [Monitoring & Alerts](#monitoring--alerts)
+- [Bias Audit Scheduling](#bias-audit-scheduling)
 - [Cost Management](#cost-management)
 - [Security Administration](#security-administration)
 - [Configuration Management](#configuration-management)
@@ -417,6 +418,313 @@ gcloud alpha monitoring channels create \
   --channel-labels=number=+15551234567 \
   --project=<PROJECT_ID>
 ```
+
+---
+
+## Bias Audit Scheduling
+
+### Overview
+
+As system administrator, you are responsible for scheduling and coordinating regular bias audits to ensure algorithmic fairness across diverse patient populations. Bias audits are required by FDA AI/ML SaMD guidance, AMA ethics standards, and NIH diversity requirements.
+
+**Your Role:**
+- Schedule quarterly bias audits
+- Coordinate with Bias Audit Lead (Alex Kim)
+- Ensure audit reports are archived for 10-year retention
+- Track mitigation implementation timelines
+- Escalate CRITICAL or HIGH risk findings to PI and ethics committee
+
+### Audit Calendar
+
+**Initial Audit:**
+- Before production deployment of new workflow
+- Coordinate with Bias Audit Lead and PI
+- Required for IRB approval
+
+**Quarterly Audits:**
+- Q1: Mid-January (week of Jan 15)
+- Q2: Mid-April (week of Apr 15)
+- Q3: Mid-July (week of Jul 15)
+- Q4: Mid-October (week of Oct 15)
+
+**Triggered Audits:**
+- Within 2 weeks of major workflow changes
+- Within 1 week of reference dataset updates
+- Within 3 days of suspected bias reports
+- Before deployment of any new AI/ML models
+
+**Annual Comprehensive Audit:**
+- December (week of Dec 1)
+- Full review of all workflows
+- Report to IRB and ethics committee
+- Plan for external validation (future phase)
+
+### Scheduling Procedure
+
+**2 Weeks Before Audit:**
+
+1. **Send Calendar Invite:**
+   ```
+   To: Bias Audit Lead (alex.kim@hospital.org)
+   Cc: PI (j.martinez@hospital.org), Privacy Officer (l.thompson@hospital.org)
+   Subject: Bias Audit - 2026 Q1
+
+   Date: January 15, 2026
+   Time: 9:00 AM - 12:00 PM
+   Location: Audit Workstation / Remote
+
+   Agenda:
+   - Review audit preparation checklist
+   - Run bias audit script
+   - Review findings
+   - Document mitigations
+
+   Required Data:
+   - Quarterly genomics analysis results (CSV)
+   - De-identified clinical data (FHIR JSON)
+
+   Please confirm attendance.
+   ```
+
+2. **Create Reminder Ticket:**
+   ```bash
+   # Create issue in tracking system
+   Issue: Bias Audit 2026-Q1
+   Type: Scheduled Maintenance
+   Assignee: Bias Audit Lead
+   Due Date: 2026-01-15
+   Priority: Medium
+
+   Checklist:
+   - [ ] Genomics data prepared
+   - [ ] Clinical data exported
+   - [ ] Audit script tested
+   - [ ] Report template ready
+   - [ ] Storage location verified (gs://{project}-audit-reports/bias/)
+   ```
+
+3. **Verify Prerequisites:**
+   ```bash
+   # Check audit workstation access
+   ssh audit@mcp-audit-workstation
+
+   # Verify Python environment
+   source /opt/bias-audits/venv/bin/activate
+   python3 --version  # Should be 3.11+
+
+   # Test audit script
+   python3 /opt/spatial-mcp/scripts/audit/audit_bias.py --help
+
+   # Check storage permissions
+   gsutil ls gs://{project}-audit-reports/bias/
+   ```
+
+### Day of Audit
+
+**Morning of Audit:**
+
+1. **Prepare Workspace:**
+   ```bash
+   # Create audit directory for this quarter
+   mkdir -p /opt/bias-audits/2026-Q1
+   cd /opt/bias-audits/2026-Q1
+
+   # Copy latest genomics data
+   gsutil cp gs://{project}-analysis-results/quarterly/2026-Q1/* ./data/
+
+   # Copy de-identified clinical data
+   gsutil cp gs://{project}-fhir-exports/deidentified/2026-Q1.json ./data/
+
+   # Verify data files
+   ls -lh data/
+   ```
+
+2. **Monitor Audit Progress:**
+   - Audit Lead runs bias audit script (1-2 hours)
+   - Check for errors or warnings
+   - Provide support if needed
+
+3. **Review Findings:**
+   - Open generated HTML report
+   - Review risk levels (CRITICAL, HIGH, MEDIUM, ACCEPTABLE)
+   - Identify findings requiring immediate attention
+
+### After Audit
+
+**Same Day:**
+
+1. **Archive Report:**
+   ```bash
+   # Upload report to Cloud Storage
+   gsutil cp reports/bias_audit_2026-Q1.html \
+     gs://{project}-audit-reports/bias/2026-Q1/
+
+   # Set 10-year retention policy
+   gsutil lifecycle set retention-10years.json \
+     gs://{project}-audit-reports/bias/
+
+   # Verify upload
+   gsutil ls -lh gs://{project}-audit-reports/bias/2026-Q1/
+   ```
+
+2. **Document in Audit Log:**
+   ```bash
+   # Add entry to audit log
+   echo "[$(date)] Bias Audit 2026-Q1 completed" >> /opt/bias-audits/audit_log.txt
+   echo "  Auditor: Alex Kim" >> /opt/bias-audits/audit_log.txt
+   echo "  Risk Level: MEDIUM" >> /opt/bias-audits/audit_log.txt
+   echo "  Findings: 2 (see gs://{project}-audit-reports/bias/2026-Q1/)" >> /opt/bias-audits/audit_log.txt
+   ```
+
+**Within 48 Hours:**
+
+3. **Track Mitigations:**
+   - Create tracking tickets for all HIGH and CRITICAL findings
+   - Assign owners (typically Bioinformatics Team)
+   - Set deadlines based on risk level:
+     - CRITICAL: Before deployment (blocking)
+     - HIGH: Within 1-2 weeks
+     - MEDIUM: Within 1 month
+
+4. **Escalate if Needed:**
+   ```
+   IF risk_level == CRITICAL:
+       Email: PI + Privacy Officer + Ethics Committee
+       Subject: CRITICAL Risk Found in Bias Audit
+       Priority: URGENT
+
+   IF risk_level == HIGH and no_mitigation_plan:
+       Email: PI + Bias Audit Lead
+       Subject: HIGH Risk Requires Mitigation Plan
+       Priority: High
+   ```
+
+5. **Schedule Follow-Up:**
+   - For CRITICAL findings: Daily check-in until resolved
+   - For HIGH findings: Weekly check-in until resolved
+   - For MEDIUM findings: Monthly check-in
+
+### Quarterly Report to PI
+
+**Template:**
+
+```
+To: Dr. Jennifer Martinez (PI)
+Cc: Lisa Thompson (Privacy Officer)
+Subject: Bias Audit Report - 2026 Q1
+
+Dr. Martinez,
+
+The quarterly bias audit for 2026 Q1 has been completed. Summary below:
+
+Audit Details:
+--------------
+Date: January 15, 2026
+Auditor: Alex Kim
+Workflow: PatientOne (Ovarian Cancer)
+Patient Cohort: 100 patients
+Report: gs://{project}-audit-reports/bias/2026-Q1/bias_audit_2026-Q1.html
+
+Summary:
+--------
+Overall Risk Level: MEDIUM
+- Data Representation: MEDIUM (Asian 8%, Latino 12%)
+- Fairness Metrics: ACCEPTABLE (max disparity 7%)
+- Proxy Features: None detected
+
+Findings Requiring Action:
+--------------------------
+1. [HIGH] Asian ancestry representation below 10% threshold
+   - Mitigation: Ancestry-aware confidence scoring implemented
+   - Owner: Bioinformatics Team
+   - Status: Implemented 2026-01-17
+
+2. [MEDIUM] BRCA variant database Euro-centric (70% European)
+   - Mitigation: Flag variants with <5 studies in patient ancestry
+   - Owner: Bioinformatics Team
+   - Due: 2026-02-15
+
+Next Audit: April 15, 2026 (Q2)
+
+Please let me know if you have questions or need additional information.
+
+Best regards,
+[Your Name]
+Hospital IT Administrator
+```
+
+### Annual Comprehensive Audit
+
+**Additional Steps for Annual Audit:**
+
+1. **Extended Review Period:**
+   - Schedule full day (8 hours)
+   - Include all workflows, not just PatientOne
+   - Review trend analysis across all quarters
+
+2. **External Stakeholders:**
+   - Invite Ethics Committee representative
+   - Schedule IRB presentation
+   - Prepare executive summary for hospital leadership
+
+3. **Documentation Package:**
+   - Compile all quarterly reports
+   - Trend analysis charts
+   - Mitigation effectiveness report
+   - Recommendations for next year
+
+4. **Planning for Next Year:**
+   - Review audit schedule
+   - Update reference datasets
+   - Plan for external validation (if applicable)
+
+### Troubleshooting
+
+**Problem: Audit script fails**
+```bash
+# Check Python environment
+source /opt/bias-audits/venv/bin/activate
+pip list | grep -E "(numpy|pandas|pytest)"
+
+# Reinstall dependencies if needed
+pip install -r /opt/spatial-mcp/requirements.txt
+
+# Test with sample data
+python3 /opt/spatial-mcp/scripts/audit/audit_bias.py \
+  --workflow patientone \
+  --genomics-data /opt/spatial-mcp/data/sample/genomics.csv \
+  --clinical-data /opt/spatial-mcp/data/sample/clinical.json \
+  --output /tmp/test_audit.html
+```
+
+**Problem: Data files missing or corrupted**
+```bash
+# Verify data export completed
+gsutil ls -lh gs://{project}-analysis-results/quarterly/2026-Q1/
+
+# Check file integrity
+gsutil hash gs://{project}-analysis-results/quarterly/2026-Q1/genomics.csv
+
+# Re-export if needed
+# Contact Bioinformatics Team to regenerate data files
+```
+
+**Problem: Cannot access audit reports in Cloud Storage**
+```bash
+# Check IAM permissions
+gsutil iam get gs://{project}-audit-reports/
+
+# Your service account should have roles/storage.objectViewer
+# If missing, add permission:
+gsutil iam ch serviceAccount:admin@{project}.iam.gserviceaccount.com:roles/storage.objectViewer \
+  gs://{project}-audit-reports/
+```
+
+### Related Documentation
+
+- [Operations Manual - Bias Auditing](OPERATIONS_MANUAL.md#bias-auditing-procedures) - Detailed procedures
+- [Ethics & Bias Framework](../../docs/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../docs/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
 
 ---
 
