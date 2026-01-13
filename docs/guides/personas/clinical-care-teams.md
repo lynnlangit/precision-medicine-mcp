@@ -2,6 +2,8 @@
 
 *You want to understand how AI-orchestrated bioinformatics can support clinical decision-making*
 
+<img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/data/images/clinical-personna.jpeg" width=800>
+
 ## ⚠️ IMPORTANT
 
 This repository is for **RESEARCH USE ONLY**. Not validated for clinical decision-making, FDA/EMA approval, or patient care.
