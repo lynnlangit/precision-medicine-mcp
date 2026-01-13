@@ -1,9 +1,10 @@
-# Ethics & Bias Framework - Implementation Plan
+# Ethics & Bias Framework - Implementation Plan (Revised)
 
 **Priority:** 1 (Colleague Feedback)
-**Target Audiences:** Clinicians, Researchers
+**Target Audiences:** Clinicians, Researchers (US Hospitals)
 **Estimated Timeline:** 3-4 weeks
 **Status:** Planning Phase
+**Scope:** US Healthcare Context
 
 ---
 
@@ -11,9 +12,11 @@
 
 **Goal:** Add dedicated "Ethics & Bias" section to repository demonstrating how to audit precision medicine workflows for algorithmic bias across diverse populations.
 
-**Why:** Trust is the primary barrier to clinical AI adoption. This framework aligns PatientOne demo with emerging global standards for ethical healthcare AI (WHO, FDA, EU AI Act).
+**Why:** Trust is the primary barrier to clinical AI adoption. This framework aligns PatientOne demo with US healthcare AI standards for ethical medical AI (WHO, FDA).
 
 **Current Gap:** Repository has strong HIPAA compliance and data privacy coverage, but lacks systematic approach to detecting and mitigating algorithmic bias in precision medicine.
+
+**Focus:** US hospital deployment with manual, batch-based bias audits using recommended diverse reference datasets.
 
 ---
 
@@ -66,12 +69,13 @@
    - Legal/regulatory landscape
    - Relationship to HIPAA compliance
 
-2. **Global Standards & Frameworks** (150 lines)
-   - WHO Ethics and Governance of AI for Health (2021)
-   - FDA AI/ML-Based Software as Medical Device (SaMD) guidance
-   - EU AI Act (Regulation 2024/1689) - Medical AI as high-risk
-   - ISO/IEC 23894:2023 AI Risk Management
+2. **US Healthcare AI Standards & Frameworks** (150 lines)
+   - FDA AI/ML-Based Software as Medical Device (SaMD) guidance (2021)
+   - WHO Ethics and Governance of AI for Health (2021) - Global best practices
    - NIH All of Us Research Program diversity requirements
+   - 21st Century Cures Act - Advancing health equity through technology
+   - AMA Code of Medical Ethics Opinion 2.3.2 - Physicians' use of AI
+   - HIPAA Privacy Rule and algorithmic fairness considerations
 
 3. **Types of Bias in Precision Medicine** (200 lines)
    - **Data bias**: Representation bias, selection bias, measurement bias
@@ -116,13 +120,97 @@
    - Fairness-aware training (fairness constraints)
    - Post-hoc calibration
    - Human-in-the-loop validation
-   - Diverse reference datasets
+   - Use diverse reference datasets (see §8)
 
-8. **Continuous Monitoring** (50 lines)
-   - Ongoing bias detection
-   - Feedback loops
-   - Model retraining criteria
-   - Performance dashboards
+8. **Recommended Diverse Reference Datasets** (150 lines)
+
+   **Genomics & Variant Interpretation:**
+   - **gnomAD (Genome Aggregation Database)**:
+     * 76,156 genomes, 125,748 exomes
+     * Diverse ancestry: African/African American (21%), Latino/Admixed American (14%), East Asian (9%), South Asian (8%), Other (5%), European (non-Finnish) (43%)
+     * Use for: Population allele frequencies, pathogenicity assessment
+     * URL: https://gnomad.broadinstitute.org/
+
+   - **All of Us Research Program**:
+     * 245,000+ participants (as of 2024)
+     * 80% from underrepresented groups in biomedical research
+     * Use for: Reference ranges, variant interpretation, phenotype associations
+     * URL: https://www.researchallofus.org/
+
+   - **ClinGen (Clinical Genome Resource)**:
+     * Diverse variant classifications
+     * Expert-curated pathogenicity assertions
+     * Use for: Variant interpretation, gene-disease associations
+     * URL: https://www.clinicalgenome.org/
+
+   - **TOPMed (Trans-Omics for Precision Medicine)**:
+     * 180,000+ whole genomes
+     * Diverse US population
+     * Use for: Rare variant discovery, ancestry-specific analysis
+     * URL: https://www.nhlbiwgs.org/
+
+   - **1000 Genomes Project**:
+     * 2,504 genomes from 26 populations
+     * Comprehensive ancestry representation
+     * Use for: Structural variant analysis, ancestry inference
+     * URL: https://www.internationalgenome.org/
+
+   **Gene Expression & Transcriptomics:**
+   - **GTEx (Genotype-Tissue Expression)**:
+     * 85% European ancestry (limitation - acknowledge in reports)
+     * 948 donors, 54 tissue types
+     * Use for: Expression reference ranges (with ancestry caveat)
+     * URL: https://gtexportal.org/
+
+   - **Human Cell Atlas**:
+     * Single-cell references from diverse populations
+     * Use for: Cell type identification, deconvolution
+     * URL: https://www.humancellatlas.org/
+
+   **Clinical Data:**
+   - **MIMIC-IV (Medical Information Mart for Intensive Care)**:
+     * De-identified ICU data
+     * Diverse patient demographics
+     * Use for: Clinical phenotype validation
+     * URL: https://mimic.mit.edu/
+
+   **Best Practices:**
+   - Use multiple reference datasets to cross-validate
+   - Document ancestry distribution of each reference
+   - Flag results when patient ancestry not well-represented
+   - Update references annually as new diverse datasets emerge
+
+9. **Batch Bias Auditing Approach** (100 lines)
+
+   **Manual Execution Model:**
+   - Run bias audits quarterly or after major workflow changes
+   - Generate HTML reports for stakeholder review
+   - Store audit history for compliance documentation
+   - Manual review and approval before workflow updates
+
+   **Audit Schedule:**
+   - **Initial Audit:** Before production deployment
+   - **Quarterly Audits:** Every 3 months during production
+   - **Triggered Audits:** After workflow changes, new data sources, or bias incidents
+
+   **Workflow:**
+   ```bash
+   # Step 1: Collect workflow data (genomics, clinical, spatial)
+   # Step 2: Run bias audit script
+   python scripts/audit/audit_bias.py --workflow patientone --output reports/
+
+   # Step 3: Review HTML report
+   open reports/bias_audit_2026-01-12.html
+
+   # Step 4: Document findings and actions
+   # Step 5: Implement mitigations if needed
+   # Step 6: Archive report for compliance
+   ```
+
+   **Report Retention:**
+   - Keep all audit reports for 10 years (HIPAA compliance alignment)
+   - Include in annual compliance reviews
+   - Make available for external audits
 
 ---
 
@@ -175,33 +263,45 @@
 2. **Genomics Bias Analysis** (150 lines)
 
    **2.1 BRCA1/BRCA2 Variant Interpretation**
-   - **Data Source:** ClinVar, COSMIC databases
+   - **Current Data Source:** ClinVar, COSMIC databases
    - **Bias Check:** Are pathogenic variants primarily from European studies?
    - **PatientOne Finding:** BRCA1 variant (c.5266dupC) well-studied in European populations, limited data in others
    - **Potential Impact:** Pathogenicity classification may be less certain in non-European ancestries
+   - **Recommended Diverse References:**
+     * **gnomAD:** Check population-specific allele frequencies (21% African/African American, 14% Latino, 9% East Asian)
+     * **ClinGen:** Expert-curated variant classifications with ancestry context
+     * **All of Us:** Cross-reference with 80% underrepresented groups data
    - **Mitigation:**
      * Flag variants with <5 studies in patient's ancestry
      * Recommend genetic counseling for ancestry-specific interpretation
-     * Reference gnomAD for population-specific allele frequencies
+     * Always check gnomAD for population-specific frequencies
 
    **2.2 Gene Expression Reference Ranges**
-   - **Data Source:** GTEx (Genotype-Tissue Expression project)
+   - **Current Data Source:** GTEx (Genotype-Tissue Expression project)
    - **Bias Check:** GTEx is 85% European ancestry, 10% African, 5% other
    - **PatientOne Finding:** Differential expression analysis uses GTEx normal tissue baseline
    - **Potential Impact:** Reference ranges may not reflect true variation in underrepresented ancestries
+   - **Recommended Diverse References:**
+     * **GTEx:** Use with explicit ancestry caveat in reports
+     * **TOPMed:** 180,000+ genomes from diverse US population for validation
+     * **Human Cell Atlas:** Single-cell references from diverse populations
    - **Mitigation:**
-     * Document GTEx ancestry distribution in report
-     * Consider ancestry-matched reference data when available
+     * Document GTEx ancestry distribution in all reports (85% European)
+     * Cross-validate with TOPMed data when patient ancestry differs
      * Apply larger thresholds (log2FC >2 instead of >1.5) for conservatism
 
    **2.3 Pathway Enrichment Databases**
-   - **Data Source:** KEGG, Reactome, GO databases
+   - **Current Data Source:** KEGG, Reactome, GO databases
    - **Bias Check:** Are pathway definitions universal or population-specific?
    - **PatientOne Finding:** Pathways based on aggregate human data, not population-stratified
    - **Potential Impact:** Pathway relevance may vary by ancestry
+   - **Recommended Diverse References:**
+     * **KEGG + Reactome + GO:** Cross-validate across all three databases
+     * **All of Us Workbench:** Check pathway associations in diverse cohorts
    - **Mitigation:**
      * Cross-validate with multiple databases (KEGG + Reactome + GO)
      * Flag pathways with >30% of genes showing ancestry-specific expression
+     * Reference All of Us data for pathway validation
 
 3. **Clinical Bias Analysis** (150 lines)
 
@@ -446,49 +546,84 @@ python scripts/audit/audit_bias.py \
 **Day 4:** Update PatientOne README and test docs
 **Day 5:** Review all cross-references for consistency
 
-### Week 4: Validation
-**Day 1-2:** Run bias audit on PatientOne, document findings
-**Day 3:** Generate example reports
-**Day 4:** Create summary documentation
-**Day 5:** Final review and polish
+### Week 4: Validation & Documentation
+**Day 1-2:** Run manual bias audit on PatientOne, document findings
+**Day 3:** Generate example HTML reports for stakeholder review
+**Day 4:** Create summary documentation and audit archive
+**Day 5:** Internal review and polish (no external validation at this stage)
 
 ---
 
 ## Success Criteria
 
-1. ✅ Comprehensive ethics framework documented (ETHICS_AND_BIAS.md)
-2. ✅ Practical audit checklist for clinicians/researchers
-3. ✅ PatientOne workflow audited with concrete findings
-4. ✅ Python utilities for ongoing bias detection
-5. ✅ Standalone audit script with HTML report generation
-6. ✅ Integration with existing compliance documentation
-7. ✅ Alignment with global standards (WHO, FDA, EU AI Act)
-8. ✅ Clear mitigations for identified biases
-9. ✅ Transparency about limitations and data sources
-10. ✅ Continuous monitoring framework established
+1. ✅ Comprehensive ethics framework documented (ETHICS_AND_BIAS.md) aligned with US healthcare standards
+2. ✅ Practical audit checklist for US hospital clinicians/researchers
+3. ✅ PatientOne workflow audited with concrete findings using diverse reference datasets
+4. ✅ Python utilities for manual batch bias detection
+5. ✅ Standalone audit script with HTML report generation (manual execution)
+6. ✅ Integration with existing HIPAA compliance documentation
+7. ✅ Alignment with FDA and WHO AI standards (US healthcare focus)
+8. ✅ Clear mitigations for identified biases with recommended diverse datasets
+9. ✅ Transparency about limitations and data source ancestry distributions
+10. ✅ Quarterly batch auditing framework established
+11. ✅ Recommended diverse reference datasets documented (gnomAD, All of Us, ClinGen, TOPMed, 1000 Genomes)
 
 ---
 
-## Open Questions for Review
+## Adjustments from Original Plan
 
-1. **Scope:** Is the proposed scope comprehensive enough? Should we add more bias types?
-2. **Tools:** Do we need real-time bias monitoring dashboards, or is batch auditing sufficient?
-3. **Validation:** Should we get external review from ethics board or clinicians before finalizing?
-4. **Reference Data:** Should we recommend specific diverse reference datasets (e.g., gnomAD, All of Us)?
-5. **Automation:** Should bias audit be integrated into CI/CD pipeline as automated check?
+**✅ Implemented:**
+1. **US Healthcare Focus:** Removed EU AI Act, kept FDA/WHO standards
+2. **Manual Execution:** Batch auditing with quarterly schedule, no CI/CD automation
+3. **Diverse Reference Datasets:** Specific recommendations for gnomAD, All of Us, ClinGen, TOPMed, 1000 Genomes, Human Cell Atlas
+4. **No External Validation:** Internal review only at this stage
+5. **Batch Processing:** HTML reports for manual review, 10-year retention
+
+**Scope Adjustments:**
+- Target: US hospitals only
+- Standards: FDA SaMD, WHO, NIH All of Us, AMA Ethics
+- Execution: Manual quarterly audits
+- Tools: Standalone Python script (no dashboards)
+- Validation: Internal only (no ethics board review yet)
+
+---
+
+## Remaining Questions for Review
+
+1. **Audit Frequency:** Is quarterly sufficient, or should we audit monthly initially?
+2. **Report Format:** Is HTML sufficient, or do we need PDF export for compliance?
+3. **Stakeholder Training:** Should we add training materials for running audits?
+4. **Integration Priority:** Which existing doc should we update first (HIPAA compliance or Operations Manual)?
 
 ---
 
 ## References
 
-1. WHO Ethics and Governance of AI for Health (2021) - https://www.who.int/publications/i/item/9789240029200
-2. FDA AI/ML-Based SaMD Action Plan (2021) - https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-and-machine-learning-aiml-enabled-medical-devices
-3. EU AI Act (Regulation 2024/1689) - https://artificialintelligenceact.eu/
-4. ISO/IEC 23894:2023 AI Risk Management - https://www.iso.org/standard/77304.html
+**US Healthcare AI Standards:**
+1. FDA AI/ML-Based SaMD Action Plan (2021) - https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-and-machine-learning-aiml-enabled-medical-devices
+2. AMA Code of Medical Ethics Opinion 2.3.2 - Physicians' use of AI - https://www.ama-assn.org/delivering-care/ethics/augmented-intelligence-ai-medicine
+3. 21st Century Cures Act - https://www.fda.gov/regulatory-information/selected-amendments-fdc-act/21st-century-cures-act
+
+**Global Best Practices:**
+4. WHO Ethics and Governance of AI for Health (2021) - https://www.who.int/publications/i/item/9789240029200
+
+**Diverse Reference Datasets:**
 5. NIH All of Us Research Program - https://allofus.nih.gov/
-6. Mehrabi et al., "A Survey on Bias and Fairness in Machine Learning" (2021)
-7. Obermeyer et al., "Dissecting racial bias in an algorithm used to manage the health of populations" Science 2019
+6. gnomAD (Genome Aggregation Database) - https://gnomad.broadinstitute.org/
+7. ClinGen (Clinical Genome Resource) - https://www.clinicalgenome.org/
+8. TOPMed (Trans-Omics for Precision Medicine) - https://www.nhlbiwgs.org/
+9. 1000 Genomes Project - https://www.internationalgenome.org/
+10. GTEx (Genotype-Tissue Expression) - https://gtexportal.org/
+11. Human Cell Atlas - https://www.humancellatlas.org/
+
+**Academic Literature:**
+12. Mehrabi et al., "A Survey on Bias and Fairness in Machine Learning" (2021)
+13. Obermeyer et al., "Dissecting racial bias in an algorithm used to manage the health of populations" Science 2019
+14. Popejoy & Fullerton, "Genomics is failing on diversity" Nature 2016
+15. Sirugo et al., "The Missing Diversity in Human Genetic Studies" Cell 2019
 
 ---
 
-**Next Step:** Review this plan and provide feedback. Once approved, I'll begin implementation with Week 1 documentation.
+**Next Step:** Review this revised plan. Once approved, I'll begin implementation with Week 1 documentation (ETHICS_AND_BIAS.md).
+
+**Plan Status:** ✅ Revised per user feedback - Ready for approval
