@@ -402,21 +402,6 @@ Follow: [PatientOne Guide](../test-docs/patient-one-scenario/README.md)
 
 ---
 
-## Student Testimonials (Future)
-
-*"This platform made precision medicine tangible. Instead of just reading about multi-omics integration, I actually did it."*
-— [Student name], Undergraduate Bioinformatics
-
-*"The natural language interface removed the coding barrier. I could focus on biology, not debugging Python."*
-— [Student name], Graduate Computational Biology
-
-*"PatientOne was the perfect teaching case - realistic enough to be challenging, synthetic enough to be shareable."*
-— [Instructor name], Assistant Professor
-
-*[Note: These are placeholder testimonials. Real testimonials will be added after classroom pilots.]*
-
----
-
 ## Instructor Support
 
 ### Getting Help
