@@ -22,7 +22,7 @@
 <kbd><img src="https://github.com/lynnlangit/precision-medicine-mcp/blob/main/tests/manual_testing/PatientOne-OvarianCancer/architecture/patient-one-holistic.png" width=800></kbd>  
 
 - LEARN More:
-  - [PatientOne Documentation](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs/test-docs/patient-one-scenario/architecture)
+  - [PatientOne Documentation](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/test-docs/patient-one-scenario/architecture/overview.md)
   - [Quick Start](docs/test-docs/patient-one-scenario/README.md)
   - [Sample Outputs](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs/test-docs/patient-one-scenario/architecture)
   - [Executive Summary](docs/EXECUTIVE_SUMMARY.md)
