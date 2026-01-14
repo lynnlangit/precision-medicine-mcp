@@ -44,7 +44,7 @@
 - **[Testing Coverage](../../tests/README.md)** - 167 automated tests, 68% coverage
 
 ### Compliance & Risk
-- **[Risk Assessment](../operations/RISK_MITIGATION_SUMMARY.md)** - Technical, financial, compliance, adoption risks
+- **[Risk Assessment](../compliance/risk-assessment.md)** - Technical, financial, compliance, adoption risks
 - **[HIPAA Compliance](../compliance/hipaa.md)** - De-identification, audit logging, security
 - **[Bias Audit Framework](../ethics/README.md)** - FDA AI/ML SaMD aligned bias detection
 

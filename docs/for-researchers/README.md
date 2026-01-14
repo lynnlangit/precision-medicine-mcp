@@ -262,24 +262,17 @@ to identify concordant pathway activations.
 
 ## Production-Ready Servers
 
-### Status Matrix
+**Quick Summary:**
+- ✅ **4/10 servers production-ready** (mcp-fgbio, mcp-multiomics, mcp-spatialtools, mcp-epic)
+- 🔶 **1/10 servers partial** (mcp-openimagedata - 60% real)
+- ❌ **5/10 servers mocked** (mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera, mcp-mockepic)
 
-| Server | Status | Tools | Coverage | Description |
-|--------|--------|-------|----------|-------------|
-| **mcp-multiomics** | ✅ 85% Real | 12 | 68% | HAllA, Stouffer, upstream regulators |
-| **mcp-fgbio** | ✅ 95% Real | 6 | 51% | FASTQ/VCF QC, reference genomes |
-| **mcp-spatialtools** | ✅ 95% Real | 10 | 42% | STAR, ComBat, pathway enrichment, Moran's I |
-| **mcp-epic** | ✅ 100% Real | 4 | N/A | Epic FHIR (local-only, HIPAA-compliant) |
-| **mcp-openimagedata** | 🔶 60% Real | 6 | 35% | Image loading real, registration/features mocked |
-| **mcp-mockepic** | 🎭 Demo Only | 3 | 35% | Synthetic FHIR by design |
-| **mcp-tcga** | ❌ Mocked | 5 | 35% | GDC API stubbed |
-| **mcp-deepcell** | ❌ Mocked | 3 | 35% | DeepCell API stubbed |
-| **mcp-huggingface** | ❌ Mocked | 4 | 35% | HF API stubbed |
-| **mcp-seqera** | ❌ Mocked | 6 | 35% | Seqera API stubbed |
-
-**Total:** 10 servers, 59 tools
-
-📋 **[See Complete Server Documentation →](../../servers/README.md#-server-status)**
+📋 **[See Complete Server Implementation Status →](../architecture/servers.md)** - Comprehensive 1,000+ line status matrix with:
+- Real vs. mocked capabilities for each server
+- Tool-by-tool implementation details
+- Test coverage and production readiness assessment
+- DRY_RUN mode behavior documentation
+- Visual status diagrams and deployment info
 
 ### Production Roadmap (6-12 months)
 

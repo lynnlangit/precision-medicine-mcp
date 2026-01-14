@@ -168,22 +168,20 @@ graph TB
 
 ## Server Status Overview
 
-| Server | Status | Tools | Description |
-|--------|--------|-------|-------------|
-| **mcp-fgbio** | ✅ Production | 6 | Reference genomes, VCF/FASTQ handling |
-| **mcp-multiomics** | ✅ Production | 12 | RNA/Protein/Phospho integration, best reference (91 tests, 68% coverage) |
-| **mcp-spatialtools** | ✅ 95% Real | 10 | Spatial transcriptomics, Visium analysis |
-| **mcp-epic** | ✅ Production | 4 | Real Epic FHIR, local-only, HIPAA-compliant |
-| **mcp-openimagedata** | 🔶 60% Real | 6 | H&E/MxIF imaging, partial mock |
-| **mcp-mockepic** | 🎭 Demo Only | 3 | Synthetic FHIR for public demos |
-| **mcp-tcga** | ❌ Mocked | 5 | TCGA cohort data (GDC API stubbed) |
-| **mcp-deepcell** | ❌ Mocked | 3 | Cell segmentation (DeepCell API stubbed) |
-| **mcp-huggingface** | ❌ Mocked | 4 | Genomic AI models (HF API stubbed) |
-| **mcp-seqera** | ❌ Mocked | 6 | Nextflow orchestration (Seqera API stubbed) |
+**Production Status:**
+- ✅ **4/10 servers production-ready** (40%) - mcp-fgbio, mcp-multiomics, mcp-spatialtools, mcp-epic
+- 🔶 **1/10 partial implementation** (10%) - mcp-openimagedata (60% real)
+- ❌ **5/10 fully mocked** (50%) - mcp-tcga, mcp-deepcell, mcp-huggingface, mcp-seqera, mcp-mockepic
 
-**Total:** 10 servers, 59 tools, 4 production-ready, 167 tests
+**Total:** 10 servers, 59 tools, 167 automated tests
 
-See detailed status: [Server Implementation Matrix](../../servers/README.md#-server-status)
+📋 **[Complete Server Implementation Status →](../architecture/servers.md)** - Comprehensive documentation including:
+- Detailed tool-by-tool implementation status
+- Real vs. mocked capability breakdown
+- Test coverage metrics and production readiness
+- DRY_RUN mode behavior for each server
+- GCP Cloud Run deployment status
+- Production deployment checklists
 
 ---
 

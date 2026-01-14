@@ -51,7 +51,7 @@ Each guide includes workflows, examples, tools, and resources tailored to your n
 ### 💰 Cost & Governance
 - [Cost and Budget Management](operations/cost-and-budget.md) - Cost analysis, tracking, and optimization
 - [Data Governance](operations/DATA_GOVERNANCE.md) - Privacy, retention policies
-- [Risk Mitigation](operations/RISK_MITIGATION_SUMMARY.md) - Risk assessment
+- [Risk Assessment](compliance/risk-assessment.md) - Comprehensive risk analysis and mitigation
 
 ### 🧪 Testing & QA
 - [Testing Overview](../tests/README.md) - 167 automated tests ✅
