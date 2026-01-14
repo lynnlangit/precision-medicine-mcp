@@ -8,7 +8,12 @@ This document lists all documentation archived from the main `/docs` directory a
 
 ## Archived Documents
 
-(To be populated during Phase 5)
+### security-poc.md
+
+**Original Location:** `/docs/deployment/SECURITY.md`
+**Archive Reason:** Marked as "NOT recommended for production" - POC-only security configuration
+**Archive Date:** 2026-01-13
+**Superseded By:** Production security should use GCP Secret Manager and proper authentication (see deployment docs)
 
 ## Archive Criteria
 
