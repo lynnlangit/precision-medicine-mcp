@@ -461,7 +461,7 @@ python -m json.tool < ~/Library/Application\ Support/Claude/claude_desktop_confi
 4. ✅ Review [Architecture Documentation](/docs/architecture/README.md)
 
 **For Development:**
-- See [Developer Guide](/docs/guides/for-developers.md)
+- See [Developer Guide](../for-developers/README.md) - Architecture, contributing, building servers
 - Add new tools following existing patterns
 - Run tests before submitting changes
 

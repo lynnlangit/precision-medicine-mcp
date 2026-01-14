@@ -20,11 +20,12 @@ This is your central navigation hub for all documentation. Use this index to qui
 
 **Role-specific guides for different users:**
 
-- **[For Clinicians](./guides/for-clinicians.md)** - Clinical workflows and patient analysis
-- **[For Bioinformaticians](./guides/for-bioinformaticians.md)** - Computational analysis and pipelines
-- **[For Researchers](./guides/for-researchers.md)** - Research workflows and data analysis
-- **[For Developers](./guides/for-developers.md)** - Adding new features and servers
-- **[For Patients](./guides/for-patients.md)** - Understanding your precision medicine results
+- **[For Funders & Grant Reviewers](./for-funders/README.md)** - ROI analysis, competitive landscape, grant talking points
+- **[For Hospitals & IT Teams](./for-hospitals/README.md)** - Security, deployment, HIPAA compliance
+- **[For Developers](./for-developers/README.md)** - Architecture, contributing, building new servers
+- **[For Researchers](./for-researchers/README.md)** - Research workflows, analysis examples, production servers
+- **[For Educators](./for-educators/README.md)** - Teaching materials, course integration, classroom activities
+- **[For Patients & Families](./for-patients/README.md)** - Understanding precision medicine results (plain language)
 
 **Specialized Guides:**
 - **[Automated Patient Reports](./guides/AUTOMATED_PATIENT_REPORTS.md)** - Generate reports automatically
@@ -162,11 +163,13 @@ This is your central navigation hub for all documentation. Use this index to qui
 
 ### By Role
 
-- **Clinician** → [Clinical Guide](./guides/for-clinicians.md) + [CITL Workflow](./clinical/citl-workflow.md)
-- **Bioinformatician** → [Bioinformatics Guide](./guides/for-bioinformaticians.md) + [Architecture](./architecture/README.md)
-- **Researcher** → [Research Guide](./guides/for-researchers.md) + [Test Documentation](./test-docs/README.md)
-- **Developer** → [Developer Guide](./guides/for-developers.md) + [Server Status](./architecture/servers.md)
-- **Administrator** → [Admin Guide](./deployment/hospital-deployment/admin-guide.md) + [Operations Manual](./deployment/hospital-deployment/operations-manual.md)
+- **Funder/Grant Reviewer** → [For Funders](./for-funders/README.md) - ROI, competitive landscape, grant materials
+- **Hospital Administrator** → [For Hospitals](./for-hospitals/README.md) - Security, deployment checklist, HIPAA
+- **Developer** → [For Developers](./for-developers/README.md) - Architecture, contributing, building servers
+- **Researcher/Bioinformatician** → [For Researchers](./for-researchers/README.md) - Workflows, analysis, production servers
+- **Educator/Professor** → [For Educators](./for-educators/README.md) - Teaching materials, course integration
+- **Patient/Family** → [For Patients](./for-patients/README.md) - Understanding results (plain language)
+- **Clinician** → [CITL Workflow](./clinical/CITL_WORKFLOW_GUIDE.md) - Clinical workflow integration
 
 ---
 
