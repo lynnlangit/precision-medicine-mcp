@@ -9,6 +9,7 @@ Complete documentation for the Precision Medicine MCP system.
 | Document | Purpose |
 |----------|---------|
 | **[Executive Summary](EXECUTIVE_SUMMARY.md)** | ROI analysis, budget, timeline |
+| **[Why MCP for Healthcare?](WHY_MCP_FOR_HEALTHCARE.md)** | Understand MCP architecture advantages |
 | **[Server Implementation Status](architecture/servers.md)** | All 10 servers status (167 tests ✅) |
 | **[Server Details](../servers/)** | Individual server docs (10 mcp servers) |
 

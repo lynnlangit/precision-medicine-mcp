@@ -26,11 +26,11 @@
 | You Are... | Start Here | Time to Value |
 |------------|------------|---------------|
 | 💰 **Funder/Grant Reviewer** | [FUNDING.md](FUNDING.md) | 5 min |
-| 🏥 **Hospital IT/Admin** | [Hospital Deployment](docs/hospital-deployment/README.md) | 30 min overview |
-| 🔬 **Bioinformatician** | [Researcher Guide](docs/guides/for-bioinformaticians.md) | 25-35 min demo |
-| 💻 **MCP Developer** | [Developer Guide](docs/guides/for-developers.md) | 1 hour setup |
-| 🎓 **Educator/Student** | [Educational Guide](docs/guides/for-researchers.md) | 25 min tutorial |
-| 👥 **Patient/Family** | [Patient Resources](docs/guides/for-patients.md) | 10 min read |
+| 🏥 **Hospital IT/Admin** | [Hospital Deployment](docs/for-hospitals/README.md) | 30 min overview |
+| 🔬 **Bioinformatician** | [Researcher Guide](docs/for-researchers/README.md) | 25-35 min demo |
+| 💻 **MCP Developer** | [Developer Guide](docs/for-developers/README.md) | 1 hour setup |
+| 🎓 **Educator/Student** | [Educational Guide](docs/for-educators/README.md) | 25 min tutorial |
+| 👥 **Patient/Family** | [Patient Resources](docs/for-patients/README.md) | 10 min read |
 
 ---
 
@@ -126,6 +126,7 @@ precision-medicine-mcp/
 
 **Quick Links:**
 - 💰 [Funding Opportunities](FUNDING.md)
+- 🤔 [Why MCP for Healthcare?](docs/WHY_MCP_FOR_HEALTHCARE.md)
 - 📚 [Documentation Hub](docs/README.md)
 - 🏗️ [Architecture Details](docs/architecture/README.md)
 - 🧪 [Testing Guide](tests/README.md)
