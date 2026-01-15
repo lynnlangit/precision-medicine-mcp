@@ -279,7 +279,7 @@ MCP_SERVERS = {
 - Scales to zero when not in use
 - No cost when idle
 
-**See:** [Cost Analysis](../../docs/operations/COST_ANALYSIS.md) for detailed breakdowns
+**See:** [Cost Analysis](../../docs/hospital-deployment/operations/COST_ANALYSIS.md) for detailed breakdowns
 
 ## Troubleshooting
 

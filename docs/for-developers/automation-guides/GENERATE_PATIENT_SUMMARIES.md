@@ -132,7 +132,7 @@ python tools/reports/generate_patient_report.py \
   --output-dir outputs/for-researchers/patient-001/
 
 # Step 2: Use LLM prompt to translate clinical_summary.txt
-# (Copy/paste template from docs/guides/prompts/, fill with data, run in Claude)
+# (Copy/paste template from docs/for-developers/automation-guides/prompts/, fill with data, run in Claude)
 
 # Step 3: Clinician reviews patient-friendly output
 
@@ -356,7 +356,7 @@ def generate_patient_summary(clinical_summary_path: str, template_path: str) -> 
 if __name__ == "__main__":
     patient_summary = generate_patient_summary(
         clinical_summary_path="outputs/for-researchers/patient-001/clinical_summary.txt",
-        template_path="docs/guides/prompts/patient-disease-summary-template.md"
+        template_path="docs/for-developers/automation-guides/prompts/patient-disease-summary-template.md"
     )
 
     # Save output

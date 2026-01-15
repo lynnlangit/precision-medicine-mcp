@@ -58,7 +58,7 @@
 
 ### Phase 1: Core Documentation (Week 1)
 
-#### 1. `docs/ethics/ETHICS_AND_BIAS.md` (~800 lines)
+#### 1. `docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md` (~800 lines)
 
 **Purpose:** Comprehensive ethical AI framework for precision medicine
 
@@ -214,7 +214,7 @@
 
 ---
 
-#### 2. `docs/ethics/BIAS_AUDIT_CHECKLIST.md` (~300 lines)
+#### 2. `docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md` (~300 lines)
 
 **Purpose:** Practical checklist for conducting bias audits
 
@@ -249,7 +249,7 @@
 
 ---
 
-#### 3. `docs/ethics/PATIENTONE_BIAS_AUDIT.md` (~500 lines)
+#### 3. `docs/hospital-deployment/ethics/PATIENTONE_BIAS_AUDIT.md` (~500 lines)
 
 **Purpose:** Concrete demonstration of bias audit on PatientOne workflow
 
@@ -485,7 +485,7 @@ python infrastructure/audit/audit_bias.py \
 
 **6.1 Update `docs/hospital-deployment/../compliance/hipaa.md`**
 - Add new section: "§8. Ethical AI & Bias Mitigation"
-- Cross-reference to `docs/ethics/ETHICS_AND_BIAS.md`
+- Cross-reference to `docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md`
 - Position ethics as complementary to privacy compliance
 
 **6.2 Update `docs/hospital-deployment/OPERATIONS_MANUAL.md`**

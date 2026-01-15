@@ -117,7 +117,7 @@ cat > results/PAT001-OVC-2025/citl_review_completed.json <<'EOF'
 EOF
 ```
 
-**Note:** In production, clinicians would complete the full `docs/clinical/CITL_REVIEW_TEMPLATE.md`
+**Note:** In production, clinicians would complete the full `docs/hospital-deployment/citl-workflows/CITL_REVIEW_TEMPLATE.md`
 
 ---
 

@@ -202,7 +202,7 @@ Bioinformatics Tools (STAR, ComBat, HAllA, etc.)
 **Typical Session (10 messages):**
 - ~$0.20-0.80 total
 
-**See:** [Cost Analysis](../../docs/operations/COST_ANALYSIS.md) for detailed breakdowns
+**See:** [Cost Analysis](../../docs/hospital-deployment/operations/COST_ANALYSIS.md) for detailed breakdowns
 
 ## Troubleshooting
 

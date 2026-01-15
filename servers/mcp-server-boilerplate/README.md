@@ -91,17 +91,17 @@ mcp-server-boilerplate/
 
 ## Integration Checklist
 
-After customizing, complete the [Integration Checklist](../../docs/guides/ADD_NEW_MODALITY_SERVER.md#integration-checklist) in the main guide.
+After customizing, complete the [Integration Checklist](../../docs/for-developers/automation-guides/ADD_NEW_MODALITY_SERVER.md#integration-checklist) in the main guide.
 
 ---
 
 ## Next Steps
 
-1. **Read the full guide:** [docs/guides/ADD_NEW_MODALITY_SERVER.md](../../docs/guides/ADD_NEW_MODALITY_SERVER.md)
+1. **Read the full guide:** [docs/for-developers/automation-guides/ADD_NEW_MODALITY_SERVER.md](../../docs/for-developers/automation-guides/ADD_NEW_MODALITY_SERVER.md)
 2. **Study existing servers:** [servers/](../../servers/)
 3. **Test locally:** Use Claude Desktop to verify tools work
 4. **Deploy to GCP:** Follow [deployment guide](../../docs/deployment/DEPLOYMENT_STATUS.md)
 
 ---
 
-**Questions?** See [Getting Help](../../docs/guides/ADD_NEW_MODALITY_SERVER.md#getting-help) in the main guide.
+**Questions?** See [Getting Help](../../docs/for-developers/automation-guides/ADD_NEW_MODALITY_SERVER.md#getting-help) in the main guide.

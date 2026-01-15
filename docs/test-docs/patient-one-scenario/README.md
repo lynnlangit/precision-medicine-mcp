@@ -212,7 +212,7 @@ Run all modular tests sequentially for comprehensive precision medicine analysis
   - 3-4× more expensive due to 300-1500× larger data files
   - **Token costs stay low** (~$1-2) because MCP servers return summaries, not raw 3-8 GB files!
 
-📊 **[Full Cost Analysis & ROI →](../../../docs/operations/COST_ANALYSIS.md)**
+📊 **[Full Cost Analysis & ROI →](../../../docs/hospital-deployment/operations/COST_ANALYSIS.md)**
 
 **Instructions:**
 1. Open each `TEST_*.txt` file in `implementation/` directory
@@ -425,7 +425,7 @@ The PatientOne workflow has undergone comprehensive bias auditing to ensure algo
 **Audit Date:** 2026-01-12
 **Risk Level:** MEDIUM (acceptable with mitigations)
 **Auditor:** Ethics & Bias Framework Team
-**Full Report:** [PATIENTONE_BIAS_AUDIT.md](../../../docs/ethics/PATIENTONE_BIAS_AUDIT.md)
+**Full Report:** [PATIENTONE_BIAS_AUDIT.md](../../../docs/hospital-deployment/ethics/PATIENTONE_BIAS_AUDIT.md)
 
 ### Patient Profile (Test Case)
 
@@ -512,9 +512,9 @@ Warning: "Limited data in African ancestry (<5 studies)"
 ### Related Documentation
 
 **Bias Detection Framework:**
-- [Ethics & Bias Framework](../../../docs/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
-- [Bias Audit Checklist](../../../docs/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
-- [PatientOne Bias Audit (Full)](../../../docs/ethics/PATIENTONE_BIAS_AUDIT.md) - Complete audit report
+- [Ethics & Bias Framework](../../../docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../../docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [PatientOne Bias Audit (Full)](../../../docs/hospital-deployment/ethics/PATIENTONE_BIAS_AUDIT.md) - Complete audit report
 
 **Operational Procedures:**
 - [Operations Manual - Bias Auditing](../../../docs/hospital-deployment/OPERATIONS_MANUAL.md#bias-auditing-procedures) - How to run audits

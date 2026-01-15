@@ -684,9 +684,9 @@ Next Audit: 2026-04-12 (Q2)
 
 ### Related Documentation
 
-- [Ethics & Bias Framework](../../docs/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
-- [Bias Audit Checklist](../../docs/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
-- [PatientOne Bias Audit](../../docs/ethics/PATIENTONE_BIAS_AUDIT.md) - Example demonstration
+- [Ethics & Bias Framework](ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [PatientOne Bias Audit](ethics/PATIENTONE_BIAS_AUDIT.md) - Example demonstration
 
 ---
 
@@ -713,7 +713,7 @@ python tools/reports/generate_patient_report.py \
 - Assesses NCCN + institutional guideline compliance
 - Reviews quality flags (sample size, FDR thresholds, data completeness)
 - Makes decision: APPROVE / REVISE / REJECT
-- Completes review form: `docs/clinical/CITL_REVIEW_TEMPLATE.md`
+- Completes review form: `citl-workflows/CITL_REVIEW_TEMPLATE.md`
 
 **Step 3: Submit Review** (Automated, ~5 seconds)
 ```bash

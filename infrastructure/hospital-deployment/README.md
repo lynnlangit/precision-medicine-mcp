@@ -498,8 +498,8 @@ To support ethical AI practices and comply with FDA, AMA, and NIH standards, the
 - HTML/JSON audit report generation
 
 **Related Documentation:**
-- [Ethics & Bias Framework](../../docs/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
-- [Bias Audit Checklist](../../docs/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [Ethics & Bias Framework](../../docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
 - [Operations Manual - Bias Auditing](../../docs/hospital-deployment/OPERATIONS_MANUAL.md#bias-auditing-procedures) - Procedures
 - [Admin Guide - Bias Audit Scheduling](../../docs/hospital-deployment/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling
 

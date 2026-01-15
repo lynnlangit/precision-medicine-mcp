@@ -387,7 +387,7 @@ Use prompt templates to convert `clinical_summary.txt` into patient-friendly mat
 ```bash
 # Manual workflow (copy/paste into Claude Desktop or Claude API)
 # 1. Copy clinical_summary.txt content
-# 2. Open prompt template (docs/guides/prompts/patient-disease-summary-template.md)
+# 2. Open prompt template (docs/for-developers/automation-guides/prompts/patient-disease-summary-template.md)
 # 3. Fill template with clinical summary data
 # 4. Run through Claude to generate patient-friendly version
 # 5. Save output to results/patient-001/patient_summary.txt
@@ -414,7 +414,7 @@ def generate_patient_summary(clinical_summary_path: str) -> str:
     client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
     # Load template and clinical summary
-    with open("docs/guides/prompts/patient-disease-summary-template.md") as f:
+    with open("docs/for-developers/automation-guides/prompts/patient-disease-summary-template.md") as f:
         template = f.read()
     with open(clinical_summary_path) as f:
         clinical_data = f.read()
@@ -667,7 +667,7 @@ analyze_patient --patient-id PAT001-OVC-2025 --output-dir ./results --generate-d
 analyze_patient --patient-id PAT001-OVC-2025 --output-dir ./results --generate-draft
 
 # Step 2: Clinician completes review form (20-30 minutes)
-# See: docs/clinical/CITL_REVIEW_TEMPLATE.md
+# See: docs/hospital-deployment/citl-workflows/CITL_REVIEW_TEMPLATE.md
 # Complete 7 sections: Decision, Findings validation, Guidelines, Quality flags, Treatments, Attestation
 
 # Step 3: Submit review with digital signature (~5 seconds)
