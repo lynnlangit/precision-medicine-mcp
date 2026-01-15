@@ -91,7 +91,12 @@ graph LR
 
 ```
 precision-medicine-mcp/
+├── ACKNOWLEDGMENTS.md      # Credits & scientific references
 ├── FUNDING.md              # Investment opportunities & ROI
+├── LICENSE                 # Apache 2.0 License
+├── README.md               # This file
+├── data/                   # Synthetic patient data (100% safe for demos)
+├── desktop-configs/        # Claude Desktop MCP configuration files
 ├── docs/                   # Documentation organized by audience
 │   ├── for-funders/        # ROI analysis, competitive landscape, grant talking points
 │   ├── for-hospitals/      # Deployment checklist, security overview
@@ -106,19 +111,21 @@ precision-medicine-mcp/
 │   ├── hospital-deployment/  # HIPAA compliance, operations manual
 │   ├── deployment/         # GCP deployment status & guides
 │   └── test-docs/          # Testing guides & PatientOne scenarios
-├── servers/                # 10 MCP servers (Python)
-│   ├── mcp-fgbio/          # Reference genomes, FASTQ QC
-│   ├── mcp-multiomics/     # Multi-omics integration
-│   ├── mcp-spatialtools/   # Spatial transcriptomics
-│   ├── mcp-epic/           # Epic FHIR integration
-│   ├── mcp-mockepic/       # Mock Epic for testing
-│   ├── mcp-tcga/           # TCGA cohort data
-│   ├── mcp-openimagedata/  # Imaging data (H&E, MxIF)
-│   ├── mcp-deepcell/       # Cell segmentation
-│   ├── mcp-huggingface/    # AI/ML inference
-│   └── mcp-seqera/         # Workflow orchestration
-├── data/                   # Synthetic patient data (100% safe for demos)
 ├── infrastructure/         # GCP deployment scripts (Cloud Run, VPC, IAM)
+├── schemas/                # JSON schemas (e.g., CitL review schema)
+├── scripts/                # Python automation scripts (reports, deployment, audit)
+├── servers/                # 10 MCP servers (Python)
+│   ├── mcp-deepcell/       # Cell segmentation
+│   ├── mcp-epic/           # Epic FHIR integration
+│   ├── mcp-fgbio/          # Reference genomes, FASTQ QC
+│   ├── mcp-huggingface/    # AI/ML inference
+│   ├── mcp-mockepic/       # Mock Epic for testing
+│   ├── mcp-multiomics/     # Multi-omics integration
+│   ├── mcp-openimagedata/  # Imaging data (H&E, MxIF)
+│   ├── mcp-seqera/         # Workflow orchestration
+│   ├── mcp-spatialtools/   # Spatial transcriptomics
+│   └── mcp-tcga/           # TCGA cohort data
+├── shared/                 # Shared Python code (common utilities, models)
 ├── tests/                  # 167 automated tests
 └── ui/                     # Streamlit chat, Jupyter notebook
 ```
