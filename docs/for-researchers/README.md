@@ -14,6 +14,49 @@
 
 ---
 
+## Data Modalities
+
+```mermaid
+graph LR
+    A[📁 Multi-Modal Data] --> B[🔧 Analysis Workflows]
+    B --> C[📊 Insights]
+
+    A1[Clinical<br/>FHIR] --> A
+    A2[Genomics<br/>VCF] --> A
+    A3[RNA/Protein<br/>Phospho] --> A
+    A4[Spatial<br/>Visium] --> A
+    A5[Imaging<br/>H&E/MxIF] --> A
+
+    B --> B1[Diff Expression]
+    B --> B2[Pathway Enrichment]
+    B --> B3[Cell Deconvolution]
+    B --> B4[Batch Correction]
+    B --> B5[Multi-omics Integration]
+
+    C --> C1[Treatment Targets]
+    C --> C2[Resistance Mechanisms]
+    C --> C3[Biomarkers]
+
+    style A fill:#e1f5ff,stroke:#0066cc,stroke-width:2px
+    style B fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
+```
+
+### PatientOne Example Datasets
+
+| Modality | Demonstration Mode | Production Mode |
+|----------|-------------------|-----------------|
+| **Clinical** | FHIR resources (demographics, conditions, medications, CA-125) | Real Epic FHIR (HIPAA-compliant) |
+| **Genomics** | VCF: TP53, PIK3CA, PTEN, BRCA1 variants | Whole exome sequencing (WES) |
+| **Multi-omics** | 15 samples, 38 KB matrices | 15 samples, 2.7 GB raw (15-20 MB processed) |
+| **Spatial** | 900 spots × 31 genes (315 KB) | 3,000-5,000 spots × 18,000-30,000 genes (100-500 MB) |
+| **Imaging** | H&E, MxIF placeholders (4.1 MB) | Full resolution slides (500 MB - 2 GB) |
+
+**Synthetic Data:** 100% synthetic, no patient privacy concerns, safe for publication
+
+---
+
+
 ## Quick Start (3 Paths)
 
 ### 1. Try PatientOne Demo (25-35 minutes)
@@ -67,49 +110,6 @@
 - Drug resistance mechanisms (Multi-omics + Pathway enrichment + Variant analysis)
 - Biomarker discovery (Cohort analysis + Differential expression + Validation)
 
----
-
-## Data Modalities
-
-```mermaid
-graph LR
-    A[📁 Multi-Modal Data] --> B[🔧 Analysis Workflows]
-    B --> C[📊 Insights]
-
-    A1[Clinical<br/>FHIR] --> A
-    A2[Genomics<br/>VCF] --> A
-    A3[RNA/Protein<br/>Phospho] --> A
-    A4[Spatial<br/>Visium] --> A
-    A5[Imaging<br/>H&E/MxIF] --> A
-
-    B --> B1[Diff Expression]
-    B --> B2[Pathway Enrichment]
-    B --> B3[Cell Deconvolution]
-    B --> B4[Batch Correction]
-    B --> B5[Multi-omics Integration]
-
-    C --> C1[Treatment Targets]
-    C --> C2[Resistance Mechanisms]
-    C --> C3[Biomarkers]
-
-    style A fill:#e1f5ff,stroke:#0066cc,stroke-width:2px
-    style B fill:#fff3cd,stroke:#ffc107,stroke-width:2px
-    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
-```
-
-### PatientOne Example Datasets
-
-| Modality | Demonstration Mode | Production Mode |
-|----------|-------------------|-----------------|
-| **Clinical** | FHIR resources (demographics, conditions, medications, CA-125) | Real Epic FHIR (HIPAA-compliant) |
-| **Genomics** | VCF: TP53, PIK3CA, PTEN, BRCA1 variants | Whole exome sequencing (WES) |
-| **Multi-omics** | 15 samples, 38 KB matrices | 15 samples, 2.7 GB raw (15-20 MB processed) |
-| **Spatial** | 900 spots × 31 genes (315 KB) | 3,000-5,000 spots × 18,000-30,000 genes (100-500 MB) |
-| **Imaging** | H&E, MxIF placeholders (4.1 MB) | Full resolution slides (500 MB - 2 GB) |
-
-**Synthetic Data:** 100% synthetic, no patient privacy concerns, safe for publication
-
----
 
 ## Analysis Workflows
 
