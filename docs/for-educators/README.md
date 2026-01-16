@@ -97,8 +97,6 @@ All major bioinformatics domains in one platform:
 - Integration (20%) - Synthesis across modalities
 - Presentation (20%) - Clear visualizations and reporting
 
-**Example outputs:** [PatientOne Results](../test-docs/patient-one-scenario/architecture/outputs.md)
-
 ---
 
 ## Quick Start for Students
