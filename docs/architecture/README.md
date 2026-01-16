@@ -69,8 +69,6 @@ Technical system design documentation:
 
 ## 📊 Architecture by Analysis Modality
 
-📋 **[See Individual Server Status →](../../../servers/README.md#-server-status)** - Detailed tools and documentation for all 10 servers
-
 7 analysis modalities, 10 specialized servers, 55 tools:
 
 | Modality | Servers | Tools | Status | Documentation |
