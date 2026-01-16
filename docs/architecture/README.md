@@ -222,31 +222,6 @@ Technical system design documentation:
 
 ---
 
-## 🔗 Related Documentation
-
-### 📋 Operations & Deployment
-- [Server Implementation Status](servers.md) - Production readiness (4/10 ready)
-- [GCP Cloud Run Deployment](../deployment/DEPLOYMENT_STATUS.md) - 9 servers deployed ✅
-- [Hospital Deployment Guide](../for-hospitals/) - HIPAA-compliant production setup
-- [Cost Analysis](../operations/cost-and-budget.md) - Token costs, ROI analysis
-
-### 🧬 Server Documentation
-- [Servers Directory](../../../servers/) - Individual server READMEs (10 servers)
-- [Testing Guide](../test-docs/test-coverage.md) - 167 automated tests ✅
-
-### 🔧 Extensibility
-- **[ADD_NEW_MODALITY_SERVER.md](../for-developers/ADD_NEW_MODALITY_SERVER.md)** - Step-by-step guide for adding new modalities (metabolomics, radiomics, etc.)
-- **[Server Template](../../../servers/mcp-server-boilerplate/)** - Reusable boilerplate with FastMCP patterns
-- **Time estimate:** 4-8 hours from template to deployed server
-
-### 📚 Main Docs
-- [Main README](../../README.md) - Project overview
-- [Documentation Index](../INDEX.md) - Complete documentation
-
----
-
-**Last Updated:** 2026-01-13
-
 **Organization Principle:**
 - `docs/architecture/` = High-level design & workflows by modality + cross-cutting architecture
 - `servers/` = Detailed tool specifications & implementation
