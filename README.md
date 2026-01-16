@@ -100,12 +100,11 @@ ___
 **See it / Try it:** [<5 minute demo video](https://www.youtube.com/watch?v=LUldOHHX5Yo) | [Code](docs/test-docs/patient-one-scenario)
 
 **Quick Links:**
-- 📚 [Documentation Hub](docs/README.md)
+- 📚 [Prompt Library](https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs/prompt-library)
 - 🏗️ [Architecture Details](docs/architecture/README.md)
-- 🧪 [Testing Guide](tests/README.md)
+- 📚 [Documentation Hub](docs/README.md)
 
 ---
-
 
 ## License & Acknowledgments
 
