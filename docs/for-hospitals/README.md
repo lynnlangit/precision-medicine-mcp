@@ -19,7 +19,7 @@
 1. **Review security overview** → [SECURITY_OVERVIEW.md](SECURITY_OVERVIEW.md) (10 min)
 2. **Check deployment requirements** → [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) (15 min)
 3. **Review existing hospital deployment guides** → [Operations Manual](../hospital-deployment/OPERATIONS_MANUAL.md) (30 min)
-4. **Assess HIPAA compliance** → [../compliance/hipaa.md](../compliance/hipaa.md) (20 min)
+4. **Assess HIPAA compliance** → [HIPPA_DETAILS](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/hospital-deployment/compliance/hipaa.md) (20 min)
 5. **Schedule technical Q&A** → Contact information below
 
 **Total Time Investment:** 75 minutes to full evaluation
