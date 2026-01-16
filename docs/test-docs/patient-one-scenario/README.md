@@ -128,7 +128,7 @@ PatientOne can run in two modes:
 
 **Quick Mode Selection:**
 - **DRY_RUN mode** (default): No setup needed, works immediately with synthetic data
-- **Actual Data mode**: Requires data files and configuration — see [📘 Data Modes Guide](./DATA_MODES_GUIDE.md)
+- **Actual Data mode**: Requires data files and configuration — see [📘 Data Modes Guide](https://github.com/lynnlangit/precision-medicine-mcp/blob/8326883dcef5d52bb31d9804cb6c769f0fcfa993/docs/test-docs/patient-one-scenario/data-modes-guide.md)
 
 💡 **Tip:** Start with DRY_RUN mode to understand the workflow (5 min), then switch to actual data for real analysis.
 
