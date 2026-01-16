@@ -228,7 +228,6 @@ graph TB
 - ✅ **Breach notification** - 60-day HIPAA timeline compliance
 - ✅ **Audit trail** - All incidents logged and tracked
 
-See: [HIPAA Compliance Guide](../compliance/hipaa.md) for full details
 
 ---
 
