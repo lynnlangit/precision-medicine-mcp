@@ -426,7 +426,6 @@ nearest neighbors.
 - Meta-analysis: Stouffer's Z-score method
 - Batch correction: ComBat (Empirical Bayes)
 
-**References provided:** See [REFERENCES.md](../../architecture/references.md)
 
 ### Data Availability
 
@@ -494,25 +493,6 @@ infiltration with spatial pathway enrichment scores."
 
 ---
 
-## Resources for Researchers
-
-### Documentation
-- **[Server README files](../../servers/)** - Detailed tool documentation
-- **[Architecture guides](../../architecture/)** - System design and data flow
-- **[PatientOne workflow](../../tests/manual_testing/PatientOne-OvarianCancer/)** - Complete example analysis
-- **[Scientific references](../../architecture/references.md)** - Peer-reviewed methods
-
-### Example Outputs
-- **[Researcher outputs](../../tests/manual_testing/PatientOne-OvarianCancer/architecture/patient-one-outputs/for-researchers/)** - Visualizations, tables, reports
-- **[Test prompts](../../tests/manual_testing/PatientOne-OvarianCancer/implementation/)** - Example queries and workflows
-
-### Support
-- **GitHub Issues:** Report bugs or request features
-- **GitHub Discussions:** Ask questions, share workflows
-- **Documentation:** Search this docs/ directory
-
----
-
 ## Frequently Asked Questions
 
 ### "Can I use this for my research publication?"
@@ -552,25 +532,6 @@ See: DATA_FORMATS.md (coming soon) for specifications
 - Data provenance (file paths, checksums)
 - Random seeds
 
-See: REPRODUCIBILITY.md (coming soon) for best practices
 
 ---
 
-## Next Steps
-
-1. **Try the demo** → [PatientOne Workflow](../../tests/manual_testing/PatientOne-OvarianCancer/README.md) (25-35 min)
-2. **Explore your modality** → [Server documentation](../../servers/README.md)
-3. **Design your workflow** → Analysis Workflows
-4. **Scale to production** → [Cost Analysis](../operations/cost-and-budget.md)
-
----
-
-**Related Resources:**
-- 🏥 [Hospital Deployment](../for-hospitals/README.md) - For clinical implementation
-- 💻 [Developer Guide](../for-developers/README.md) - For extending the platform
-- 💰 [Funding Information](../for-funders/README.md) - For grant applications
-- 🏠 [Back to Main Documentation](../README.md)
-
----
-
-**Last Updated:** 2026-01-14
