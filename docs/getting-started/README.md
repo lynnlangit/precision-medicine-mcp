@@ -4,9 +4,10 @@ Quick start guides for new users of the Precision Medicine MCP system.
 
 ## Contents
 
-- **Installation Guide** - Environment setup and configuration
-- **First Analysis** - Run your first patient analysis
-- **Common Issues** - Troubleshooting guide
+- **Installation Guide**
+  - Environment setup and configuration
+  - Run your first patient analysis
+  - Troubleshooting guide
 
 
 
