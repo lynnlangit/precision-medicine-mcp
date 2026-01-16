@@ -39,7 +39,7 @@ The following files were explicitly checked against archiving criteria:
 | File | Last Updated | Status | Decision |
 |------|--------------|--------|----------|
 | `/docs/deployment/security.md` | Dec 29, 2025 | Active | ✅ Keep - Recent, comprehensive security guide |
-| `/docs/hospital-deployment/compliance/hipaa.md` | Dec 2025 | Active | ✅ Keep - Current HIPAA compliance documentation |
+| `/docs/for-hospitals/compliance/hipaa.md` | Dec 2025 | Active | ✅ Keep - Current HIPAA compliance documentation |
 | `/docs/architecture/servers.md` | Jan 10, 2026 | Active | ✅ Keep - Consolidated server status (Phase 4) |
 | `/docs/for-*/README.md` (6 files) | Jan 14, 2026 | Active | ✅ Keep - New comprehensive audience guides (Phase 2) |
 | `/docs/for-developers/automation-guides/for-*.md` (6 files) | Various | **Deleted** | 🗑️ Removed in Phase 5 (superseded by for-*/ directories) |
@@ -52,7 +52,7 @@ The following files were explicitly checked against archiving criteria:
 |--------------|---------------|----------------|
 | `docs/for-developers/automation-guides/for-developers.md` | `docs/for-developers/README.md` | Jan 14, 2026 |
 | `docs/for-developers/automation-guides/for-researchers.md` | `docs/for-researchers/README.md` | Jan 14, 2026 |
-| `docs/for-developers/automation-guides/for-clinicians.md` | `docs/hospital-deployment/citl-workflows/CITL_WORKFLOW_GUIDE.md` | Jan 14, 2026 |
+| `docs/for-developers/automation-guides/for-clinicians.md` | `docs/for-hospitals/citl-workflows/CITL_WORKFLOW_GUIDE.md` | Jan 14, 2026 |
 | `docs/for-developers/automation-guides/for-bioinformaticians.md` | `docs/for-researchers/README.md` | Jan 14, 2026 |
 | `docs/for-developers/automation-guides/for-patients.md` | `docs/for-patients/README.md` | Jan 14, 2026 |
 | `do../../for-developers/ADD_NEW_MODALITY_SERVER.md` | `docs/for-developers/ADD_NEW_MODALITY_SERVER.md` | Jan 14, 2026 |

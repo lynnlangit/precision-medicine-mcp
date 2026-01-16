@@ -320,8 +320,8 @@ export DEIDENTIFY_ENABLED="true"
   - DRY_RUN mode configuration
 
 ### Deployment & Operations
-- **Hospital Deployment:** [/docs/hospital-deployment/](../hospital-deployment/)
-- **HIPAA Compliance:** [/docs/hospital-deployment/../../compliance/hipaa.md](../hospital-deployment/../../compliance/hipaa.md)
+- **Hospital Deployment:** [/docs/for-hospitals/](../for-hospitals/)
+- **HIPAA Compliance:** [/docs/for-hospitals/../../compliance/hipaa.md](../for-hospitals/../../compliance/hipaa.md)
 - **GCP Healthcare API Setup:** [/docs/deployment/GET_STARTED.md](../../deployment/GET_STARTED.md)
 
 ---

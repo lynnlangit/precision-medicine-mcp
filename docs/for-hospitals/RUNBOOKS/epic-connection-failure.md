@@ -255,7 +255,7 @@ Precision Medicine MCP Team
 
 **If Epic endpoint or credentials changed:**
 
-Update `/docs/hospital-deployment/OPERATIONS_MANUAL.md`:
+Update `/docs/for-hospitals/OPERATIONS_MANUAL.md`:
 - Epic FHIR endpoint URL
 - Contact for Epic credentials
 - Any new requirements

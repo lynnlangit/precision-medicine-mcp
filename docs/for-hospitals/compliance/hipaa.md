@@ -587,6 +587,6 @@ Privacy Officer: _________________ Date: _________
 - Principal Investigator: _________________ Date: _________
 
 **Related Documents:**
-- [Operations Manual](../hospital-deployment/OPERATIONS_MANUAL.md)
-- [Admin Guide](../hospital-deployment/ADMIN_GUIDE.md)
-- [Audit Log Guide](../hospital-deployment/AUDIT_LOG_GUIDE.md)
+- [Operations Manual](../for-hospitals/OPERATIONS_MANUAL.md)
+- [Admin Guide](../for-hospitals/ADMIN_GUIDE.md)
+- [Audit Log Guide](../for-hospitals/AUDIT_LOG_GUIDE.md)

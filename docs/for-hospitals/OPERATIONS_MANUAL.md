@@ -383,7 +383,7 @@ gcloud logging read 'resource.type="cloud_run_revision"' \
 3. **Communication:**
    - P0/P1: Immediately notify all users
    - P2/P3: Email update within 4 hours
-   - Use template: `docs/hospital-deployment/templates/incident-notification.md`
+   - Use template: `docs/for-hospitals/templates/incident-notification.md`
 
 4. **Resolution:**
    - Follow appropriate runbook

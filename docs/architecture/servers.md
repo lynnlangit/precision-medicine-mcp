@@ -210,7 +210,7 @@ Nine servers successfully deployed to Google Cloud Platform Cloud Run (mcp-epic 
 
 ### Next Steps for Production Hospital Deployment
 
-See [Hospital Deployment Plan](../hospital-deployment/OPERATIONS_MANUAL.md) for complete roadmap:
+See [Hospital Deployment Plan](../for-hospitals/OPERATIONS_MANUAL.md) for complete roadmap:
 
 **Month 1:**
 - Add Azure AD SSO authentication

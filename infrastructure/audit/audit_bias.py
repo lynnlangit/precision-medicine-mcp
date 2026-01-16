@@ -26,9 +26,9 @@ Usage:
         --reference-dataset gnomad
 
 References:
-- docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md
-- docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md
-- docs/hospital-deployment/ethics/PATIENTONE_BIAS_AUDIT.md
+- docs/for-hospitals/ethics/ETHICS_AND_BIAS.md
+- docs/for-hospitals/ethics/BIAS_AUDIT_CHECKLIST.md
+- docs/for-hospitals/ethics/PATIENTONE_BIAS_AUDIT.md
 """
 
 import argparse

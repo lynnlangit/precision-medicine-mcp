@@ -237,9 +237,9 @@ Step-by-step checklist for deploying the Precision Medicine MCP Platform at your
 
 ## Troubleshooting Resources
 
-- **[Runbooks](../hospital-deployment/RUNBOOKS/)** - Common issues and resolutions
-- **[Operations Manual](../hospital-deployment/OPERATIONS_MANUAL.md)** - Day-to-day operations
-- **[Admin Guide](../hospital-deployment/ADMIN_GUIDE.md)** - User management, monitoring
+- **[Runbooks](../for-hospitals/RUNBOOKS/)** - Common issues and resolutions
+- **[Operations Manual](../for-hospitals/OPERATIONS_MANUAL.md)** - Day-to-day operations
+- **[Admin Guide](../for-hospitals/ADMIN_GUIDE.md)** - User management, monitoring
 
 ---
 

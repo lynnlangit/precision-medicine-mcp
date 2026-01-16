@@ -50,7 +50,7 @@ This framework provides systematic methods to:
 
 ### Relationship to HIPAA Compliance
 
-This ethics framework **complements** existing HIPAA compliance (see [../compliance/hipaa.md](../hospital-deployment/../compliance/hipaa.md)):
+This ethics framework **complements** existing HIPAA compliance (see [../compliance/hipaa.md](../for-hospitals/../compliance/hipaa.md)):
 
 - **HIPAA:** Protects patient privacy through de-identification and access controls
 - **Ethics & Bias:** Ensures AI recommendations are **fair and equitable** across populations

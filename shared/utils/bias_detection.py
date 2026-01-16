@@ -38,7 +38,7 @@ import warnings
 # ============================================================================
 
 # Diverse reference datasets for representation comparison
-# Source: docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md
+# Source: docs/for-hospitals/ethics/ETHICS_AND_BIAS.md
 REFERENCE_DATASETS = {
     "gnomad": {
         "total_genomes": 76156,

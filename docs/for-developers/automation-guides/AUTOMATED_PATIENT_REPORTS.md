@@ -667,7 +667,7 @@ analyze_patient --patient-id PAT001-OVC-2025 --output-dir ./results --generate-d
 analyze_patient --patient-id PAT001-OVC-2025 --output-dir ./results --generate-draft
 
 # Step 2: Clinician completes review form (20-30 minutes)
-# See: docs/hospital-deployment/citl-workflows/CITL_REVIEW_TEMPLATE.md
+# See: docs/for-hospitals/citl-workflows/CITL_REVIEW_TEMPLATE.md
 # Complete 7 sections: Decision, Findings validation, Guidelines, Quality flags, Treatments, Attestation
 
 # Step 3: Submit review with digital signature (~5 seconds)
@@ -682,8 +682,8 @@ python tools/reports/finalize_patient_report.py --patient-id PAT001-OVC-2025
 **Result:** `final_report_approved.json` with status "clinically_approved" + 10-year HIPAA audit trail
 
 **Documentation:**
-- **[CITL_WORKFLOW_GUIDE.md](../../hospital-deployment/citl-workflows/CITL_WORKFLOW_GUIDE.md)** - Complete clinician training
-- **[CITL_EXAMPLES.md](../../hospital-deployment/citl-workflows/CITL_EXAMPLES.md)** - Example APPROVE/REVISE/REJECT scenarios
+- **[CITL_WORKFLOW_GUIDE.md](../../for-hospitals/citl-workflows/CITL_WORKFLOW_GUIDE.md)** - Complete clinician training
+- **[CITL_EXAMPLES.md](../../for-hospitals/citl-workflows/CITL_EXAMPLES.md)** - Example APPROVE/REVISE/REJECT scenarios
 - **[TEST_6_CITL_REVIEW](../../test-docs/patient-one-scenario/test-prompts/test-6-citl-review.md)** - End-to-end test workflow
 
 ## API Reference

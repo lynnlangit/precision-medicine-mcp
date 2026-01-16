@@ -437,7 +437,7 @@ See: [CONTRIBUTING.md](CONTRIBUTING.md) for PR guidelines
 ---
 
 **Related Resources:**
-- 🏥 [Hospital Operations Manual](../hospital-deployment/OPERATIONS_MANUAL.md) - For IT teams deploying to production
+- 🏥 [Hospital Operations Manual](../for-hospitals/OPERATIONS_MANUAL.md) - For IT teams deploying to production
 - 🔬 [Researcher Guide](../for-researchers/README.md) - For bioinformaticians using the platform
 - 📊 [Architecture Documentation](../architecture/README.md) - Deep technical dive
 - 🏠 [Back to Main Documentation](../README.md)

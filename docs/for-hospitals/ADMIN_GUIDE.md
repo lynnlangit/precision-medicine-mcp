@@ -723,8 +723,8 @@ gsutil iam ch serviceAccount:admin@{project}.iam.gserviceaccount.com:roles/stora
 ### Related Documentation
 
 - [Operations Manual - Bias Auditing](OPERATIONS_MANUAL.md#bias-auditing-procedures) - Detailed procedures
-- [Ethics & Bias Framework](../../docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
-- [Bias Audit Checklist](../../docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [Ethics & Bias Framework](../../docs/for-hospitals/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../docs/for-hospitals/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
 
 ---
 

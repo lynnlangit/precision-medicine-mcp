@@ -423,7 +423,7 @@ The PatientOne workflow has undergone comprehensive bias auditing to ensure algo
 **Audit Date:** 2026-01-12
 **Risk Level:** MEDIUM (acceptable with mitigations)
 **Auditor:** Ethics & Bias Framework Team
-**Full Report:** [PATIENTONE_BIAS_AUDIT.md](../../../docs/hospital-deployment/ethics/PATIENTONE_BIAS_AUDIT.md)
+**Full Report:** [PATIENTONE_BIAS_AUDIT.md](../../../docs/for-hospitals/ethics/PATIENTONE_BIAS_AUDIT.md)
 
 ### Patient Profile (Test Case)
 
@@ -510,13 +510,13 @@ Warning: "Limited data in African ancestry (<5 studies)"
 ### Related Documentation
 
 **Bias Detection Framework:**
-- [Ethics & Bias Framework](../../../docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
-- [Bias Audit Checklist](../../../docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
-- [PatientOne Bias Audit (Full)](../../../docs/hospital-deployment/ethics/PATIENTONE_BIAS_AUDIT.md) - Complete audit report
+- [Ethics & Bias Framework](../../../docs/for-hospitals/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../../docs/for-hospitals/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [PatientOne Bias Audit (Full)](../../../docs/for-hospitals/ethics/PATIENTONE_BIAS_AUDIT.md) - Complete audit report
 
 **Operational Procedures:**
-- [Operations Manual - Bias Auditing](../../../docs/hospital-deployment/OPERATIONS_MANUAL.md#bias-auditing-procedures) - How to run audits
-- [Admin Guide - Audit Scheduling](../../../docs/hospital-deployment/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling procedures
+- [Operations Manual - Bias Auditing](../../../docs/for-hospitals/OPERATIONS_MANUAL.md#bias-auditing-procedures) - How to run audits
+- [Admin Guide - Audit Scheduling](../../../docs/for-hospitals/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling procedures
 
 **Tools:**
 - `shared/utils/bias_detection.py` - Bias detection utilities

@@ -231,7 +231,7 @@ Technical system design documentation:
 ### 📋 Operations & Deployment
 - [Server Implementation Status](servers.md) - Production readiness (4/10 ready)
 - [GCP Cloud Run Deployment](../deployment/DEPLOYMENT_STATUS.md) - 9 servers deployed ✅
-- [Hospital Deployment Guide](../hospital-deployment/) - HIPAA-compliant production setup
+- [Hospital Deployment Guide](../for-hospitals/) - HIPAA-compliant production setup
 - [Cost Analysis](../operations/cost-and-budget.md) - Token costs, ROI analysis
 
 ### 🧬 Server Documentation

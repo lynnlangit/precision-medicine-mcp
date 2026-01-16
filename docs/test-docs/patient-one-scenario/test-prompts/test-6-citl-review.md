@@ -120,7 +120,7 @@ cat ./results/PAT001-OVC-2025/clinical_summary.txt
 
 ```bash
 # Copy template
-cp docs/hospital-deployment/citl-workflows/CITL_REVIEW_TEMPLATE.md ./results/PAT001-OVC-2025/citl_review_form.md
+cp docs/for-hospitals/citl-workflows/CITL_REVIEW_TEMPLATE.md ./results/PAT001-OVC-2025/citl_review_form.md
 
 # Edit in your preferred editor
 code ./results/PAT001-OVC-2025/citl_review_form.md

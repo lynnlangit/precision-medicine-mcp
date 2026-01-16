@@ -393,7 +393,7 @@ Follow: [PatientOne Guide](../test-docs/patient-one-scenario/README.md)
 - **[Installation Guide](../getting-started/installation.md)** - Setup instructions
 - **[Quick Start Demo](../demos/NINETY_SECOND_PITCH.md)** - 90-second overview
 - **[Architecture Overview](../for-developers/ARCHITECTURE.md)** - System design
-- **[Troubleshooting Guide](../../hospital-deployment/RUNBOOKS/)** - Common issues
+- **[Troubleshooting Guide](../../for-hospitals/RUNBOOKS/)** - Common issues
 
 ### Additional Materials
 - **Lecture slides:** [To be added - community contributions welcome]

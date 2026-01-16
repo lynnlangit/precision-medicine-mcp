@@ -950,7 +950,7 @@ A: Yes, IF the uncertain findings don't materially affect treatment decisions. D
 A: Currently manual (copy values from .md to .json following schema structure). A web-based form interface is planned for future release to automate this conversion.
 
 **Q: Where can I find example completed reviews?**
-A: See `docs/hospital-deployment/citl-workflows/CITL_EXAMPLES.md` for three complete example reviews (APPROVE, REVISE, REJECT scenarios).
+A: See `docs/for-hospitals/citl-workflows/CITL_EXAMPLES.md` for three complete example reviews (APPROVE, REVISE, REJECT scenarios).
 
 **Q: Who can I contact for help?**
 A:

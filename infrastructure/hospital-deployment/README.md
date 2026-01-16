@@ -37,7 +37,7 @@ The deployment follows a 3-month phased approach optimized for research hospital
 - **Week 11**: Knowledge transfer to hospital IT and research team
 - **Week 12**: Final validation and go-live
 
-**Full deployment plan**: See [`/docs/hospital-deployment/`](../../docs/hospital-deployment/)
+**Full deployment plan**: See [`/docs/for-hospitals/`](../../docs/for-hospitals/)
 
 ## Scripts
 
@@ -498,10 +498,10 @@ To support ethical AI practices and comply with FDA, AMA, and NIH standards, the
 - HTML/JSON audit report generation
 
 **Related Documentation:**
-- [Ethics & Bias Framework](../../docs/hospital-deployment/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
-- [Bias Audit Checklist](../../docs/hospital-deployment/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
-- [Operations Manual - Bias Auditing](../../docs/hospital-deployment/OPERATIONS_MANUAL.md#bias-auditing-procedures) - Procedures
-- [Admin Guide - Bias Audit Scheduling](../../docs/hospital-deployment/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling
+- [Ethics & Bias Framework](../../docs/for-hospitals/ethics/ETHICS_AND_BIAS.md) - Comprehensive methodology
+- [Bias Audit Checklist](../../docs/for-hospitals/ethics/BIAS_AUDIT_CHECKLIST.md) - Step-by-step guide
+- [Operations Manual - Bias Auditing](../../docs/for-hospitals/OPERATIONS_MANUAL.md#bias-auditing-procedures) - Procedures
+- [Admin Guide - Bias Audit Scheduling](../../docs/for-hospitals/ADMIN_GUIDE.md#bias-audit-scheduling) - Scheduling
 
 ### Prerequisites
 
@@ -792,28 +792,28 @@ gsutil iam ch serviceAccount:mcp-audit-sa@$PROJECT_ID.iam.gserviceaccount.com:ro
 - Verify `azure-ad-client-secret` is correct and not expired
 - Check user is in `precision-medicine-users` Azure AD group
 
-**Solution**: See [`/docs/hospital-deployment/RUNBOOKS/sso-issues.md`](../../docs/hospital-deployment/RUNBOOKS/sso-issues.md)
+**Solution**: See [`/docs/for-hospitals/RUNBOOKS/sso-issues.md`](../../docs/for-hospitals/RUNBOOKS/sso-issues.md)
 
 **2. Epic FHIR connection fails**
 - Verify research FHIR endpoint URL is correct
 - Check OAuth client credentials are valid
 - Ensure service account has Secret Manager access
 
-**Solution**: See [`/docs/hospital-deployment/RUNBOOKS/epic-connection-failure.md`](../../docs/hospital-deployment/RUNBOOKS/epic-connection-failure.md)
+**Solution**: See [`/docs/for-hospitals/RUNBOOKS/epic-connection-failure.md`](../../docs/for-hospitals/RUNBOOKS/epic-connection-failure.md)
 
 **3. Server deployment fails**
 - Check VPC connector exists and is ready
 - Verify service account has necessary IAM roles
 - Ensure secrets are populated
 
-**Solution**: See [`/docs/hospital-deployment/RUNBOOKS/server-down.md`](../../docs/hospital-deployment/RUNBOOKS/server-down.md)
+**Solution**: See [`/docs/for-hospitals/RUNBOOKS/server-down.md`](../../docs/for-hospitals/RUNBOOKS/server-down.md)
 
 **4. Audit logs missing**
 - Verify log sink is created
 - Check service account has Logging Writer role
 - Confirm application is using structured logging
 
-**Solution**: Check `/docs/hospital-deployment/AUDIT_LOG_GUIDE.md`
+**Solution**: Check `/docs/for-hospitals/AUDIT_LOG_GUIDE.md`
 
 ## Support
 
@@ -823,7 +823,7 @@ gsutil iam ch serviceAccount:mcp-audit-sa@$PROJECT_ID.iam.gserviceaccount.com:ro
 
 ### Development Team Support
 - **Tier 2**: Server errors, Epic integration, complex issues
-- **Contact**: See `/docs/hospital-deployment/OPERATIONS_MANUAL.md`
+- **Contact**: See `/docs/for-hospitals/OPERATIONS_MANUAL.md`
 
 ### Vendor Support
 - **Tier 3**: Anthropic API, GCP platform issues
@@ -832,25 +832,25 @@ gsutil iam ch serviceAccount:mcp-audit-sa@$PROJECT_ID.iam.gserviceaccount.com:ro
 ## Documentation
 
 ### For Users
-- **[User Guide](../../docs/hospital-deployment/USER_GUIDE.md)**: How to use Streamlit and Jupyter
-- **[FAQ](../../docs/hospital-deployment/USER_GUIDE.md#faq)**: Common questions and answers
+- **[User Guide](../../docs/for-hospitals/USER_GUIDE.md)**: How to use Streamlit and Jupyter
+- **[FAQ](../../docs/for-hospitals/USER_GUIDE.md#faq)**: Common questions and answers
 
 ### For Administrators
-- **[Operations Manual](../../docs/hospital-deployment/OPERATIONS_MANUAL.md)**: System architecture and operations
-- **[Admin Guide](../../docs/hospital-deployment/ADMIN_GUIDE.md)**: User management, monitoring, security
-- **[HIPAA Compliance](../../docs/hospital-deployment/HIPAA_COMPLIANCE.md)**: Compliance validation
-- **[Audit Log Guide](../../docs/hospital-deployment/AUDIT_LOG_GUIDE.md)**: Log access and reporting
+- **[Operations Manual](../../docs/for-hospitals/OPERATIONS_MANUAL.md)**: System architecture and operations
+- **[Admin Guide](../../docs/for-hospitals/ADMIN_GUIDE.md)**: User management, monitoring, security
+- **[HIPAA Compliance](../../docs/for-hospitals/HIPAA_COMPLIANCE.md)**: Compliance validation
+- **[Audit Log Guide](../../docs/for-hospitals/AUDIT_LOG_GUIDE.md)**: Log access and reporting
 
 ### Runbooks
-- **[Server Down](../../docs/hospital-deployment/RUNBOOKS/server-down.md)**: Server troubleshooting
-- **[Epic Connection Failure](../../docs/hospital-deployment/RUNBOOKS/epic-connection-failure.md)**: Epic FHIR issues
-- **[SSO Issues](../../docs/hospital-deployment/RUNBOOKS/sso-issues.md)**: Azure AD login problems
+- **[Server Down](../../docs/for-hospitals/RUNBOOKS/server-down.md)**: Server troubleshooting
+- **[Epic Connection Failure](../../docs/for-hospitals/RUNBOOKS/epic-connection-failure.md)**: Epic FHIR issues
+- **[SSO Issues](../../docs/for-hospitals/RUNBOOKS/sso-issues.md)**: Azure AD login problems
 
 ## Contributing
 
 This deployment is specific to the research hospital's GCP organization. For questions or issues:
 
-1. Check documentation in `/docs/hospital-deployment/`
+1. Check documentation in `/docs/for-hospitals/`
 2. Review runbooks for common issues
 3. Contact development team (see Operations Manual)
 4. Submit issue to GitHub (redact any PHI/credentials)
@@ -863,4 +863,4 @@ See main repository LICENSE file.
 
 **Last Updated**: 2025-12-30
 **Version**: 1.0.0
-**Contact**: See `/docs/hospital-deployment/OPERATIONS_MANUAL.md` for support contacts
+**Contact**: See `/docs/for-hospitals/OPERATIONS_MANUAL.md` for support contacts

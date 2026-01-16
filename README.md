@@ -107,7 +107,7 @@ precision-medicine-mcp/
 │   ├── prompt-library/     # 20+ ready-to-use clinical prompts
 │   ├── getting-started/    # Installation, quick start, desktop-configs
 │   ├── architecture/       # System design & modality workflows
-│   ├── hospital-deployment/  # HIPAA compliance, operations manual
+│   ├── for-hospitals/      # HIPAA compliance, operations manual
 │   ├── deployment/         # GCP deployment status & guides
 │   └── test-docs/          # Testing guides & PatientOne scenarios
 ├── infrastructure/         # Deployment, audit, environment setup

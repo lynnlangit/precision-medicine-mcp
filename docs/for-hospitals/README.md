@@ -18,8 +18,8 @@
 
 1. **Review security overview** → [SECURITY_OVERVIEW.md](SECURITY_OVERVIEW.md) (10 min)
 2. **Check deployment requirements** → [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) (15 min)
-3. **Review existing hospital deployment guides** → [Operations Manual](../hospital-deployment/OPERATIONS_MANUAL.md) (30 min)
-4. **Assess HIPAA compliance** → [HIPPA_DETAILS](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/hospital-deployment/compliance/hipaa.md) (20 min)
+3. **Review existing hospital deployment guides** → [Operations Manual](../for-hospitals/OPERATIONS_MANUAL.md) (30 min)
+4. **Assess HIPAA compliance** → [HIPPA_DETAILS](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/for-hospitals/compliance/hipaa.md) (20 min)
 5. **Schedule technical Q&A** → Contact information below
 
 **Total Time Investment:** 75 minutes to full evaluation
@@ -31,24 +31,24 @@
 ### Deployment Planning
 - **[SECURITY_OVERVIEW.md](SECURITY_OVERVIEW.md)** - One-page security architecture summary
 - **[DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)** - Step-by-step deployment requirements
-- **[Operations Manual](../hospital-deployment/OPERATIONS_MANUAL.md)** - Day-to-day operations guide
+- **[Operations Manual](../for-hospitals/OPERATIONS_MANUAL.md)** - Day-to-day operations guide
 - **[Production Roadmap](../deployment/roadmap.md)** - 6-month deployment timeline
 
 ### Security & Compliance
-- **[HIPAA Compliance](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/hospital-deployment/compliance/hipaa.md)** - De-identification, audit logging, encryption
-- **[Data Governance](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/hospital-deployment/compliance/data-governance.md)** - Data retention, privacy policies
+- **[HIPAA Compliance](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/for-hospitals/compliance/hipaa.md)** - De-identification, audit logging, encryption
+- **[Data Governance](https://github.com/lynnlangit/precision-medicine-mcp/blob/main/docs/for-hospitals/compliance/data-governance.md)** - Data retention, privacy policies
 - **[Security Guide](../deployment/security.md)** - API keys, secrets management, GCP Secret Manager
 
 ### User Management
-- **[Admin Guide](../hospital-deployment/ADMIN_GUIDE.md)** - User management, monitoring, backups
-- **[User Guide](../hospital-deployment/USER_GUIDE.md)** - For clinicians and researchers
-- **[Audit Log Guide](../hospital-deployment/AUDIT_LOG_GUIDE.md)** - 10-year retention compliance
+- **[Admin Guide](../for-hospitals/ADMIN_GUIDE.md)** - User management, monitoring, backups
+- **[User Guide](../for-hospitals/USER_GUIDE.md)** - For clinicians and researchers
+- **[Audit Log Guide](../for-hospitals/AUDIT_LOG_GUIDE.md)** - 10-year retention compliance
 
 ### Troubleshooting
-- **[Runbooks](../hospital-deployment/RUNBOOKS/)** - Incident response procedures
-  - [Server Down](../hospital-deployment/RUNBOOKS/server-down.md)
-  - [Epic Connection Failure](../hospital-deployment/RUNBOOKS/epic-connection-failure.md)
-  - [SSO Issues](../hospital-deployment/RUNBOOKS/sso-issues.md)
+- **[Runbooks](../for-hospitals/RUNBOOKS/)** - Incident response procedures
+  - [Server Down](../for-hospitals/RUNBOOKS/server-down.md)
+  - [Epic Connection Failure](../for-hospitals/RUNBOOKS/epic-connection-failure.md)
+  - [SSO Issues](../for-hospitals/RUNBOOKS/sso-issues.md)
 
 ---
 
@@ -224,7 +224,7 @@ graph TB
 - ✅ **Key management** - GCP Secret Manager with automatic rotation
 
 ### Incident Response
-- ✅ **Documented procedures** - [Runbooks](../hospital-deployment/RUNBOOKS/)
+- ✅ **Documented procedures** - [Runbooks](../for-hospitals/RUNBOOKS/)
 - ✅ **Breach notification** - 60-day HIPAA timeline compliance
 - ✅ **Audit trail** - All incidents logged and tracked
 

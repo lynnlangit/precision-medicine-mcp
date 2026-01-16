@@ -254,7 +254,7 @@ mcp-epic server automatically removes all HIPAA-defined identifiers:
 **Related Resources:**
 - 📖 [HIPAA Compliance Guide](../compliance/hipaa.md) - Full compliance details
 - 🔧 [Deployment Guide](../deployment/security.md) - Technical implementation
-- 📋 [Admin Guide](../hospital-deployment/ADMIN_GUIDE.md) - User management
+- 📋 [Admin Guide](../for-hospitals/ADMIN_GUIDE.md) - User management
 
 ---
 
