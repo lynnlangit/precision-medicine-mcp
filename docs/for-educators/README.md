@@ -383,7 +383,6 @@ Follow: [PatientOne Guide](../test-docs/patient-one-scenario/README.md)
 
 ### Instructor Materials
 - **[PatientOne Guide](../test-docs/patient-one-scenario/README.md)** - Complete walkthrough
-- **[Example Outputs](../test-docs/patient-one-scenario/architecture/outputs.md)** - Expected results
 - **[Statistical Methods](../for-researchers/README.md)** - Detailed method explanations
 - **[Cost Analysis](../for-hospitals/operations/cost-and-budget.md)** - Budgeting for classroom use
 
@@ -391,22 +390,10 @@ Follow: [PatientOne Guide](../test-docs/patient-one-scenario/README.md)
 - **[Installation Guide](../getting-started/installation.md)** - Setup instructions
 - **[Quick Start Demo](../demos/NINETY_SECOND_PITCH.md)** - 90-second overview
 - **[Architecture Overview](../for-developers/ARCHITECTURE.md)** - System design
-- **[Troubleshooting Guide](../../for-hospitals/RUNBOOKS/)** - Common issues
-
-### Additional Materials
-- **Lecture slides:** [To be added - community contributions welcome]
-- **Video tutorials:** [To be added - community contributions welcome]
-- **Problem sets:** [To be added - community contributions welcome]
 
 ---
 
 ## Instructor Support
-
-### Getting Help
-- **Technical questions:** GitHub Discussions
-- **Teaching strategies:** [instructor-mailing-list placeholder]
-- **Bug reports:** GitHub Issues
-- **Feature requests:** GitHub Issues with "education" tag
 
 ### Contributing Educational Materials
 We welcome contributions!
@@ -421,13 +408,7 @@ We welcome contributions!
 ### Pilot Program
 Interested in piloting this platform in your course?
 
-**We offer:**
-- Free GCP credits for classroom use
-- Priority support during semester
-- Featured on platform website
-- Co-authorship on educational papers
 
-**Contact:** [email placeholder]
 
 ---
 
