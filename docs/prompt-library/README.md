@@ -69,19 +69,6 @@ End-to-end multi-modal analyses
 
 ---
 
-### [Troubleshooting Prompts](troubleshooting.md)
-Diagnostic and debugging queries
-
-**Examples:**
-- List available data files
-- Validate file formats (VCF, CSV, Visium)
-- Check server status and tools
-- Debug failed analyses
-
-**Servers used:** All servers
-
----
-
 ## Quick Reference: PatientOne
 
 **Patient ID:** `PAT001-OVC-2025`
