@@ -86,4 +86,54 @@ Detailed workflow architectures for each analysis type:
 **End-to-End Example:** [PatientOne Precision Medicine Workflow](test-docs/patient-one-scenario/architecture/overview.md)
 
 ---
+## Repository Structure
+
+```
+precision-medicine-mcp/
+├── ACKNOWLEDGMENTS.md      # Credits & scientific references
+├── FUNDING.md              # Investment opportunities & ROI
+├── LICENSE                 # Apache 2.0 License
+├── README.md               # This file
+├── data/                   # Synthetic patient data (100% safe for demos)
+├── docs/                   # Documentation organized by audience
+│   ├── for-funders/        # ROI analysis, competitive landscape, grant talking points
+│   ├── for-hospitals/      # Deployment checklist, security overview
+│   ├── for-developers/     # Architecture, contributing guide, quick reference
+│   ├── for-researchers/    # Analysis workflows, bioinformatics methods
+│   ├── for-educators/      # Classroom guides, learning objectives
+│   ├── for-patients/       # Patient-friendly resources
+│   ├── demos/              # 90-second pitch, full PatientOne demo
+│   ├── prompt-library/     # 20+ ready-to-use clinical prompts
+│   ├── getting-started/    # Installation, quick start, desktop-configs
+│   ├── architecture/       # System design & modality workflows
+│   ├── for-hospitals/      # HIPAA compliance, operations manual
+│   ├── deployment/         # GCP deployment status & guides
+│   └── test-docs/          # Testing guides & PatientOne scenarios
+├── infrastructure/         # Deployment, audit, environment setup
+│   ├── deployment/         # GCP deployment scripts
+│   ├── audit/              # Bias detection and audit tools
+│   └── hospital-deployment/  # Hospital-specific infrastructure
+├── servers/                # 10 MCP servers (Python)
+│   ├── mcp-deepcell/       # Cell segmentation
+│   ├── mcp-epic/           # Epic FHIR integration
+│   ├── mcp-fgbio/          # Reference genomes, FASTQ QC
+│   ├── mcp-huggingface/    # AI/ML inference
+│   ├── mcp-mockepic/       # Mock Epic for testing
+│   ├── mcp-multiomics/     # Multi-omics integration
+│   ├── mcp-openimagedata/  # Imaging data (H&E, MxIF)
+│   ├── mcp-seqera/         # Workflow orchestration
+│   ├── mcp-spatialtools/   # Spatial transcriptomics
+│   └── mcp-tcga/           # TCGA cohort data
+├── shared/                 # Shared Python packages
+│   ├── common/             # Common utilities
+│   ├── models/             # Data models
+│   ├── schemas/            # JSON schemas (CitL review, etc.)
+│   └── utils/              # Helper functions
+├── tests/                  # 167 automated tests
+├── tools/                  # Automation & reporting tools
+│   └── reports/            # Patient report generation, CitL submission
+└── ui/                     # Streamlit chat, Jupyter notebook
+```
+
+---
 
