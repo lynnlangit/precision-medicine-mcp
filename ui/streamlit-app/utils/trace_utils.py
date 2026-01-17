@@ -73,30 +73,48 @@ def extract_tool_calls_from_response(response: Any) -> List[ToolCall]:
         # Handle SDK ContentBlock objects
         if hasattr(block, 'type'):
             block_type = block.type
-            if block_type == 'tool_use':
+            # Support both standard tool_use and beta mcp_tool_use
+            if block_type in ('tool_use', 'mcp_tool_use'):
                 step_number += 1
-                server_name, tool_name = _parse_tool_name(
-                    getattr(block, 'name', 'unknown')
-                )
+
+                # For MCP tools, extract server name from the block
+                if block_type == 'mcp_tool_use':
+                    server_name = getattr(block, 'server_name', 'unknown-server')
+                    tool_name = getattr(block, 'name', 'unknown')
+                else:
+                    # Standard tool format
+                    server_name, tool_name = _parse_tool_name(
+                        getattr(block, 'name', 'unknown')
+                    )
+
                 tool_calls.append(ToolCall(
                     step_number=step_number,
                     server_name=server_name,
                     tool_name=tool_name,
-                    input_params=getattr(block, 'input', {}),
+                    input_params=getattr(block, 'params', getattr(block, 'input', {})),
                     tool_use_id=getattr(block, 'id', None)
                 ))
         # Handle dict blocks
         elif isinstance(block, dict):
-            if block.get('type') == 'tool_use':
+            block_type = block.get('type')
+            if block_type in ('tool_use', 'mcp_tool_use'):
                 step_number += 1
-                server_name, tool_name = _parse_tool_name(
-                    block.get('name', 'unknown')
-                )
+
+                # For MCP tools, extract server name from the block
+                if block_type == 'mcp_tool_use':
+                    server_name = block.get('server_name', 'unknown-server')
+                    tool_name = block.get('name', 'unknown')
+                else:
+                    # Standard tool format
+                    server_name, tool_name = _parse_tool_name(
+                        block.get('name', 'unknown')
+                    )
+
                 tool_calls.append(ToolCall(
                     step_number=step_number,
                     server_name=server_name,
                     tool_name=tool_name,
-                    input_params=block.get('input', {}),
+                    input_params=block.get('params', block.get('input', {})),
                     tool_use_id=block.get('id')
                 ))
 
@@ -120,12 +138,66 @@ def extract_tool_results(messages: List[Dict]) -> Dict[str, str]:
             content = msg.get('content', [])
             if isinstance(content, list):
                 for block in content:
-                    if isinstance(block, dict) and block.get('type') == 'tool_result':
+                    block_type = block.get('type') if isinstance(block, dict) else None
+                    # Support both tool_result and mcp_tool_result
+                    if block_type in ('tool_result', 'mcp_tool_result'):
                         tool_use_id = block.get('tool_use_id')
                         result_content = block.get('content', '')
                         if tool_use_id:
                             # Truncate long results for display
                             results[tool_use_id] = _truncate_result(result_content)
+
+    return results
+
+
+def _extract_mcp_results_from_response(response: Any) -> Dict[str, str]:
+    """
+    Extract MCP tool results directly from the response content blocks.
+
+    Beta MCP responses include tool results in the same response,
+    not in follow-up messages.
+
+    Args:
+        response: Claude API response
+
+    Returns:
+        Dict mapping tool_use_id to result summary
+    """
+    results = {}
+
+    # Handle SDK response object
+    if hasattr(response, 'content'):
+        content_blocks = response.content
+    elif isinstance(response, dict) and 'content' in response:
+        content_blocks = response['content']
+    else:
+        return results
+
+    for block in content_blocks:
+        # Handle SDK objects
+        if hasattr(block, 'type'):
+            if block.type == 'mcp_tool_result':
+                tool_use_id = getattr(block, 'call_id', None)
+                result = getattr(block, 'result', {})
+                if tool_use_id and result:
+                    # Extract content from result
+                    if isinstance(result, dict):
+                        result_str = json.dumps(result, indent=2)
+                    else:
+                        result_str = str(result)
+                    results[tool_use_id] = _truncate_result(result_str)
+
+        # Handle dict blocks
+        elif isinstance(block, dict):
+            if block.get('type') == 'mcp_tool_result':
+                tool_use_id = block.get('call_id')
+                result = block.get('result', {})
+                if tool_use_id and result:
+                    if isinstance(result, dict):
+                        result_str = json.dumps(result, indent=2)
+                    else:
+                        result_str = str(result)
+                    results[tool_use_id] = _truncate_result(result_str)
 
     return results
 
@@ -182,7 +254,10 @@ def build_orchestration_trace(
         OrchestrationTrace object
     """
     tool_calls = extract_tool_calls_from_response(response)
+
+    # Extract results from both the response (MCP) and messages (standard tools)
     results = extract_tool_results(messages)
+    results.update(_extract_mcp_results_from_response(response))
 
     # Match results to tool calls
     for tc in tool_calls:
@@ -199,44 +274,89 @@ def build_orchestration_trace(
 
 
 # Server metadata for display
+# Support both prefixed (mcp-*) and unprefixed names
+_SERVER_META = {
+    'display_name': 'Clinical (Epic FHIR)',
+    'icon': '🏥',
+    'color': '#e2e3e5',
+    'description': 'Patient demographics, conditions, medications'
+}
 SERVER_INFO = {
-    'mcp-mockepic': {
-        'display_name': 'Clinical (Epic FHIR)',
-        'icon': '🏥',
-        'color': '#e2e3e5',
-        'description': 'Patient demographics, conditions, medications'
-    },
+    'mcp-mockepic': _SERVER_META,
+    'mockepic': _SERVER_META,
+
     'mcp-fgbio': {
         'display_name': 'Genomics (FGbio)',
         'icon': '🧬',
         'color': '#d4edda',
         'description': 'FASTQ/VCF QC, variant analysis'
     },
+    'fgbio': {
+        'display_name': 'Genomics (FGbio)',
+        'icon': '🧬',
+        'color': '#d4edda',
+        'description': 'FASTQ/VCF QC, variant analysis'
+    },
+
     'mcp-tcga': {
         'display_name': 'Cancer Genomics (TCGA)',
         'icon': '📊',
         'color': '#f8d7da',
         'description': 'TCGA cohort comparisons'
     },
+    'tcga': {
+        'display_name': 'Cancer Genomics (TCGA)',
+        'icon': '📊',
+        'color': '#f8d7da',
+        'description': 'TCGA cohort comparisons'
+    },
+
     'mcp-multiomics': {
         'display_name': 'Multi-Omics',
         'icon': '🔬',
         'color': '#d4edda',
         'description': 'RNA, protein, phospho integration'
     },
+    'multiomics': {
+        'display_name': 'Multi-Omics',
+        'icon': '🔬',
+        'color': '#d4edda',
+        'description': 'RNA, protein, phospho integration'
+    },
+
     'mcp-spatialtools': {
         'display_name': 'Spatial Transcriptomics',
         'icon': '🗺️',
         'color': '#d4edda',
         'description': 'Visium analysis, spatial statistics'
     },
+    'spatialtools': {
+        'display_name': 'Spatial Transcriptomics',
+        'icon': '🗺️',
+        'color': '#d4edda',
+        'description': 'Visium analysis, spatial statistics'
+    },
+
     'mcp-openimagedata': {
         'display_name': 'Imaging (Histology)',
         'icon': '🔍',
         'color': '#fff3cd',
         'description': 'H&E, multiplex IF analysis'
     },
+    'openimagedata': {
+        'display_name': 'Imaging (Histology)',
+        'icon': '🔍',
+        'color': '#fff3cd',
+        'description': 'H&E, multiplex IF analysis'
+    },
+
     'mcp-deepcell': {
+        'display_name': 'Cell Segmentation',
+        'icon': '🔲',
+        'color': '#f8d7da',
+        'description': 'Cell detection and quantification'
+    },
+    'deepcell': {
         'display_name': 'Cell Segmentation',
         'icon': '🔲',
         'color': '#f8d7da',
@@ -248,7 +368,20 @@ SERVER_INFO = {
         'color': '#f8d7da',
         'description': 'Biomedical ML models'
     },
+    'huggingface': {
+        'display_name': 'ML Models',
+        'icon': '🤗',
+        'color': '#f8d7da',
+        'description': 'Biomedical ML models'
+    },
+
     'mcp-seqera': {
+        'display_name': 'Workflows (Nextflow)',
+        'icon': '⚙️',
+        'color': '#f8d7da',
+        'description': 'Pipeline orchestration'
+    },
+    'seqera': {
         'display_name': 'Workflows (Nextflow)',
         'icon': '⚙️',
         'color': '#f8d7da',
