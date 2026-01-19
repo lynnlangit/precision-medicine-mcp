@@ -16,7 +16,7 @@
 ## 💰 For Decision-Makers
 -  **[Executive Summary of Precision Medicine MCP](docs/EXECUTIVE_SUMMARY.md)**
 -  **[Why MCP for Healthcare?](docs/WHY_MCP_FOR_HEALTHCARE.md)**
--  **See it / Try it:** [<5 minute demo video - shows a subset of available functionality](https://www.youtube.com/watch?v=LUldOHHX5Yo) 
+-  **[<5 minute demo video - shows a subset of available functionality](https://www.youtube.com/watch?v=LUldOHHX5Yo)** 
 
 ---
 
