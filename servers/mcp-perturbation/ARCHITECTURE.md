@@ -200,7 +200,7 @@ Multi-gene combo:  "PDCD1,CTLA4,LAG3"
 GEARS handles complex combinatorial effects that VAE-based methods struggle with.
 
 ### ⚡ **Faster Training**
-- **scGen (VAE)**: 100+ epochs
+- **VAE methods**: 100+ epochs
 - **GEARS (GNN)**: 20 epochs
 - **Result**: 5x faster
 
@@ -262,9 +262,9 @@ graph TD
 
 ---
 
-## Comparison: GEARS vs scGen
+## Comparison: GEARS vs VAE Methods
 
-| Feature | scGen (VAE) | GEARS (GNN) |
+| Feature | VAE Methods (2019) | GEARS (GNN) |
 |---------|-------------|-------------|
 | **Architecture** | Variational Autoencoder | Graph Neural Network |
 | **Publication** | Nature Methods 2019 | Nature Biotech 2024 |

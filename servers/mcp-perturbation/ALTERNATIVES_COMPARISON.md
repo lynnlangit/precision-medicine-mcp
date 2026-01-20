@@ -1,6 +1,8 @@
 # Alternative Perturbation Prediction Frameworks - Comparison
 
-Comprehensive analysis of alternatives to scgen (2019) for single-cell perturbation prediction in the context of predicting T cell response to immunotherapy in ovarian cancer patients.
+> **Historical Document**: This analysis was performed in January 2026 to evaluate modern alternatives for single-cell perturbation prediction. **Result: GEARS was selected and implemented.**
+
+Comprehensive analysis of framework options for single-cell perturbation prediction in the context of predicting T cell response to immunotherapy in ovarian cancer patients.
 
 ---
 

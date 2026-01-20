@@ -4,7 +4,7 @@
 
 Predicts how patient cancer cells might respond to immunotherapy *in silico* using graph neural networks and biological knowledge graphs.
 
-> **Upgraded from scGen to GEARS (January 2026)**: This server now uses GEARS (Graph-Enhanced Gene Activation and Repression Simulator), a state-of-the-art graph neural network approach published in Nature Biotechnology 2024, replacing the legacy scgen package from 2019.
+> **Powered by GEARS**: Uses GEARS (Graph-Enhanced Gene Activation and Repression Simulator), a state-of-the-art graph neural network approach published in Nature Biotechnology 2024.
 
 ---
 
@@ -77,9 +77,9 @@ Core dependencies:
 - `torch` - Deep learning framework (PyTorch)
 - `mcp` / `fastmcp` - MCP server framework
 
-**Why GEARS over scgen:**
+**GEARS advantages:**
 - ✅ Modern Python 3.11+ compatible
-- ✅ 40% better performance (Nature Biotechnology 2024)
+- ✅ 40% better performance than VAE methods (Nature Biotechnology 2024)
 - ✅ Handles multi-gene perturbations
 - ✅ Integrates biological knowledge graphs
 - ✅ Active maintenance and support
@@ -138,7 +138,7 @@ Train the GEARS model:
 }
 ```
 
-**Note:** GEARS trains faster than VAE-based methods (20 epochs typical vs 100+ for scGen)
+**Note:** GEARS trains faster than VAE-based methods (20 epochs typical vs 100+)
 
 ### 3. Compute Perturbation Effect
 
@@ -198,16 +198,17 @@ Load and preprocess scRNA-seq data from GEO or local file.
 
 ### 2. `perturbation_setup_model`
 
-Initialize scGen model architecture.
+Initialize GEARS graph neural network model.
 
 **Parameters:**
 - `dataset_id` (str): Dataset ID from load_dataset
-- `n_latent` (int): Latent space dimensions (default: 100)
-- `n_hidden` (int): Hidden layer size (default: 800)
-- `n_layers` (int): Number of hidden layers (default: 2)
+- `hidden_size` (int): Hidden layer size for GNN (default: 64)
+- `num_layers` (int): Number of GNN layers (default: 2)
+- `uncertainty` (bool): Enable uncertainty quantification (default: true)
+- `uncertainty_reg` (float): Uncertainty regularization weight (default: 1.0)
 - `model_name` (str): Name for this model
-- `batch_key` (str): Column with condition labels
-- `labels_key` (str): Column with cell type labels
+- `condition_key` (str): Column with condition labels
+- `pert_key` (str): Column with perturbation labels
 
 **Returns:** Model configuration summary
 
@@ -215,15 +216,14 @@ Initialize scGen model architecture.
 
 ### 3. `perturbation_train_model`
 
-Train scGen VAE on control/treated data.
+Train GEARS graph neural network on perturbation data.
 
 **Parameters:**
 - `model_name` (str): Model name from setup_model
-- `n_epochs` (int): Training epochs (default: 100)
+- `epochs` (int): Training epochs (default: 20)
 - `batch_size` (int): Batch size (default: 32)
-- `early_stopping` (bool): Enable early stopping (default: true)
-- `early_stopping_patience` (int): Patience for early stopping (default: 25)
 - `learning_rate` (float): Learning rate (default: 0.001)
+- `valid_every` (int): Validation frequency in epochs (default: 1)
 
 **Returns:** Training metrics (final loss, epochs completed, model path)
 
@@ -281,7 +281,7 @@ Extract latent representations for visualization.
 - `model_name` (str): Trained model name
 - `data_path` (str): .h5ad file to embed
 
-**Returns:** Path to .h5ad with latent embeddings in .obsm["X_scgen"]
+**Returns:** Path to .h5ad with latent embeddings in .obsm["X_gears"]
 
 ---
 
@@ -406,33 +406,39 @@ PatientOne has HGSOC ovarian cancer. We want to predict how her CD8+ T cells wil
 
 ## Architecture
 
-### Model: scGen (SCGEN class)
+### Model: GEARS (Graph Neural Network)
 
-**Type**: Variational Autoencoder (VAE) for single-cell data
+**Type**: Graph Neural Network (GNN) for perturbation prediction
 
 **Components**:
-1. **Encoder**: Maps cells → latent space (z)
-2. **Decoder**: Reconstructs gene expression from z
-3. **Batch Correction**: Learns condition-invariant representations
+1. **Gene Relationship Graph**: Encodes biological knowledge (GO terms, PPI networks)
+2. **GNN Layers**: Message passing over gene-gene relationships
+3. **Prediction Head**: Predicts gene expression changes
+4. **Uncertainty Module**: Provides confidence estimates (optional)
 
-**Training Objective**:
+**How GEARS Works**:
 ```
-L = Reconstruction_loss + KL_divergence
+1. Build gene relationship graph (20,000+ genes)
+2. GNN propagates perturbation effects through network
+3. Predict expression changes for each gene
+4. Handle multi-gene perturbations (combinatorial effects)
 ```
 
-### Latent Space Arithmetic
+### Prediction Process
 
 ```
-z_control = Encode(Control_cells)
-z_treated = Encode(Treated_cells)
-
-Δ = Mean(z_treated) - Mean(z_control)
-
-z_patient_baseline = Encode(Patient_cells)
-z_patient_predicted = z_patient_baseline + Δ
-
-Patient_predicted = Decode(z_patient_predicted)
+Input: Gene perturbations (e.g., ["PDCD1", "CTLA4"])
+       ↓
+Gene Graph: Encode relationships
+       ↓
+GNN Layers: Message passing (2 layers)
+       ↓
+Output: Predicted gene expression changes Δ
+       ↓
+Apply to baseline: Predicted cell state
 ```
+
+For detailed architecture diagrams, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ---
 
@@ -447,7 +453,7 @@ pytest tests/ -v
 ### Run Specific Test File
 
 ```bash
-pytest tests/test_scgen_wrapper.py -v
+pytest tests/test_gears_wrapper.py -v
 ```
 
 ### Test Coverage
@@ -459,7 +465,7 @@ pytest tests/ --cov=mcp_perturbation --cov-report=html
 ### Expected Coverage
 
 - `data_loader.py`: >85%
-- `scgen_wrapper.py`: >80%
+- `gears_wrapper.py`: >80%
 - `prediction.py`: >75%
 - `server.py`: >70%
 
@@ -519,17 +525,18 @@ pytest tests/ --cov=mcp_perturbation --cov-report=html
 
 ### Key Papers
 
-1. **scGen**: Lotfollahi et al., "scGen predicts single-cell perturbation responses", Nature Methods (2019)
+1. **GEARS**: Roohani et al., "Predicting transcriptional outcomes of novel multigene perturbations with GEARS", Nature Biotechnology (2024)
 2. **scVI**: Lopez et al., "Deep generative modeling for single-cell transcriptomics", Nature Methods (2018)
 3. **HGSOC scRNA-seq**: Izar et al., "A single-cell landscape of high-grade serous ovarian cancer", Nature Medicine (2020)
 
-### Method Validation
+### Method Performance
 
-scGen has been validated for:
-- Drug response prediction (>85% accuracy)
-- Species transfer (mouse → human)
+GEARS has been validated for:
+- Perturbation prediction (40% better than VAE methods)
+- Multi-gene combinatorial perturbations
 - Cross-study generalization
-- Immunotherapy response prediction
+- Handles unseen gene combinations
+- Integrates biological knowledge graphs
 
 ---
 
