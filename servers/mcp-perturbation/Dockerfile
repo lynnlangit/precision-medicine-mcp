@@ -25,7 +25,6 @@ RUN pip install --no-cache-dir -e .
 
 # Set environment variables for SSE transport
 ENV MCP_TRANSPORT=sse
-ENV MCP_PORT=3009
 ENV PERTURBATION_DRY_RUN=false
 ENV PERTURBATION_DATA_DIR=/app/data/perturbation
 ENV PERTURBATION_MODEL_DIR=/app/data/models/perturbation
@@ -33,8 +32,8 @@ ENV PERTURBATION_MODEL_DIR=/app/data/models/perturbation
 # Create data directories
 RUN mkdir -p /app/data/perturbation /app/data/models/perturbation
 
-# Expose port
-EXPOSE 3009
+# Expose port (Cloud Run will set PORT environment variable)
+EXPOSE 8080
 
 # Run the server
 CMD ["python", "-m", "mcp_perturbation"]

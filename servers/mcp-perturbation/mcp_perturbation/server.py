@@ -463,9 +463,20 @@ async def perturbation_visualize(params: VisualizeInput) -> str:
 
 def main():
     """Run the MCP server."""
-    import asyncio
+    import os
     logger.info("Starting perturbation MCP server...")
-    mcp.run()
+
+    # Get transport and port from environment
+    transport = os.getenv("MCP_TRANSPORT", "stdio")
+    port = int(os.getenv("PORT", os.getenv("MCP_PORT", "8000")))
+
+    logger.info(f"Transport: {transport}, Port: {port}")
+
+    # Run the server with appropriate transport
+    if transport in ("sse", "streamable-http"):
+        mcp.run(transport=transport, port=port, host="0.0.0.0")
+    else:
+        mcp.run(transport=transport)
 
 
 if __name__ == "__main__":
