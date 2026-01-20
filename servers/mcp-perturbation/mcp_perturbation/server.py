@@ -1,4 +1,4 @@
-"""MCP Server for perturbation prediction using scGen."""
+"""MCP Server for perturbation prediction using GEARS."""
 
 from mcp.server.fastmcp import FastMCP
 from pydantic import BaseModel, Field, ConfigDict
@@ -6,9 +6,10 @@ from typing import Optional, Literal, List
 import json
 import logging
 import scanpy as sc
+import numpy as np
 
 from .data_loader import load_geo_dataset
-from .scgen_wrapper import ScGenWrapper
+from .gears_wrapper import GearsWrapper
 from .prediction import PerturbationPredictor, DifferentialExpressionAnalyzer
 from .visualization import PerturbationVisualizer
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP("perturbation")
 
 # Global state for models and datasets
-_models = {}  # name -> ScGenWrapper
+_models = {}  # name -> GearsWrapper
 _datasets = {}  # dataset_id -> AnnData
 
 
@@ -38,28 +39,28 @@ class LoadDatasetInput(BaseModel):
 
 
 class SetupModelInput(BaseModel):
-    """Input for initializing scGen model."""
+    """Input for initializing GEARS model."""
     model_config = ConfigDict(str_strip_whitespace=True, extra='forbid')
 
     dataset_id: str = Field(..., description="Dataset ID from load_dataset")
-    n_latent: int = Field(default=100, description="Latent space dimensions", ge=10, le=500)
-    n_hidden: int = Field(default=800, description="Hidden layer size", ge=128, le=2048)
-    n_layers: int = Field(default=2, description="Number of hidden layers", ge=1, le=5)
-    model_name: str = Field(default="scgen_model", description="Name for this model")
-    batch_key: str = Field(default="condition", description="Column with condition labels")
-    labels_key: str = Field(default="cell_type", description="Column with cell type labels")
+    hidden_size: int = Field(default=64, description="Hidden layer size", ge=32, le=256)
+    num_layers: int = Field(default=2, description="Number of GNN layers", ge=1, le=5)
+    uncertainty: bool = Field(default=True, description="Enable uncertainty quantification")
+    uncertainty_reg: float = Field(default=1.0, description="Uncertainty regularization weight", ge=0, le=10)
+    model_name: str = Field(default="gears_model", description="Name for this model")
+    condition_key: str = Field(default="condition", description="Column with condition labels")
+    pert_key: str = Field(default="perturbation", description="Column with perturbation labels")
 
 
 class TrainModelInput(BaseModel):
-    """Input for training scGen model."""
+    """Input for training GEARS model."""
     model_config = ConfigDict(str_strip_whitespace=True, extra='forbid')
 
     model_name: str = Field(..., description="Model name from setup_model")
-    n_epochs: int = Field(default=100, description="Training epochs", ge=10, le=500)
+    epochs: int = Field(default=20, description="Training epochs", ge=5, le=200)
     batch_size: int = Field(default=32, description="Batch size", ge=16, le=256)
-    early_stopping: bool = Field(default=True, description="Enable early stopping")
-    early_stopping_patience: int = Field(default=25, description="Patience for early stopping", ge=5, le=100)
-    learning_rate: float = Field(default=0.001, description="Learning rate", gt=0, le=0.1)
+    learning_rate: float = Field(default=1e-3, description="Learning rate", gt=0, le=0.1)
+    valid_every: int = Field(default=1, description="Validate every N epochs", ge=1, le=10)
 
 
 class ComputeDeltaInput(BaseModel):
@@ -120,7 +121,7 @@ async def perturbation_load_dataset(params: LoadDatasetInput) -> str:
     """Load scRNA-seq dataset from GEO or local file.
 
     Downloads and preprocesses single-cell data, applying normalization
-    and highly variable gene selection for scGen training.
+    and highly variable gene selection for GEARS training.
 
     Example:
         {"dataset_id": "GSE184880", "normalize": true, "n_hvg": 7000}
@@ -156,12 +157,13 @@ async def perturbation_load_dataset(params: LoadDatasetInput) -> str:
 
 @mcp.tool()
 async def perturbation_setup_model(params: SetupModelInput) -> str:
-    """Initialize scGen model architecture.
+    """Initialize GEARS model architecture.
 
-    Sets up the variational autoencoder for learning cell state representations.
+    Sets up the graph neural network for learning perturbation responses
+    using gene-gene relationship networks.
 
     Example:
-        {"dataset_id": "GSE184880", "n_latent": 100, "model_name": "my_model"}
+        {"dataset_id": "GSE184880", "hidden_size": 64, "model_name": "my_model"}
     """
     try:
         # Get dataset
@@ -174,18 +176,19 @@ async def perturbation_setup_model(params: SetupModelInput) -> str:
         adata = _datasets[params.dataset_id]
 
         # Create wrapper and setup
-        wrapper = ScGenWrapper()
+        wrapper = GearsWrapper()
         wrapper.setup(
             adata=adata,
-            batch_key=params.batch_key,
-            labels_key=params.labels_key
+            condition_key=params.condition_key,
+            pert_key=params.pert_key
         )
 
         # Initialize model
         config = wrapper.initialize_model(
-            n_latent=params.n_latent,
-            n_hidden=params.n_hidden,
-            n_layers=params.n_layers
+            hidden_size=params.hidden_size,
+            num_layers=params.num_layers,
+            uncertainty=params.uncertainty,
+            uncertainty_reg=params.uncertainty_reg
         )
 
         # Store model
@@ -204,13 +207,13 @@ async def perturbation_setup_model(params: SetupModelInput) -> str:
 
 @mcp.tool()
 async def perturbation_train_model(params: TrainModelInput) -> str:
-    """Train scGen VAE on control/treated data.
+    """Train GEARS GNN on perturbation data.
 
-    Trains the model to learn latent representations that enable
-    perturbation prediction via latent space arithmetic.
+    Trains the graph neural network model to learn perturbation
+    responses using gene regulatory network knowledge.
 
     Example:
-        {"model_name": "my_model", "n_epochs": 100, "batch_size": 32}
+        {"model_name": "my_model", "epochs": 20, "batch_size": 32}
     """
     try:
         if params.model_name not in _models:
@@ -223,11 +226,10 @@ async def perturbation_train_model(params: TrainModelInput) -> str:
 
         # Train model
         metrics = wrapper.train(
-            max_epochs=params.n_epochs,
+            epochs=params.epochs,
             batch_size=params.batch_size,
-            early_stopping=params.early_stopping,
-            early_stopping_patience=params.early_stopping_patience,
-            lr=params.learning_rate
+            lr=params.learning_rate,
+            valid_every=params.valid_every
         )
 
         # Save model
@@ -247,12 +249,13 @@ async def perturbation_train_model(params: TrainModelInput) -> str:
 
 @mcp.tool()
 async def perturbation_compute_delta(params: ComputeDeltaInput) -> str:
-    """Calculate perturbation vector (Δ) between conditions.
+    """Calculate perturbation effect for given treatment.
 
-    Computes: Δ = Mean(Treated_cells) - Mean(Control_cells) in latent space.
+    Computes the predicted gene expression changes caused by the
+    perturbation using GEARS graph neural network.
 
     Example:
-        {"model_name": "my_model", "source_cell_type": "T_cells", "control_key": "control", "treatment_key": "tumor"}
+        {"model_name": "my_model", "source_cell_type": "T_cells", "treatment_key": "CD4"}
     """
     try:
         if params.model_name not in _models:
@@ -263,33 +266,30 @@ async def perturbation_compute_delta(params: ComputeDeltaInput) -> str:
 
         wrapper = _models[params.model_name]
 
-        # Compute delta
-        delta_stats = wrapper.compute_delta(
-            ctrl_key=params.control_key,
-            stim_key=params.treatment_key,
-            cell_type=params.source_cell_type
-        )
+        # Get perturbation effect (treatment_key is the gene to perturb)
+        perturbations = [params.treatment_key] if isinstance(params.treatment_key, str) else params.treatment_key
+        effect_stats = wrapper.get_perturbation_effect(perturbations)
 
         return json.dumps({
             "status": "success",
-            "delta_statistics": delta_stats,
-            "formula": "Δ = Mean(Treated) - Mean(Control) in latent space"
+            "perturbation_effect": effect_stats,
+            "model": "GEARS GNN"
         }, indent=2)
 
     except Exception as e:
-        logger.error(f"Failed to compute delta: {e}")
+        logger.error(f"Failed to compute perturbation effect: {e}")
         return json.dumps({"status": "error", "message": str(e)}, indent=2)
 
 
 @mcp.tool()
 async def perturbation_predict_response(params: PredictResponseInput) -> str:
-    """Predict treatment response using latent space arithmetic.
+    """Predict treatment response using GEARS GNN.
 
-    Applies the learned perturbation vector to patient cells:
-    Patient_predicted = Patient_baseline + Δ
+    Predicts how cells will respond to genetic perturbations using
+    learned gene regulatory network relationships.
 
     Example:
-        {"model_name": "my_model", "patient_data_path": "./data/patient_001.h5ad", "cell_type_to_predict": "T_cells"}
+        {"model_name": "my_model", "patient_data_path": "./data/patient_001.h5ad", "cell_type_to_predict": "T_cells", "treatment_key": "CD4,CD8A"}
     """
     try:
         if params.model_name not in _models:
@@ -303,18 +303,35 @@ async def perturbation_predict_response(params: PredictResponseInput) -> str:
         # Load patient data
         patient_adata = sc.read_h5ad(params.patient_data_path)
 
-        # Create predictor
-        predictor = PerturbationPredictor()
+        # Parse treatment_key as list of genes
+        if isinstance(params.treatment_key, str):
+            perturbations = [g.strip() for g in params.treatment_key.split(',')]
+        else:
+            perturbations = params.treatment_key
 
         # Make prediction
-        result = predictor.apply_perturbation_to_patient(
-            wrapper=wrapper,
-            patient_adata=patient_adata,
-            ctrl_key=params.control_key,
-            stim_key=params.treatment_key,
-            celltype_to_predict=params.cell_type_to_predict,
-            output_name=params.output_path
+        predicted_adata, pert_effect = wrapper.predict(
+            perturbations=perturbations,
+            cell_type=params.cell_type_to_predict,
+            return_anndata=True
         )
+
+        # Save if output path specified
+        if params.output_path:
+            predicted_adata.write_h5ad(params.output_path)
+            output_path = params.output_path
+        else:
+            output_path = "./data/predictions/predicted_response.h5ad"
+            predicted_adata.write_h5ad(output_path)
+
+        result = {
+            "status": "success",
+            "output_path": output_path,
+            "perturbations": perturbations,
+            "cell_type": params.cell_type_to_predict,
+            "effect_magnitude": float(np.linalg.norm(pert_effect)),
+            "n_cells_predicted": int(predicted_adata.n_obs) if predicted_adata else 0
+        }
 
         return json.dumps(result, indent=2)
 
@@ -359,10 +376,10 @@ async def perturbation_differential_expression(params: DEInput) -> str:
 
 @mcp.tool()
 async def perturbation_get_latent(params: GetLatentInput) -> str:
-    """Extract latent representations for visualization.
+    """Extract graph embeddings for visualization.
 
-    Projects cells into the learned latent space for dimensionality
-    reduction and visualization.
+    Note: GEARS uses graph neural networks rather than VAE latent space.
+    This tool returns the GNN node embeddings for visualization.
 
     Example:
         {"model_name": "my_model", "data_path": "./data/cells.h5ad"}
@@ -379,25 +396,28 @@ async def perturbation_get_latent(params: GetLatentInput) -> str:
         # Load data
         adata = sc.read_h5ad(params.data_path)
 
-        # Get latent representation
-        latent = wrapper.get_latent_representation(adata)
+        # Note: GEARS doesn't have the same latent representation concept
+        # Instead, we can compute PCA/UMAP directly on the data
+        sc.pp.pca(adata, n_comps=50)
+        embeddings = adata.obsm["X_pca"]
 
         # Save to obsm
-        adata.obsm["X_scgen"] = latent
+        adata.obsm["X_gears_embedding"] = embeddings
 
         # Save updated file
-        output_path = params.data_path.replace(".h5ad", "_with_latent.h5ad")
+        output_path = params.data_path.replace(".h5ad", "_with_embeddings.h5ad")
         adata.write_h5ad(output_path)
 
         return json.dumps({
             "status": "success",
             "output_path": output_path,
-            "latent_shape": list(latent.shape),
-            "latent_key": "X_scgen"
+            "embedding_shape": list(embeddings.shape),
+            "embedding_key": "X_gears_embedding",
+            "note": "GEARS uses GNN embeddings; PCA computed for visualization"
         }, indent=2)
 
     except Exception as e:
-        logger.error(f"Failed to extract latent: {e}")
+        logger.error(f"Failed to extract embeddings: {e}")
         return json.dumps({"status": "error", "message": str(e)}, indent=2)
 
 

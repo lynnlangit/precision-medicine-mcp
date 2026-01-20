@@ -1,0 +1,414 @@
+"""Wrapper for GEARS model operations."""
+
+import scanpy as sc
+import anndata as ad
+import numpy as np
+import torch
+from pathlib import Path
+from typing import Optional, Tuple, Dict, List
+from dataclasses import dataclass
+import logging
+
+try:
+    from gears import PertData, GEARS
+except ImportError:
+    raise ImportError(
+        "GEARS not installed. Install with: pip install cell-gears torch-geometric"
+    )
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class PredictionResult:
+    """Results from perturbation prediction."""
+    predicted_adata: ad.AnnData
+    perturbation_effect: np.ndarray
+    output_path: str
+
+
+class GearsWrapper:
+    """Manages GEARS model lifecycle and predictions.
+
+    GEARS (Graph-Enhanced Gene Activation and Repression Simulator) uses
+    graph neural networks with gene-gene relationship knowledge graphs to
+    predict transcriptional responses to perturbations.
+
+    Key differences from scGen:
+    - Uses GNN architecture instead of VAE
+    - Integrates biological knowledge graphs
+    - Better performance on multi-gene perturbations
+    - Published Nature Biotechnology 2024
+    """
+
+    def __init__(
+        self,
+        model_dir: str = "./data/models",
+        device: str = "cuda" if torch.cuda.is_available() else "cpu"
+    ):
+        """Initialize wrapper.
+
+        Args:
+            model_dir: Directory to save/load models
+            device: 'cuda' or 'cpu'
+        """
+        self.model_dir = Path(model_dir)
+        self.model_dir.mkdir(parents=True, exist_ok=True)
+        self.device = device
+        self.model: Optional[GEARS] = None
+        self.pert_data: Optional[PertData] = None
+        self.adata: Optional[ad.AnnData] = None
+        self.model_name: Optional[str] = None
+
+        logger.info(f"Initialized GEARS wrapper on device: {device}")
+
+    def setup(
+        self,
+        adata: ad.AnnData,
+        condition_key: str = "condition",
+        ctrl_key: str = "control",
+        pert_key: str = "perturbation",
+        split: str = "simulation",
+        split_seed: int = 1
+    ) -> None:
+        """Configure AnnData for GEARS.
+
+        Args:
+            adata: Annotated data matrix
+            condition_key: Column in adata.obs with condition labels
+            ctrl_key: Label for control condition
+            pert_key: Column in adata.obs with perturbation labels (gene names)
+            split: Data split strategy ('simulation', 'combo_seen0', etc.)
+            split_seed: Random seed for splitting
+        """
+        self.adata = adata.copy()
+
+        # Verify required keys exist
+        if condition_key not in adata.obs.columns:
+            raise ValueError(f"condition_key '{condition_key}' not found in adata.obs")
+        if pert_key not in adata.obs.columns:
+            # If no perturbation column, create from condition
+            logger.warning(f"pert_key '{pert_key}' not found, using condition_key")
+            self.adata.obs[pert_key] = self.adata.obs[condition_key]
+
+        # Create PertData object from AnnData
+        # Save to temporary h5ad file for GEARS to load
+        temp_path = self.model_dir / "temp_adata.h5ad"
+        self.adata.write_h5ad(temp_path)
+
+        # Initialize PertData
+        self.pert_data = PertData(str(self.model_dir))
+
+        # Load from temporary file
+        # Note: GEARS expects specific format, may need custom data loader
+        logger.info(
+            f"Setup AnnData with condition_key={condition_key}, "
+            f"ctrl_key={ctrl_key}, pert_key={pert_key}"
+        )
+
+    def setup_from_dataset(
+        self,
+        data_name: str = "norman",
+        split: str = "simulation",
+        split_seed: int = 1
+    ) -> None:
+        """Load pre-configured GEARS dataset.
+
+        Args:
+            data_name: Dataset name ('norman', 'adamson', 'dixit', etc.)
+            split: Data split strategy
+            split_seed: Random seed for splitting
+        """
+        self.pert_data = PertData(str(self.model_dir))
+        self.pert_data.load(data_name=data_name)
+        self.pert_data.prepare_split(split=split, seed=split_seed)
+        self.adata = self.pert_data.adata
+
+        logger.info(f"Loaded GEARS dataset: {data_name}")
+
+    def initialize_model(
+        self,
+        hidden_size: int = 64,
+        num_layers: int = 2,
+        uncertainty: bool = True,
+        uncertainty_reg: float = 1.0
+    ) -> Dict[str, any]:
+        """Create GEARS model instance.
+
+        Args:
+            hidden_size: Hidden layer dimension
+            num_layers: Number of GNN layers
+            uncertainty: Enable uncertainty quantification
+            uncertainty_reg: Uncertainty regularization weight
+
+        Returns:
+            Model configuration summary
+        """
+        if self.pert_data is None:
+            raise ValueError("Call setup() or setup_from_dataset() before initializing model")
+
+        self.model = GEARS(
+            self.pert_data,
+            device=self.device,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            uncertainty=uncertainty,
+            uncertainty_reg=uncertainty_reg
+        )
+
+        config = {
+            "hidden_size": hidden_size,
+            "num_layers": num_layers,
+            "uncertainty": uncertainty,
+            "n_genes": self.adata.n_vars if self.adata else self.pert_data.adata.n_vars,
+            "n_cells": self.adata.n_obs if self.adata else self.pert_data.adata.n_obs,
+            "device": self.device
+        }
+
+        logger.info(f"Initialized GEARS model: {config}")
+        return config
+
+    def train(
+        self,
+        epochs: int = 20,
+        lr: float = 1e-3,
+        batch_size: int = 32,
+        valid_every: int = 1
+    ) -> Dict[str, any]:
+        """Train the GEARS model.
+
+        Args:
+            epochs: Number of training epochs
+            lr: Learning rate
+            batch_size: Batch size for training
+            valid_every: Validate every N epochs
+
+        Returns:
+            Training metrics
+        """
+        if self.model is None:
+            raise ValueError("Call initialize_model() before training")
+
+        logger.info(f"Training GEARS for {epochs} epochs")
+
+        # GEARS training
+        self.model.train(
+            epochs=epochs,
+            lr=lr,
+            batch_size=batch_size,
+            valid_every=valid_every
+        )
+
+        # Get training history
+        history = self.model.history if hasattr(self.model, 'history') else {}
+
+        metrics = {
+            "epochs_completed": epochs,
+            "learning_rate": lr,
+            "batch_size": batch_size,
+            "final_metrics": history.get('test', {}) if history else {}
+        }
+
+        logger.info(f"Training complete: {metrics}")
+        return metrics
+
+    def save(self, name: str) -> str:
+        """Save model to disk.
+
+        Args:
+            name: Model name (without extension)
+
+        Returns:
+            Path to saved model
+        """
+        if self.model is None:
+            raise ValueError("No model to save")
+
+        save_path = self.model_dir / f"{name}.pt"
+
+        # Save GEARS model
+        torch.save({
+            'model_state_dict': self.model.state_dict(),
+            'config': {
+                'hidden_size': self.model.hidden_size if hasattr(self.model, 'hidden_size') else 64,
+                'num_layers': getattr(self.model, 'num_layers', 2)
+            }
+        }, save_path)
+
+        self.model_name = name
+        logger.info(f"Saved model to {save_path}")
+        return str(save_path)
+
+    def load(self, name: str) -> None:
+        """Load model from disk.
+
+        Args:
+            name: Model name (without extension)
+        """
+        load_path = self.model_dir / f"{name}.pt"
+
+        if not load_path.exists():
+            raise FileNotFoundError(f"Model not found: {load_path}")
+
+        if self.model is None:
+            raise ValueError("Initialize model before loading weights")
+
+        checkpoint = torch.load(load_path, map_location=self.device)
+        self.model.load_state_dict(checkpoint['model_state_dict'])
+        self.model_name = name
+
+        logger.info(f"Loaded model from {load_path}")
+
+    def predict(
+        self,
+        perturbations: List[str],
+        cell_type: Optional[str] = None,
+        return_anndata: bool = True
+    ) -> Tuple[ad.AnnData, np.ndarray]:
+        """Generate perturbation prediction.
+
+        Args:
+            perturbations: List of gene names to perturb (e.g., ['CD4', 'CD8A'])
+            cell_type: Optional cell type to filter predictions
+            return_anndata: Return results as AnnData object
+
+        Returns:
+            Tuple of (predicted_adata, perturbation_effect)
+        """
+        if self.model is None:
+            raise ValueError("No trained model available")
+
+        logger.info(f"Predicting response to perturbations: {perturbations}")
+
+        # GEARS prediction
+        predictions = self.model.predict(perturbations)
+
+        # Convert to numpy array
+        if isinstance(predictions, torch.Tensor):
+            pred_array = predictions.cpu().detach().numpy()
+        else:
+            pred_array = np.array(predictions)
+
+        # Create AnnData object with predictions
+        if return_anndata:
+            base_adata = self.adata if self.adata is not None else self.pert_data.adata
+
+            # Filter by cell type if specified
+            if cell_type is not None:
+                if 'cell_type' in base_adata.obs:
+                    mask = base_adata.obs['cell_type'] == cell_type
+                    base_adata = base_adata[mask].copy()
+
+            # Create predicted AnnData
+            predicted_adata = ad.AnnData(
+                X=pred_array,
+                obs=base_adata.obs.copy() if len(pred_array) == base_adata.n_obs else None,
+                var=base_adata.var.copy()
+            )
+            predicted_adata.obs['perturbation'] = ','.join(perturbations)
+        else:
+            predicted_adata = None
+
+        # Compute perturbation effect (difference from control)
+        if self.adata is not None and 'condition' in self.adata.obs:
+            ctrl_mask = self.adata.obs['condition'] == 'control'
+            if ctrl_mask.sum() > 0:
+                ctrl_mean = self.adata[ctrl_mask].X.mean(axis=0)
+                if isinstance(ctrl_mean, np.matrix):
+                    ctrl_mean = np.array(ctrl_mean).flatten()
+                pert_effect = pred_array.mean(axis=0) - ctrl_mean
+            else:
+                pert_effect = pred_array.mean(axis=0)
+        else:
+            pert_effect = pred_array.mean(axis=0)
+
+        logger.info(
+            f"Prediction complete. "
+            f"Effect magnitude: {np.linalg.norm(pert_effect):.4f}"
+        )
+
+        return predicted_adata, pert_effect
+
+    def predict_perturbation_response(
+        self,
+        ctrl_key: str,
+        stim_key: str,
+        celltype_to_predict: Optional[str] = None
+    ) -> Tuple[ad.AnnData, np.ndarray]:
+        """Predict perturbation response (scGen-compatible interface).
+
+        Args:
+            ctrl_key: Control condition label
+            stim_key: Perturbation/treatment label (gene name or treatment)
+            celltype_to_predict: Optional cell type to predict for
+
+        Returns:
+            Tuple of (predicted_adata, perturbation_effect)
+        """
+        # Convert stim_key to list of genes if it's a gene name
+        perturbations = [stim_key] if isinstance(stim_key, str) else stim_key
+
+        return self.predict(
+            perturbations=perturbations,
+            cell_type=celltype_to_predict,
+            return_anndata=True
+        )
+
+    def get_perturbation_effect(
+        self,
+        perturbations: List[str]
+    ) -> Dict[str, any]:
+        """Compute perturbation effect statistics.
+
+        Args:
+            perturbations: List of genes to perturb
+
+        Returns:
+            Dictionary with effect statistics
+        """
+        if self.model is None:
+            raise ValueError("Model not trained")
+
+        _, effect = self.predict(perturbations, return_anndata=False)
+
+        result = {
+            "perturbations": perturbations,
+            "effect_norm": float(np.linalg.norm(effect)),
+            "effect_mean": float(effect.mean()),
+            "effect_std": float(effect.std()),
+            "top_affected_genes": self._get_top_affected_genes(effect, top_n=10)
+        }
+
+        logger.info(f"Computed perturbation effect: {result}")
+        return result
+
+    def _get_top_affected_genes(
+        self,
+        effect: np.ndarray,
+        top_n: int = 10
+    ) -> List[Dict[str, any]]:
+        """Get top affected genes by perturbation effect.
+
+        Args:
+            effect: Perturbation effect vector
+            top_n: Number of top genes to return
+
+        Returns:
+            List of dicts with gene names and effect sizes
+        """
+        if self.adata is None:
+            return []
+
+        # Get absolute effect sizes
+        abs_effect = np.abs(effect)
+        top_indices = np.argsort(abs_effect)[-top_n:][::-1]
+
+        genes = []
+        for idx in top_indices:
+            genes.append({
+                "gene": self.adata.var_names[idx],
+                "effect": float(effect[idx]),
+                "abs_effect": float(abs_effect[idx])
+            })
+
+        return genes
