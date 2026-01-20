@@ -21,12 +21,12 @@ COPY . /app/servers/mcp-perturbation/
 
 # Install Python dependencies
 WORKDIR /app/servers/mcp-perturbation
-# Upgrade pip and setuptools to fix importlib.metadata issues
-RUN pip install --upgrade pip setuptools wheel
-# Install importlib-metadata explicitly for Python 3.11 compatibility
-RUN pip install --no-cache-dir "importlib-metadata>=4.0.0"
-# Install the package
+# Upgrade pip and setuptools first
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+# Install the package (this will pull in all dependencies)
 RUN pip install --no-cache-dir -e .
+# Force upgrade mcp and fastmcp to latest versions
+RUN pip install --no-cache-dir --upgrade mcp fastmcp
 
 # Set environment variables for SSE transport
 ENV MCP_TRANSPORT=sse
