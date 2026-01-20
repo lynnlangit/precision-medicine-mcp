@@ -228,3 +228,17 @@ _shared_temp/
 # Analysis Results
 # Patient analysis outputs from CitL workflows and test scenarios
 results/
+
+# GEARS Perturbation Datasets
+# Downloaded datasets from GEARS (can be 3+ GB)
+servers/mcp-perturbation/data/gears_datasets/
+**/gears_datasets/*.zip
+**/gears_datasets/*.pkl
+**/gears_datasets/*.h5ad
+**/gears_datasets/**/*.pkl
+**/gears_datasets/**/*.h5ad
+
+# MCP Server Data Directories
+# Large downloaded datasets and model files
+data/perturbation/
+data/models/perturbation/
