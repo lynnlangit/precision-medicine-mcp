@@ -25,30 +25,54 @@ ModuleNotFoundError: No module named 'scvi._compat'
 
 ## Recommended Solutions
 
-### Option 1: Use Compatible Version (RECOMMENDED)
+### Option 1: Use Compatible Version - ❌ NOT VIABLE
 
-Pin to older scvi-tools version that works with scgen 2.1.0:
+**Attempted but failed due to dependency conflicts:**
 
 ```toml
 dependencies = [
     "scgen==2.1.0",
-    "scvi-tools==0.14.0",  # Last version with _compat module
+    "scvi-tools>=0.15.0",  # scgen requires >=0.15.0, not 0.14.x
     "anndata<0.8",
     "scanpy>=1.7,<1.9",
 ]
 ```
 
-### Option 2: Implement Custom scGen
+**Issues discovered:**
+1. scgen 2.1.0 requires scvi-tools>=0.15.0 (not 0.14.x)
+2. scvi-tools 0.15-0.16 brings many JAX/PyTorch Lightning dependencies
+3. Modern zarr (from anndata) requires numpy 2.0+
+4. Old pandas (<1.5) has binary incompatibility with numpy 2.0+
+5. numba requires numpy <2.4
+6. Circular dependency conflicts in Python 3.11 environment
 
-Fork the scgen repository and update it for modern scvi-tools:
+**Conclusion:** The 2021-era scgen package ecosystem is incompatible with Python 3.11 and modern package infrastructure.
+
+### Option 2: Docker Container with Python 3.9 (QUICKEST FIX)
+
+Create a Docker container with Python 3.9 and exact pinned versions:
+
+```dockerfile
+FROM python:3.9-slim
+RUN pip install scgen==2.1.0 scvi-tools==0.16.4 numpy==1.23.5 pandas==1.4.4
+```
+
+This isolates the old package ecosystem from the modern Python 3.11 environment.
+
+### Option 3: Implement Custom scGen (RECOMMENDED FOR PRODUCTION)
+
+Fork scgen and modernize it for scvi-tools 1.x:
 - https://github.com/theislab/scgen
+- Update to use modern scvi-tools VAE API
+- Remove deprecated _compat dependencies
+- Update for numpy 2.0+ compatibility
 
-### Option 3: Alternative Perturbation Prediction
+### Option 4: Alternative Perturbation Prediction
 
-Use other methods:
-- **CellOracle** - For perturbation prediction
-- **scvi-tools VAE** - Custom implementation
-- **Pyro-based models** - Custom perturbation model
+Use modern alternatives:
+- **CellOracle** - Perturbation prediction for regulatory networks
+- **scvi-tools totalVI** - Custom VAE implementation for perturbation
+- **scPert** - Modern deep learning perturbation framework
 
 ## What Works Now
 
@@ -83,13 +107,19 @@ pytest tests/test_data_loader.py::TestDatasetLoader::test_load_gse184880_synthet
 
 ## Recommended Action
 
-**For immediate use**: Pin to scvi-tools==0.14.0 and test with that older stack.
+**For immediate testing**: Use Option 2 (Docker with Python 3.9)
 
-**For production**: Consider implementing a custom perturbation model using modern scvi-tools VAE as the base, following the scGen methodology but with updated APIs.
+**For production**: Use Option 3 (Custom scGen implementation with modern scvi-tools)
 
-## Timeline to Resolution
+**Alternative**: Use Option 4 (Switch to modern perturbation prediction framework)
 
-- **Quick fix** (scvi-tools 0.14.0): ~1 hour
-- **Custom implementation**: ~2-3 days
-- **Waiting for scgen update**: Unknown (project appears unmaintained)
+## Attempted Installation Summary
+
+**What was tried:**
+1. Python 3.11 + scvi-tools 0.14.6 - scgen requires >=0.15.0 ❌
+2. Python 3.11 + scvi-tools 0.16.4 - zarr/numpy/pandas binary conflicts ❌
+3. Relaxed version constraints - circular dependency hell ❌
+
+**Conclusion:**
+The scgen 2.1.0 package from 2021 cannot be installed in a modern Python 3.11 environment without creating a completely isolated environment (Docker/conda) with Python 3.9 and exact old package versions.
 

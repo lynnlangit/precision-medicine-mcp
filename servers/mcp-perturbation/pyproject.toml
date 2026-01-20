@@ -6,14 +6,15 @@ requires-python = ">=3.10"
 dependencies = [
     "mcp>=1.0.0",
     "fastmcp>=0.1.0",
-    "scvi-tools>=1.0.0",
-    "scanpy>=1.9.0",
-    "anndata>=0.10.0",
+    "scgen==2.1.0",
+    "scvi-tools>=0.15.0,<0.17.0",
+    "scanpy>=1.7.0,<1.9.0",
+    "anndata>=0.7.5,<0.8.0",
     "torch>=2.0.0",
-    "numpy>=1.24.0",
-    "pandas>=2.0.0",
-    "matplotlib>=3.7.0",
-    "seaborn>=0.12.0",
+    "numpy",
+    "pandas",
+    "matplotlib>=3.3.0",
+    "seaborn>=0.11.0",
     "pydantic>=2.0.0",
     "httpx>=0.24.0",
     "GEOparse>=2.0.0",
@@ -27,7 +28,7 @@ dev = [
 ]
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=64.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]

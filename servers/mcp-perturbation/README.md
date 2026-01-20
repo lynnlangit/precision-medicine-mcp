@@ -32,9 +32,11 @@ This is analogous to "style transfer" for cells—we learn what treatment "looks
 
 ## Installation
 
+> **⚠️ INSTALLATION NOTE**: The scgen package (v2.1.0 from 2021) has significant dependency conflicts with modern Python 3.11+ environments. See [TESTING_STATUS.md](TESTING_STATUS.md) for details and recommended solutions (Docker with Python 3.9, or custom modern implementation).
+
 ### Prerequisites
 
-- Python >= 3.10
+- Python >= 3.10 (Python 3.9 recommended for scgen compatibility)
 - PyTorch >= 2.0.0
 - CUDA (optional, for GPU acceleration)
 
@@ -47,6 +49,8 @@ pip install -e .
 # For development
 pip install -e ".[dev]"
 ```
+
+**Note:** If you encounter dependency conflicts, see [TESTING_STATUS.md](TESTING_STATUS.md) for alternative installation methods.
 
 ### Dependencies
 
