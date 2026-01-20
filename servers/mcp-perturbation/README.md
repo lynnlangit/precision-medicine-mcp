@@ -32,7 +32,14 @@ This is analogous to "style transfer" for cells—we learn what treatment "looks
 
 ## Installation
 
-> **⚠️ INSTALLATION NOTE**: The scgen package (v2.1.0 from 2021) has significant dependency conflicts with modern Python 3.11+ environments. See [TESTING_STATUS.md](TESTING_STATUS.md) for details and recommended solutions (Docker with Python 3.9, or custom modern implementation).
+> **⚠️ INSTALLATION NOTE**: The scgen package (v2.1.0 from 2021) has significant dependency conflicts with modern Python 3.11+ environments.
+>
+> **RECOMMENDED ALTERNATIVE**: Use modern frameworks instead - see [ALTERNATIVES_COMPARISON.md](ALTERNATIVES_COMPARISON.md) for comprehensive analysis of:
+> - **pertpy + GEARS** (recommended) - Modern, Python 3.11 compatible, state-of-the-art performance
+> - **Custom scvi-tools VAE** - Maximum flexibility with modern codebase
+> - **CellOracle** - GRN-based approach for TF perturbations
+>
+> See [TESTING_STATUS.md](TESTING_STATUS.md) for scgen installation issues and [ALTERNATIVES_COMPARISON.md](ALTERNATIVES_COMPARISON.md) for detailed framework comparison.
 
 ### Prerequisites
 

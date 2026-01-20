@@ -67,12 +67,22 @@ Fork scgen and modernize it for scvi-tools 1.x:
 - Remove deprecated _compat dependencies
 - Update for numpy 2.0+ compatibility
 
-### Option 4: Alternative Perturbation Prediction
+### Option 4: Alternative Perturbation Prediction (RECOMMENDED)
 
-Use modern alternatives:
-- **CellOracle** - Perturbation prediction for regulatory networks
-- **scvi-tools totalVI** - Custom VAE implementation for perturbation
-- **scPert** - Modern deep learning perturbation framework
+Use modern alternatives - see [ALTERNATIVES_COMPARISON.md](ALTERNATIVES_COMPARISON.md) for detailed analysis:
+
+**Primary Recommendation:**
+- **pertpy + GEARS** - Modern framework with state-of-the-art graph neural network models
+  - Python 3.11+ compatible
+  - `pip install pertpy && pip install cell-gears`
+  - Access to 44 harmonized perturbation datasets
+  - Published Nature Methods 2025, Nature Biotech 2024
+
+**Other Options:**
+- **Custom scvi-tools VAE** - Maximum flexibility, modern codebase
+- **CellOracle** - GRN-based approach for TF perturbations
+
+See [detailed comparison →](ALTERNATIVES_COMPARISON.md)
 
 ## What Works Now
 
