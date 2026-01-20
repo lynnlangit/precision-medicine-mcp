@@ -87,23 +87,37 @@ SERVERS=(
     "mcp-perturbation:3009:4Gi:2:PERTURBATION_LOG_LEVEL=INFO:PERTURBATION_DRY_RUN=false"
 )
 
-# Server-specific secrets (production only)
-declare -A SERVER_SECRETS
-SERVER_SECRETS["mcp-epic"]="EPIC_FHIR_ENDPOINT=epic-fhir-endpoint:latest,EPIC_CLIENT_ID=epic-client-id:latest,EPIC_CLIENT_SECRET=epic-client-secret:latest"
+# Helper function to get server-specific secrets (production only)
+get_server_secrets() {
+    local server_name=$1
+    case "$server_name" in
+        mcp-epic)
+            echo "EPIC_FHIR_ENDPOINT=epic-fhir-endpoint:latest,EPIC_CLIENT_ID=epic-client-id:latest,EPIC_CLIENT_SECRET=epic-client-secret:latest"
+            ;;
+        *)
+            echo ""
+            ;;
+    esac
+}
 
-# Service account mappings (production only)
-declare -A SERVICE_ACCOUNTS
-SERVICE_ACCOUNTS["mcp-fgbio"]="mcp-fgbio-sa"
-SERVICE_ACCOUNTS["mcp-multiomics"]="mcp-multiomics-sa"
-SERVICE_ACCOUNTS["mcp-spatialtools"]="mcp-spatialtools-sa"
-SERVICE_ACCOUNTS["mcp-tcga"]="mcp-tcga-sa"
-SERVICE_ACCOUNTS["mcp-openimagedata"]="mcp-openimagedata-sa"
-SERVICE_ACCOUNTS["mcp-seqera"]="mcp-seqera-sa"
-SERVICE_ACCOUNTS["mcp-huggingface"]="mcp-huggingface-sa"
-SERVICE_ACCOUNTS["mcp-deepcell"]="mcp-deepcell-sa"
-SERVICE_ACCOUNTS["mcp-epic"]="mcp-epic-sa"
-SERVICE_ACCOUNTS["mcp-mockepic"]="mcp-mockepic-sa"
-SERVICE_ACCOUNTS["mcp-perturbation"]="mcp-perturbation-sa"
+# Helper function to get service account for server (production only)
+get_service_account() {
+    local server_name=$1
+    case "$server_name" in
+        mcp-fgbio) echo "mcp-fgbio-sa" ;;
+        mcp-multiomics) echo "mcp-multiomics-sa" ;;
+        mcp-spatialtools) echo "mcp-spatialtools-sa" ;;
+        mcp-tcga) echo "mcp-tcga-sa" ;;
+        mcp-openimagedata) echo "mcp-openimagedata-sa" ;;
+        mcp-seqera) echo "mcp-seqera-sa" ;;
+        mcp-huggingface) echo "mcp-huggingface-sa" ;;
+        mcp-deepcell) echo "mcp-deepcell-sa" ;;
+        mcp-epic) echo "mcp-epic-sa" ;;
+        mcp-mockepic) echo "mcp-mockepic-sa" ;;
+        mcp-perturbation) echo "mcp-perturbation-sa" ;;
+        *) echo "" ;;
+    esac
+}
 
 # Functions
 print_header() {
@@ -183,7 +197,8 @@ check_prerequisites() {
         # Check service accounts exist
         print_info "Verifying service accounts..."
         local missing_sa=0
-        for sa_name in "${SERVICE_ACCOUNTS[@]}"; do
+        local sa_list="mcp-fgbio-sa mcp-multiomics-sa mcp-spatialtools-sa mcp-tcga-sa mcp-openimagedata-sa mcp-seqera-sa mcp-huggingface-sa mcp-deepcell-sa mcp-epic-sa mcp-mockepic-sa mcp-perturbation-sa"
+        for sa_name in $sa_list; do
             if ! gcloud iam service-accounts describe "${sa_name}@${PROJECT_ID}.iam.gserviceaccount.com" \
                     --project="${PROJECT_ID}" &> /dev/null; then
                 print_error "Service account not found: ${sa_name}"
@@ -273,7 +288,7 @@ deploy_server() {
         deploy_cmd+=" --ingress internal-and-cloud-load-balancing"
 
         # Service account with least-privilege IAM
-        local service_account="${SERVICE_ACCOUNTS[$server_name]}"
+        local service_account="$(get_service_account "$server_name")"
         if [ -n "$service_account" ]; then
             deploy_cmd+=" --service-account ${service_account}@${PROJECT_ID}.iam.gserviceaccount.com"
             print_info "Using service account: ${service_account}"
@@ -283,7 +298,7 @@ deploy_server() {
         fi
 
         # Server-specific secrets from Secret Manager
-        local secrets="${SERVER_SECRETS[$server_name]}"
+        local secrets="$(get_server_secrets "$server_name")"
         if [ -n "$secrets" ]; then
             deploy_cmd+=" --set-secrets ${secrets}"
             print_info "Loading secrets from Secret Manager"
