@@ -15,6 +15,15 @@ if [ -z "$ANTHROPIC_API_KEY" ]; then
     exit 1
 fi
 
+# Check if GEMINI_API_KEY is set (optional)
+if [ -n "$GEMINI_API_KEY" ]; then
+    echo "Note: GEMINI_API_KEY is set - Gemini provider will be available"
+    GEMINI_ENV="GEMINI_API_KEY=$GEMINI_API_KEY,"
+else
+    echo "Note: GEMINI_API_KEY not set - Only Claude provider will be available"
+    GEMINI_ENV=""
+fi
+
 echo "=========================================="
 echo "Deploying Streamlit MCP Chat to Cloud Run"
 echo "=========================================="
@@ -36,7 +45,7 @@ gcloud run deploy "$SERVICE_NAME" \
     --min-instances 0 \
     --max-instances 5 \
     --timeout 300 \
-    --set-env-vars ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY",ENVIRONMENT=development \
+    --set-env-vars ${GEMINI_ENV}ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY",ENVIRONMENT=development \
     --port 8501 \
     --quiet
 
