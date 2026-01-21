@@ -83,6 +83,13 @@ MCP_SERVERS: Dict[str, MCPServerConfig] = {
         "description": "Mock EHR/FHIR data",
         "status": "mock",
         "tools_count": 5
+    },
+    "perturbation": {
+        "name": "perturbation",
+        "url": "http://localhost:8080/sse" if USE_LOCAL_SERVERS else "https://mcp-perturbation-ondu7mwjpa-uc.a.run.app/sse",
+        "description": "GEARS perturbation prediction for treatment response",
+        "status": "production",
+        "tools_count": 8
     }
 }
 
@@ -133,7 +140,8 @@ def get_server_categories() -> Dict[str, List[str]]:
         "Production Servers (Real Analysis)": [
             "fgbio",
             "multiomics",
-            "spatialtools"
+            "spatialtools",
+            "perturbation"
         ],
         "Mock Servers (Workflow Demo)": [
             "tcga",
@@ -164,4 +172,10 @@ EXAMPLE_PROMPTS = {
 5. Generate treatment recommendations""",
 
     "Batch Correction": "I have 3 batches of proteomics data with batch effects. Apply ComBat batch correction and verify PC1 no longer correlates with batch.",
+
+    "Predict Treatment Response": "Load the GSE184880 ovarian cancer dataset, setup a GEARS model, train it, and predict how Patient-001's T cells will respond to checkpoint inhibitor therapy.",
+
+    "Immunotherapy Prediction": "Predict the response of T cells to anti-PD1 and anti-CTLA4 combination therapy. Which genes are most upregulated?",
+
+    "Drug Screening": "For Patient-001 with ovarian cancer, test responses to: 1) Checkpoint inhibitors (PD1/CTLA4), 2) PARP inhibitors, 3) Platinum therapy. Which shows the best predicted response?",
 }
