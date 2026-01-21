@@ -28,6 +28,14 @@ from utils import (
     render_trace_export
 )
 
+# Import provider system
+from providers import (
+    get_provider,
+    get_available_providers,
+    ChatMessage,
+    GEMINI_AVAILABLE
+)
+
 # Import authentication and audit logging
 from utils.auth import require_authentication, display_user_info, display_logout_button
 from utils.audit_logger import get_audit_logger
@@ -72,12 +80,41 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+def is_cloud_run() -> bool:
+    """Detect if running on GCP Cloud Run.
+
+    Returns:
+        bool: True if deployed on Cloud Run, False for local development
+    """
+    return os.getenv("K_SERVICE") is not None
+
+
 def initialize_session_state():
     """Initialize Streamlit session state."""
     if "messages" not in st.session_state:
         st.session_state.messages = []
     if "selected_servers" not in st.session_state:
         st.session_state.selected_servers = ["spatialtools", "multiomics", "fgbio"]
+
+    # Initialize provider selection (Cloud Run only)
+    if "llm_provider" not in st.session_state:
+        st.session_state.llm_provider = "claude"  # Default to Claude
+
+    if "llm_model" not in st.session_state:
+        st.session_state.llm_model = "claude-sonnet-4-20250514"  # Default model
+
+    # Initialize provider instance
+    if "provider_instance" not in st.session_state:
+        try:
+            st.session_state.provider_instance = get_provider(
+                provider_name=st.session_state.llm_provider
+            )
+        except (ValueError, ImportError) as e:
+            st.session_state.provider_instance = None
+            if is_cloud_run():
+                st.error(f"Failed to initialize {st.session_state.llm_provider} provider: {str(e)}")
+
+    # Keep chat_handler for backward compatibility (local development)
     if "chat_handler" not in st.session_state:
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if api_key:
@@ -170,14 +207,90 @@ def render_sidebar():
 
         st.markdown("---")
 
+        # Provider selection (Cloud Run only)
+        if is_cloud_run():
+            st.subheader("LLM Provider")
+
+            available_providers = get_available_providers()
+
+            # Build provider options
+            provider_options = []
+            provider_mapping = {}
+            for provider_key, provider_info in available_providers.items():
+                if provider_info["available"]:
+                    display_name = provider_info["name"]
+                    provider_options.append(display_name)
+                    provider_mapping[display_name] = provider_key
+
+            if not provider_options:
+                st.error("No LLM providers available. Configure API keys.")
+                st.stop()
+
+            # Provider dropdown
+            current_provider_display = available_providers[st.session_state.llm_provider]["name"]
+            selected_provider_display = st.selectbox(
+                "Select Provider",
+                options=provider_options,
+                index=provider_options.index(current_provider_display) if current_provider_display in provider_options else 0,
+                help="Choose LLM provider for analysis"
+            )
+
+            # Update provider if changed
+            selected_provider_key = provider_mapping[selected_provider_display]
+            if selected_provider_key != st.session_state.llm_provider:
+                st.session_state.llm_provider = selected_provider_key
+                try:
+                    st.session_state.provider_instance = get_provider(provider_name=selected_provider_key)
+                    st.success(f"Switched to {selected_provider_display}")
+                    st.rerun()
+                except (ValueError, ImportError) as e:
+                    st.error(f"Failed to initialize {selected_provider_display}: {str(e)}")
+                    st.stop()
+
+            st.markdown("---")
+
         # Model selection
         st.subheader("Model Settings")
-        model = st.selectbox(
-            "Claude Model",
-            options=["claude-sonnet-4-5", "claude-opus-4-5", "claude-haiku-4"],
-            index=0,
-            help="Select Claude model. Sonnet recommended for most tasks."
-        )
+
+        # Dynamic model selection based on provider (Cloud Run)
+        if is_cloud_run() and st.session_state.provider_instance:
+            available_providers = get_available_providers()
+            provider_info = available_providers.get(st.session_state.llm_provider, {})
+            available_models = provider_info.get("models", [])
+
+            if available_models:
+                model_options = [m["id"] for m in available_models]
+                model_labels = [m["name"] for m in available_models]
+
+                # Create mapping for display
+                model_display_map = {m["name"]: m["id"] for m in available_models}
+
+                current_model = st.session_state.llm_model
+                try:
+                    current_index = model_options.index(current_model)
+                except ValueError:
+                    current_index = 0
+                    st.session_state.llm_model = model_options[0]
+
+                selected_model_label = st.selectbox(
+                    f"{provider_info['name']} Model",
+                    options=model_labels,
+                    index=current_index,
+                    help=f"Select {provider_info['name']} model"
+                )
+                model = model_display_map[selected_model_label]
+                st.session_state.llm_model = model
+            else:
+                model = provider_info.get("default_model", "claude-sonnet-4-20250514")
+                st.session_state.llm_model = model
+        else:
+            # Local development - Claude only
+            model = st.selectbox(
+                "Claude Model",
+                options=["claude-sonnet-4-5", "claude-opus-4-5", "claude-haiku-4"],
+                index=0,
+                help="Select Claude model. Sonnet recommended for most tasks."
+            )
 
         max_tokens = st.slider(
             "Max Tokens",
@@ -509,22 +622,56 @@ def handle_user_input(prompt: str, model: str, max_tokens: int):
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                # Send message to Claude API (include uploaded files info)
-                response = st.session_state.chat_handler.send_message(
-                    messages=[{"role": msg["role"], "content": msg["content"]}
-                             for msg in st.session_state.messages],
-                    mcp_servers=mcp_servers,
-                    model=model,
-                    max_tokens=max_tokens,
-                    uploaded_files=st.session_state.uploaded_files
-                )
+                # Use provider abstraction (Cloud Run) or ChatHandler (local)
+                if is_cloud_run() and st.session_state.provider_instance:
+                    # Convert messages to ChatMessage objects
+                    chat_messages = [
+                        ChatMessage(role=msg["role"], content=msg["content"])
+                        for msg in st.session_state.messages
+                    ]
 
-                # Calculate response time
-                duration_ms = (time.time() - start_time) * 1000
+                    # Send via provider abstraction
+                    chat_response = st.session_state.provider_instance.send_message(
+                        messages=chat_messages,
+                        mcp_servers=mcp_servers,
+                        model=model,
+                        max_tokens=max_tokens,
+                        uploaded_files=st.session_state.uploaded_files
+                    )
 
-                # Format response
-                response_text = st.session_state.chat_handler.format_response(response)
-                usage = st.session_state.chat_handler.get_usage_info(response)
+                    # Calculate response time
+                    duration_ms = (time.time() - start_time) * 1000
+
+                    # Extract response content and usage
+                    response_text = chat_response.content
+                    usage = None
+                    if chat_response.usage:
+                        usage = {
+                            "input_tokens": chat_response.usage.input_tokens,
+                            "output_tokens": chat_response.usage.output_tokens,
+                            "total_tokens": chat_response.usage.total_tokens
+                        }
+
+                    # Keep raw response for trace building
+                    response = chat_response.raw_response
+
+                else:
+                    # Local development - use existing ChatHandler
+                    response = st.session_state.chat_handler.send_message(
+                        messages=[{"role": msg["role"], "content": msg["content"]}
+                                 for msg in st.session_state.messages],
+                        mcp_servers=mcp_servers,
+                        model=model,
+                        max_tokens=max_tokens,
+                        uploaded_files=st.session_state.uploaded_files
+                    )
+
+                    # Calculate response time
+                    duration_ms = (time.time() - start_time) * 1000
+
+                    # Format response (existing logic)
+                    response_text = st.session_state.chat_handler.format_response(response)
+                    usage = st.session_state.chat_handler.get_usage_info(response)
 
                 # Calculate query duration
                 query_duration = (datetime.utcnow() - query_start_time).total_seconds()
