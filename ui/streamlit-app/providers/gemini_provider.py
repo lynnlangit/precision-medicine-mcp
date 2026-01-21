@@ -84,11 +84,10 @@ class GeminiProvider(LLMProvider):
             })
 
         try:
-            # Create config with thinking level
+            # Create config
             config = types.GenerateContentConfig(
                 temperature=temperature,
-                max_output_tokens=max_tokens,
-                thinking_level="medium"  # Gemini 3 specific parameter
+                max_output_tokens=max_tokens
             )
 
             # Use asyncio to run the async interaction
