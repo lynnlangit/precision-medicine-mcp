@@ -1,8 +1,9 @@
 # Prompt Inventory - Precision Medicine MCP
 
 **Discovery Date:** 2026-01-16
+**Updated:** 2026-01-21
 **Repository:** precision-medicine-mcp
-**Total Prompts Found:** 50+
+**Total Prompts Found:** 55+
 
 This document inventories all existing prompts found in the repository during Phase 1 discovery.
 
@@ -338,6 +339,92 @@ What are the genomic coordinates for the BRCA1 gene in hg38?
 
 ---
 
+### mcp-perturbation Server
+**Location:** `servers/mcp-perturbation/README.md`, `docs/architecture/perturbation/README.md`
+
+#### 4.1 Treatment Response Prediction
+
+**Predict Checkpoint Inhibitor Response:**
+```
+Load the GSE184880 ovarian cancer dataset, setup a GEARS model,
+train it, and predict how Patient-001's T cells will respond to
+checkpoint inhibitor therapy (PD1 + CTLA4 combination).
+
+Show the top 10 upregulated genes.
+```
+- **MCP Servers:** mcp-perturbation
+- **Audience:** Researchers, Clinicians
+- **Expected Output:** Predicted gene expression changes, upregulated immune markers (IFNG, TNF), biomarkers
+- **Time Estimate:** 8-12 minutes (includes training)
+
+**Screen Multiple Treatment Options:**
+```
+For Patient-001 with ovarian cancer, predict treatment responses for:
+1. Checkpoint inhibitors (PD1 + CTLA4)
+2. PARP inhibitors
+3. Platinum-based therapy
+
+Rank them by predicted efficacy and identify biomarkers
+for the most promising option.
+```
+- **MCP Servers:** mcp-perturbation
+- **Audience:** Clinicians, Researchers
+- **Expected Output:** Treatment rankings, predicted gene changes, therapy recommendation
+- **Time Estimate:** 10-15 minutes
+
+#### 4.2 Biomarker Discovery
+
+**Identify Resistance Biomarkers:**
+```
+Using the trained GEARS model, predict which genes are most
+differentially expressed when cells are exposed to anti-PD1 therapy.
+
+Perform differential expression analysis and identify the top 20
+genes that predict treatment resistance.
+```
+- **MCP Servers:** mcp-perturbation
+- **Audience:** Researchers
+- **Expected Output:** Differentially expressed genes, statistical significance, resistance markers
+- **Time Estimate:** 3-5 minutes (after model training)
+
+#### 4.3 Complete Workflow Prompts
+
+**Complete Perturbation Prediction Workflow:**
+```
+Claude, analyze treatment response potential for Patient-001:
+
+STEP 1: Load Data
+- Dataset: GSE184880 (ovarian cancer T-cell perturbations)
+- Cell type: T-cells
+- Extract single-cell RNA-seq data
+
+STEP 2: Model Setup & Training
+- Setup GEARS graph neural network model
+- Train on perturbation data (20 epochs)
+- Report training metrics (Pearson correlation, loss)
+
+STEP 3: Predict Treatment Responses
+- Predict response to: PD1 knockout, CTLA4 knockout, combination
+- Extract top upregulated and downregulated genes
+- Generate UMAP visualization
+
+STEP 4: Differential Expression
+- Compare perturbed vs control states
+- Statistical testing with FDR correction
+- Identify biomarkers (genes with largest changes)
+
+STEP 5: Clinical Interpretation
+- Summarize predicted response (likely responder vs non-responder)
+- Link findings to immunotherapy literature
+- Provide treatment recommendation with supporting evidence
+```
+- **MCP Servers:** mcp-perturbation
+- **Audience:** Researchers, Clinicians
+- **Expected Output:** Complete treatment response prediction with biomarkers and clinical recommendation
+- **Time Estimate:** 12-18 minutes
+
+---
+
 ## 3. UI-Specific Example Prompts
 
 ### Streamlit App
@@ -451,8 +538,8 @@ async def analyze_pathways():
 ## 5. Summary Statistics
 
 ### Prompts by Audience
-- **Clinicians:** 8 prompts (TEST_1, TEST_5, TEST_6, UI examples)
-- **Researchers:** 25+ prompts (all TEST prompts, spatial analysis, visualization)
+- **Clinicians:** 11 prompts (TEST_1, TEST_5, TEST_6, UI examples, perturbation prediction)
+- **Researchers:** 30+ prompts (all TEST prompts, spatial analysis, visualization, GEARS)
 - **Bioinformaticians:** 20+ prompts (multiomics, preprocessing, batch correction)
 - **Developers:** 10+ prompts (server testing, API calls, quickstart examples)
 - **Funders/Reviewers:** 3 prompts (executive summaries, ROI analysis)
@@ -461,6 +548,7 @@ async def analyze_pathways():
 ### Prompts by MCP Server
 - **mcp-multiomics:** 12+ prompts (preprocessing, integration, meta-analysis, upstream regulators)
 - **mcp-spatialtools:** 15+ prompts (spatial analysis, visualization, cell type deconvolution)
+- **mcp-perturbation:** 5 prompts (treatment response prediction, biomarker discovery, GEARS workflows)
 - **mcp-fgbio:** 4 prompts (reference genome, FASTQ validation, annotations)
 - **mcp-mockepic:** 2 prompts (clinical data retrieval)
 - **mcp-tcga:** 2 prompts (TCGA cohort comparison)
