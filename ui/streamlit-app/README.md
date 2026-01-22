@@ -90,6 +90,7 @@ sequenceDiagram
 ## Features
 
 - 💬 **Chat Interface** - Natural language interaction with MCP servers
+- 🤖 **Multi-Provider Support** - Choose between Claude (Anthropic) or Gemini (Google) LLMs
 - 🔧 **Server Selection** - Choose which of the 9 MCP servers to use
 - 🎯 **Example Prompts** - Quick-start templates for common workflows
 - 📊 **Token Usage** - Track API usage per message
@@ -98,6 +99,73 @@ sequenceDiagram
 - 🔍 **Orchestration Trace** - See which servers were called and in what order
 - 📁 **File Upload** - Secure upload for 21+ bioinformatics file formats (FASTQ, VCF, BAM, H5AD, etc.)
 - ☁️ **GCS Integration** - Direct access to files in Google Cloud Storage buckets
+
+## LLM Provider Support
+
+The Streamlit UI supports two LLM providers, each with different MCP integration approaches:
+
+### Claude (Anthropic) - Native MCP Support
+
+Claude uses Anthropic's native MCP integration where Claude API directly orchestrates MCP servers.
+
+**Architecture:**
+```
+Streamlit UI → Claude API (with MCP servers) → Response
+```
+
+**Features:**
+- Native MCP server support via Claude API
+- Automatic tool discovery and calling
+- Built-in orchestration
+
+**Models:**
+- `claude-sonnet-4-5` (recommended)
+- `claude-opus-4-5`
+- `claude-haiku-4`
+
+### Gemini (Google) - SSE-Based MCP Integration
+
+Gemini uses a custom SSE-based MCP client that connects directly to MCP servers and manually orchestrates tool calls.
+
+**Architecture:**
+```
+Streamlit UI → MCP SSE Client → Cloud Run MCP Servers
+            ↓                           ↓
+        Gemini API ← Tool Results ← Tool Execution
+```
+
+**How It Works:**
+1. **MCP Client Manager** establishes SSE connections to Cloud Run MCP servers
+2. **Tool Discovery** fetches available tools from each server
+3. **Schema Cleaning** converts MCP tool schemas to Gemini function declarations
+4. **Agentic Loop** manages multi-turn tool calling:
+   - Gemini decides which tools to call
+   - Streamlit executes tools via MCP SSE client
+   - Results fed back to Gemini for interpretation
+5. **Cloud Run Auth** uses Google Cloud ID tokens for server authentication
+
+**Models:**
+- `gemini-3-flash-preview` (recommended)
+- `gemini-2.5-flash`
+
+**Key Implementation:**
+- **SSE Client:** `utils/mcp_client.py` - Manages persistent connections to MCP servers
+- **Provider:** `providers/gemini_provider.py` - Implements agentic tool calling loop
+- **Schema Cleaning:** Removes JSON schema properties Gemini doesn't support (e.g., `additionalProperties`, `anyOf`)
+- **Thought Signatures:** Preserves complete Part objects for Gemini's tool calling requirements
+
+**Why This Approach:**
+- Gemini's Interactions API doesn't support remote MCP servers or tool configuration
+- Direct SSE connections provide full control over tool calling behavior
+- Works with existing Cloud Run MCP server deployments
+- Enables Gemini to call the same MCP tools as Claude
+
+**Switching Providers:**
+
+When running on Cloud Run, select your preferred provider in the sidebar:
+1. Set `GEMINI_API_KEY` environment variable for Gemini support
+2. Use the "LLM Provider" dropdown to switch between Claude and Gemini
+3. Both providers work with the same MCP servers
 
 ## Quick Start (2 minutes)
 
@@ -385,18 +453,18 @@ For Patient-001 (ovarian cancer):
 
 ### API Key Security
 
-**The ANTHROPIC_API_KEY is stored differently depending on environment:**
+**API keys are stored differently depending on environment:**
 
 | Environment | Storage Method | Security |
 |-------------|---------------|----------|
 | **Local Development** | `.env` file (gitignored) | Not committed to git, local machine only |
 | **GCP Cloud Run** | Environment variable (encrypted) | Encrypted at rest, managed by Google Cloud |
-| **Browser/Client** | Never exposed | Key stays on server, never sent to browser |
+| **Browser/Client** | Never exposed | Keys stay on server, never sent to browser |
 
 **Important Security Notes:**
 - ✅ `.env` file is in `.gitignore` - never committed to git
 - ✅ Cloud Run environment variables are encrypted at rest
-- ✅ API key is only used server-side, never exposed to browser
+- ✅ API keys are only used server-side, never exposed to browser
 - ✅ Use separate API keys for development vs production
 - ❌ Never hardcode API keys in source code
 - ❌ Never commit `.env` files to git
@@ -408,8 +476,9 @@ For Patient-001 (ovarian cancer):
 Create a `.env` file (from `.env.example`):
 
 ```bash
-# Required
-ANTHROPIC_API_KEY=your_key_here
+# Required (at least one)
+ANTHROPIC_API_KEY=your_anthropic_key_here
+GEMINI_API_KEY=your_google_ai_key_here
 
 # Optional
 DEFAULT_MODEL=claude-sonnet-4-5
@@ -418,14 +487,17 @@ DEFAULT_MAX_TOKENS=4096
 
 **For Cloud Run Deployment:**
 
-API key is passed as environment variable during deployment:
+API keys are passed as environment variables during deployment:
 
 ```bash
-export ANTHROPIC_API_KEY=your_key_here
+export ANTHROPIC_API_KEY=your_anthropic_key_here
+export GEMINI_API_KEY=your_google_ai_key_here
 ./deploy.sh
 ```
 
-The deployment script automatically sets the key as a Cloud Run environment variable (encrypted).
+The deployment script automatically sets the keys as Cloud Run environment variables (encrypted).
+
+**Note:** You can use either provider independently - only the corresponding API key is required.
 
 ### MCP Server Configuration
 
@@ -551,16 +623,22 @@ echo "ANTHROPIC_API_KEY=your_key_here" > .env
 ```
 ui/streamlit-app/
 ├── app.py                 # Main Streamlit application
-├── requirements.txt       # Python dependencies
+├── requirements.txt       # Python dependencies (includes mcp>=1.0.0)
 ├── .env.example          # Environment variable template
 ├── .gitignore            # Git ignore rules
 ├── README.md             # This file
 ├── Dockerfile            # Container image for Cloud Run
 ├── deploy.sh             # Deployment script for GCP
+├── providers/            # LLM provider abstraction layer
+│   ├── __init__.py       # Provider factory and discovery
+│   ├── base.py           # Abstract base class for providers
+│   ├── anthropic_provider.py  # Claude with native MCP support
+│   └── gemini_provider.py     # Gemini with SSE-based MCP client
 └── utils/
     ├── __init__.py       # Package init
     ├── mcp_config.py     # MCP server configurations
-    ├── chat_handler.py   # Claude API integration
+    ├── mcp_client.py     # SSE-based MCP client manager (for Gemini)
+    ├── chat_handler.py   # Claude API integration (legacy)
     ├── trace_utils.py    # Orchestration trace extraction
     ├── trace_display.py  # Trace visualization components
     ├── file_validator.py # File upload security validation
@@ -644,6 +722,8 @@ gcloud run deploy streamlit-mcp-chat \
 ## Roadmap
 
 **Completed Features:**
+- [x] Gemini provider with SSE-based MCP integration - ✅ Released v1.2.0
+- [x] Multi-provider abstraction layer (Claude + Gemini) - ✅ Released v1.2.0
 - [x] File upload (FASTQ, VCF, spatial data) - ✅ Released v1.1.0
 - [x] GCS bucket integration - ✅ Released v1.1.0
 - [x] Orchestration trace visualization - ✅ Released v1.0.0
@@ -658,5 +738,6 @@ gcloud run deploy streamlit-mcp-chat \
 - [ ] Cost tracking per session with budget alerts
 - [ ] Batch file processing (analyze multiple FASTQ files)
 - [ ] Interactive parameter tuning for MCP tools
+- [ ] Additional LLM providers (OpenAI, Azure, Bedrock)
 
 
