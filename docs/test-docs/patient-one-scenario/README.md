@@ -1,6 +1,6 @@
 # PatientOne: Quick Start Guide
 
-Comprehensive precision medicine workflow for Stage IV Ovarian Cancer using 9 MCP servers
+Comprehensive precision medicine workflow for Stage IV Ovarian Cancer using 10 MCP servers
 
 ## Overview
 
@@ -10,6 +10,7 @@ PatientOne demonstrates end-to-end precision medicine analysis integrating:
 - **Multiomics** (RNA/Protein/Phospho from PDX models)
 - **Spatial** transcriptomics (10x Visium, 900 spots)
 - **Imaging** (H&E histology, multiplex IF)
+- **Perturbation** prediction (GEARS treatment response modeling)
 
 **All synthetic data** for demonstration purposes.
 
