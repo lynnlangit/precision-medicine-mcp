@@ -2,7 +2,6 @@
 
 A visual chat interface for testing deployed MCP servers on GCP Cloud Run. Provides a Claude Desktop-like experience for bioinformatics workflows.
 
-🌐 **Live Demo:** https://streamlit-mcp-chat-ondu7mwjpa-uc.a.run.app
 
 <img src="../../data/images/streamlit-ui-preview.png" width="800" alt="Streamlit Chat UI Preview">
 
