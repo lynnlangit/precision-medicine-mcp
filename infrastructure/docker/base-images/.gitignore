@@ -1,0 +1,6 @@
+# Trivy security scan reports
+scan-reports/
+
+# Temporary build files
+*.log
+*.tmp
