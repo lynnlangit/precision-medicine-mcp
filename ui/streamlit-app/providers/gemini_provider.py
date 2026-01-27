@@ -456,16 +456,28 @@ After receiving tool results:
         # Add file information if present
         if uploaded_files and len(uploaded_files) > 0:
             file_count = len(uploaded_files)
-            file_list = [
-                f"- {file_info.get('original_name', filename)}"
-                for filename, file_info in uploaded_files.items()
-            ]
+            file_list = []
+            for filename, file_info in uploaded_files.items():
+                file_name = file_info.get('original_name', filename)
+                file_path = file_info.get('path', filename)
+                source = file_info.get('source', 'local')
+
+                # For GCS files, show the full URI
+                if source == 'gcs':
+                    file_list.append(f"- {file_name} (GCS URI: {file_path})")
+                else:
+                    file_list.append(f"- {file_name} (local path: {file_path})")
 
             system_instruction += f"""
 
 UPLOADED FILES:
-The user has uploaded {file_count} file(s): {', '.join(file_list)}
-When analyzing these files, use the appropriate MCP tools with the file paths provided."""
+The user has uploaded {file_count} file(s):
+{chr(10).join(file_list)}
+
+IMPORTANT: When calling MCP tools with these files:
+- For GCS files: Pass the full GCS URI (e.g., gs://bucket/path/file.csv) as the file parameter
+- For local files: Pass the local file path as the file parameter
+- The MCP servers running on Cloud Run can access GCS URIs directly"""
 
         return system_instruction
 
