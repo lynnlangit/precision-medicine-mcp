@@ -117,7 +117,8 @@ class GeminiProvider(LLMProvider):
                 system_instruction = self._build_system_instruction(mcp_servers, uploaded_files)
 
                 # Agentic loop: keep calling until no more tool calls
-                max_iterations = 10
+                # Increased to 30 to handle complex multi-step workflows (e.g., multi-omics integration)
+                max_iterations = 30
                 iteration = 0
                 conversation_history = gemini_messages.copy()
                 all_tool_calls = []  # Track all tool calls for trace
