@@ -55,11 +55,12 @@ def parse_gcs_uri(gcs_uri: str) -> Tuple[Optional[str], Optional[str]]:
     return parts[0], parts[1]
 
 
-def validate_gcs_uri(gcs_uri: str) -> Tuple[bool, Optional[str]]:
+def validate_gcs_uri(gcs_uri: str, allow_folder: bool = True) -> Tuple[bool, Optional[str]]:
     """Validate GCS URI format.
 
     Args:
         gcs_uri: GCS URI to validate
+        allow_folder: If True, allow URIs without a specific file (folder/prefix paths)
 
     Returns:
         Tuple of (is_valid, error_message)
@@ -79,7 +80,8 @@ def validate_gcs_uri(gcs_uri: str) -> Tuple[bool, Optional[str]]:
     if not re.match(r'^[a-z0-9][a-z0-9\-_.]{1,61}[a-z0-9]$', bucket):
         return False, f"Invalid bucket name: {bucket}"
 
-    if not blob:
+    # If blob is empty and we don't allow folders, return error
+    if not blob and not allow_folder:
         return False, "No file path specified after bucket name"
 
     return True, None
@@ -241,3 +243,111 @@ def get_gcs_file_content(gcs_uri: str, max_size_bytes: int = 50 * 1024) -> Tuple
         return True, content, None
     except Exception as e:
         return False, None, f"Error reading file: {str(e)}"
+
+
+def list_gcs_files(gcs_uri: str, use_mock: bool = True) -> Tuple[bool, list, Optional[str]]:
+    """List all files in a GCS prefix (folder).
+
+    Args:
+        gcs_uri: GCS URI to a folder/prefix (e.g., gs://bucket/path/to/folder/)
+        use_mock: If True, return mock file list without actually accessing GCS
+
+    Returns:
+        Tuple of (success, list_of_file_uris, error_message)
+
+    Example:
+        >>> success, files, error = list_gcs_files("gs://bucket/patient-data/")
+        >>> if success:
+        ...     for file_uri in files:
+        ...         print(file_uri)
+    """
+    # Validate URI format - allow folder URIs without specific file
+    is_valid, error = validate_gcs_uri(gcs_uri, allow_folder=True)
+    if not is_valid:
+        return False, [], error
+
+    bucket, blob_path = parse_gcs_uri(gcs_uri)
+
+    # Ensure path ends with / for prefix matching (if it has a path)
+    if blob_path and not blob_path.endswith('/'):
+        blob_path = blob_path + '/'
+
+    if use_mock:
+        # Return mock file list for testing
+        mock_files = [
+            f"{gcs_uri.rstrip('/')}/file1.csv",
+            f"{gcs_uri.rstrip('/')}/file2.tsv",
+            f"{gcs_uri.rstrip('/')}/file3.txt"
+        ]
+        return True, mock_files, None
+
+    # Real GCS access
+    try:
+        from google.cloud import storage
+
+        client = storage.Client()
+        bucket_obj = client.bucket(bucket)
+
+        # List all blobs with the prefix
+        blobs = bucket_obj.list_blobs(prefix=blob_path)
+
+        file_uris = []
+        for blob in blobs:
+            # Skip folder markers (blobs ending with /)
+            if not blob.name.endswith('/'):
+                file_uri = f"gs://{bucket}/{blob.name}"
+                file_uris.append(file_uri)
+
+        if not file_uris:
+            return False, [], f"No files found in: {gcs_uri}"
+
+        return True, file_uris, None
+
+    except ImportError:
+        return False, [], "google-cloud-storage library not installed"
+    except Exception as e:
+        return False, [], f"Error listing files in GCS: {str(e)}"
+
+
+def get_gcs_files_metadata(gcs_uri: str, use_mock: bool = True) -> Tuple[bool, list, Optional[str]]:
+    """Get metadata for all files in a GCS prefix OR a single file.
+
+    This function handles both single files and folders:
+    - If gcs_uri points to a single file: returns metadata for that file
+    - If gcs_uri points to a folder/prefix: returns metadata for all files in that folder
+
+    Args:
+        gcs_uri: GCS URI to a file or folder
+        use_mock: If True, return mock metadata without actually accessing GCS
+
+    Returns:
+        Tuple of (success, list_of_metadata_dicts, error_message)
+    """
+    # Try as single file first
+    success, metadata, error = get_gcs_file_metadata(gcs_uri, use_mock=use_mock)
+
+    if success:
+        # It's a single file
+        return True, [metadata], None
+
+    # If single file failed, try as a folder
+    success, file_uris, list_error = list_gcs_files(gcs_uri, use_mock=use_mock)
+
+    if not success:
+        # Neither file nor folder worked
+        return False, [], f"Not a valid file or folder: {error}"
+
+    # Get metadata for each file in the folder
+    all_metadata = []
+    for file_uri in file_uris:
+        file_success, file_metadata, file_error = get_gcs_file_metadata(file_uri, use_mock=use_mock)
+        if file_success:
+            all_metadata.append(file_metadata)
+        else:
+            # Log warning but continue with other files
+            print(f"Warning: Could not get metadata for {file_uri}: {file_error}")
+
+    if not all_metadata:
+        return False, [], "Could not get metadata for any files in folder"
+
+    return True, all_metadata, None

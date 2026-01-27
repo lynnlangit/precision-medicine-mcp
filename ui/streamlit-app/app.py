@@ -46,7 +46,8 @@ from utils.gcs_handler import (
     is_gcs_path,
     validate_gcs_uri,
     get_gcs_file_metadata,
-    get_gcs_file_content
+    get_gcs_file_content,
+    get_gcs_files_metadata
 )
 
 # Page configuration
@@ -416,29 +417,32 @@ def render_sidebar():
 
         gcs_uri = st.text_input(
             "GCS URI",
-            placeholder="gs://bucket-name/path/to/file.fastq",
-            help="Enter a Google Cloud Storage URI to access files from GCS",
+            placeholder="gs://bucket-name/path/to/file.fastq or gs://bucket-name/path/to/folder/",
+            help="Enter a Google Cloud Storage URI to a file or folder. For folders, all files will be loaded.",
             key="gcs_uri_input"
         )
 
         if gcs_uri and gcs_uri.strip():
-            # Validate GCS URI
-            is_valid, error = validate_gcs_uri(gcs_uri)
+            # Get metadata for file(s) - handles both single files and folders
+            success, metadata_list, meta_error = get_gcs_files_metadata(gcs_uri, use_mock=False)
 
-            if is_valid:
-                # Get file metadata
-                success, metadata, meta_error = get_gcs_file_metadata(gcs_uri, use_mock=True)
+            if success:
+                # Store all files found
+                for metadata in metadata_list:
+                    file_gcs_uri = metadata['gcs_uri']
 
-                if success:
                     # Store GCS file reference
                     st.session_state.uploaded_files[metadata['sanitized_filename']] = {
-                        'path': gcs_uri,  # Store GCS path directly
+                        'path': file_gcs_uri,  # Store GCS path directly
                         'metadata': metadata,
                         'original_name': metadata['filename'],
                         'source': 'gcs'
                     }
 
-                    # Show success
+                # Show success - different display for single vs multiple files
+                if len(metadata_list) == 1:
+                    # Single file
+                    metadata = metadata_list[0]
                     with st.expander(f"✅ {metadata['filename']} (GCS)", expanded=False):
                         st.success("Valid GCS URI")
                         col1, col2 = st.columns(2)
@@ -446,9 +450,9 @@ def render_sidebar():
                         col2.metric("Type", metadata['extension'])
                         st.caption(f"Path: {metadata['blob_path']}")
 
-                        # Try to get content for small files
-                        if not metadata.get('is_binary', False):
-                            success_content, content, content_error = get_gcs_file_content(gcs_uri, max_size_bytes=50000)
+                        # Try to get content for small text files
+                        if not metadata.get('is_binary', False) and metadata['size_mb'] < 0.05:
+                            success_content, content, content_error = get_gcs_file_content(metadata['gcs_uri'], max_size_bytes=50000)
                             if success_content:
                                 st.caption(f"✅ Content loaded ({len(content)} chars)")
                                 # Store content in metadata for inline inclusion
@@ -456,9 +460,18 @@ def render_sidebar():
                             else:
                                 st.caption(f"⚠️ Content not loaded: {content_error}")
                 else:
-                    st.error(f"Error: {meta_error}")
+                    # Multiple files from folder
+                    with st.expander(f"✅ {len(metadata_list)} files loaded from folder", expanded=True):
+                        st.success(f"Found {len(metadata_list)} files in GCS folder")
+
+                        # Show file list
+                        for metadata in metadata_list:
+                            col1, col2, col3 = st.columns([3, 1, 1])
+                            col1.write(f"📄 {metadata['filename']}")
+                            col2.write(f"{metadata['size_mb']:.2f} MB")
+                            col3.write(metadata['extension'])
             else:
-                st.error(f"Invalid GCS URI: {error}")
+                st.error(f"Error: {meta_error}")
 
         # Show currently uploaded files
         if st.session_state.uploaded_files:
