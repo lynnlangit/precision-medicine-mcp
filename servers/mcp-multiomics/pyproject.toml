@@ -25,6 +25,8 @@ dependencies = [
     "plotly>=5.14.0",
     "rpy2>=3.5.0; platform_system != 'Windows'",
     "statsmodels>=0.14.0",
+    "fsspec>=2023.1.0",
+    "gcsfs>=2023.1.0",
 ]
 
 [project.urls]
