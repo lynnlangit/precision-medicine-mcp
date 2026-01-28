@@ -50,7 +50,7 @@ This enables training on real quantum hardware.
 ## Architecture
 
 ```
-quantum-celltype-fidelity-mcp/
+mcp-quantum-celltype-fidelity/
 ├── src/quantum_celltype_fidelity/
 │   ├── circuits.py          # QuCoWECircuit (Qiskit implementation)
 │   ├── embeddings.py         # QuCoWECellTypeEmbedding (parameter management)
@@ -161,7 +161,7 @@ Export embeddings for downstream analysis.
 ### Standard Installation (CPU)
 
 ```bash
-cd servers/quantum-celltype-fidelity-mcp
+cd servers/mcp-quantum-celltype-fidelity
 pip install -e .
 ```
 
@@ -310,7 +310,7 @@ cd infrastructure/deployment
 export ANTHROPIC_API_KEY="your_key_here"
 
 # Run server
-cd servers/quantum-celltype-fidelity-mcp
+cd servers/mcp-quantum-celltype-fidelity
 python -m quantum_celltype_fidelity.server
 ```
 
