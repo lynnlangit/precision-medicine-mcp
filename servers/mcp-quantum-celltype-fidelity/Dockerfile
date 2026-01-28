@@ -26,10 +26,10 @@ WORKDIR /app/servers/mcp-quantum-celltype-fidelity
 RUN pip install --no-cache-dir --upgrade "pip>=24.0" "setuptools>=69.0" "wheel>=0.42.0"
 
 # Install core dependencies first to avoid conflicts
+# Note: qiskit-aer removed to avoid build issues; CPU simulation via qiskit works fine
 RUN pip install --no-cache-dir \
     "fastmcp>=0.1.0" \
     "qiskit>=1.0.0" \
-    "qiskit-aer>=0.13.0" \
     "numpy>=1.24.0,<2.0" \
     "scipy>=1.11.0" \
     "pandas>=2.0.0" \
