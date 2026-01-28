@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# GCP Cloud Run Deployment Script for All 9 MCP Servers
+# GCP Cloud Run Deployment Script for All 12 MCP Servers
 #
 # Prerequisites:
 #   - gcloud CLI installed and authenticated
@@ -85,6 +85,7 @@ SERVERS=(
     "mcp-deepcell:3007:2Gi:1:DEEPCELL_LOG_LEVEL=INFO:DEEPCELL_DRY_RUN=true"
     "mcp-mockepic:3008:2Gi:1:EPIC_LOG_LEVEL=INFO:DEIDENTIFY_ENABLED=true"
     "mcp-perturbation:3009:4Gi:2:PERTURBATION_LOG_LEVEL=INFO:PERTURBATION_DRY_RUN=false"
+    "mcp-quantum-celltype-fidelity:3010:2Gi:2:QUANTUM_BACKEND=cpu:QUANTUM_LOG_LEVEL=INFO"
 )
 
 # Helper function to get server-specific secrets (production only)
