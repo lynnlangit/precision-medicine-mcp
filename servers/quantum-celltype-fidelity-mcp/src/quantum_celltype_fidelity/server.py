@@ -1,0 +1,749 @@
+"""MCP Server for quantum cell type fidelity analysis.
+
+Provides 6 MCP tools for analyzing spatial transcriptomics data
+using quantum computing methods.
+"""
+
+import os
+import json
+from pathlib import Path
+from typing import Optional, List, Dict, Any
+import numpy as np
+
+from fastmcp import FastMCP
+
+# Import quantum modules
+from .circuits import QuCoWECircuit
+from .embeddings import QuCoWECellTypeEmbedding
+from .fidelity import (
+    LogitFidelityHead,
+    ImmuneEvasionDetector,
+    compute_fidelity_summary_stats
+)
+from .spatial_context import SpatialContextGenerator
+from .training import QuCoWETrainer, TrainingConfig
+
+# Try to import anndata
+try:
+    import anndata as ad
+    ANNDATA_AVAILABLE = True
+except ImportError:
+    ANNDATA_AVAILABLE = False
+    ad = None
+
+# Initialize FastMCP server
+mcp = FastMCP("quantum-celltype-fidelity")
+
+# Global state for embeddings (persists across tool calls)
+_EMBEDDINGS_CACHE: Dict[str, QuCoWECellTypeEmbedding] = {}
+
+
+@mcp.tool()
+def learn_spatial_cell_embeddings(
+    adata_path: str,
+    cell_type_key: str = "cell_type",
+    coordinate_keys: Optional[List[str]] = None,
+    n_qubits: int = 8,
+    n_layers: int = 3,
+    feature_dim: int = 256,
+    n_epochs: int = 50,
+    learning_rate: float = 0.01,
+    k_neighbors: int = 10,
+    backend: str = "cpu",
+    output_dir: Optional[str] = None
+) -> Dict[str, Any]:
+    """Learn quantum embeddings for cell types from spatial transcriptomics data.
+
+    Takes an AnnData object, extracts spatial neighborhoods, and trains
+    quantum circuits to embed cell types into Hilbert space such that
+    fidelity reflects cell type similarity.
+
+    Args:
+        adata_path: Path to AnnData (.h5ad) file or GCS URI
+        cell_type_key: Key in adata.obs for cell type labels
+        coordinate_keys: List of [x_key, y_key] for spatial coordinates
+        n_qubits: Number of qubits (default: 8 for 256-dim Hilbert space)
+        n_layers: Number of variational layers (default: 3)
+        feature_dim: Dimension to reduce gene expression to (default: 256)
+        n_epochs: Number of training epochs (default: 50)
+        learning_rate: Learning rate (default: 0.01)
+        k_neighbors: Number of spatial neighbors to consider (default: 10)
+        backend: Quantum backend ("cpu", "gpu", "ibm")
+        output_dir: Directory to save trained embeddings (optional)
+
+    Returns:
+        Dictionary with training results and embedding summary
+    """
+    if not ANNDATA_AVAILABLE:
+        return {
+            "error": "anndata not installed. Install with: pip install anndata",
+            "success": False
+        }
+
+    try:
+        # Load AnnData
+        print(f"Loading AnnData from {adata_path}...")
+        adata = ad.read_h5ad(adata_path)
+
+        # Set default coordinate keys
+        if coordinate_keys is None:
+            # Try common keys
+            for x_key, y_key in [("spatial_x", "spatial_y"), ("x", "y"), ("X", "Y")]:
+                if x_key in adata.obs.columns and y_key in adata.obs.columns:
+                    coordinate_keys = [x_key, y_key]
+                    break
+
+            if coordinate_keys is None:
+                return {
+                    "error": f"Could not find spatial coordinates in adata.obs. Available columns: {list(adata.obs.columns)}",
+                    "success": False
+                }
+
+        # Extract features and cell types
+        spatial_gen = SpatialContextGenerator(
+            k_neighbors=k_neighbors,
+            coordinate_keys=tuple(coordinate_keys)
+        )
+        spatial_gen.fit(adata)
+
+        # Get unique cell types
+        if cell_type_key not in adata.obs.columns:
+            return {
+                "error": f"Cell type key '{cell_type_key}' not found in adata.obs",
+                "success": False
+            }
+
+        cell_types = sorted(adata.obs[cell_type_key].unique().tolist())
+        print(f"Found {len(cell_types)} cell types: {cell_types}")
+
+        # Extract features for all cells
+        features_all, cell_type_labels = spatial_gen.extract_features_for_adata(
+            adata,
+            cell_type_key=cell_type_key,
+            normalize=True
+        )
+
+        # Reduce dimensionality if needed
+        if features_all.shape[1] != feature_dim:
+            from sklearn.decomposition import PCA
+            pca = PCA(n_components=feature_dim)
+            features_all = pca.fit_transform(features_all)
+            print(f"Reduced features from {adata.n_vars} to {feature_dim} dims using PCA")
+
+        # Organize training data by cell type
+        training_data = {ct: [] for ct in cell_types}
+        for i, (features, cell_type) in enumerate(zip(features_all, cell_type_labels)):
+            training_data[cell_type].append(features)
+
+        # Create embeddings
+        print(f"Creating quantum embeddings with {n_qubits} qubits, {n_layers} layers...")
+        embedding = QuCoWECellTypeEmbedding(
+            cell_types=cell_types,
+            n_qubits=n_qubits,
+            n_layers=n_layers,
+            feature_dim=feature_dim,
+            backend=backend
+        )
+
+        # Train embeddings
+        config = TrainingConfig(
+            n_epochs=n_epochs,
+            learning_rate=learning_rate,
+            optimizer="adam"
+        )
+        trainer = QuCoWETrainer(embedding, config)
+        training_summary = trainer.train(training_data, verbose=True)
+
+        # Save embeddings if output_dir provided
+        embedding_id = f"embeddings_{len(cell_types)}types_{n_qubits}qubits"
+        if output_dir:
+            output_path = Path(output_dir) / embedding_id
+            embedding.save(str(output_path))
+        else:
+            # Cache in memory
+            _EMBEDDINGS_CACHE[embedding_id] = embedding
+
+        return {
+            "success": True,
+            "embedding_id": embedding_id,
+            "n_cell_types": len(cell_types),
+            "cell_types": cell_types,
+            "n_cells_total": len(features_all),
+            "training_summary": training_summary,
+            "embedding_summary": embedding.get_summary(),
+            "saved_to": str(output_path) if output_dir else "memory_cache"
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "success": False
+        }
+
+
+@mcp.tool()
+def compute_cell_type_fidelity(
+    adata_path: str,
+    embedding_id: str,
+    cell_indices: Optional[List[int]] = None,
+    cell_type_key: str = "cell_type",
+    compute_matrix: bool = False
+) -> Dict[str, Any]:
+    """Compute quantum fidelity between cells.
+
+    Uses trained quantum embeddings to compute fidelity scores
+    between cells, reflecting cell type similarity.
+
+    Args:
+        adata_path: Path to AnnData file
+        embedding_id: ID of trained embeddings (from learn_spatial_cell_embeddings)
+        cell_indices: List of cell indices to analyze (if None, use all)
+        cell_type_key: Key for cell type labels
+        compute_matrix: Whether to compute full pairwise fidelity matrix
+
+    Returns:
+        Dictionary with fidelity scores and statistics
+    """
+    if not ANNDATA_AVAILABLE:
+        return {"error": "anndata not installed", "success": False}
+
+    try:
+        # Load embeddings
+        if embedding_id not in _EMBEDDINGS_CACHE:
+            return {
+                "error": f"Embedding '{embedding_id}' not found. Run learn_spatial_cell_embeddings first.",
+                "success": False
+            }
+
+        embedding = _EMBEDDINGS_CACHE[embedding_id]
+
+        # Load AnnData
+        adata = ad.read_h5ad(adata_path)
+        cell_type_labels = adata.obs[cell_type_key].tolist()
+
+        if cell_indices is None:
+            cell_indices = list(range(adata.n_obs))
+
+        # Extract features
+        from sklearn.decomposition import PCA
+        X = adata.X
+        if hasattr(X, 'toarray'):
+            X = X.toarray()
+
+        # Normalize
+        row_sums = X.sum(axis=1, keepdims=True)
+        row_sums[row_sums == 0] = 1
+        X = X / row_sums
+
+        # Reduce dimensionality
+        if X.shape[1] != embedding.feature_dim:
+            pca = PCA(n_components=embedding.feature_dim)
+            X = pca.fit_transform(X)
+
+        # Compute fidelities
+        results = {"success": True, "n_cells": len(cell_indices)}
+
+        if compute_matrix:
+            # Compute full pairwise matrix
+            print(f"Computing {len(cell_indices)}x{len(cell_indices)} fidelity matrix...")
+            features_dict = {}
+            for idx in cell_indices:
+                cell_type = cell_type_labels[idx]
+                if cell_type not in features_dict:
+                    features_dict[cell_type] = []
+                features_dict[cell_type].append(X[idx])
+
+            fidelity_matrix = embedding.compute_fidelity_matrix(features_dict)
+
+            # Compute summary stats
+            summary_stats = compute_fidelity_summary_stats(
+                fidelity_matrix,
+                [cell_type_labels[i] for i in cell_indices]
+            )
+
+            results["fidelity_matrix"] = fidelity_matrix.tolist()
+            results["summary_stats"] = summary_stats
+
+        else:
+            # Compute pairwise for subset
+            pairwise_fidelities = []
+            for i in range(len(cell_indices)):
+                for j in range(i + 1, min(i + 10, len(cell_indices))):  # Limit to avoid too many
+                    idx_i, idx_j = cell_indices[i], cell_indices[j]
+                    fidelity = embedding.compute_pairwise_fidelity(
+                        cell_type_labels[idx_i],
+                        cell_type_labels[idx_j],
+                        X[idx_i],
+                        X[idx_j]
+                    )
+                    pairwise_fidelities.append({
+                        "cell_i": idx_i,
+                        "cell_j": idx_j,
+                        "cell_type_i": cell_type_labels[idx_i],
+                        "cell_type_j": cell_type_labels[idx_j],
+                        "fidelity": float(fidelity)
+                    })
+
+            results["pairwise_fidelities"] = pairwise_fidelities
+
+        return results
+
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "success": False
+        }
+
+
+@mcp.tool()
+def identify_immune_evasion_states(
+    adata_path: str,
+    embedding_id: str,
+    immune_cell_types: List[str],
+    exhausted_markers: Optional[List[str]] = None,
+    evasion_threshold: float = 0.3,
+    cell_type_key: str = "cell_type"
+) -> Dict[str, Any]:
+    """Identify cells in immune evasion states.
+
+    Detects cells with low fidelity to canonical immune types
+    and high fidelity to exhausted/dysfunctional states.
+
+    Args:
+        adata_path: Path to AnnData file
+        embedding_id: ID of trained embeddings
+        immune_cell_types: List of canonical immune cell types
+        exhausted_markers: Optional list of exhausted/dysfunctional cell types
+        evasion_threshold: Threshold for flagging evasion (default: 0.3)
+        cell_type_key: Key for cell type labels
+
+    Returns:
+        Dictionary with evasion scores and flagged cells
+    """
+    if not ANNDATA_AVAILABLE:
+        return {"error": "anndata not installed", "success": False}
+
+    try:
+        # Load embeddings
+        if embedding_id not in _EMBEDDINGS_CACHE:
+            return {"error": f"Embedding '{embedding_id}' not found", "success": False}
+
+        embedding = _EMBEDDINGS_CACHE[embedding_id]
+
+        # Load AnnData
+        adata = ad.read_h5ad(adata_path)
+        cell_type_labels = adata.obs[cell_type_key].tolist()
+
+        # Extract features
+        from sklearn.decomposition import PCA
+        X = adata.X
+        if hasattr(X, 'toarray'):
+            X = X.toarray()
+        row_sums = X.sum(axis=1, keepdims=True)
+        row_sums[row_sums == 0] = 1
+        X = X / row_sums
+
+        if X.shape[1] != embedding.feature_dim:
+            pca = PCA(n_components=embedding.feature_dim)
+            X = pca.fit_transform(X)
+
+        # Compute fidelity matrix for all cells
+        features_dict = {}
+        for idx, cell_type in enumerate(cell_type_labels):
+            if cell_type not in features_dict:
+                features_dict[cell_type] = []
+            features_dict[cell_type].append(X[idx])
+
+        print("Computing fidelity matrix for immune evasion detection...")
+        fidelity_matrix = embedding.compute_fidelity_matrix(features_dict)
+
+        # Create detector
+        detector = ImmuneEvasionDetector(
+            immune_cell_types=immune_cell_types,
+            exhausted_markers=exhausted_markers or [],
+            evasion_threshold=evasion_threshold
+        )
+
+        # Detect immune evasion
+        evasion_results = detector.detect_batch(
+            fidelity_matrix=fidelity_matrix,
+            cell_type_labels=cell_type_labels
+        )
+
+        # Format results
+        evading_cells = [
+            {
+                "cell_idx": idx,
+                "evasion_score": score,
+                "cell_type": cell_type_labels[idx],
+                "metadata": metadata
+            }
+            for idx, score, metadata in evasion_results
+            if metadata["is_evading"]
+        ]
+
+        return {
+            "success": True,
+            "n_cells_analyzed": len(evasion_results),
+            "n_evading_cells": len(evading_cells),
+            "evading_cells": evading_cells,
+            "evasion_threshold": evasion_threshold,
+            "immune_cell_types": immune_cell_types
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "success": False
+        }
+
+
+@mcp.tool()
+def predict_perturbation_effect(
+    adata_path: str,
+    embedding_id: str,
+    perturbation_type: str,
+    target_cell_types: List[str],
+    perturbation_strength: float = 0.5,
+    cell_type_key: str = "cell_type"
+) -> Dict[str, Any]:
+    """Predict effect of perturbations on cell type fidelity.
+
+    Simulates how perturbations (e.g., drug treatments) affect
+    quantum fidelity between cell types.
+
+    Args:
+        adata_path: Path to AnnData file
+        embedding_id: ID of trained embeddings
+        perturbation_type: Type of perturbation ("drug", "genetic", "environmental")
+        target_cell_types: Cell types to apply perturbation to
+        perturbation_strength: Strength of perturbation (0-1)
+        cell_type_key: Key for cell type labels
+
+    Returns:
+        Dictionary with predicted fidelity changes
+    """
+    if not ANNDATA_AVAILABLE:
+        return {"error": "anndata not installed", "success": False}
+
+    try:
+        # Load embeddings
+        if embedding_id not in _EMBEDDINGS_CACHE:
+            return {"error": f"Embedding '{embedding_id}' not found", "success": False}
+
+        embedding = _EMBEDDINGS_CACHE[embedding_id]
+
+        # Simulate perturbation by modifying variational parameters
+        perturbation_effects = []
+
+        for cell_type in target_cell_types:
+            if cell_type not in embedding.theta_dict:
+                continue
+
+            # Get current parameters
+            theta_orig = embedding.get_parameters(cell_type)
+
+            # Apply perturbation (random noise proportional to strength)
+            noise = np.random.normal(0, perturbation_strength * 0.5, len(theta_orig))
+            theta_perturbed = theta_orig + noise
+
+            # Temporarily update parameters
+            embedding.update_parameters(cell_type, theta_perturbed)
+
+            # Compute fidelity change
+            # Load a sample of cells to test on
+            adata = ad.read_h5ad(adata_path)
+            cell_type_labels = adata.obs[cell_type_key].tolist()
+
+            # Get features for this cell type
+            indices = [i for i, ct in enumerate(cell_type_labels) if ct == cell_type]
+            if len(indices) < 2:
+                continue
+
+            # Extract features
+            from sklearn.decomposition import PCA
+            X = adata.X
+            if hasattr(X, 'toarray'):
+                X = X.toarray()
+            row_sums = X.sum(axis=1, keepdims=True)
+            row_sums[row_sums == 0] = 1
+            X = X / row_sums
+
+            if X.shape[1] != embedding.feature_dim:
+                pca = PCA(n_components=embedding.feature_dim)
+                X = pca.fit_transform(X)
+
+            # Compute fidelities before and after
+            sample_indices = indices[:min(5, len(indices))]
+            fidelities_before = []
+            fidelities_after = []
+
+            for i in range(len(sample_indices)):
+                for j in range(i + 1, len(sample_indices)):
+                    # After perturbation
+                    fid_after = embedding.compute_pairwise_fidelity(
+                        cell_type, cell_type,
+                        X[sample_indices[i]], X[sample_indices[j]]
+                    )
+                    fidelities_after.append(fid_after)
+
+            # Restore original parameters
+            embedding.update_parameters(cell_type, theta_orig)
+
+            # Before perturbation
+            for i in range(len(sample_indices)):
+                for j in range(i + 1, len(sample_indices)):
+                    fid_before = embedding.compute_pairwise_fidelity(
+                        cell_type, cell_type,
+                        X[sample_indices[i]], X[sample_indices[j]]
+                    )
+                    fidelities_before.append(fid_before)
+
+            # Compute change
+            avg_change = np.mean(fidelities_after) - np.mean(fidelities_before)
+
+            perturbation_effects.append({
+                "cell_type": cell_type,
+                "avg_fidelity_before": float(np.mean(fidelities_before)),
+                "avg_fidelity_after": float(np.mean(fidelities_after)),
+                "fidelity_change": float(avg_change),
+                "effect_direction": "increase" if avg_change > 0 else "decrease"
+            })
+
+        return {
+            "success": True,
+            "perturbation_type": perturbation_type,
+            "perturbation_strength": perturbation_strength,
+            "n_cell_types_affected": len(perturbation_effects),
+            "effects": perturbation_effects
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "success": False
+        }
+
+
+@mcp.tool()
+def analyze_tls_quantum_signature(
+    adata_path: str,
+    embedding_id: str,
+    tls_marker_types: List[str],
+    min_cluster_size: int = 20,
+    max_distance: float = 100.0,
+    cell_type_key: str = "cell_type",
+    coordinate_keys: Optional[List[str]] = None
+) -> Dict[str, Any]:
+    """Analyze quantum signatures of tertiary lymphoid structures (TLS).
+
+    Identifies TLS candidates and computes their quantum fidelity patterns.
+
+    Args:
+        adata_path: Path to AnnData file
+        embedding_id: ID of trained embeddings
+        tls_marker_types: Cell types indicating TLS (e.g., ["B_cell", "T_cell"])
+        min_cluster_size: Minimum cells to constitute TLS
+        max_distance: Maximum distance for TLS clustering
+        cell_type_key: Key for cell type labels
+        coordinate_keys: Keys for spatial coordinates
+
+    Returns:
+        Dictionary with TLS candidates and their quantum signatures
+    """
+    if not ANNDATA_AVAILABLE:
+        return {"error": "anndata not installed", "success": False}
+
+    try:
+        # Load embeddings
+        if embedding_id not in _EMBEDDINGS_CACHE:
+            return {"error": f"Embedding '{embedding_id}' not found", "success": False}
+
+        embedding = _EMBEDDINGS_CACHE[embedding_id]
+
+        # Load AnnData
+        adata = ad.read_h5ad(adata_path)
+        cell_type_labels = adata.obs[cell_type_key].tolist()
+
+        # Set coordinate keys
+        if coordinate_keys is None:
+            for x_key, y_key in [("spatial_x", "spatial_y"), ("x", "y"), ("X", "Y")]:
+                if x_key in adata.obs.columns and y_key in adata.obs.columns:
+                    coordinate_keys = [x_key, y_key]
+                    break
+
+        # Create spatial context generator
+        spatial_gen = SpatialContextGenerator(coordinate_keys=tuple(coordinate_keys))
+        spatial_gen.fit(adata)
+
+        # Identify TLS candidates
+        tls_candidates = spatial_gen.identify_tls_candidates(
+            cell_type_labels=cell_type_labels,
+            tls_marker_types=tls_marker_types,
+            min_cluster_size=min_cluster_size,
+            max_distance=max_distance
+        )
+
+        print(f"Found {len(tls_candidates)} TLS candidates")
+
+        # Compute quantum signatures for each TLS
+        from sklearn.decomposition import PCA
+        X = adata.X
+        if hasattr(X, 'toarray'):
+            X = X.toarray()
+        row_sums = X.sum(axis=1, keepdims=True)
+        row_sums[row_sums == 0] = 1
+        X = X / row_sums
+
+        if X.shape[1] != embedding.feature_dim:
+            pca = PCA(n_components=embedding.feature_dim)
+            X = pca.fit_transform(X)
+
+        for tls in tls_candidates:
+            tls_cell_indices = tls["cell_indices"]
+
+            # Compute fidelity matrix for TLS cells
+            features_dict = {}
+            for idx in tls_cell_indices:
+                cell_type = cell_type_labels[idx]
+                if cell_type not in features_dict:
+                    features_dict[cell_type] = []
+                features_dict[cell_type].append(X[idx])
+
+            fidelity_matrix = embedding.compute_fidelity_matrix(features_dict)
+
+            # Compute quantum signature metrics
+            tls_labels = [cell_type_labels[i] for i in tls_cell_indices]
+            summary_stats = compute_fidelity_summary_stats(fidelity_matrix, tls_labels)
+
+            tls["quantum_signature"] = {
+                "mean_fidelity": summary_stats["mean_fidelity"],
+                "std_fidelity": summary_stats["std_fidelity"],
+                "per_cell_type": summary_stats.get("per_cell_type", {})
+            }
+
+        return {
+            "success": True,
+            "n_tls_candidates": len(tls_candidates),
+            "tls_candidates": tls_candidates,
+            "tls_marker_types": tls_marker_types,
+            "clustering_params": {
+                "min_cluster_size": min_cluster_size,
+                "max_distance": max_distance
+            }
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "success": False
+        }
+
+
+@mcp.tool()
+def export_for_downstream(
+    embedding_id: str,
+    output_format: str = "numpy",
+    output_path: Optional[str] = None
+) -> Dict[str, Any]:
+    """Export quantum embeddings for downstream analysis.
+
+    Exports trained embeddings in various formats for use in
+    other tools and workflows.
+
+    Args:
+        embedding_id: ID of trained embeddings
+        output_format: Export format ("numpy", "json", "pytorch", "anndata")
+        output_path: Path to save exported data
+
+    Returns:
+        Dictionary with export status and file paths
+    """
+    try:
+        # Load embeddings
+        if embedding_id not in _EMBEDDINGS_CACHE:
+            return {"error": f"Embedding '{embedding_id}' not found", "success": False}
+
+        embedding = _EMBEDDINGS_CACHE[embedding_id]
+
+        # Create output path if not provided
+        if output_path is None:
+            output_path = f"/tmp/{embedding_id}_export"
+
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
+        exported_files = []
+
+        if output_format == "numpy":
+            # Export as numpy arrays
+            for cell_type, theta in embedding.theta_dict.items():
+                filepath = f"{output_path}_{cell_type}.npy"
+                np.save(filepath, theta)
+                exported_files.append(filepath)
+
+        elif output_format == "json":
+            # Export as JSON
+            export_data = {
+                "embedding_id": embedding_id,
+                "cell_types": embedding.cell_types,
+                "circuit_config": embedding.circuit.to_dict(),
+                "parameters": {
+                    ct: theta.tolist()
+                    for ct, theta in embedding.theta_dict.items()
+                },
+                "training_metadata": embedding.training_metadata
+            }
+            filepath = f"{output_path}.json"
+            with open(filepath, 'w') as f:
+                json.dump(export_data, f, indent=2)
+            exported_files.append(filepath)
+
+        elif output_format == "pytorch":
+            try:
+                import torch
+                filepath = f"{output_path}.pt"
+                torch_dict = {
+                    ct: torch.from_numpy(theta)
+                    for ct, theta in embedding.theta_dict.items()
+                }
+                torch.save(torch_dict, filepath)
+                exported_files.append(filepath)
+            except ImportError:
+                return {"error": "PyTorch not installed", "success": False}
+
+        else:
+            return {
+                "error": f"Unknown format: {output_format}. Use 'numpy', 'json', or 'pytorch'",
+                "success": False
+            }
+
+        return {
+            "success": True,
+            "embedding_id": embedding_id,
+            "output_format": output_format,
+            "exported_files": exported_files,
+            "n_files": len(exported_files)
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "success": False
+        }
+
+
+# Server entry point
+if __name__ == "__main__":
+    mcp.run()
