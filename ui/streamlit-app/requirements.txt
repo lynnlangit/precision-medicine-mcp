@@ -2,7 +2,7 @@
 
 # Core dependencies
 streamlit>=1.30.0
-anthropic>=0.40.0
+anthropic>=0.42.0
 
 # LLM Provider SDKs
 google-genai>=1.55.0  # Optional: Gemini provider support

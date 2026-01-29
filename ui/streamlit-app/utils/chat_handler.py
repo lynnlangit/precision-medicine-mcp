@@ -136,7 +136,8 @@ FILE ACCESS GUIDELINES:
 When calling MCP tools with GCS files, use the GCS URI (gs://bucket/path) as the file path parameter."""
 
         try:
-            # Use beta.messages API for MCP support with proper beta header
+            # Use beta.messages API for MCP support
+            # MCP is built into beta API - no additional beta header needed
             response = self.client.beta.messages.create(
                 model=model,
                 max_tokens=max_tokens,
@@ -144,8 +145,7 @@ When calling MCP tools with GCS files, use the GCS URI (gs://bucket/path) as the
                 messages=messages,
                 mcp_servers=mcp_servers,
                 tools=tools,
-                system=system_prompt,
-                betas=["mcp-2025-01-24"]
+                system=system_prompt
             )
             return response
 
