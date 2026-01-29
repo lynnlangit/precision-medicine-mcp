@@ -632,119 +632,119 @@ def handle_user_input(prompt: str, model: str, max_tokens: int):
         try:
             # Use provider abstraction (Cloud Run) or ChatHandler (local)
             if is_cloud_run() and st.session_state.provider_instance:
-                    # Convert messages to ChatMessage objects
-                    chat_messages = [
-                        ChatMessage(role=msg["role"], content=msg["content"])
-                        for msg in st.session_state.messages
-                    ]
+                # Convert messages to ChatMessage objects
+                chat_messages = [
+                    ChatMessage(role=msg["role"], content=msg["content"])
+                    for msg in st.session_state.messages
+                ]
 
-                    # Send via provider abstraction
-                    chat_response = st.session_state.provider_instance.send_message(
-                        messages=chat_messages,
-                        mcp_servers=mcp_servers,
-                        model=model,
-                        max_tokens=max_tokens,
-                        uploaded_files=st.session_state.uploaded_files
-                    )
-
-                    # Calculate response time
-                    duration_ms = (time.time() - start_time) * 1000
-
-                    # Extract response content and usage
-                    response_text = chat_response.content
-                    usage = None
-                    if chat_response.usage:
-                        usage = {
-                            "input_tokens": chat_response.usage.input_tokens,
-                            "output_tokens": chat_response.usage.output_tokens,
-                            "total_tokens": chat_response.usage.total_tokens
-                        }
-
-                    # Keep raw response and metadata for trace building
-                    response = chat_response.raw_response
-                    tool_calls_metadata = chat_response.tool_calls_metadata
-
-                else:
-                    # Local development - use existing ChatHandler
-                    response = st.session_state.chat_handler.send_message(
-                        messages=[{"role": msg["role"], "content": msg["content"]}
-                                 for msg in st.session_state.messages],
-                        mcp_servers=mcp_servers,
-                        model=model,
-                        max_tokens=max_tokens,
-                        uploaded_files=st.session_state.uploaded_files
-                    )
-
-                    # Calculate response time
-                    duration_ms = (time.time() - start_time) * 1000
-
-                    # Format response (existing logic)
-                    response_text = st.session_state.chat_handler.format_response(response)
-                    usage = st.session_state.chat_handler.get_usage_info(response)
-
-                    # No metadata for local development path
-                    tool_calls_metadata = None
-
-                # Calculate query duration
-                query_duration = (datetime.utcnow() - query_start_time).total_seconds()
-
-                # Update session statistics
-                st.session_state.total_queries += 1
-                if usage:
-                    st.session_state.total_tokens += usage.get("total_tokens", 0)
-                    # Estimate cost (Sonnet pricing)
-                    input_cost = usage.get("input_tokens", 0) * 0.003 / 1000
-                    output_cost = usage.get("output_tokens", 0) * 0.015 / 1000
-                    estimated_cost = input_cost + output_cost
-                    st.session_state.total_cost += estimated_cost
-
-                    # Log the response (audit trail)
-                    st.session_state.audit_logger.log_mcp_response(
-                        user_email=user["email"],
-                        user_id=user["user_id"],
-                        servers=st.session_state.selected_servers,
-                        response_length=len(response_text),
-                        input_tokens=usage.get("input_tokens", 0),
-                        output_tokens=usage.get("output_tokens", 0),
-                        total_tokens=usage.get("total_tokens", 0),
-                        estimated_cost=estimated_cost,
-                        duration_seconds=query_duration,
-                        session_id=st.session_state.session_id
-                    )
-
-                # Build orchestration trace
-                message_index = len(st.session_state.messages)  # Index where this message will be stored
-
-                # Get provider name for trace
-                if is_cloud_run() and st.session_state.provider_instance:
-                    provider_name = st.session_state.provider_instance.get_provider_name()
-                else:
-                    provider_name = "Claude"  # Default for local development
-
-                trace = build_orchestration_trace(
-                    query=prompt,
-                    response=response,
-                    messages=[{"role": msg["role"], "content": msg["content"]}
-                             for msg in st.session_state.messages],
-                    duration_ms=duration_ms,
-                    tokens=usage.get("total_tokens", 0) if usage else 0,
-                    cost_usd=estimated_cost if usage else 0,
-                    tool_calls_metadata=tool_calls_metadata,
-                    provider_name=provider_name
+                # Send via provider abstraction
+                chat_response = st.session_state.provider_instance.send_message(
+                    messages=chat_messages,
+                    mcp_servers=mcp_servers,
+                    model=model,
+                    max_tokens=max_tokens,
+                    uploaded_files=st.session_state.uploaded_files
                 )
 
-                # Store trace in session state
-                st.session_state.traces[message_index] = trace
+                # Calculate response time
+                duration_ms = (time.time() - start_time) * 1000
 
-                # Add to history
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": response_text,
-                    "usage": usage
-                })
+                # Extract response content and usage
+                response_text = chat_response.content
+                usage = None
+                if chat_response.usage:
+                    usage = {
+                        "input_tokens": chat_response.usage.input_tokens,
+                        "output_tokens": chat_response.usage.output_tokens,
+                        "total_tokens": chat_response.usage.total_tokens
+                    }
 
-                # Rerun to display the new messages via render_chat_history
-                st.rerun()
+                # Keep raw response and metadata for trace building
+                response = chat_response.raw_response
+                tool_calls_metadata = chat_response.tool_calls_metadata
+
+            else:
+                # Local development - use existing ChatHandler
+                response = st.session_state.chat_handler.send_message(
+                    messages=[{"role": msg["role"], "content": msg["content"]}
+                             for msg in st.session_state.messages],
+                    mcp_servers=mcp_servers,
+                    model=model,
+                    max_tokens=max_tokens,
+                    uploaded_files=st.session_state.uploaded_files
+                )
+
+                # Calculate response time
+                duration_ms = (time.time() - start_time) * 1000
+
+                # Format response (existing logic)
+                response_text = st.session_state.chat_handler.format_response(response)
+                usage = st.session_state.chat_handler.get_usage_info(response)
+
+                # No metadata for local development path
+                tool_calls_metadata = None
+
+            # Calculate query duration
+            query_duration = (datetime.utcnow() - query_start_time).total_seconds()
+
+            # Update session statistics
+            st.session_state.total_queries += 1
+            if usage:
+                st.session_state.total_tokens += usage.get("total_tokens", 0)
+                # Estimate cost (Sonnet pricing)
+                input_cost = usage.get("input_tokens", 0) * 0.003 / 1000
+                output_cost = usage.get("output_tokens", 0) * 0.015 / 1000
+                estimated_cost = input_cost + output_cost
+                st.session_state.total_cost += estimated_cost
+
+                # Log the response (audit trail)
+                st.session_state.audit_logger.log_mcp_response(
+                    user_email=user["email"],
+                    user_id=user["user_id"],
+                    servers=st.session_state.selected_servers,
+                    response_length=len(response_text),
+                    input_tokens=usage.get("input_tokens", 0),
+                    output_tokens=usage.get("output_tokens", 0),
+                    total_tokens=usage.get("total_tokens", 0),
+                    estimated_cost=estimated_cost,
+                    duration_seconds=query_duration,
+                    session_id=st.session_state.session_id
+                )
+
+            # Build orchestration trace
+            message_index = len(st.session_state.messages)  # Index where this message will be stored
+
+            # Get provider name for trace
+            if is_cloud_run() and st.session_state.provider_instance:
+                provider_name = st.session_state.provider_instance.get_provider_name()
+            else:
+                provider_name = "Claude"  # Default for local development
+
+            trace = build_orchestration_trace(
+                query=prompt,
+                response=response,
+                messages=[{"role": msg["role"], "content": msg["content"]}
+                         for msg in st.session_state.messages],
+                duration_ms=duration_ms,
+                tokens=usage.get("total_tokens", 0) if usage else 0,
+                cost_usd=estimated_cost if usage else 0,
+                tool_calls_metadata=tool_calls_metadata,
+                provider_name=provider_name
+            )
+
+            # Store trace in session state
+            st.session_state.traces[message_index] = trace
+
+            # Add to history
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": response_text,
+                "usage": usage
+            })
+
+            # Rerun to display the new messages via render_chat_history
+            st.rerun()
 
         except Exception as e:
             error_msg = f"❌ Error: {str(e)}"
