@@ -1,6 +1,6 @@
 """MCP Server Configuration
 
-Contains URLs and metadata for all 10 deployed GCP Cloud Run MCP servers.
+Contains URLs and metadata for all 12 deployed GCP Cloud Run MCP servers.
 """
 
 from typing import Dict, List, TypedDict
@@ -90,6 +90,13 @@ MCP_SERVERS: Dict[str, MCPServerConfig] = {
         "description": "GEARS perturbation prediction for treatment response",
         "status": "production",
         "tools_count": 8
+    },
+    "quantum-celltype-fidelity": {
+        "name": "quantum-celltype-fidelity",
+        "url": "http://localhost:3010/sse" if USE_LOCAL_SERVERS else "https://mcp-quantum-celltype-fidelity-ondu7mwjpa-uc.a.run.app/sse",
+        "description": "Quantum computing for cell type validation and immune evasion detection",
+        "status": "production",
+        "tools_count": 6
     }
 }
 
@@ -141,7 +148,8 @@ def get_server_categories() -> Dict[str, List[str]]:
             "fgbio",
             "multiomics",
             "spatialtools",
-            "perturbation"
+            "perturbation",
+            "quantum-celltype-fidelity"
         ],
         "Mock Servers (Workflow Demo)": [
             "tcga",
@@ -178,4 +186,12 @@ EXAMPLE_PROMPTS = {
     "Immunotherapy Prediction": "Predict the response of T cells to anti-PD1 and anti-CTLA4 combination therapy. Which genes are most upregulated?",
 
     "Drug Screening": "For Patient-001 with ovarian cancer, test responses to: 1) Checkpoint inhibitors (PD1/CTLA4), 2) PARP inhibitors, 3) Platinum therapy. Which shows the best predicted response?",
+
+    "Quantum Cell Type Fidelity": "Train quantum embeddings on the T-cell spatial transcriptomics data. Compute fidelity scores and identify cells with immune evasion states near the tumor boundary.",
+
+    "Immune Evasion Detection": "Using quantum fidelity analysis, identify T-cells that are evading immune surveillance. What is the evasion score for cells near the tumor margin?",
+
+    "TLS Analysis": "Analyze the quantum signatures of tertiary lymphoid structures in the spatial data. Which TLS candidates show the highest quantum coherence?",
+
+    "Quantum + GEARS Validation": "First predict T-cell response to checkpoint inhibitors using GEARS. Then encode the predicted gene expression changes into quantum states and compute fidelity changes. Do the quantum and GEARS predictions agree?",
 }
