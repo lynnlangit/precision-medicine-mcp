@@ -66,8 +66,7 @@ class AnthropicProvider(LLMProvider):
         system_prompt = self._build_system_prompt(formatted_servers, uploaded_files)
 
         try:
-            # Use beta.messages API for MCP support
-            # Note: MCP support is in beta, no additional beta flag needed
+            # Use beta.messages API for MCP support with proper beta header
             response = self.client.beta.messages.create(
                 model=model,
                 max_tokens=max_tokens,
@@ -75,7 +74,8 @@ class AnthropicProvider(LLMProvider):
                 messages=api_messages,
                 mcp_servers=formatted_servers,
                 tools=tools,
-                system=system_prompt
+                system=system_prompt,
+                betas=["mcp-2025-01-24"]
             )
 
             # Extract text from response
