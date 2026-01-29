@@ -13,36 +13,17 @@ RUN apt-get update && apt-get install -y \
 # Create directory structure
 RUN mkdir -p /app/servers/mcp-quantum-celltype-fidelity /app/shared/utils
 
-# Copy temporarily staged shared utilities (if needed)
-COPY _shared_temp/utils/ /app/shared/utils/ 2>/dev/null || true
+# Copy temporarily staged shared utilities
+COPY _shared_temp/utils/ /app/shared/utils/
 
 # Copy server code
 COPY . /app/servers/mcp-quantum-celltype-fidelity/
 
 # Install Python dependencies
 WORKDIR /app/servers/mcp-quantum-celltype-fidelity
-
-# Fix importlib.metadata issue by installing compatible versions
-RUN pip install --no-cache-dir --upgrade \
-    "pip>=24.0" \
-    "importlib-metadata>=6.0.0" \
-    "setuptools==68.2.2" \
-    "wheel>=0.42.0"
-
-# Install core dependencies first to avoid conflicts
-# Note: qiskit-aer removed to avoid build issues; CPU simulation via qiskit works fine
-RUN pip install --no-cache-dir \
-    "fastmcp>=0.1.0" \
-    "qiskit>=1.0.0" \
-    "numpy>=1.24.0,<2.0" \
-    "scipy>=1.11.0" \
-    "pandas>=2.0.0" \
-    "scikit-learn>=1.3.0" \
-    "anndata>=0.10.0" \
-    "fsspec>=2023.1.0" \
-    "gcsfs>=2023.1.0"
-
-# Install the package in editable mode (for any additional dependencies)
+# Upgrade pip and setuptools first
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+# Install the package (this will pull in all dependencies including fastmcp>=0.1.0)
 RUN pip install --no-cache-dir -e .
 
 # Set environment variables for SSE transport

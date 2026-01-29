@@ -745,5 +745,24 @@ def export_for_downstream(
 
 
 # Server entry point
+def main():
+    """Run the MCP server."""
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info("Starting quantum-celltype-fidelity MCP server...")
+
+    # Get transport and port from environment
+    transport = os.getenv("MCP_TRANSPORT", "stdio")
+    port = int(os.getenv("PORT", os.getenv("MCP_PORT", "8080")))
+
+    logger.info(f"Transport: {transport}, Port: {port}")
+
+    # Run the server with appropriate transport
+    if transport in ("sse", "streamable-http"):
+        mcp.run(transport=transport, port=port, host="0.0.0.0")
+    else:
+        mcp.run(transport=transport)
+
+
 if __name__ == "__main__":
-    mcp.run()
+    main()

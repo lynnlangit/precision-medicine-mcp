@@ -29,6 +29,9 @@ Homepage = "https://github.com/lynnlangit/precision-medicine-mcp"
 Issues = "https://github.com/lynnlangit/precision-medicine-mcp/issues"
 Documentation = "https://github.com/lynnlangit/precision-medicine-mcp/tree/main/docs"
 
+[project.scripts]
+mcp-quantum-celltype-fidelity = "quantum_celltype_fidelity.server:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
