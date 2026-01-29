@@ -602,10 +602,6 @@ def handle_user_input(prompt: str, model: str, max_tokens: int):
     # Add user message to history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # Display user message
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
     # Get MCP server config
     mcp_servers = get_server_config(st.session_state.selected_servers)
 
@@ -631,12 +627,11 @@ def handle_user_input(prompt: str, model: str, max_tokens: int):
     query_start_time = datetime.utcnow()
     start_time = time.time()
 
-    # Show thinking indicator
-    with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            try:
-                # Use provider abstraction (Cloud Run) or ChatHandler (local)
-                if is_cloud_run() and st.session_state.provider_instance:
+    # Show thinking indicator (outside chat message so it shows before rerun)
+    with st.spinner("🤔 Thinking..."):
+        try:
+            # Use provider abstraction (Cloud Run) or ChatHandler (local)
+            if is_cloud_run() and st.session_state.provider_instance:
                     # Convert messages to ChatMessage objects
                     chat_messages = [
                         ChatMessage(role=msg["role"], content=msg["content"])
@@ -717,21 +712,6 @@ def handle_user_input(prompt: str, model: str, max_tokens: int):
                         session_id=st.session_state.session_id
                     )
 
-                # Display response
-                st.markdown(response_text)
-
-                # Show usage info
-                if usage:
-                    with st.expander("Token Usage"):
-                        col1, col2, col3 = st.columns(3)
-                        col1.metric("Input", usage.get("input_tokens", 0))
-                        col2.metric("Output", usage.get("output_tokens", 0))
-                        col3.metric("Total", usage.get("total_tokens", 0))
-
-                        # Show estimated cost
-                        if usage.get("total_tokens", 0) > 0:
-                            st.caption(f"Est. cost: ${estimated_cost:.4f}")
-
                 # Build orchestration trace
                 message_index = len(st.session_state.messages)  # Index where this message will be stored
 
@@ -763,24 +743,29 @@ def handle_user_input(prompt: str, model: str, max_tokens: int):
                     "usage": usage
                 })
 
-            except Exception as e:
-                error_msg = f"❌ Error: {str(e)}"
-                st.error(error_msg)
+                # Rerun to display the new messages via render_chat_history
+                st.rerun()
 
-                # Log error (audit trail)
-                st.session_state.audit_logger.log_error(
-                    user_email=user["email"],
-                    user_id=user["user_id"],
-                    error_type=type(e).__name__,
-                    error_message=str(e),
-                    servers=st.session_state.selected_servers,
-                    session_id=st.session_state.session_id
-                )
+        except Exception as e:
+            error_msg = f"❌ Error: {str(e)}"
 
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": error_msg
-                })
+            # Log error (audit trail)
+            st.session_state.audit_logger.log_error(
+                user_email=user["email"],
+                user_id=user["user_id"],
+                error_type=type(e).__name__,
+                error_message=str(e),
+                servers=st.session_state.selected_servers,
+                session_id=st.session_state.session_id
+            )
+
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": error_msg
+            })
+
+            # Rerun to display the error
+            st.rerun()
 
 
 def main():
